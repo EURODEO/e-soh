@@ -1,12 +1,16 @@
 from storagebackend import StorageBackend
+import psycopg2
 
 
 class PostGIS(StorageBackend):
     """A storage backend that uses a PostGIS instance for storage."""
 
-    def __init__(self, verbose):
+    def __init__(self, verbose, host, port, user, password, dbname):
         super().__init__(verbose, 'PostGIS')
-        # TODO: pass database connection info (host/port/user/passwd/database etc.) to __init__
+        self._conn = psycopg2.connect('host={} port={} user={} password={} dbname={}'.format(
+            host, port, user, password, dbname
+        ))
+        self._cur = self._conn.cursor()
 
     def reset(self, tss):
         """See documentation in base class."""

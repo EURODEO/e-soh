@@ -1,5 +1,6 @@
 import random
 import time
+import os
 
 
 def select_weighted_value(x):
@@ -39,3 +40,11 @@ def now_secs():
 def elapsed_secs(start_secs):
     """Return the elapsed secs since start_secs."""
     return now_secs() - start_secs
+
+
+def get_env_var(name, default_value='', fail_on_empty=True):
+    """Get environment variable."""
+    v = os.getenv(name, default_value)
+    if (v == '') and fail_on_empty:
+        raise Exception('environment variable {} empty or undefined'.format(name))
+    return v

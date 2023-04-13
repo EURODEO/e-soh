@@ -79,7 +79,13 @@ class TsTester:
         self._verbose = verbose
         self._config = config
         self._storage_backends = [  # storage backends to test/compare
-            PostGIS(verbose),
+            PostGIS(
+                verbose,
+                common.get_env_var('PGHOST', 'localhost'),
+                common.get_env_var('PGUSER', 'postgres'),
+                common.get_env_var('PGPASSWORD', '', False),
+                common.get_env_var('PGDBNAME', 'esoh')
+            ),
             NetCDF(verbose),
         ]
 
