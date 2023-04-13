@@ -39,11 +39,23 @@ or
 python main.py
 ```
 
-Tip: use the -h option to get help:
+Tip: use the -h option to get help on command-line arguments:
 
 ```text
 ./main.py -h
 ```
+
+## Environment variables
+
+The following environment variables are supported:
+
+Variable | Mandatory | Default value | Description
+:--      | :--       | :--           | :--
+`PGHOST`     | No  | none (i.e. no `host` arg will be specified in `psycopg2.connect()`) | Postgres host
+`PGPORT`     | No  | 5432                  | Postgres port number
+`PGSUSER`    | No  | postgres              | Postgres user name
+`PGPASSWORD` | No  | none (i.e. no `password` arg will be specified in `psycopg2.connect()`) | Postgres password
+`PGDBNAME`   | No  | esoh                  | Postgres database name
 
 ## Configuration file
 
