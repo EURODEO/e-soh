@@ -1,4 +1,5 @@
 import random
+import time
 
 
 def select_weighted_value(x):
@@ -26,3 +27,15 @@ def select_weighted_value(x):
             return v  # inside partial sum, so return value of this item
 
     return x[-1][0]  # not found, so return value of last item
+
+
+def now_secs():
+    """Return the current time in seconds since the Epoch.
+    See help(time.time).
+    """
+    return int(time.time())
+
+
+def elapsed_secs(start_secs):
+    """Return the elapsed secs since start_secs."""
+    return now_secs() - start_secs

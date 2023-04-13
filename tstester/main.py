@@ -36,8 +36,8 @@ if __name__ == '__main__':
         verbose, cfg_file, random_seed = parse_args(sys.argv[1:])
         if random_seed >= 0:
             random.seed(random_seed)
-        cfg = json.load(open(cfg_file))
-        TsTester(verbose, cfg).execute()
+        config = json.load(open(cfg_file))
+        TsTester(verbose, config).execute()
     except argparse.ArgumentError as e:
         print('failed to parse command-line arguments: {}'.format(e), file=sys.stderr)
         sys.exit(1)

@@ -24,13 +24,14 @@ class TimeSeries:
         self._ts_mdata = ts_mdata  # overall metadata for the time series (e.g. quality of sensor)
         self._obs_mdata = obs_mdata  # per-obs metadata (e.g. quality of specific obs value)
 
+        self._sin_wave_period = 86400  # sin wave period in secs (a 24H cycle)
+
     def create_observations(self, t0, t1):
         """Create observations in timestamp range [t0, t1>.
 
-        The observations are formed by sampling a sine wave with frequency 1/(t1-t0)
-        (i.e. the full range [t0, t1> represents a single cycle), and with a resolution of
-        self._time_res (i.e. self._time_res == 60 would produce a sample every 60th second,
-        and so on).
+        The observations are formed by sampling an underlying sine wave with frequency
+        1/self._sine_wave_period_secs, starting at UNIX epoch. The wave is sampled every
+        self._time_res second.
 
         Returns two arrays:
             [time 1, time 2, ..., time n]
@@ -42,9 +43,9 @@ class TimeSeries:
 
         times = []
         obs = []
-        f = 1.0 / (t1 - t0)
+        f = (2 * math.pi) / self._sin_wave_period
         for t in range(t0, t1, self._time_res):
             times.append(t)
-            obs.append(math.sin((t - t0) * f))
+            obs.append(math.sin((t % self._sin_wave_period) * f))
 
         return times, obs

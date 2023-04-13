@@ -8,7 +8,7 @@ class NetCDF(StorageBackend):
     """
 
     def __init__(self, verbose):
-        super().__init__(verbose)
+        super().__init__(verbose, 'netCDF')
         # TODO: pass directory in which to keep files to __init__
 
     def reset(self, tss):
@@ -19,7 +19,7 @@ class NetCDF(StorageBackend):
         # - delete all files
         # - create files with all ts-specific metadata, but with no observations
 
-    def set_observations(self, ts, obs):
+    def set_observations(self, ts, times, obs):
         """See documentation in base class."""
         # TODO:
         # - replace contents of time and observation variables in file
