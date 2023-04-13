@@ -108,32 +108,6 @@ class TsTester:
         # - GetObsFromStationParams
         # - ...
 
-        # [0]
-        # self.__populate()  # create initial time series and fill with observations in range [now-ssize, now]
-        # self.__retrieve()  # run various tests
-
-        # [1]
-        #    pretend that now is a little later, and append newest observations to all time series in storage
-        #    (to test performance of appending + deleting of oldest obs (deletion could be an option in both cases))
-        # in the case of not deleting oldest obs, run the same retrieval tests to see if more data affects performance  ...
-
-    # OBSOLETE!
-    # def __populate(self):
-    #     """Populate storage backends with data to test.
-    #
-    #     # create observations for each time series and register them in each storage backend
-    #     # (note: observations are created according to the properties of each specific time series,
-    #     # such as time resolution)
-    #     now = int(time.time())  # current UNIX timestamp in secs
-    #     for ts in tss:
-    #         obs = ts.create_observations(now - self._cfg['ssize'], now)  # fill entire storage
-    #         for sbe in self._sbes:
-    #             sbe.set_observations(ts, obs)
-
-    def __retrieve(self):
-        """Test/compare storage backends wrt. different use cases for data retrieval."""
-        pass
-
 
 def create_time_series(verbose, config):
     """Generate a set of time series identified by station/param combos.
