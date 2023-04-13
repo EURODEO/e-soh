@@ -82,6 +82,7 @@ class TsTester:
             PostGIS(
                 verbose,
                 common.get_env_var('PGHOST', 'localhost'),
+                common.get_env_var('PGPORT', '5432'),
                 common.get_env_var('PGUSER', 'postgres'),
                 common.get_env_var('PGPASSWORD', '', False),
                 common.get_env_var('PGDBNAME', 'esoh')
