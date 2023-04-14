@@ -15,10 +15,13 @@ from tstester import TsTester
 
 def parse_args(args):
     """Parse and return command-line arguments."""
+    # parser = argparse.ArgumentParser(
+    #     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    #     description='Test different data storage solutions for time series of observations.',
+    #     exit_on_error=False)
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        description='Test different data storage solutions for time series of observations.',
-        exit_on_error=False)
+        description='Test different data storage solutions for time series of observations.')
     parser.add_argument(
         '-v', '--verbose', action='store_true', help='Enable logging to stdout.')
     parser.add_argument(

@@ -1,6 +1,7 @@
 import random
 import time
 import os
+import subprocess
 
 
 def select_weighted_value(x):
@@ -48,3 +49,14 @@ def get_env_var(name, default_value='', fail_on_empty=True):
     if (v == '') and fail_on_empty:
         raise Exception('environment variable {} empty or undefined'.format(name))
     return v
+
+
+def exec_command(cmd):
+    """Execute a command, returning stdout on success, raising an error on failure.
+    """
+    p = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    if p.returncode != 0:
+        raise Exception(
+            '\n\'{}\' failed:\n  EXIT CODE: {}\n  STDOUT: \'{}\'\n  STDERR: \'{}\'\n'.format(
+                cmd, p.returncode, p.stdout.strip(), p.stderr.strip()))
+    return p.stdout

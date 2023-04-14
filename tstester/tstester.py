@@ -84,7 +84,7 @@ class TsTester:
                 common.get_env_var('PGHOST', 'localhost'),
                 common.get_env_var('PGPORT', '5432'),
                 common.get_env_var('PGUSER', 'postgres'),
-                common.get_env_var('PGPASSWORD', '', False),
+                common.get_env_var('PGPASSWORD', 'mysecretpassword'),
                 common.get_env_var('PGDBNAME', 'esoh')
             ),
             NetCDF(verbose),
@@ -172,7 +172,7 @@ def create_time_series(verbose, config):
 
     for s in range(nstations):
         if verbose:
-            print('\n\nnext station: {} ...'.format(s))
+            print('\nnext station: {} ...'.format(s))
 
         lat, lon = create_new_loc()
         random.shuffle(param_names)

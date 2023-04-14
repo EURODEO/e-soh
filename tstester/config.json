@@ -2,7 +2,7 @@
     "max_age": 86400,
     "_comment": "max age in secs relative to current time (older observations are inaccessible)",
 
-    "nstations": 50,
+    "nstations": 1,
     "_comment": "number of stations to generate",
 
     "bbox": {

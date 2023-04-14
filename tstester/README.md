@@ -51,11 +51,12 @@ The following environment variables are supported:
 
 Variable | Mandatory | Default value | Description
 :--      | :--       | :--           | :--
-`PGHOST`     | No  | localhost | Postgres host
-`PGPORT`     | No  | 5432      | Postgres port number
-`PGUSER`     | No  | postgres  | Postgres user name
-`PGPASSWORD` | No  | none (i.e. no `password` arg will be specified in `psycopg2.connect()`) | Postgres password
-`PGDBNAME`   | No  | esoh      | Postgres database name
+`PGHOST`      | No  | `localhost`        | Postgres host
+`PGPORT`      | No  | `5432`             | Postgres port number
+`PGUSER`      | No  | `postgres`         | Postgres user name
+`PGPASSWORD`  | No  | `mysecretpassword` | Postgres password
+`PGDBNAME`    | No  | `esoh`             | Postgres database name
+`PGOPBACKEND` | No  | `psycopg2`         | Postgres operation executor backend, one of `psycopg2` or `psql`
 
 ## Configuration file
 
