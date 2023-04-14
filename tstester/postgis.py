@@ -109,15 +109,17 @@ class PostGIS(StorageBackend):
 
         self._conn_info = DbConnectionInfo(verbose, host, port, user, password, dbname)
 
+        # recreate database from scratch
         self.__drop_database()
         self.__create_database()
 
-        # TODO: select from config
+        # create a database operation executor backend
         if common.get_env_var('PGOPBACKEND', 'psycopg2') == 'psycopg2':
             self._dbop = Psycopg2Executor(verbose, self._conn_info)
         else:
             self._dbop = PsqlExecutor(verbose, self._conn_info)
 
+        # install the postgis extension
         self.__install_postgis_extension()
 
     def __drop_database(self):

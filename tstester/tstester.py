@@ -27,7 +27,7 @@ class TestBase(ABC):
 
     def print_stats(self):
         """Print stats collected during text execution."""
-        print('TestBase.print_stats() for test {}: ... TODO'.format(self.get_description()))
+        print('TestBase.print_stats() for test \'{}\': ... TODO'.format(self.get_description()))
         pass
 
 
