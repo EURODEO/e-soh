@@ -73,4 +73,7 @@ flake8 --ignore=E501,E722 .
 
 ## Requirements
 
-The program has been tested with Python 3.9.
+The program has been tested with:
+- Python 3.9
+- psycopg2 2.9.3
+- psql 15.2 (Ubuntu 15.2-1.pgdg18.04+1)
