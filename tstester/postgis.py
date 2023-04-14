@@ -1,5 +1,6 @@
 from storagebackend import StorageBackend
 import psycopg2
+import common
 
 
 class PostGIS(StorageBackend):
@@ -7,9 +8,15 @@ class PostGIS(StorageBackend):
 
     def __init__(self, verbose, host, port, user, password, dbname):
         super().__init__(verbose, 'PostGIS')
+        if verbose:
+            start = common.now_secs()
+            print('connecting to PostGIS ... ', end='', flush=True)
         self._conn = psycopg2.connect('host={} port={} user={} password={} dbname={}'.format(
             host, port, user, password, dbname
         ))
+        if verbose:
+            print('done (after {} secs)'.format(common.now_secs() - start), flush=True)
+
         self._cur = self._conn.cursor()
 
     def reset(self, tss):
