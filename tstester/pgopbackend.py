@@ -12,10 +12,14 @@ class PGOpBackend(ABC):
         self._verbose = verbose
 
     @abstractmethod
-    def execute(self, op):
+    def execute(self, op, commit):
         """Execute database operation.
         Return result as string.
         """
+
+    @abstractmethod
+    def commit(self):
+        """Commits last operation."""
 
 
 class Psycopg2BE(PGOpBackend):
@@ -46,12 +50,18 @@ class Psycopg2BE(PGOpBackend):
             print('done (after {} secs)'.format(common.now_secs() - start), flush=True)
         return conn
 
-    def execute(self, op):
+    def execute(self, op, commit=True):
         """See documentation in base class."""
 
         res = self._cur.execute(op)
-        self._conn.commit()
+        if commit:
+            self._conn.commit()
         return res
+
+    def commit(self):
+        """See documentation in base class."""
+
+        self._conn.commit()
 
 
 class PsqlBE(PGOpBackend):
@@ -63,10 +73,16 @@ class PsqlBE(PGOpBackend):
         super().__init__(verbose)
         self._conn_info = conn_info
 
-    def execute(self, op):
+    def execute(self, op, commit=False):
         """See documentation in base class."""
 
+        _ = commit  # n/a
         res = common.exec_command([
             'psql', '-h', self._conn_info.host(), '-p', self._conn_info.port(),
             '-U', self._conn_info.user(), '-d', self._conn_info.dbname(), '-c', op])
         return res
+
+    def commit(self):
+        """See documentation in base class."""
+
+        # no-op, since n/a

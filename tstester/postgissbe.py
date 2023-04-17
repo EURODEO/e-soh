@@ -103,6 +103,17 @@ class PostGISSBE(StorageBackend):
         # (tss inside circle and polygon)
         # TODO
 
+        # create observations table
+        self._pgopbe.execute(
+            '''
+                CREATE TABLE observations (
+                    ts_id integer REFERENCES time_series(id) ON DELETE CASCADE,
+                    tstamp timestamp, -- obs time (NOT NULL, but implied by being part of PK)
+                    value double precision, -- obs value
+                    PRIMARY KEY (ts_id, tstamp)
+                )
+            ''')
+
     def set_obs(self, ts, times, obs):
         """See documentation in base class."""
 
@@ -111,8 +122,23 @@ class PostGISSBE(StorageBackend):
             print('    ts: {}\n    times: ({} values), obs: ({} values)'.format(
                 ts.__dict__, len(times), len(obs)))
 
-        # TODO:
-        # - insert rows in observation table
+        # insert rows in observations table
+        # NOTE: we assume that the risk of SQL injection is zero in this context
+        for to in zip(times, obs):
+            cmd = '''
+                INSERT INTO observations (ts_id, tstamp, value)
+                    SELECT id, to_timestamp({}), {}
+                    FROM time_series
+                    WHERE station_id = '{}' AND param_id = '{}'
+            '''
+            self._pgopbe.execute(
+                ' '.join(cmd.split()).format(
+                    to[0], to[1], ts.station_id(), ts.param_id()
+                ),
+                False  # don't commit yet
+            )
+
+        self._pgopbe.commit()
 
     def add_obs(self, ts, times, obs):
         """See documentation in base class."""
