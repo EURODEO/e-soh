@@ -68,8 +68,8 @@ class PostGISSBE(StorageBackend):
 
         # assume at this point that self._conn_info.dbname() exists, but not that it is
         # empty, so first step is to drop schema (all tables and indexes):
-        # TODO:
-        # DROP TABLE ts; ...
+        self._pgopbe.execute('DROP TABLE IF EXISTS ts')
+        # self._pgopbe.execute('DROP INDEX IF EXISTS ...')  # TODO?
 
         # TODO:
         # - create schema (including a time series table and an observation table) based on info
