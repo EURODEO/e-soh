@@ -9,11 +9,12 @@ for storing the most recent (typically latest 24H) observations of a set of time
 (Note: The storage is intended as a dynamic buffer to provide fast access to commonly used
 operations. A longer-term representation of the time series may thus be kept elsewhere.)
 
-Currently, the two backends are:
+Two backends are currently implemented (the code is designed to make it easy to add more):
 
-1. PostGIS - keep the storage in a database with efficient geo search capabilities.
-
-2. netCDF - keep the storage as a set of netCDF files.
+Name | Description
+:--  | :--
+PostGISSBE | Keeps all data in PostGIS database with efficient geo search capabilities.
+NetCDFSBE_TSMDataInPostGIS | Keeps all data in netCDF files on the local file system, one file per time series (station/param combo). Per time series metadata (i.e. not actual observations) will also be kept in a PostGIS database to speed up the search target files to retrieve observations from.
 
 Assumptions:
 
