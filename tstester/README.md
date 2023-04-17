@@ -74,10 +74,32 @@ running Flake8:
 flake8 --ignore=E501,E722 .
 ```
 
-## Requirements
+## Software versions
 
-The program has been tested with:
+The program has been run successfully with the following software versions:
 
 - Python 3.9
 - psycopg2 2.9.3
 - psql 15.2 (Ubuntu 15.2-1.pgdg18.04+1)
+
+
+## Running PostGIS in docker container on local machine
+
+The program can run against any PostGIS instance, for example one running in a local docker
+container set up like this:
+
+```text
+$ docker --version
+Docker version 23.0.3, build 3e7cbfd
+$ docker pull postgis/postgis:15-3.3
+...
+$ docker images -a
+REPOSITORY        TAG       IMAGE ID       CREATED         SIZE
+postgis/postgis   15-3.3    b4f38bb1dc5d   7 days ago      588MB
+$ docker run --name some-postgis -e POSTGRES_PASSWORD=mysecretpassword -d -p 5432:5432 postgis/postgis
+...
+$ docker ps -a
+CONTAINER ID   IMAGE             COMMAND                  CREATED       STATUS                  PORTS                                       NAMES
+21b793e18be7   postgis/postgis   "docker-entrypoint.s…"   2 hours ago   Up 2 hours              0.0.0.0:5432->5432/tcp, :::5432->5432/tcp   some-postgis
+...
+```
