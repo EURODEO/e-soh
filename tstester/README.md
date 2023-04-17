@@ -58,7 +58,7 @@ Variable | Mandatory | Default value | Description
 `PGPASSWORD`       | No  | `mysecretpassword` | Postgres password
 `PGDBNAME_POSTGIS` | No  | `esoh_postgis`     | Postgres database name for storage backend `PostGISSBE`
 `PGDBNAME_NETCDF`  | No  | `esoh_netcdf`      | Postgres database name for storage backend `NetCDFSBE_TSMDataInPostGIS`
-`PGOPBACKEND`      | No  | `psycopg2`         | Postgres operation executor backend, one of `psycopg2` or `psql`
+`PGOPBACKEND`      | No  | `psql`             | Postgres operation executor backend, one of `psycopg2` or `psql` (**WARNING:** the connection time for `psycopg2` can be quite long, ~15-20 secs!)
 `NCDIR`            | No  | `ncdir`            | Directory in which to keep netCDF files
 
 ## Configuration file
