@@ -84,15 +84,21 @@ class TsTester:
         pg_user = common.get_env_var('PGUSER', 'postgres')
         pg_password = common.get_env_var('PGPASSWORD', 'mysecretpassword')
         self._storage_backends = [  # storage backends to test/compare
-            PostGISSBE(verbose, PGConnectionInfo(
-                pg_host, pg_port, pg_user, pg_password,
-                common.get_env_var('PGDBNAME_POSTGIS', 'esoh_postgis')
-            )),
-            NetCDFSBE_TSMDataInPostGIS(verbose, PGConnectionInfo(
-                pg_host, pg_port, pg_user, pg_password,
-                common.get_env_var('PGDBNAME_NETCDF', 'esoh_netcdf'),
+            PostGISSBE(
+                verbose,
+                PGConnectionInfo(
+                    pg_host, pg_port, pg_user, pg_password,
+                    common.get_env_var('PGDBNAME_POSTGIS', 'esoh_postgis')
+                )
+            ),
+            NetCDFSBE_TSMDataInPostGIS(
+                verbose,
+                PGConnectionInfo(
+                    pg_host, pg_port, pg_user, pg_password,
+                    common.get_env_var('PGDBNAME_NETCDF', 'esoh_netcdf')
+                ),
                 common.get_env_var('NCDIR', 'ncdir')
-            )),
+            ),
         ]
 
     def execute(self):
