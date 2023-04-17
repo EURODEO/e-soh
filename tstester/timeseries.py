@@ -10,7 +10,7 @@ class TimeSeries:
     """
 
     def __init__(
-            self, verbose, station_name, lat, lon, param_name, time_res, ts_other_mdata, obs_mdata):
+            self, verbose, station_name, lat, lon, param_name, time_res, other_mdata, obs_mdata):
         self._verbose = verbose
         self._station_name = station_name
 
@@ -21,11 +21,29 @@ class TimeSeries:
         if time_res < 1:
             raise Exception('non-positive time resolution not allowed: {}'.format(time_res))
         self._time_res = time_res  # time resolution, i.e. seconds between observations
-        self._ts_other_mdata = ts_other_mdata  # other per time series metadata (e.g. quality of
-        # sensor)
+        self._other_mdata = other_mdata  # other metadata (e.g. quality of sensor)
+
         self._obs_mdata = obs_mdata  # per obs metadata (e.g. quality of specific obs value)
+        # TODO: obs_mdata should really just define the per obs metadata *fields*, not
+        # the actual values; the latter should be generated (typically randomized) by
+        # create_observations()
 
         self._sin_wave_period = 86400  # sin wave period in secs (a 24H cycle)
+
+    def station_name(self):
+        return self._station_name
+
+    def param_name(self):
+        return self._param_name
+
+    def lat(self):
+        return self._lat
+
+    def lon(self):
+        return self._lon
+
+    def other_mdata(self):
+        return self._other_mdata
 
     def create_observations(self, t0, t1):
         """Create observations in timestamp range [t0, t1>.
@@ -37,6 +55,7 @@ class TimeSeries:
         Returns two arrays:
             [time 1, time 2, ..., time n]
             [obs 1, obs 2, ..., obs n]
+        TODO: also return per obs metadata as defined by self._obs_mdata
         """
 
         if t0 >= t1:

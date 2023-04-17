@@ -1,6 +1,7 @@
 from storagebackend import StorageBackend
 import common
 from pgopbackend import Psycopg2BE, PsqlBE
+import json
 
 
 class PostGISSBE(StorageBackend):
@@ -81,16 +82,23 @@ class PostGISSBE(StorageBackend):
                     UNIQUE (station_name, param_name),
                     lat double precision NOT NULL,
                     lon double precision NOT NULL,
-                    UNIQUE (lat, lon),
                     other_metadata jsonb NOT NULL
                 )
             ''')
 
-        # - insert rows in time series table
-        # ------------>
+        # insert rows in time series table
         for ts in tss:
-            pass
-            # INSERT INTO ts VALUES (...)
+            # NOTE: we assume that the risk of SQL injection is zero in this context
+            cmd = '''
+                INSERT INTO time_series (station_name, param_name, lat, lon, other_metadata)
+                VALUES ('{}', '{}', {}, {}, '{}'::jsonb)
+            '''
+            self._pgopbe.execute(
+                ' '.join(cmd.split()).format(
+                    ts.station_name(), ts.param_name(), ts.lat(), ts.lon(),
+                    json.dumps(ts.other_mdata())
+                )
+            )
 
         # - create indexes
         # TODO
