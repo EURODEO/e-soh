@@ -147,7 +147,7 @@ def create_time_series(verbose, config):
     min_params = config['params']['min']
     max_params = config['params']['max']
 
-    param_names = list(map(lambda i: 'param_{}'.format(i), [i for i in range(max_params)]))
+    param_ids = list(map(lambda i: 'param_{}'.format(i), [i for i in range(max_params)]))
 
     min_lat = config['bbox']['min_lat']
     max_lat = config['bbox']['max_lat']
@@ -189,7 +189,7 @@ def create_time_series(verbose, config):
             print('\nnext station: {} ...'.format(s))
 
         lat, lon = create_new_loc()
-        random.shuffle(param_names)
+        random.shuffle(param_ids)
 
         for p in range(random.randint(min_params, max_params)):
             ts_other_mdata = create_ts_other_metadata()
@@ -197,7 +197,7 @@ def create_time_series(verbose, config):
 
             ts = TimeSeries(
                 verbose, 'station_{}'.format(s), lat, lon,
-                param_names[p], common.select_weighted_value(time_res),
+                param_ids[p], common.select_weighted_value(time_res),
                 ts_other_mdata, obs_mdata
             )
             if verbose:

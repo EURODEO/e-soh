@@ -61,11 +61,7 @@ class PostGISSBE(StorageBackend):
         """See documentation in base class."""
 
         if self._verbose:
-            print('\nresetting PostGIS SBE with {} time series ... TODO'.format(len(tss)))
-            print('---BEGIN tss -------')
-            for ts in tss:
-                print(ts.__dict__)
-            print('---END tss -------')
+            print('\nresetting PostGIS SBE with {} time series'.format(len(tss)))
 
         # assume at this point that self._conn_info.dbname() exists, but not that it is
         # empty, so first step is to drop schema (all tables and indexes):
@@ -77,9 +73,9 @@ class PostGISSBE(StorageBackend):
             '''
                 CREATE TABLE time_series (
                     id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-                    station_name text NOT NULL,
-                    param_name text NOT NULL,
-                    UNIQUE (station_name, param_name),
+                    station_id text NOT NULL,
+                    param_id text NOT NULL,
+                    UNIQUE (station_id, param_id),
                     lat double precision NOT NULL,
                     lon double precision NOT NULL,
                     other_metadata jsonb NOT NULL
@@ -90,12 +86,12 @@ class PostGISSBE(StorageBackend):
         for ts in tss:
             # NOTE: we assume that the risk of SQL injection is zero in this context
             cmd = '''
-                INSERT INTO time_series (station_name, param_name, lat, lon, other_metadata)
+                INSERT INTO time_series (station_id, param_id, lat, lon, other_metadata)
                 VALUES ('{}', '{}', {}, {}, '{}'::jsonb)
             '''
             self._pgopbe.execute(
                 ' '.join(cmd.split()).format(
-                    ts.station_name(), ts.param_name(), ts.lat(), ts.lon(),
+                    ts.station_id(), ts.param_id(), ts.lat(), ts.lon(),
                     json.dumps(ts.other_mdata())
                 )
             )

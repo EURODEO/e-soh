@@ -39,7 +39,7 @@ class StorageBackend(ABC):
     def get_obs(self, tss, from_time, to_time):
         """Get observations in time range [from_time, to_time> from time series in tss.
 
-        - tss is a list of (station_name, param_name) tuples.
+        - tss is a list of (station_id, param_id) tuples.
 
         Returns two lists: times and obs (subject to the same restrictions as in set_obs())
         """
@@ -48,7 +48,7 @@ class StorageBackend(ABC):
     def get_tss_in_circle(self, lat, lon, radius):
         """Get time series within a circle.
 
-        Returns a list of (station_name, param_name) tuples.
+        Returns a list of (station_id, param_id) tuples.
         """
 
     # TODO: add more methods to find time series:

@@ -4,20 +4,18 @@ import math
 class TimeSeries:
     """Represents a time series of observations.
 
-    The time series is uniquely identified by either:
-      1: the (station_name, param_name) combo, or
-      2: the (lat, lon) combo.
+    The time series is uniquely identified by the (station_id, param_id) combo.
     """
 
     def __init__(
-            self, verbose, station_name, lat, lon, param_name, time_res, other_mdata, obs_mdata):
+            self, verbose, station_id, lat, lon, param_id, time_res, other_mdata, obs_mdata):
         self._verbose = verbose
-        self._station_name = station_name
+        self._station_id = station_id
 
         self._lat = lat
         self._lon = lon  # horizontal location of the station
 
-        self._param_name = param_name
+        self._param_id = param_id
         if time_res < 1:
             raise Exception('non-positive time resolution not allowed: {}'.format(time_res))
         self._time_res = time_res  # time resolution, i.e. seconds between observations
@@ -30,11 +28,11 @@ class TimeSeries:
 
         self._sin_wave_period = 86400  # sin wave period in secs (a 24H cycle)
 
-    def station_name(self):
-        return self._station_name
+    def station_id(self):
+        return self._station_id
 
-    def param_name(self):
-        return self._param_name
+    def param_id(self):
+        return self._param_id
 
     def lat(self):
         return self._lat

@@ -16,13 +16,13 @@ class NetCDFSBE_TSMDataInPostGIS(StorageBackend):
 
     Files will be organized like this under self._nc_dir:
 
-        station_name1/
-           param_name1/
+        station_id1/
+           param_id1/
               data.nc
-           param_name2/
+           param_id2/
               data.nc
            ...
-        station_name2/
+        station_id2/
            ...
     """
 
