@@ -58,6 +58,7 @@ Variable | Mandatory | Default value | Description
 `PGDBNAME_POSTGIS` | No  | `esoh_postgis`     | Postgres database name for storage backend `PostGISSBE`
 `PGDBNAME_NETCDF`  | No  | `esoh_netcdf`      | Postgres database name for storage backend `NetCDFSBE_TSMDataInPostGIS`
 `PGOPBACKEND`      | No  | `psycopg2`         | Postgres operation executor backend, one of `psycopg2` or `psql`
+`NCDIR`            | No  | `ncdir`            | Directory in which to keep netCDF files
 
 ## Configuration file
 

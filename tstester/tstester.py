@@ -90,7 +90,8 @@ class TsTester:
             )),
             NetCDFSBE_TSMDataInPostGIS(verbose, PGConnectionInfo(
                 pg_host, pg_port, pg_user, pg_password,
-                common.get_env_var('PGDBNAME_NETCDF', 'esoh_netcdf')
+                common.get_env_var('PGDBNAME_NETCDF', 'esoh_netcdf'),
+                common.get_env_var('NCDIR', 'ncdir')
             )),
         ]
 
