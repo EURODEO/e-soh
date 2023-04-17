@@ -6,32 +6,32 @@
     "_comment": "number of stations to generate",
 
     "bbox": {
-	"min_lat": -60.5,
-	"max_lat": 62.5,
-	"min_lon": 10.5,
-	"max_lon": 12.5
+        "min_lat": -60.5,
+        "max_lat": 62.5,
+        "min_lon": 10.5,
+        "max_lon": 12.5
     },
     "_comment": "bounding box for randomly generated station locations (no two stations will have the same location)",
 
     "params": {
-	"min": 1,
-	"max": 3,
-	"_comment": "minimum and maximum number of randomly generated params for a station"
+        "min": 1,
+        "max": 3
     },
+    "_comment": "minimum and maximum number of randomly generated params for a station",
 
     "time_res": {
-	"60": 0.2,
-	"600": 0.3,
-	"3600": 0.5
+        "60": 0.2,
+        "600": 0.3,
+        "3600": 0.5
     },
     "_comment": "probability weights of time series resolutions (around 20% will have time res 60 secs, around 30% will have time res 600 secs, and so on)",
 
-    "ts_metadata": {
-	"sensor_location_quality": 9,
-	"sensor_performance_quality": 9
+    "ts_other_metadata": {
+        "sensor_location_quality": 9,
+        "sensor_performance_quality": 9
     },
 
     "obs_metadata": {
-	"quality": 9
+        "quality": 9
     }
 }

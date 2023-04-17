@@ -176,9 +176,9 @@ def create_time_series(verbose, config):
         used_locs.add((lat, lon))
         return lat, lon
 
-    def create_ts_metadata():
+    def create_ts_other_metadata():
         """Return dict of per time series metadata."""
-        return config['ts_metadata']  # ### for now; eventually randomize?
+        return config['ts_other_metadata']  # ### for now; eventually randomize?
 
     def create_obs_metadata():
         """Return dict of per observation metadata."""
@@ -192,13 +192,13 @@ def create_time_series(verbose, config):
         random.shuffle(param_names)
 
         for p in range(random.randint(min_params, max_params)):
-            ts_mdata = create_ts_metadata()
+            ts_other_mdata = create_ts_other_metadata()
             obs_mdata = create_obs_metadata()
 
             ts = TimeSeries(
                 verbose, 'station_{}'.format(s), lat, lon,
                 param_names[p], common.select_weighted_value(time_res),
-                ts_mdata, obs_mdata
+                ts_other_mdata, obs_mdata
             )
             if verbose:
                 print('new ts (s = {}, p = {}): {}'.format(s, p, vars(ts)))

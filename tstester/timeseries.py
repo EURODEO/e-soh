@@ -10,7 +10,7 @@ class TimeSeries:
     """
 
     def __init__(
-            self, verbose, station_name, lat, lon, param_name, time_res, ts_mdata, obs_mdata):
+            self, verbose, station_name, lat, lon, param_name, time_res, ts_other_mdata, obs_mdata):
         self._verbose = verbose
         self._station_name = station_name
 
@@ -21,8 +21,9 @@ class TimeSeries:
         if time_res < 1:
             raise Exception('non-positive time resolution not allowed: {}'.format(time_res))
         self._time_res = time_res  # time resolution, i.e. seconds between observations
-        self._ts_mdata = ts_mdata  # overall metadata for the time series (e.g. quality of sensor)
-        self._obs_mdata = obs_mdata  # per-obs metadata (e.g. quality of specific obs value)
+        self._ts_other_mdata = ts_other_mdata  # other per time series metadata (e.g. quality of
+        # sensor)
+        self._obs_mdata = obs_mdata  # per obs metadata (e.g. quality of specific obs value)
 
         self._sin_wave_period = 86400  # sin wave period in secs (a 24H cycle)
 

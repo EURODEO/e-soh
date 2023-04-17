@@ -75,6 +75,19 @@ class PostGISSBE(StorageBackend):
         # - create schema (including a time series table and an observation table) based on info
         #   in tss
         # ------------>
+        self._pgopbe.execute(
+            '''
+                CREATE TABLE ts (
+                    id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+                    station_name text NOT NULL,
+                    param_name text NOT NULL,
+                    UNIQUE (station_name, param_name),
+                    lat double precision NOT NULL,
+                    lon double precision NOT NULL,
+                    UNIQUE (lat, lon),
+                    other_metadata jsonb NOT NULL
+                )
+            ''')
 
         # CREATE TABLE ts(
         # station_name: VARCHAR,
