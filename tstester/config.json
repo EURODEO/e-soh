@@ -2,7 +2,7 @@
     "max_age": 86400,
     "_comment": "max age in secs relative to current time (older observations are inaccessible)",
 
-    "nstations": 1,
+    "nstations": 3,
     "_comment": "number of stations to generate",
 
     "bbox": {
@@ -15,7 +15,7 @@
 
     "params": {
 	"min": 1,
-	"max": 10,
+	"max": 3,
 	"_comment": "minimum and maximum number of randomly generated params for a station"
     },
 

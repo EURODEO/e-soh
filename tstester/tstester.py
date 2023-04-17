@@ -1,9 +1,10 @@
 import common
 import random
-from postgis import PostGIS
-from netcdf import NetCDF
+from postgissbe import PostGISSBE
+from netcdfsbe_tsmdatainpostgis import NetCDFSBE_TSMDataInPostGIS
 from timeseries import TimeSeries
 from abc import ABC, abstractmethod
+from pgconnectioninfo import PGConnectionInfo
 
 
 class TestBase(ABC):
@@ -68,7 +69,7 @@ class FillStorage(TestBase):
         for sbe in self._storage_backends:
             start_secs = common.now_secs()
             for td in ts_data:
-                sbe.set_observations(td[0], td[1], td[2])
+                sbe.set_obs(td[0], td[1], td[2])
             self.reg_stats(sbe, 'fill storage secs', common.elapsed_secs(start_secs))
 
 
@@ -78,16 +79,19 @@ class TsTester:
     def __init__(self, verbose, config):
         self._verbose = verbose
         self._config = config
+        pg_host = common.get_env_var('PGHOST', 'localhost')
+        pg_port = common.get_env_var('PGPORT', '5432')
+        pg_user = common.get_env_var('PGUSER', 'postgres')
+        pg_password = common.get_env_var('PGPASSWORD', 'mysecretpassword')
         self._storage_backends = [  # storage backends to test/compare
-            PostGIS(
-                verbose,
-                common.get_env_var('PGHOST', 'localhost'),
-                common.get_env_var('PGPORT', '5432'),
-                common.get_env_var('PGUSER', 'postgres'),
-                common.get_env_var('PGPASSWORD', 'mysecretpassword'),
-                common.get_env_var('PGDBNAME', 'esoh')
-            ),
-            NetCDF(verbose),
+            PostGISSBE(verbose, PGConnectionInfo(
+                pg_host, pg_port, pg_user, pg_password,
+                common.get_env_var('PGDBNAME_POSTGIS', 'esoh_postgis')
+            )),
+            NetCDFSBE_TSMDataInPostGIS(verbose, PGConnectionInfo(
+                pg_host, pg_port, pg_user, pg_password,
+                common.get_env_var('PGDBNAME_NETCDF', 'esoh_netcdf')
+            )),
         ]
 
     def execute(self):
@@ -105,10 +109,13 @@ class TsTester:
         test.execute()
         test.print_stats()
 
+        # TODO: replace FillStorage with InsertObs(curr_time - cfg.max_age, curr_time) (still using sbe.set_obs())
+        # TODO: replace AppendNewObservations with InsertObs(curr_time, curr_time + DELTA) (but now using sbe.add_obs())
+
         # TODO: more tests (subclasses of TestBase):
         # - AppendNewObservations
-        # - GetObsInPolygon
         # - GetObsInCircle
+        # - GetObsInPolygon
         # - GetObsFromAllTimeSeries
         # - GetObsFromStations
         # - GetObsFromParams

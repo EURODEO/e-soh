@@ -51,12 +51,13 @@ The following environment variables are supported:
 
 Variable | Mandatory | Default value | Description
 :--      | :--       | :--           | :--
-`PGHOST`      | No  | `localhost`        | Postgres host
-`PGPORT`      | No  | `5432`             | Postgres port number
-`PGUSER`      | No  | `postgres`         | Postgres user name
-`PGPASSWORD`  | No  | `mysecretpassword` | Postgres password
-`PGDBNAME`    | No  | `esoh`             | Postgres database name
-`PGOPBACKEND` | No  | `psycopg2`         | Postgres operation executor backend, one of `psycopg2` or `psql`
+`PGHOST`           | No  | `localhost`        | Postgres host
+`PGPORT`           | No  | `5432`             | Postgres port number
+`PGUSER`           | No  | `postgres`         | Postgres user name
+`PGPASSWORD`       | No  | `mysecretpassword` | Postgres password
+`PGDBNAME_POSTGIS` | No  | `esoh_postgis`     | Postgres database name for storage backend `PostGISSBE`
+`PGDBNAME_NETCDF`  | No  | `esoh_netcdf`      | Postgres database name for storage backend `NetCDFSBE_TSMDataInPostGIS`
+`PGOPBACKEND`      | No  | `psycopg2`         | Postgres operation executor backend, one of `psycopg2` or `psql`
 
 ## Configuration file
 
