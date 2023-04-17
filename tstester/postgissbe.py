@@ -71,13 +71,10 @@ class PostGISSBE(StorageBackend):
         self._pgopbe.execute('DROP TABLE IF EXISTS ts')
         # self._pgopbe.execute('DROP INDEX IF EXISTS ...')  # TODO?
 
-        # TODO:
-        # - create schema (including a time series table and an observation table) based on info
-        #   in tss
-        # ------------>
+        # create time series table
         self._pgopbe.execute(
             '''
-                CREATE TABLE ts (
+                CREATE TABLE time_series (
                     id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
                     station_name text NOT NULL,
                     param_name text NOT NULL,
@@ -88,17 +85,6 @@ class PostGISSBE(StorageBackend):
                     other_metadata jsonb NOT NULL
                 )
             ''')
-
-        # CREATE TABLE ts(
-        # station_name: VARCHAR,
-        # param_name: VARCHAR,
-        # lat: DOUBLE,
-        # lon: DOUBLE,
-        # mdata: JSONB (dict));
-        #
-        # PK: (station_name, param_name)
-        # UNIQUE: (lat, lon)
-        #
 
         # - insert rows in time series table
         # ------------>
