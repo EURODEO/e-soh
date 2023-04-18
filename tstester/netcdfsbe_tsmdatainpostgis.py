@@ -38,7 +38,7 @@ class NetCDFSBE_TSMDataInPostGIS(StorageBackend):
         """See documentation in base class."""
 
         if self._verbose:
-            print('\nresetting NetCDF SBE with {} time series ...'.format(len(tss)))
+            print('resetting NetCDFSBE_TSMDataInPostGIS with {} time series'.format(len(tss)))
 
         self._pgsbe.reset(tss)
 

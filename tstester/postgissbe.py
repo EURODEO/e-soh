@@ -61,7 +61,7 @@ class PostGISSBE(StorageBackend):
         """See documentation in base class."""
 
         if self._verbose:
-            print('\nresetting PostGIS SBE with {} time series'.format(len(tss)))
+            print('resetting PostGISSBE with {} time series'.format(len(tss)))
 
         # assume at this point that self._conn_info.dbname() exists, but not that it is
         # empty, so first step is to drop schema (all tables and indexes):
@@ -118,7 +118,7 @@ class PostGISSBE(StorageBackend):
         """See documentation in base class."""
 
         if self._verbose:
-            print('\nsetting observations in PostGIS SBE for time series ... TODO')
+            print('setting observations in PostGIS SBE for time series >>>')
             print('    ts: {}\n    times: ({} values), obs: ({} values)'.format(
                 ts.__dict__, len(times), len(obs)))
 

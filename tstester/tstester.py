@@ -186,7 +186,7 @@ def create_time_series(verbose, config):
 
     for s in range(nstations):
         if verbose:
-            print('\nnext station: {} ...'.format(s))
+            print('next station: {}'.format(s))
 
         lat, lon = create_new_loc()
         random.shuffle(param_ids)
