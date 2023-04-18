@@ -110,15 +110,12 @@ class TsTester:
 
         tss = create_time_series(self._verbose, self._config)
 
-        test = Reset(self._verbose, self._config, self._storage_backends, tss)
-        test.execute(test_stats)
-        # test_stats[test.descr()] = test.stats()
+        Reset(self._verbose, self._config, self._storage_backends, tss).execute(test_stats)
 
         curr_time = int(common.now_secs())
 
-        test = FillStorage(self._verbose, self._config, self._storage_backends, tss, curr_time)
-        test.execute(test_stats)
-        # test_stats[test.descr()] = test.stats()
+        FillStorage(self._verbose, self._config, self._storage_backends, tss, curr_time).execute(
+            test_stats)
 
         # TODO: replace FillStorage with InsertObs(curr_time - cfg.max_age, curr_time) (still using sbe.set_obs())
         # TODO: replace AppendNewObservations with InsertObs(curr_time, curr_time + DELTA) (but now using sbe.add_obs())
@@ -134,7 +131,7 @@ class TsTester:
         # - ...
 
         stats = {
-            'overall': {'key1': 'val1', 'key2': 'val2'},
+            'overall': {'key1': 'val1', 'key2': 'val2'},  # TODO: add some useful overall info here
             'tests': test_stats,
         }
 
