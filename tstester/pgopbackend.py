@@ -14,7 +14,9 @@ class PGOpBackend(ABC):
     @abstractmethod
     def execute(self, op, commit):
         """Execute database operation.
-        Return result as string.
+
+        Returns a list of row tuples with string values:
+            [(val1, val2, ...), (val1, val2, ...), ...]
         """
 
     @abstractmethod
@@ -53,10 +55,14 @@ class Psycopg2BE(PGOpBackend):
     def execute(self, op, commit=True):
         """See documentation in base class."""
 
-        res = self._cur.execute(op)
+        self._cur.execute(op)
         if commit:
             self._conn.commit()
-        return res
+
+        try:
+            return self._cur.fetchall()
+        except:
+            return []  # nothing to fetch
 
     def commit(self):
         """See documentation in base class."""
@@ -78,9 +84,11 @@ class PsqlBE(PGOpBackend):
 
         _ = commit  # n/a
         res = common.exec_command([
-            'psql', '-h', self._conn_info.host(), '-p', self._conn_info.port(),
+            'psql', '-t', '-h', self._conn_info.host(), '-p', self._conn_info.port(),
             '-U', self._conn_info.user(), '-d', self._conn_info.dbname(), '-c', op])
-        return res
+
+        res = [x for x in res.decode('utf-8').split('\n') if len(x) > 0]
+        return list(map(lambda x: tuple(x.split(',')), res))
 
     def commit(self):
         """See documentation in base class."""

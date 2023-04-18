@@ -122,23 +122,18 @@ class PostGISSBE(StorageBackend):
             print('    ts: {}\n    times: ({} values), obs: ({} values)'.format(
                 ts.__dict__, len(times), len(obs)))
 
-        # insert rows in observations table
-        # NOTE: we assume that the risk of SQL injection is zero in this context
-        for to in zip(times, obs):
-            cmd = '''
-                INSERT INTO observations (ts_id, tstamp, value)
-                    SELECT id, to_timestamp({}), {}
-                    FROM time_series
-                    WHERE station_id = '{}' AND param_id = '{}'
-            '''
-            self._pgopbe.execute(
-                ' '.join(cmd.split()).format(
-                    to[0], to[1], ts.station_id(), ts.param_id()
-                ),
-                False  # don't commit yet
-            )
+        # insert rows in observations table ...
 
-        self._pgopbe.commit()
+        query = 'SELECT id FROM time_series WHERE station_id = \'{}\' AND param_id = \'{}\''
+        rows = self._pgopbe.execute(query.format(ts.station_id(), ts.param_id()))
+        ts_id = int(rows[0][0])  # assuming for now this always works (i.e. don't handle any error)
+
+        values = []
+        for to in zip(times, obs):
+            values.append('({},to_timestamp({}),\'{}\')'.format(ts_id, to[0], to[1]))
+
+        cmd = 'INSERT INTO observations (ts_id, tstamp, value) VALUES {};'.format(','.join(values))
+        self._pgopbe.execute(cmd)
 
     def add_obs(self, ts, times, obs):
         """See documentation in base class."""
