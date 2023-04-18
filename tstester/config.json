@@ -8,7 +8,7 @@
     "bbox": {
         "min_lat": -60.5,
         "max_lat": 62.5,
-        "min_lon": 10.5,
+        "min_lon": -10.5,
         "max_lon": 12.5
     },
     "_comment": "bounding box for randomly generated station locations (no two stations will have the same location)",

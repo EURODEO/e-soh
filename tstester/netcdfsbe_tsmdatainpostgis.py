@@ -1,6 +1,8 @@
 from storagebackend import StorageBackend
 from postgissbe import PostGISSBE
 import shutil
+from pathlib import Path
+from netcdf import NetCDF
 
 
 class NetCDFSBE_TSMDataInPostGIS(StorageBackend):
@@ -26,24 +28,31 @@ class NetCDFSBE_TSMDataInPostGIS(StorageBackend):
            ...
     """
 
-    # TODO: pass directory in which to keep files to __init__ --->
     def __init__(self, verbose, pg_conn_info, nc_dir):
         super().__init__(verbose, 'netCDF/time series metadata in PostGIS')
         self._pgsbe = PostGISSBE(verbose, pg_conn_info)  # for keeping per time series metadata
         self._nc_dir = nc_dir  # directory under which to keep the netCDF files
+        self._netcdf = NetCDF(verbose)
 
     def reset(self, tss):
         """See documentation in base class."""
+
         if self._verbose:
-            print('\nresetting NetCDF SBE with {} time series ... TODO'.format(len(tss)))
+            print('\nresetting NetCDF SBE with {} time series ...'.format(len(tss)))
 
         self._pgsbe.reset(tss)
 
         # wipe any existing directory
         shutil.rmtree(self._nc_dir, ignore_errors=True)
 
-        # TODO:
-        # - create files with all ts-specific metadata, but with no observations
+        # create files with all per time series metadata, but with no observations
+        for ts in tss:
+            # create directory
+            target_dir = '{}/{}/{}'.format(self._nc_dir, ts.station_id(), ts.param_id())
+            Path(target_dir).mkdir(parents=True, exist_ok=True)
+
+            # create initial file
+            self._netcdf.create_initial_file('{}/data.nc'.format(target_dir), ts)
 
     def set_obs(self, ts, times, obs):
         """See documentation in base class."""

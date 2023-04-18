@@ -122,7 +122,7 @@ class PostGISSBE(StorageBackend):
             print('    ts: {}\n    times: ({} values), obs: ({} values)'.format(
                 ts.__dict__, len(times), len(obs)))
 
-        # insert rows in observations table ...
+        # insert rows in observations table
 
         query = 'SELECT id FROM time_series WHERE station_id = \'{}\' AND param_id = \'{}\''
         rows = self._pgopbe.execute(query.format(ts.station_id(), ts.param_id()))
