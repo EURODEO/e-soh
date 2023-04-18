@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import common
 import psycopg2
+import sys
 
 
 class PGOpBackend(ABC):
@@ -29,7 +30,7 @@ class Psycopg2BE(PGOpBackend):
 
     def __init__(self, verbose, conn_info):
         if verbose:
-            print('using psycopg2 adapter for PostGIS operations')
+            print('using psycopg2 adapter for PostGIS operations', file=sys.stderr)
         super().__init__(verbose)
         self._conn = self.__connect(conn_info)
         self._cur = self._conn.cursor()
@@ -41,7 +42,7 @@ class Psycopg2BE(PGOpBackend):
 
         if self._verbose:
             start = common.now_secs()
-            print('connecting to PostGIS ... ', end='', flush=True)
+            print('connecting to PostGIS ... ', file=sys.stderr, end='', flush=True)
 
         # WARNING: the call to connect() may take very long; up to 15-20 secs!
         conn = psycopg2.connect('host={} port={} user={} password={} dbname={}'.format(
@@ -49,7 +50,9 @@ class Psycopg2BE(PGOpBackend):
             conn_info.dbname()
         ))
         if self._verbose:
-            print('done (after {} secs)'.format(common.now_secs() - start), flush=True)
+            print(
+                'done (after {0:.4f} secs)'.format(common.now_secs() - start), file=sys.stderr,
+                flush=True)
         return conn
 
     def execute(self, op, commit=True):
@@ -75,7 +78,7 @@ class PsqlBE(PGOpBackend):
 
     def __init__(self, verbose, conn_info):
         if verbose:
-            print('using psql command for PostGIS operations')
+            print('using psql command for PostGIS operations', file=sys.stderr)
         super().__init__(verbose)
         self._conn_info = conn_info
 

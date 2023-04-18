@@ -2,6 +2,7 @@ from storagebackend import StorageBackend
 import common
 from pgopbackend import Psycopg2BE, PsqlBE
 import json
+import sys
 
 
 class PostGISSBE(StorageBackend):
@@ -30,38 +31,42 @@ class PostGISSBE(StorageBackend):
         """Drop any existing database named self._conn_info.dbname()."""
 
         if self._verbose:
-            print('dropping database {} ... '.format(self._conn_info.dbname()), end='', flush=True)
+            print(
+                'dropping database {} ... '.format(self._conn_info.dbname()), file=sys.stderr,
+                end='', flush=True)
         common.exec_command([
             'dropdb', '-w', '-f', '--if-exists', '-h', self._conn_info.host(),
             '-p', self._conn_info.port(), '-U', self._conn_info.user(), self._conn_info.dbname()])
         if self._verbose:
-            print('done', flush=True)
+            print('done', file=sys.stderr, flush=True)
 
     def __create_database(self):
         """Create database named self._conn_info.dbname()."""
 
         if self._verbose:
-            print('creating database {} ... '.format(self._conn_info.dbname()), end='', flush=True)
+            print(
+                'creating database {} ... '.format(self._conn_info.dbname()), file=sys.stderr,
+                end='', flush=True)
         common.exec_command([
             'createdb', '-w', '-h', self._conn_info.host(), '-p', self._conn_info.port(),
             '-U', self._conn_info.user(), self._conn_info.dbname()])
         if self._verbose:
-            print('done', flush=True)
+            print('done', file=sys.stderr, flush=True)
 
     def __install_postgis_extension(self):
         """Install the PostGIS extension."""
 
         if self._verbose:
-            print('installing PostGIS extension ... ', end='', flush=True)
+            print('installing PostGIS extension ... ', file=sys.stderr, end='', flush=True)
         self._pgopbe.execute('CREATE EXTENSION postgis')
         if self._verbose:
-            print('done', flush=True)
+            print('done', file=sys.stderr, flush=True)
 
     def reset(self, tss):
         """See documentation in base class."""
 
         if self._verbose:
-            print('resetting PostGISSBE with {} time series'.format(len(tss)))
+            print('resetting PostGISSBE with {} time series'.format(len(tss)), file=sys.stderr)
 
         # assume at this point that self._conn_info.dbname() exists, but not that it is
         # empty, so first step is to drop schema (all tables and indexes):
@@ -118,9 +123,9 @@ class PostGISSBE(StorageBackend):
         """See documentation in base class."""
 
         if self._verbose:
-            print('setting observations in PostGIS SBE for time series >>>')
+            print('setting observations in PostGIS SBE for time series >>>', file=sys.stderr)
             print('    ts: {}\n    times: ({} values), obs: ({} values)'.format(
-                ts.__dict__, len(times), len(obs)))
+                ts.__dict__, len(times), len(obs)), file=sys.stderr)
 
         # insert rows in observations table
 

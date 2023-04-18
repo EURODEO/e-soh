@@ -4,13 +4,13 @@ from abc import ABC, abstractmethod
 class StorageBackend(ABC):
     """The base class / interface for a time series storage backend."""
 
-    def __init__(self, verbose, name):
+    def __init__(self, verbose, descr):
         self._verbose = verbose
-        self._name = name
+        self._descr = descr
 
-    def name(self):
-        """Return name of storage backend."""
-        return self._name
+    def descr(self):
+        """Return description of storage backend."""
+        return self._descr
 
     @abstractmethod
     def reset(self, tss):

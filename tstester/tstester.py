@@ -5,6 +5,8 @@ from netcdfsbe_tsmdatainpostgis import NetCDFSBE_TSMDataInPostGIS
 from timeseries import TimeSeries
 from abc import ABC, abstractmethod
 from pgconnectioninfo import PGConnectionInfo
+import json
+import sys
 
 
 class TestBase(ABC):
@@ -12,24 +14,24 @@ class TestBase(ABC):
         self._verbose = verbose
         self._config = config
         self._storage_backends = storage_backends
-        self._stats = {sbe.name(): {} for sbe in storage_backends}
+        self._stats = {sbe.descr(): {} for sbe in storage_backends}
 
     @abstractmethod
-    def get_description(self):
+    def descr(self):
         """Get description of test."""
 
     @abstractmethod
-    def execute(self):
+    def _execute(self):
         """Execute test."""
 
-    def reg_stats(self, sbe, stats_key, stats_val):
-        """Register stats (typically elapsed secs for an operation) for a storage backend."""
-        self._stats[sbe.name()][stats_key] = stats_val
+    def execute(self, stats):
+        """Execute test, accumulating stats."""
+        self._execute()
+        stats[self.descr()] = self._stats
 
-    def print_stats(self):
-        """Print stats collected during text execution."""
-        print('TestBase.print_stats() for test \'{}\': ... TODO'.format(self.get_description()))
-        pass
+    def _reg_stats(self, sbe, stats_key, stats_val):
+        """Register stats (typically elapsed secs for an operation) for a storage backend."""
+        self._stats[sbe.descr()][stats_key] = stats_val
 
 
 class Reset(TestBase):
@@ -37,14 +39,14 @@ class Reset(TestBase):
         super().__init__(verbose, config, storage_backends)
         self._tss = tss
 
-    def get_description(self):
+    def descr(self):
         return 'reset storage backends with {} time series'.format(len(self._tss))
 
-    def execute(self):
+    def _execute(self):
         for sbe in self._storage_backends:
             start_secs = common.now_secs()
             sbe.reset(self._tss)
-            self.reg_stats(sbe, 'reset secs', common.elapsed_secs(start_secs))
+            self._reg_stats(sbe, 'reset secs', common.elapsed_secs(start_secs))
 
 
 class FillStorage(TestBase):
@@ -53,10 +55,10 @@ class FillStorage(TestBase):
         self._tss = tss
         self._curr_time = curr_time
 
-    def get_description(self):
+    def descr(self):
         return 'fill storage with observations'
 
-    def execute(self):
+    def _execute(self):
         # fill each time series with observations using the entire accessible capacity
         # ([curr_time - max_age, curr_time])
         ts_data = []
@@ -70,7 +72,7 @@ class FillStorage(TestBase):
             start_secs = common.now_secs()
             for td in ts_data:
                 sbe.set_obs(td[0], td[1], td[2])
-            self.reg_stats(sbe, 'fill storage secs', common.elapsed_secs(start_secs))
+            self._reg_stats(sbe, 'fill storage secs', common.elapsed_secs(start_secs))
 
 
 class TsTester:
@@ -104,17 +106,19 @@ class TsTester:
     def execute(self):
         """Execute overall test/comparison."""
 
+        test_stats = {}
+
         tss = create_time_series(self._verbose, self._config)
 
         test = Reset(self._verbose, self._config, self._storage_backends, tss)
-        test.execute()
-        test.print_stats()
+        test.execute(test_stats)
+        # test_stats[test.descr()] = test.stats()
 
-        curr_time = common.now_secs()
+        curr_time = int(common.now_secs())
 
         test = FillStorage(self._verbose, self._config, self._storage_backends, tss, curr_time)
-        test.execute()
-        test.print_stats()
+        test.execute(test_stats)
+        # test_stats[test.descr()] = test.stats()
 
         # TODO: replace FillStorage with InsertObs(curr_time - cfg.max_age, curr_time) (still using sbe.set_obs())
         # TODO: replace AppendNewObservations with InsertObs(curr_time, curr_time + DELTA) (but now using sbe.add_obs())
@@ -128,6 +132,13 @@ class TsTester:
         # - GetObsFromParams
         # - GetObsFromStationParams
         # - ...
+
+        stats = {
+            'overall': {'key1': 'val1', 'key2': 'val2'},
+            'tests': test_stats,
+        }
+
+        print(json.dumps(stats, indent=4))
 
 
 def create_time_series(verbose, config):
@@ -186,7 +197,7 @@ def create_time_series(verbose, config):
 
     for s in range(nstations):
         if verbose:
-            print('next station: {}'.format(s))
+            print('next station: {}'.format(s), file=sys.stderr)
 
         lat, lon = create_new_loc()
         random.shuffle(param_ids)
@@ -201,7 +212,7 @@ def create_time_series(verbose, config):
                 ts_other_mdata, obs_mdata
             )
             if verbose:
-                print('new ts (s = {}, p = {}): {}'.format(s, p, vars(ts)))
+                print('new ts (s = {}, p = {}): {}'.format(s, p, vars(ts)), file=sys.stderr)
 
             tss.append(ts)
 

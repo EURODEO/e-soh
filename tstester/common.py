@@ -35,7 +35,7 @@ def now_secs():
     """Return the current time in seconds since the Epoch.
     See help(time.time).
     """
-    return int(time.time())
+    return time.time()
 
 
 def elapsed_secs(start_secs):

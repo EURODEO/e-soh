@@ -3,6 +3,7 @@ from postgissbe import PostGISSBE
 import shutil
 from pathlib import Path
 from netcdf import NetCDF
+import sys
 
 
 class NetCDFSBE_TSMDataInPostGIS(StorageBackend):
@@ -29,7 +30,7 @@ class NetCDFSBE_TSMDataInPostGIS(StorageBackend):
     """
 
     def __init__(self, verbose, pg_conn_info, nc_dir):
-        super().__init__(verbose, 'netCDF/time series metadata in PostGIS')
+        super().__init__(verbose, 'netCDF (time series metadata in PostGIS)')
         self._pgsbe = PostGISSBE(verbose, pg_conn_info)  # for keeping per time series metadata
         self._nc_dir = nc_dir  # directory under which to keep the netCDF files
         self._netcdf = NetCDF(verbose)
@@ -39,7 +40,9 @@ class NetCDFSBE_TSMDataInPostGIS(StorageBackend):
         """See documentation in base class."""
 
         if self._verbose:
-            print('resetting NetCDFSBE_TSMDataInPostGIS with {} time series'.format(len(tss)))
+            print(
+                'resetting NetCDFSBE_TSMDataInPostGIS with {} time series'.format(len(tss)),
+                file=sys.stderr)
 
         self._pgsbe.reset(tss)
 
