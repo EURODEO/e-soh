@@ -1,4 +1,5 @@
 import netCDF4 as nc
+import datetime as dt
 
 
 class NetCDF:
@@ -33,3 +34,28 @@ class NetCDF:
             vlon.long_name = 'station longitude'
             vlon.units = 'degrees_east'
             vlon[:] = ts.lon()
+
+            dset.createDimension('time', 0)  # create time as an unlimited dimension
+
+            v = dset.createVariable('time', 'i4', ('time',))
+            # v[:] = times  --- no times yet (set in replace_times_and_obs())
+            v.standard_name = 'time'
+            v.long_name = 'Time of measurement'
+            v.calendar = 'standard'
+            ref_dt = dt.datetime.strptime('1970-01-01', '%Y-%m-%d').replace(tzinfo=dt.timezone.utc)
+            v.units = f"seconds since {ref_dt.strftime('%Y-%m-%d %H:%M:%S')}"
+            v.axis = 'T'
+
+            v = dset.createVariable(ts.param_id(), 'f4', ['time'])
+            # v[:] = obs_values  --- no obs_values yet (set in replace_times_and_obs())
+            v.standard_name = ts.param_id()  # for now
+            v.long_name = '{} (long name)'.format(ts.param_id())  # for now
+            v.coordinates = 'time latitude longitude'
+            v.coverage_content_type = 'physicalMeasurement'
+
+    def replace_times_and_obs(self, path, times, obs):
+        """Replace contents of times and obs variables in file."""
+
+        with nc.Dataset(path, 'a') as dset:
+            dset['time'][:] = times
+            dset[dset.param_id][:] = obs

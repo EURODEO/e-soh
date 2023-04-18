@@ -33,6 +33,7 @@ class NetCDFSBE_TSMDataInPostGIS(StorageBackend):
         self._pgsbe = PostGISSBE(verbose, pg_conn_info)  # for keeping per time series metadata
         self._nc_dir = nc_dir  # directory under which to keep the netCDF files
         self._netcdf = NetCDF(verbose)
+        self._nc_fname = 'data.nc'
 
     def reset(self, tss):
         """See documentation in base class."""
@@ -52,12 +53,13 @@ class NetCDFSBE_TSMDataInPostGIS(StorageBackend):
             Path(target_dir).mkdir(parents=True, exist_ok=True)
 
             # create initial file
-            self._netcdf.create_initial_file('{}/data.nc'.format(target_dir), ts)
+            self._netcdf.create_initial_file('{}/{}'.format(target_dir, self._nc_fname), ts)
 
     def set_obs(self, ts, times, obs):
         """See documentation in base class."""
-        # TODO:
-        # - replace contents of times and obs variables in file
+
+        path = '{}/{}/{}/{}'.format(self._nc_dir, ts.station_id(), ts.param_id(), self._nc_fname)
+        self._netcdf.replace_times_and_obs(path, times, obs)
 
     def add_obs(self, ts, times, obs):
         """See documentation in base class."""
