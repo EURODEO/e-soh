@@ -14,7 +14,10 @@ class StorageBackend(ABC):
 
     @abstractmethod
     def reset(self, tss):
-        """Replace any existing time series with tss."""
+        """Replace any existing time series with tss.
+
+        - tss is a list of TimeSeries objects
+        """
 
     @abstractmethod
     def set_obs(self, ts, times, obs):
