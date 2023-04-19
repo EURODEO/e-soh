@@ -14,7 +14,7 @@ Two backends are currently implemented (the code is designed to make it easy to 
 Name | Description
 :--  | :--
 PostGISSBE | Keeps all data in PostGIS database with efficient geo search capabilities.
-NetCDFSBE_TSMDataInPostGIS | Keeps all data in netCDF files on the local file system, one file per time series (station/param combo). Per time series metadata (i.e. not actual observations) will also be kept in a PostGIS database to speed up the search target files to retrieve observations from.
+NetCDFSBE_TSMDataInPostGIS | Keeps all data in netCDF files on the local file system, one file per time series (station/param combo). Per time series metadata (i.e. not actual observations) will also be kept in a PostGIS database to speed up searching for target files to retrieve observations from.
 
 Assumptions:
 
