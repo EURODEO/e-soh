@@ -56,6 +56,13 @@ class StorageBackend(ABC):
         """
 
     @abstractmethod
+    def get_station_param(self, ts_id):
+        """Get the station- and param ID that corresponds to ts_id
+
+        Returns station_id, param_id.
+        """
+
+    @abstractmethod
     def get_tss_in_circle(self, lat, lon, radius):
         """Get time series within a circle.
 

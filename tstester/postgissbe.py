@@ -159,6 +159,13 @@ class PostGISSBE(StorageBackend):
         '''
         return self._pgopbe.execute(query.format(from_time, to_time))
 
+    def get_station_param(self, ts_id):
+        """See documentation in base class."""
+
+        query = 'SELECT station_id,param_id FROM time_series WHERE id = {}'
+        rows = self._pgopbe.execute(query.format(ts_id))
+        return rows[0][0], rows[0][1]
+
     def get_tss_in_circle(self, lat, lon, radius):
         """See documentation in base class."""
         # TODO

@@ -80,6 +80,11 @@ class NetCDFSBE_TSMDataInPostGIS(StorageBackend):
         #   [from_time, to_time> from corresponding netCDF file and aggregate that in a total result
         # Step 3: return total result
 
+    def get_station_param(self, ts_id):
+        """See documentation in base class."""
+
+        return self._pgsbe.get_station_param(ts_id)
+
     def get_tss_in_circle(self, lat, lon, radius):
         """See documentation in base class."""
         # TODO
