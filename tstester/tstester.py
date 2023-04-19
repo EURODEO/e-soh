@@ -147,7 +147,6 @@ class TsTester:
         # - AppendNewObservations
         # - GetObsInCircle
         # - GetObsInPolygon
-        # - GetObsFromAllTimeSeries
         # - GetObsFromStations
         # - GetObsFromParams
         # - GetObsFromStationParams
