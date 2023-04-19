@@ -48,15 +48,23 @@ class StorageBackend(ABC):
         """
 
     @abstractmethod
+    def get_obs_all(self, from_time, to_time):
+        """Get all observations in time range [from_time, to_time> in all time series.
+
+        Returns a list of (ts_id, times, obs) tuples, one per time series, where
+        times and obs are lists subject to the same restrictions as in set_obs().
+        """
+
+    @abstractmethod
     def get_tss_in_circle(self, lat, lon, radius):
         """Get time series within a circle.
 
         Returns a list of (station_id, param_id) tuples.
         """
 
-    # TODO: add more methods to find time series:
+    # TODO: add more methods:
+    # get_tss_all()
     # get_tss_in_polygon()
-    # get_all_tss()
     # get_tss_for_station()
     # get_tss_for_param()
     # get_tss_for_station_param()

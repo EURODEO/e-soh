@@ -4,6 +4,8 @@ from pgopbackend import Psycopg2BE, PsqlBE
 import json
 import sys
 
+# NOTE: we assume that the risk of SQL injection is zero in this context
+
 
 class PostGISSBE(StorageBackend):
     """A storage backend that uses a PostGIS database for storage of observations,
@@ -89,7 +91,7 @@ class PostGISSBE(StorageBackend):
 
         # insert rows in time series table
         for ts in tss:
-            # NOTE: we assume that the risk of SQL injection is zero in this context
+
             cmd = '''
                 INSERT INTO time_series (station_id, param_id, lat, lon, other_metadata)
                 VALUES ('{}', '{}', {}, {}, '{}'::jsonb)
@@ -147,6 +149,15 @@ class PostGISSBE(StorageBackend):
     def get_obs(self, tss, from_time, to_time):
         """See documentation in base class."""
         # TODO
+
+    def get_obs_all(self, from_time, to_time):
+        """See documentation in base class."""
+
+        query = '''
+            SELECT ts_id,tstamp,value FROM observations WHERE tstamp >= to_timestamp({})
+            AND tstamp < to_timestamp({}) ORDER BY ts_id,tstamp
+        '''
+        return self._pgopbe.execute(query.format(from_time, to_time))
 
     def get_tss_in_circle(self, lat, lon, radius):
         """See documentation in base class."""

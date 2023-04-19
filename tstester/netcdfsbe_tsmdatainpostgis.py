@@ -72,6 +72,14 @@ class NetCDFSBE_TSMDataInPostGIS(StorageBackend):
         """See documentation in base class."""
         # TODO
 
+    def get_obs_all(self, from_time, to_time):
+        """See documentation in base class."""
+
+        # Step 1: get list of available time series from self._pgsbe ... TODO
+        # Step 2: for each (station_id, param_id) combo, extract observation within
+        #   [from_time, to_time> from corresponding netCDF file and aggregate that in a total result
+        # Step 3: return total result
+
     def get_tss_in_circle(self, lat, lon, radius):
         """See documentation in base class."""
         # TODO
