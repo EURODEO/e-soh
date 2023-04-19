@@ -39,10 +39,10 @@ class StorageBackend(ABC):
         """
 
     @abstractmethod
-    def get_obs(self, tss, from_time, to_time):
-        """Get observations in time range [from_time, to_time> from time series in tss.
+    def get_obs(self, ts_ids, from_time, to_time):
+        """Get observations in time range [from_time, to_time> from time series in ts_ids.
 
-        - tss is a list of (station_id, param_id) tuples.
+        - ts_ids is a list of time series IDs.
 
         Returns two lists: times and obs (subject to the same restrictions as in set_obs())
         """
@@ -56,23 +56,32 @@ class StorageBackend(ABC):
         """
 
     @abstractmethod
-    def get_station_param(self, ts_id):
+    def get_station_and_param(self, ts_id):
         """Get the station- and param ID that corresponds to ts_id
 
         Returns station_id, param_id.
         """
 
     @abstractmethod
-    def get_tss_in_circle(self, lat, lon, radius):
-        """Get time series within a circle.
+    def get_ts_ids_all(self):
+        """Get all time series.
 
         Returns a list of (station_id, param_id) tuples.
         """
 
+    @abstractmethod
+    def get_ts_ids_in_circle(self, lat, lon, radius):
+        """Get time series within a circle.
+
+        - lat,lon is centre point in degrees
+        - radius is kilometers along earth surface (valid range: [0, ?])
+
+        Returns a list of all time series IDs inside the circle.
+        """
+
     # TODO: add more methods:
-    # get_tss_all()
-    # get_tss_in_polygon()
-    # get_tss_for_station()
-    # get_tss_for_param()
-    # get_tss_for_station_param()
+    # get_ts_ids_in_polygon()
+    # get_ts_ids_for_station()
+    # get_ts_ids_for_param()
+    # get_ts_ids_for_station_param()
     # ...

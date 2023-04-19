@@ -68,23 +68,34 @@ class NetCDFSBE_TSMDataInPostGIS(StorageBackend):
         """See documentation in base class."""
         # TODO
 
-    def get_obs(self, tss, from_time, to_time):
+    def get_obs(self, ts_ids, from_time, to_time):
         """See documentation in base class."""
         # TODO
 
     def get_obs_all(self, from_time, to_time):
         """See documentation in base class."""
 
-        # Step 1: get list of available time series from self._pgsbe ... TODO
-        # Step 2: for each (station_id, param_id) combo, extract observation within
-        #   [from_time, to_time> from corresponding netCDF file and aggregate that in a total result
-        # Step 3: return total result
+        ts_ids = self.get_ts_ids_all()
 
-    def get_station_param(self, ts_id):
+        res = []
+        for ts_id in ts_ids:
+            station_id, param_id = self._pgsbe.get_station_and_param(ts_id)
+            path = '{}/{}/{}/{}'.format(self._nc_dir, station_id, param_id, self._nc_fname)
+            times, obs = self._netcdf.get_times_and_obs(path, from_time, to_time)
+            res.append((ts_id, times[:], obs[:]))
+
+        return res
+
+    def get_station_and_param(self, ts_id):
         """See documentation in base class."""
 
-        return self._pgsbe.get_station_param(ts_id)
+        return self._pgsbe.get_station_and_param(ts_id)
 
-    def get_tss_in_circle(self, lat, lon, radius):
+    def get_ts_ids_all(self):
+        """See documentation in base class."""
+
+        return self._pgsbe.get_ts_ids_all()
+
+    def get_ts_ids_in_circle(self, lat, lon, radius):
         """See documentation in base class."""
         # TODO

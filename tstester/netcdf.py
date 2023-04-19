@@ -1,5 +1,6 @@
 import netCDF4 as nc
 import datetime as dt
+import numpy as np
 
 
 class NetCDF:
@@ -59,3 +60,15 @@ class NetCDF:
         with nc.Dataset(path, 'a') as dset:
             dset['time'][:] = times
             dset[dset.param_id][:] = obs
+
+    def get_times_and_obs(self, path, from_time, to_time):
+        """Retrieve contents of times and obs variables from file within [from_time, to_time>.
+
+        Returns two lists: times and obs (subject to the same restrictions as
+        StorageBackend.set_obs())
+        """
+
+        with nc.Dataset(path, 'r') as dset:
+            time_var = dset.variables['time']
+            indices = np.where((time_var[:] >= from_time) & (time_var[:] < to_time))
+            return list(time_var[indices]), list(dset.variables[dset.param_id][indices])

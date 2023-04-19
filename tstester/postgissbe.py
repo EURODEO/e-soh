@@ -146,7 +146,7 @@ class PostGISSBE(StorageBackend):
         """See documentation in base class."""
         # TODO
 
-    def get_obs(self, tss, from_time, to_time):
+    def get_obs(self, ts_ids, from_time, to_time):
         """See documentation in base class."""
         # TODO
 
@@ -154,18 +154,42 @@ class PostGISSBE(StorageBackend):
         """See documentation in base class."""
 
         query = '''
-            SELECT ts_id,tstamp,value FROM observations WHERE tstamp >= to_timestamp({})
-            AND tstamp < to_timestamp({}) ORDER BY ts_id,tstamp
+            SELECT ts_id,
+                array_agg(CAST(EXTRACT(EPOCH FROM tstamp) AS int) ORDER BY tstamp),
+                array_agg(value ORDER BY tstamp)
+            FROM observations WHERE tstamp >= to_timestamp({}) AND tstamp < to_timestamp({})
+            GROUP BY ts_id
         '''
-        return self._pgopbe.execute(query.format(from_time, to_time))
 
-    def get_station_param(self, ts_id):
+        rows = self._pgopbe.execute(query.format(from_time, to_time))
+
+        res = []
+        for row in rows:
+            ts_id, times, obs = int(row[0]), row[1], row[2]
+            if isinstance(times, str):  # the case for PsqlBE
+                # convert '{ITEM1, ITEM2, ..., ITEMN}' to
+                # [convert(ITEM1), convert(ITEM2), ..., convert(ITEMN)]
+                times = [int(x) for x in times.strip()[1:-1].split(',')]
+                obs = [float(x) for x in obs.strip()[1:-1].split(',')]
+            # assert(isinstance(times, list))
+            # assert(isinstance(obs, list))
+            res.append((ts_id, times, obs))
+
+        return res
+
+    def get_station_and_param(self, ts_id):
         """See documentation in base class."""
 
-        query = 'SELECT station_id,param_id FROM time_series WHERE id = {}'
+        query = 'SELECT station_id, param_id FROM time_series WHERE id = {}'
         rows = self._pgopbe.execute(query.format(ts_id))
         return rows[0][0], rows[0][1]
 
-    def get_tss_in_circle(self, lat, lon, radius):
+    def get_ts_ids_all(self):
+        """See documentation in base class."""
+
+        rows = self._pgopbe.execute('SELECT id FROM time_series')
+        return [int(row[0]) for row in rows]
+
+    def get_ts_ids_in_circle(self, lat, lon, radius):
         """See documentation in base class."""
         # TODO

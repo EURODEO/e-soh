@@ -87,11 +87,11 @@ class PsqlBE(PGOpBackend):
 
         _ = commit  # n/a
         res = common.exec_command([
-            'psql', '--csv', '-t', '-h', self._conn_info.host(), '-p', self._conn_info.port(),
+            'psql', '-t', '-h', self._conn_info.host(), '-p', self._conn_info.port(),
             '-U', self._conn_info.user(), '-d', self._conn_info.dbname(), '-c', op])
 
         res = [x for x in res.decode('utf-8').split('\n') if len(x) > 0]
-        return list(map(lambda x: tuple(x.split(',')), res))
+        return list(map(lambda x: tuple([z.strip() for z in x.split('|')]), res))
 
     def commit(self):
         """See documentation in base class."""
