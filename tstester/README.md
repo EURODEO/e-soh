@@ -46,6 +46,14 @@ Tip: use the -h option to get help on command-line arguments:
 ./main.py -h
 ```
 
+## Output
+
+Test results (such as timing stats) are written in JSON format to standard output:
+
+```text
+... ./main.py ... > stats.json
+```
+
 ## Environment variables
 
 The following environment variables are supported:
