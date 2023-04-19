@@ -87,7 +87,7 @@ class PsqlBE(PGOpBackend):
 
         _ = commit  # n/a
         res = common.exec_command([
-            'psql', '-t', '-h', self._conn_info.host(), '-p', self._conn_info.port(),
+            'psql', '--csv', '-t', '-h', self._conn_info.host(), '-p', self._conn_info.port(),
             '-U', self._conn_info.user(), '-d', self._conn_info.dbname(), '-c', op])
 
         res = [x for x in res.decode('utf-8').split('\n') if len(x) > 0]
