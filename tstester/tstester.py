@@ -169,10 +169,10 @@ class TsTester:
             test_stats)
 
         # TODO: replace FillStorage with InsertObs(curr_time - cfg.max_age, curr_time) (still using sbe.set_obs())
-        # TODO: replace AppendNewObservations with InsertObs(curr_time, curr_time + DELTA) (but now using sbe.add_obs())
+        # TODO: replace AddNewObservations with InsertObs(curr_time, curr_time + DELTA) (but now using sbe.add_obs())
 
         # TODO: more tests (subclasses of TestBase):
-        # - AppendNewObservations
+        # - AddNewObservations
         # - GetObsInPolygon
         # - GetObsFromStations
         # - GetObsFromParams
