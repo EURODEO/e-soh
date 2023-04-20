@@ -98,4 +98,5 @@ class NetCDFSBE_TSMDataInPostGIS(StorageBackend):
 
     def get_ts_ids_in_circle(self, lat, lon, radius):
         """See documentation in base class."""
-        # TODO
+
+        return self._pgsbe.get_ts_ids_in_circle(lat, lon, radius)

@@ -95,6 +95,31 @@ class GetObsAll(TestBase):
             self._reg_stats(sbe, 'total secs', common.elapsed_secs(start_secs))
 
 
+class GetObsInCircle(TestBase):
+    def __init__(self, verbose, config, storage_backends, curr_time):
+        super().__init__(verbose, config, storage_backends)
+        self._curr_time = curr_time
+
+    def descr(self):
+        return 'get observations within a circle'
+
+    def _execute(self):
+        # retrieve observations for all time series in time range
+        # [curr_time - max_age, curr_time] that are also within a circle
+
+        # TODO:
+        lat, lon = 0, 0  # centre of self._config['bbox'] ?
+        radius = 0  # distance in km (50% of self._config['bbox'] min. width ?)
+
+        # retrieve from each backend
+        from_time, to_time = self._curr_time - self._config['max_age'], self._curr_time
+        for sbe in self._storage_backends:
+            start_secs = common.now_secs()
+            ts_ids = sbe.get_ts_ids_in_circle(lat, lon, radius)
+            sbe.get_obs(ts_ids, from_time, to_time)  # don't use return value
+            self._reg_stats(sbe, 'total secs', common.elapsed_secs(start_secs))
+
+
 class TsTester:
     """Tests/compares different time series storage backends wrt. performance."""
 
@@ -140,12 +165,14 @@ class TsTester:
         GetObsAll(self._verbose, self._config, self._storage_backends, curr_time).execute(
             test_stats)
 
+        GetObsInCircle(self._verbose, self._config, self._storage_backends, curr_time).execute(
+            test_stats)
+
         # TODO: replace FillStorage with InsertObs(curr_time - cfg.max_age, curr_time) (still using sbe.set_obs())
         # TODO: replace AppendNewObservations with InsertObs(curr_time, curr_time + DELTA) (but now using sbe.add_obs())
 
         # TODO: more tests (subclasses of TestBase):
         # - AppendNewObservations
-        # - GetObsInCircle
         # - GetObsInPolygon
         # - GetObsFromStations
         # - GetObsFromParams

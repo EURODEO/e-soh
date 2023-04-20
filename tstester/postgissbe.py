@@ -188,4 +188,10 @@ class PostGISSBE(StorageBackend):
 
     def get_ts_ids_in_circle(self, lat, lon, radius):
         """See documentation in base class."""
-        # TODO
+
+        query = '''
+            SELECT id FROM time_series
+            WHERE ST_Distance('SRID=4326;POINT({} {})'::geography, pos) < {}
+        '''
+        rows = self._pgopbe.execute(query.format(lon, lat, radius))
+        return [int(row[0]) for row in rows]
