@@ -8,6 +8,7 @@ from pgconnectioninfo import PGConnectionInfo
 import json
 import sys
 import copy
+import datetime
 
 
 class TestBase(ABC):
@@ -152,6 +153,8 @@ class TsTester:
     def execute(self):
         """Execute overall test/comparison."""
 
+        start_secs = common.now_secs()
+
         test_stats = {}
 
         tss = create_time_series(self._verbose, self._config)
@@ -183,6 +186,8 @@ class TsTester:
         cfg = copy.deepcopy(self._config)
         cfg.pop('_comment', None)
         stats = {
+            'start of test runs': datetime.datetime.utcfromtimestamp(start_secs).strftime('%Y-%m-%d %H:%M:%SZ'),
+            'total test run secs': float('{0:.2f}'.format(common.elapsed_secs(start_secs))),
             'config': cfg,
             'tests': test_stats,
         }
