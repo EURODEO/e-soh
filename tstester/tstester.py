@@ -7,6 +7,7 @@ from abc import ABC, abstractmethod
 from pgconnectioninfo import PGConnectionInfo
 import json
 import sys
+import copy
 
 
 class TestBase(ABC):
@@ -179,8 +180,10 @@ class TsTester:
         # - GetObsFromStationParams
         # - ...
 
+        cfg = copy.deepcopy(self._config)
+        cfg.pop('_comment', None)
         stats = {
-            'overall': {'key1': 'val1', 'key2': 'val2'},  # TODO: add some useful overall info here
+            'config': cfg,
             'tests': test_stats,
         }
 
