@@ -79,13 +79,13 @@ class PostGISSBE(StorageBackend):
         self._pgopbe.execute(
             '''
                 CREATE TABLE time_series (
-                    id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-                    station_id text NOT NULL,
-                    param_id text NOT NULL,
+                    id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+                    station_id TEXT NOT NULL,
+                    param_id TEXT NOT NULL,
                     UNIQUE (station_id, param_id),
-                    lat double precision NOT NULL,
-                    lon double precision NOT NULL,
-                    other_metadata jsonb NOT NULL
+                    lat DOUBLE PRECISION NOT NULL,
+                    lon DOUBLE PRECISION NOT NULL,
+                    other_metadata JSONB NOT NULL
                 )
             ''')
 
