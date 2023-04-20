@@ -9,8 +9,12 @@ class PGOpBackend(ABC):
        (query or command).
     """
 
-    def __init__(self, verbose):
+    def __init__(self, verbose, descr):
         self._verbose = verbose
+        self._descr = descr
+
+    def descr(self):
+        return self._descr
 
     @abstractmethod
     def execute(self, op, commit):
@@ -31,7 +35,7 @@ class Psycopg2BE(PGOpBackend):
     def __init__(self, verbose, conn_info):
         if verbose:
             print('using psycopg2 adapter for PostGIS operations', file=sys.stderr)
-        super().__init__(verbose)
+        super().__init__(verbose, 'psycopg2 adapter')
         self._conn = self.__connect(conn_info)
         self._cur = self._conn.cursor()
 
@@ -79,7 +83,7 @@ class PsqlBE(PGOpBackend):
     def __init__(self, verbose, conn_info):
         if verbose:
             print('using psql command for PostGIS operations', file=sys.stderr)
-        super().__init__(verbose)
+        super().__init__(verbose, 'psql command')
         self._conn_info = conn_info
 
     def execute(self, op, commit=False):

@@ -128,26 +128,31 @@ class TsTester:
     def __init__(self, verbose, config):
         self._verbose = verbose
         self._config = config
+
         pg_host = common.get_env_var('PGHOST', 'localhost')
         pg_port = common.get_env_var('PGPORT', '5432')
         pg_user = common.get_env_var('PGUSER', 'postgres')
         pg_password = common.get_env_var('PGPASSWORD', 'mysecretpassword')
+        self._postgis_sbe = PostGISSBE(
+            verbose,
+            PGConnectionInfo(
+                pg_host, pg_port, pg_user, pg_password,
+                common.get_env_var('PGDBNAME_POSTGIS', 'esoh_postgis')
+            )
+        )
+
+        self._nc_sbe_tsmdata_in_postgis = NetCDFSBE_TSMDataInPostGIS(
+            verbose,
+            PGConnectionInfo(
+                pg_host, pg_port, pg_user, pg_password,
+                common.get_env_var('PGDBNAME_NETCDF', 'esoh_netcdf')
+            ),
+            common.get_env_var('NCDIR', 'ncdir')
+        )
+
         self._storage_backends = [  # storage backends to test/compare
-            PostGISSBE(
-                verbose,
-                PGConnectionInfo(
-                    pg_host, pg_port, pg_user, pg_password,
-                    common.get_env_var('PGDBNAME_POSTGIS', 'esoh_postgis')
-                )
-            ),
-            NetCDFSBE_TSMDataInPostGIS(
-                verbose,
-                PGConnectionInfo(
-                    pg_host, pg_port, pg_user, pg_password,
-                    common.get_env_var('PGDBNAME_NETCDF', 'esoh_netcdf')
-                ),
-                common.get_env_var('NCDIR', 'ncdir')
-            ),
+            self._postgis_sbe,
+            self._nc_sbe_tsmdata_in_postgis,
         ]
 
     def execute(self):
@@ -187,8 +192,9 @@ class TsTester:
         cfg.pop('_comment', None)
         stats = {
             'start': datetime.datetime.utcfromtimestamp(start_secs).strftime('%Y-%m-%d %H:%M:%SZ'),
-            'total secs': float('{0:.2f}'.format(common.elapsed_secs(start_secs))),
+            'total secs': common.elapsed_secs(start_secs),
             'config': cfg,
+            'postgres_config': self._postgis_sbe.pg_config(),
             'tests': test_stats,
         }
 

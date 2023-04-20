@@ -29,6 +29,18 @@ class PostGISSBE(StorageBackend):
         # install the postgis extension
         self.__install_postgis_extension()
 
+    def pg_config(self):
+        """Returns Postgres config."""
+
+        return {
+            'operation backend': self._pgopbe.descr(),
+            'host': self._conn_info.host(),
+            'port': self._conn_info.port(),
+            'user': self._conn_info.user(),
+            'password': '(not shown)',
+            'dbname': self._conn_info.dbname()
+        }
+
     def __drop_database(self):
         """Drop any existing database named self._conn_info.dbname()."""
 
