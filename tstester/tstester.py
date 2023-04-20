@@ -186,8 +186,8 @@ class TsTester:
         cfg = copy.deepcopy(self._config)
         cfg.pop('_comment', None)
         stats = {
-            'start of test runs': datetime.datetime.utcfromtimestamp(start_secs).strftime('%Y-%m-%d %H:%M:%SZ'),
-            'total test run secs': float('{0:.2f}'.format(common.elapsed_secs(start_secs))),
+            'start': datetime.datetime.utcfromtimestamp(start_secs).strftime('%Y-%m-%d %H:%M:%SZ'),
+            'total secs': float('{0:.2f}'.format(common.elapsed_secs(start_secs))),
             'config': cfg,
             'tests': test_stats,
         }
