@@ -83,8 +83,7 @@ class PostGISSBE(StorageBackend):
                     station_id TEXT NOT NULL,
                     param_id TEXT NOT NULL,
                     UNIQUE (station_id, param_id),
-                    lat DOUBLE PRECISION NOT NULL,
-                    lon DOUBLE PRECISION NOT NULL,
+                    pos GEOGRAPHY(Point) NOT NULL,
                     other_metadata JSONB NOT NULL
                 )
             ''')
@@ -93,21 +92,18 @@ class PostGISSBE(StorageBackend):
         for ts in tss:
 
             cmd = '''
-                INSERT INTO time_series (station_id, param_id, lat, lon, other_metadata)
-                VALUES ('{}', '{}', {}, {}, '{}'::jsonb)
+                INSERT INTO time_series (station_id, param_id, pos, other_metadata)
+                VALUES ('{}', '{}', '{}', '{}'::jsonb)
             '''
             self._pgopbe.execute(
                 ' '.join(cmd.split()).format(
-                    ts.station_id(), ts.param_id(), ts.lat(), ts.lon(),
+                    ts.station_id(), ts.param_id(),
+                    'POINT({} {})'.format(ts.lon(), ts.lat()),
                     json.dumps(ts.other_mdata())
                 )
             )
 
-        # - create indexes
-        # TODO
-
-        # ensure that PostGIS is enabled to perform quick geo searches for this case
-        # (tss inside circle and polygon)
+        # - create indexes?
         # TODO
 
         # create observations table
