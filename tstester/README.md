@@ -90,7 +90,6 @@ The program has been run successfully with the following software versions:
 - psycopg2 2.9.3
 - psql 15.2 (Ubuntu 15.2-1.pgdg18.04+1)
 
-
 ## Running PostGIS in docker container on local machine
 
 The program can run against any PostGIS instance, for example one running in a local docker
