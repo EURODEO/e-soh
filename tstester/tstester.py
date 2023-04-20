@@ -77,6 +77,40 @@ class FillStorage(TestBase):
             self._reg_stats(sbe, 'total secs', common.elapsed_secs(start_secs))
 
 
+class AddNewObs(TestBase):
+    def __init__(self, verbose, config, storage_backends, tss, curr_time):
+        super().__init__(verbose, config, storage_backends)
+        self._tss = tss
+        self._curr_time = curr_time
+
+    def descr(self):
+        return 'add new observations to the storage'
+
+    def _execute(self):
+
+        curr_time = self._curr_time
+        for extra_secs in self._config['extra_secs']:
+            # add new observations to each time series in interval
+            # [curr_time, curr_time + extra_secs])
+            ts_data = []
+            from_time, to_time = curr_time, curr_time + extra_secs
+            oldest_time = to_time - self._config['max_age']  # remove oldest observations
+            for ts in self._tss:
+                times, obs = ts.create_observations(from_time, to_time)
+                ts_data.append((ts, times, obs, oldest_time))
+
+            # add the time series to each backend
+            for sbe in self._storage_backends:
+                start_secs = common.now_secs()
+                for td in ts_data:
+                    sbe.add_obs(td[0], td[1], td[2], td[3])
+                self._reg_stats(
+                    sbe, 'total secs (extra secs = {})'.format(extra_secs),
+                    common.elapsed_secs(start_secs))
+
+            curr_time += extra_secs
+
+
 class GetObsAll(TestBase):
     def __init__(self, verbose, config, storage_backends, curr_time):
         super().__init__(verbose, config, storage_backends)
@@ -171,17 +205,16 @@ class TsTester:
         FillStorage(self._verbose, self._config, self._storage_backends, tss, curr_time).execute(
             test_stats)
 
+        AddNewObs(self._verbose, self._config, self._storage_backends, tss, curr_time).execute(
+            test_stats)
+
         GetObsAll(self._verbose, self._config, self._storage_backends, curr_time).execute(
             test_stats)
 
         GetObsInCircle(self._verbose, self._config, self._storage_backends, curr_time).execute(
             test_stats)
 
-        # TODO: replace FillStorage with InsertObs(curr_time - cfg.max_age, curr_time) (still using sbe.set_obs())
-        # TODO: replace AddNewObservations with InsertObs(curr_time, curr_time + DELTA) (but now using sbe.add_obs())
-
         # TODO: more tests (subclasses of TestBase):
-        # - AddNewObservations
         # - GetObsInPolygon
         # - GetObsFromStations
         # - GetObsFromParams

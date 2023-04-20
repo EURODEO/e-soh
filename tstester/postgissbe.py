@@ -150,7 +150,7 @@ class PostGISSBE(StorageBackend):
         cmd = 'INSERT INTO observations (ts_id, tstamp, value) VALUES {};'.format(','.join(values))
         self._pgopbe.execute(cmd)
 
-    def add_obs(self, ts, times, obs):
+    def add_obs(self, ts, times, obs, oldest_time=None):
         """See documentation in base class."""
         # TODO
 

@@ -64,7 +64,7 @@ class NetCDFSBE_TSMDataInPostGIS(StorageBackend):
         path = '{}/{}/{}/{}'.format(self._nc_dir, ts.station_id(), ts.param_id(), self._nc_fname)
         self._netcdf.replace_times_and_obs(path, times, obs)
 
-    def add_obs(self, ts, times, obs):
+    def add_obs(self, ts, times, obs, oldest_time=None):
         """See documentation in base class."""
         # TODO
 

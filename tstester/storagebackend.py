@@ -30,12 +30,13 @@ class StorageBackend(ABC):
         """
 
     @abstractmethod
-    def add_obs(self, ts, times, obs):
+    def add_obs(self, ts, times, obs, oldest_time):
         """Adds observations to time series ts.
 
         - times/obs: same as in set_obs()
+        - if oldest_time is not None, observations older than this time are removed from the storage
 
-        Observations at alredy existing times will be replaced.
+        Observations at already existing times will be replaced.
         """
 
     @abstractmethod
