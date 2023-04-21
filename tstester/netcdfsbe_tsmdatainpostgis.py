@@ -58,13 +58,13 @@ class NetCDFSBE_TSMDataInPostGIS(StorageBackend):
             # create initial file
             self._netcdf.create_initial_file('{}/{}'.format(target_dir, self._nc_fname), ts)
 
-    def set_obs(self, ts, times, obs):
+    def set_obs(self, ts, times, values):
         """See documentation in base class."""
 
         path = '{}/{}/{}/{}'.format(self._nc_dir, ts.station_id(), ts.param_id(), self._nc_fname)
-        self._netcdf.replace_times_and_obs(path, times, obs)
+        self._netcdf.replace_times_and_values(path, times, values)
 
-    def add_obs(self, ts, times, obs, oldest_time=None):
+    def add_obs(self, ts, times, values, oldest_time=None):
         """See documentation in base class."""
         # TODO
 
@@ -81,8 +81,8 @@ class NetCDFSBE_TSMDataInPostGIS(StorageBackend):
         for ts_id in ts_ids:
             station_id, param_id = self._pgsbe.get_station_and_param(ts_id)
             path = '{}/{}/{}/{}'.format(self._nc_dir, station_id, param_id, self._nc_fname)
-            times, obs = self._netcdf.get_times_and_obs(path, from_time, to_time)
-            res.append((ts_id, times[:], obs[:]))
+            times, values = self._netcdf.get_times_and_values(path, from_time, to_time)
+            res.append((ts_id, times[:], values[:]))
 
         return res
 

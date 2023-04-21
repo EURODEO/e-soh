@@ -20,20 +20,20 @@ class StorageBackend(ABC):
         """
 
     @abstractmethod
-    def set_obs(self, ts, times, obs):
-        """Replace any existing observations in time series ts with times/obs.
+    def set_obs(self, ts, times, values):
+        """Replace any existing observations in time series ts with times/values.
 
         - times are assumed to be a list of unique UNIX timestamps (secs since 1970-01-01T00:00:00Z)
           in strictly increasing order, but not necessesarily uniformly distributed
-        - obs are assumed to be a list of floats
-        - len(times) and len(obs) are assumed to be equal
+        - values are assumed to be a list of floats
+        - len(times) and len(values) are assumed to be equal
         """
 
     @abstractmethod
-    def add_obs(self, ts, times, obs, oldest_time):
+    def add_obs(self, ts, times, values, oldest_time):
         """Adds observations to time series ts.
 
-        - times/obs: same as in set_obs()
+        - times/values: same as in set_obs()
         - if oldest_time is not None, observations older than this time are removed from the storage
 
         Observations at already existing times will be replaced.
@@ -45,15 +45,15 @@ class StorageBackend(ABC):
 
         - ts_ids is a list of time series IDs.
 
-        Returns two lists: times and obs (subject to the same restrictions as in set_obs())
+        Returns two lists: times and values (subject to the same restrictions as in set_obs())
         """
 
     @abstractmethod
     def get_obs_all(self, from_time, to_time):
         """Get all observations in time range [from_time, to_time> in all time series.
 
-        Returns a list of (ts_id, times, obs) tuples, one per time series, where
-        times and obs are lists subject to the same restrictions as in set_obs().
+        Returns a list of (ts_id, times, values) tuples, one per time series, where
+        times and values are lists subject to the same restrictions as in set_obs().
         """
 
     @abstractmethod

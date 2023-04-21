@@ -39,7 +39,6 @@ class NetCDF:
             dset.createDimension('time', 0)  # create time as an unlimited dimension
 
             v = dset.createVariable('time', 'i4', ('time',))
-            # v[:] = times  --- no times yet (set in replace_times_and_obs())
             v.standard_name = 'time'
             v.long_name = 'Time of measurement'
             v.calendar = 'standard'
@@ -47,28 +46,27 @@ class NetCDF:
             v.units = f"seconds since {ref_dt.strftime('%Y-%m-%d %H:%M:%S')}"
             v.axis = 'T'
 
-            v = dset.createVariable(ts.param_id(), 'f4', ['time'])
-            # v[:] = obs_values  --- no obs_values yet (set in replace_times_and_obs())
+            v = dset.createVariable('value', 'f4', ['time'])
             v.standard_name = ts.param_id()  # for now
             v.long_name = '{} (long name)'.format(ts.param_id())  # for now
             v.coordinates = 'time latitude longitude'
             v.coverage_content_type = 'physicalMeasurement'
 
-    def replace_times_and_obs(self, path, times, obs):
-        """Replace contents of times and obs variables in file."""
+    def replace_times_and_values(self, path, times, values):
+        """Replace contents of 'time' and 'value' variables in file."""
 
         with nc.Dataset(path, 'a') as dset:
             dset['time'][:] = times
-            dset[dset.param_id][:] = obs
+            dset['value'][:] = values
 
-    def get_times_and_obs(self, path, from_time, to_time):
-        """Retrieve contents of times and obs variables from file within [from_time, to_time>.
+    def get_times_and_values(self, path, from_time, to_time):
+        """Retrieve contents of 'time' and 'value' variables from file within [from_time, to_time>.
 
-        Returns two lists: times and obs (subject to the same restrictions as
+        Returns two lists: times and values (subject to the same restrictions as
         StorageBackend.set_obs())
         """
 
         with nc.Dataset(path, 'r') as dset:
             time_var = dset.variables['time']
             indices = np.where((time_var[:] >= from_time) & (time_var[:] < to_time))
-            return list(time_var[indices]), list(dset.variables[dset.param_id][indices])
+            return list(time_var[indices]), list(dset.variables['value'][indices])

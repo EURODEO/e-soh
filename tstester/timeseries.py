@@ -51,8 +51,8 @@ class TimeSeries:
         self._time_res second.
 
         Returns two arrays:
-            [time 1, time 2, ..., time n]
-            [obs 1, obs 2, ..., obs n]
+            [obs time 1, obs time 2, ..., obs time n]
+            [obs value 1, obs value 2, ..., obs value n]
         TODO: also return per obs metadata as defined by self._obs_mdata
         """
 
@@ -60,10 +60,10 @@ class TimeSeries:
             raise Exception('invalid obs time range: [{}, {}]'.format(t0, t1))
 
         times = []
-        obs = []
+        values = []
         f = (2 * math.pi) / self._sin_wave_period
         for t in range(t0, t1, self._time_res):
             times.append(t)
-            obs.append(math.sin((t % self._sin_wave_period) * f))
+            values.append(math.sin((t % self._sin_wave_period) * f))
 
-        return times, obs
+        return times, values

@@ -83,13 +83,13 @@ class PostGISSBE(StorageBackend):
         rows = self._pgopbe.execute(query.format(station_id, param_id))
         return int(rows[0][0])  # assuming for now this always works (i.e. don't handle any error)
 
-    def __create_insert_values(self, ts_id, times, obs):
+    def __create_insert_values(self, ts_id, times, values):
         """Creates a list of strings to be used for VALUES in the INSERT command."""
 
-        values = []
-        for to in zip(times, obs):
-            values.append('({},to_timestamp({}),\'{}\')'.format(ts_id, to[0], to[1]))
-        return values
+        ivalues = []
+        for to in zip(times, values):
+            ivalues.append('({},to_timestamp({}),\'{}\')'.format(ts_id, to[0], to[1]))
+        return ivalues
 
     def reset(self, tss):
         """See documentation in base class."""
@@ -144,13 +144,13 @@ class PostGISSBE(StorageBackend):
                 )
             ''')
 
-    def set_obs(self, ts, times, obs):
+    def set_obs(self, ts, times, values):
         """See documentation in base class."""
 
         if self._verbose:
             print('setting observations in PostGIS SBE for time series >>>', file=sys.stderr)
-            print('    ts: {}\n    times: ({} values), obs: ({} values)'.format(
-                ts.__dict__, len(times), len(obs)), file=sys.stderr)
+            print('    ts: {}\n    times: (size: {}), values: (size: {})'.format(
+                ts.__dict__, len(times), len(values)), file=sys.stderr)
 
         ts_id = self.__get_ts_id(ts.station_id(), ts.param_id())
 
@@ -159,22 +159,22 @@ class PostGISSBE(StorageBackend):
         cmd = 'DELETE FROM observations WHERE ts_id = {}'.format(ts_id)
         self._pgopbe.execute(cmd)
 
-        values = self.__create_insert_values(ts_id, times, obs)
-        cmd = 'INSERT INTO observations (ts_id, tstamp, value) VALUES {}'.format(','.join(values))
+        ivalues = self.__create_insert_values(ts_id, times, values)
+        cmd = 'INSERT INTO observations (ts_id, tstamp, value) VALUES {}'.format(','.join(ivalues))
         self._pgopbe.execute(cmd)
 
-    def add_obs(self, ts, times, obs, oldest_time=None):
+    def add_obs(self, ts, times, values, oldest_time=None):
         """See documentation in base class."""
 
         ts_id = self.__get_ts_id(ts.station_id(), ts.param_id())
 
         # insert or update (i.e. "upsert") rows in observations table for this time series
 
-        values = self.__create_insert_values(ts_id, times, obs)
+        ivalues = self.__create_insert_values(ts_id, times, values)
         cmd = '''
             INSERT INTO observations (ts_id, tstamp, value) VALUES {}
             ON CONFLICT ON CONSTRAINT observations_pkey DO UPDATE SET value = EXCLUDED.value
-        '''.format(','.join(values))
+        '''.format(','.join(ivalues))
         self._pgopbe.execute(cmd)
 
         if oldest_time is not None:  # delete observations that are too old
@@ -202,15 +202,15 @@ class PostGISSBE(StorageBackend):
 
         res = []
         for row in rows:
-            ts_id, times, obs = int(row[0]), row[1], row[2]
+            ts_id, times, values = int(row[0]), row[1], row[2]
             if isinstance(times, str):  # the case for PsqlBE
                 # convert '{ITEM1, ITEM2, ..., ITEMN}' to
                 # [convert(ITEM1), convert(ITEM2), ..., convert(ITEMN)]
                 times = [int(x) for x in times.strip()[1:-1].split(',')]
-                obs = [float(x) for x in obs.strip()[1:-1].split(',')]
+                values = [float(x) for x in values.strip()[1:-1].split(',')]
             # assert(isinstance(times, list))
-            # assert(isinstance(obs, list))
-            res.append((ts_id, times, obs))
+            # assert(isinstance(values, list))
+            res.append((ts_id, times, values))
 
         return res
 
