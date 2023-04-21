@@ -156,10 +156,10 @@ class PostGISSBE(StorageBackend):
 
         # replace all rows in observations table for this time series
 
-        # TODO: do 'DELETE FROM observations WHERE ts_id = {}'.format(ts_id)
+        cmd = 'DELETE FROM observations WHERE ts_id = {}'.format(ts_id)
+        self._pgopbe.execute(cmd)
 
         values = self.__create_insert_values(ts_id, times, obs)
-
         cmd = 'INSERT INTO observations (ts_id, tstamp, value) VALUES {}'.format(','.join(values))
         self._pgopbe.execute(cmd)
 
@@ -171,7 +171,6 @@ class PostGISSBE(StorageBackend):
         # insert or update (i.e. "upsert") rows in observations table for this time series
 
         values = self.__create_insert_values(ts_id, times, obs)
-
         cmd = '''
             INSERT INTO observations (ts_id, tstamp, value) VALUES {}
             ON CONFLICT ON CONSTRAINT observations_pkey DO UPDATE SET value = EXCLUDED.value
