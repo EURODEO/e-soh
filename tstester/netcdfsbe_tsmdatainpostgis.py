@@ -66,7 +66,9 @@ class NetCDFSBE_TSMDataInPostGIS(StorageBackend):
 
     def add_obs(self, ts, times, values, oldest_time=None):
         """See documentation in base class."""
-        # TODO
+
+        path = '{}/{}/{}/{}'.format(self._nc_dir, ts.station_id(), ts.param_id(), self._nc_fname)
+        self._netcdf.add_times_and_values(path, times, values, oldest_time)
 
     def get_obs(self, ts_ids, from_time, to_time):
         """See documentation in base class."""

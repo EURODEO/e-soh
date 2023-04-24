@@ -1,6 +1,7 @@
 import netCDF4 as nc
 import datetime as dt
 import numpy as np
+import common
 
 
 class NetCDF:
@@ -58,6 +59,33 @@ class NetCDF:
         with nc.Dataset(path, 'a') as dset:
             dset['time'][:] = times
             dset['value'][:] = values
+
+    def add_times_and_values(self, path, times, values, oldest_time=None):
+        """Add new or replace/remove observations in file.
+
+
+        If oldest_time is not None, existing observations older than this will be removed.
+
+        """
+
+        # OBSOLETE
+        # # convert addable lists to np.array
+        # times_add = np.array(times)
+        # values_add = np.array(values)
+
+        with nc.Dataset(path, 'a') as dset:
+
+            # retrieve file variables
+            ftimes = dset['time'][:]
+            fvalues = dset['value'][:]
+
+            # merge
+            mtimes, mvalues = common.ts_merge(
+                ftimes.tolist(), fvalues.tolist(), times, values, oldest_time)
+
+            # replace file variables with merged arrays
+            dset['time'][:] = mtimes
+            dset['value'][:] = mvalues
 
     def get_times_and_values(self, path, from_time, to_time):
         """Retrieve contents of 'time' and 'value' variables from file within [from_time, to_time>.
