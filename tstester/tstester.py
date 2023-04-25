@@ -66,8 +66,8 @@ class FillStorage(TestBase):
         ts_data = []
         from_time, to_time = self._curr_time - self._config['max_age'], self._curr_time
         for ts in self._tss:
-            times, obs = ts.create_observations(from_time, to_time)
-            ts_data.append((ts, times, obs))
+            times, values = ts.create_observations(from_time, to_time)
+            ts_data.append((ts, times, values))
 
         # store the time series in each backend
         for sbe in self._storage_backends:
@@ -96,8 +96,8 @@ class AddNewObs(TestBase):
             from_time, to_time = curr_time, curr_time + extra_secs
             oldest_time = to_time - self._config['max_age']  # remove oldest observations
             for ts in self._tss:
-                times, obs = ts.create_observations(from_time, to_time)
-                ts_data.append((ts, times, obs, oldest_time))
+                times, values = ts.create_observations(from_time, to_time)
+                ts_data.append((ts, times, values, oldest_time))
 
             # add the time series to each backend
             for sbe in self._storage_backends:
