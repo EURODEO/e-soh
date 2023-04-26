@@ -60,6 +60,11 @@ The following environment variables are supported:
 
 Variable | Mandatory | Default value | Description
 :--      | :--       | :--           | :--
+`TSDBHOST`         | No  | `localhost`        | TimescaleDB host
+`TSDBPORT`         | No  | `5433`             | TimescaleDB port number
+`TSDBUSER`         | No  | `postgres`         | TimescaleDB user name
+`TSDBPASSWORD`     | No  | `mysecretpassword` | TimescaleDB password
+`TSDBDBNAME`       | No  | `esoh`             | TimescaleDB database name for storage backend `TimescaleDBSBE`
 `PGHOST`           | No  | `localhost`        | Postgres host
 `PGPORT`           | No  | `5432`             | Postgres port number
 `PGUSER`           | No  | `postgres`         | Postgres user name
