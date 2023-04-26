@@ -115,3 +115,8 @@ CONTAINER ID   IMAGE             COMMAND                  CREATED       STATUS  
 21b793e18be7   postgis/postgis   "docker-entrypoint.s…"   2 hours ago   Up 2 hours              0.0.0.0:5432->5432/tcp, :::5432->5432/tcp   some-postgis
 ...
 ```
+
+## Running TimescaleDB in docker container on local machine
+
+TODO!
+
