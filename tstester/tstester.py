@@ -1,5 +1,6 @@
 import common
 import random
+from timescaledbsbe import TimescaleDBSBE
 from postgissbe import PostGISSBE
 from netcdfsbe_tsmdatainpostgis import NetCDFSBE_TSMDataInPostGIS
 from timeseries import TimeSeries
@@ -163,6 +164,18 @@ class TsTester:
         self._verbose = verbose
         self._config = config
 
+        tsdb_host = common.get_env_var('TSDBHOST', 'localhost')
+        tsdb_port = common.get_env_var('TSDBPORT', '5433')
+        tsdb_user = common.get_env_var('TSDBUSER', 'postgres')
+        tsdb_password = common.get_env_var('TSDBPASSWORD', 'mysecretpassword')
+        self._timescaledb_sbe = TimescaleDBSBE(
+            verbose,
+            PGConnectionInfo(
+                tsdb_host, tsdb_port, tsdb_user, tsdb_password,
+                common.get_env_var('TSDBDBNAME', 'esoh')
+            )
+        )
+
         pg_host = common.get_env_var('PGHOST', 'localhost')
         pg_port = common.get_env_var('PGPORT', '5432')
         pg_user = common.get_env_var('PGUSER', 'postgres')
@@ -185,6 +198,7 @@ class TsTester:
         )
 
         self._storage_backends = [  # storage backends to test/compare
+            self._timescaledb_sbe,
             self._postgis_sbe,
             self._nc_sbe_tsmdata_in_postgis,
         ]
@@ -227,6 +241,7 @@ class TsTester:
             'start': datetime.datetime.utcfromtimestamp(start_secs).strftime('%Y-%m-%d %H:%M:%SZ'),
             'total secs': common.elapsed_secs(start_secs),
             'config': cfg,
+            'timescaledb_config': self._timescaledb_sbe.pg_config(),
             'postgres_config': self._postgis_sbe.pg_config(),
             'tests': test_stats,
         }
