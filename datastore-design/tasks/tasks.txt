@@ -1,0 +1,33 @@
+Some relevant tasks for the datastore.
+Should probably be organized in a different form/tool and also in a timeline with milestones etc. ...
+
+---------------------------
+
+- establish a test dataset (~24 hours of realistic obs data that we could benchmark against)
+
+- decide on language (Go vs Python?)
+
+- define a REST API to support CRUD (Create Read Update Delete) relevant in our case
+  - writing obs values
+  - reading obs values
+
+- decide what metadata should be supported for:
+  - time series as a whole (regardless of obs time - e.g. location of sensor, overall quality of sensor)
+  - individual obs value (e.g. obs quality)
+
+- decide standard/format/vocabulary of metadata
+  - ACDD ?
+  - CF ?
+  - ...
+
+- should we support movable sensors?
+
+- decide level of testing and how to run tests
+  - unit tests (necessary in our case?)
+  - integration tests
+  - test dataset (for benchmarking)
+  - traffic patterns
+  - stress testing
+  - ...
+
+- ...
