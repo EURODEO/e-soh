@@ -1,0 +1,83 @@
+# E-SOH datastore variant 1: gRPC service written in Go
+
+## Overview
+
+This directory contains code that demonstrates how the E-SOH datastore could
+be implemented as a gRPC service written in Go.
+
+## Compiling the protobuf file
+
+If necessary, compile the protobuf file first (`datastore/datastore.proto` => `datastore/datastore.pb.go`):
+
+```text
+protoc datastore/datastore.proto --go_out=plugins=grpc:.
+```
+
+## Generating a go.sum file
+
+If necessary, generate a go.sum file from go.mod:
+
+```text
+go mod tidy
+```
+
+### Compiling and running the server
+
+```text
+go build -o server main/main.go && ./server
+```
+
+## Testing the server with gRPCurl
+
+The server can be tested with [gRPCurl](https://github.com/fullstorydev/grpcurl) like this:
+
+```text
+$ grpcurl -plaintext -proto datastore/datastore.proto 127.0.0.1:50050 list
+datastore.Datastore
+```
+
+```text
+$ grpcurl -plaintext -proto datastore/datastore.proto 127.0.0.1:50050 describe
+datastore.Datastore is a service:
+service Datastore {
+  rpc AddTimeSeries ( .datastore.AddTSRequest ) returns ( .datastore.AddTSResponse );
+  rpc GetObservations ( .datastore.GetObsRequest ) returns ( .datastore.GetObsResponse );
+  //rpc DescribeTimeSeries(DescribeTSRequest) returns (DescribeTSResponse);
+  //rpc FindTimeSeries(FindTSRequest) returns (FindTSResponse);
+  //rpc DeleteTimeSeries(DeleteTSRequest) returns (DeleteTSResponse);
+  //rpc UpdateTimeSeries(UpdateTSRequest) returns (UpdateTSResponse);
+  rpc PutObservations ( .datastore.PutObsRequest ) returns ( .datastore.PutObsResponse );
+}
+```
+
+```text
+$ grpcurl -d '{"id": 1234, "metadata": {"field1": "value1", "field2": "value2", "field3": "value3"}}' -plaintext -proto datastore/datastore.proto 127.0.0.1:50050 datastore.Datastore.AddTimeSeries
+{
+  "status": -1
+}
+```
+
+```text
+$ grpcurl -d '{"tsobs": [{"tsid": 1234, "obs": [{"time": 10, "value": 123.456, "metadata": {"field1": "dummy1", "field2": "dummy2"}}]}]}' -plaintext -proto datastore/datastore.proto 127.0.0.1:50050 datastore.Datastore.PutObservations
+{
+  "status": -1
+}
+```
+
+```text
+$ grpcurl -d '{"tsids": [1234, 5678, 9012], "from": 156, "to": 163}' -plaintext -proto datastore/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
+...
+```
+
+## Environment
+
+The program has been run successfully in the following environment:
+
+### OS
+
+Ubuntu Ubuntu 18.04 Bionic
+
+### Software versions
+
+- Go: 1.20.5
+- protoc: libprotoc 3.0.0
