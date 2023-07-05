@@ -76,3 +76,14 @@ $ grpcurl -d '{"tsobs": [{"tsid": 1234, "obs": [{"time": 10, "value": 123.456, "
 $ grpcurl -d '{"tsids": [1234, 5678, 9012], "from": 156, "to": 163}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
 ...
 ```
+
+## Testing the server with a Python client
+
+Some [general documentation](https://grpc.io/docs/languages/python) of Python gRPC clients
+can be useful as a background.
+
+The python demo client can be run like this:
+
+```text
+<command line to go here>
+```
