@@ -31,7 +31,8 @@ go mod tidy
 ## Compiling and running the server
 
 ```text
-go build -o server main/main.go && ./server
+$ go build -o server main/main.go && ./server
+2023/07/05 15:16:41 starting server
 ```
 
 ## Testing the server with gRPCurl
@@ -48,13 +49,7 @@ $ grpcurl -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 describe
 datastore.Datastore is a service:
 service Datastore {
   rpc AddTimeSeries ( .datastore.AddTSRequest ) returns ( .datastore.AddTSResponse );
-  rpc GetObservations ( .datastore.GetObsRequest ) returns ( .datastore.GetObsResponse );
-  //rpc DescribeTimeSeries(DescribeTSRequest) returns (DescribeTSResponse);
-  //rpc FindTimeSeries(FindTSRequest) returns (FindTSResponse);
-  //rpc DeleteTimeSeries(DeleteTSRequest) returns (DeleteTSResponse);
-  //rpc UpdateTimeSeries(UpdateTSRequest) returns (UpdateTSResponse);
-  rpc PutObservations ( .datastore.PutObsRequest ) returns ( .datastore.PutObsResponse );
-}
+  ...
 ```
 
 ```text
@@ -73,6 +68,17 @@ $ grpcurl -d '{"tsobs": [{"tsid": 1234, "obs": [{"time": 10, "value": 123.456, "
 
 ```text
 $ grpcurl -d '{"tsids": [1234, 5678, 9012], "fromtime": 156, "totime": 163}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
+{
+  "status": -1,
+  "tsobs": [
+    {
+      "tsid": "1234",
+      "obs": [
+        {
+          "time": "156",
+          "value": 10,
+          "metadata": {
+            "field1": "value1 (0)",
 ...
 ```
 
@@ -92,5 +98,7 @@ python -m grpc_tools.protoc --proto_path=protobuf protobuf/datastore.proto --pyt
 The python client can be run like this:
 
 ```text
-python examples/clients/python/client.py
+$ python examples/clients/python/client.py
+calling AddTSRequest() ...
+...
 ```
