@@ -15,8 +15,8 @@ import (
 
 // parseArgs parses and returns command-line arguments.
 func parseArgs() *dsimpl.ServiceArgs {
-	arg1 := flag.String("arg1", "dummy", "argument 1 (just an example for now)")
-	arg2 := flag.String("arg2", "dummy", "argument 2 (just an example for now)")
+	arg1 := flag.String("arg1", "value1", "argument 1 (just an example for now)")
+	arg2 := flag.String("arg2", "value2", "argument 2 (just an example for now)")
 
 	flag.Parse()
 

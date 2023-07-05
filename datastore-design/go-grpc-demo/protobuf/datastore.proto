@@ -75,8 +75,8 @@ message PutObsResponse {
 
 message GetObsRequest {
   repeated int64 tsids = 1; // assuming distinct time series IDs
-  int64 from = 2; // earliest obs time
-  int64 to = 3; // latest obs time
+  int64 fromtime = 2; // earliest obs time
+  int64 totime = 3; // latest obs time
 }
 
 message GetObsResponse {
