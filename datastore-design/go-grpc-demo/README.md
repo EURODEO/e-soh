@@ -5,6 +5,12 @@
 This directory contains code that demonstrates how the E-SOH datastore could
 be implemented as a gRPC service written in Go.
 
+The code has been tested in the following environment:
+
+- OS: Ubuntu 18.04 Bionic
+- Go: 1.20.5
+- protoc: libprotoc 3.0.0
+
 ## Compiling the protobuf file
 
 If necessary, compile the protobuf file first:
@@ -70,16 +76,3 @@ $ grpcurl -d '{"tsobs": [{"tsid": 1234, "obs": [{"time": 10, "value": 123.456, "
 $ grpcurl -d '{"tsids": [1234, 5678, 9012], "from": 156, "to": 163}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
 ...
 ```
-
-## Environment
-
-The program has been run successfully in the following environment:
-
-### OS
-
-Ubuntu Ubuntu 18.04 Bionic
-
-### Software versions
-
-- Go: 1.20.5
-- protoc: libprotoc 3.0.0
