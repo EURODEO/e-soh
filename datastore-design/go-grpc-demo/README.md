@@ -7,16 +7,17 @@ be implemented as a gRPC service written in Go.
 
 ## Compiling the protobuf file
 
-If necessary, compile the protobuf file first (`protobuf/datastore.proto` =>
-`datastore/datastore.pb.go`):
+If necessary, compile the protobuf file first:
 
 ```text
 protoc protobuf/datastore.proto --go_out=plugins=grpc:.
 ```
 
+(This generates the directory/file `datastore/datastore.pb.go`)
+
 ## Generating a go.sum file
 
-If necessary, generate a go.sum file from go.mod:
+If necessary, generate a `go.sum` file:
 
 ```text
 go mod tidy
