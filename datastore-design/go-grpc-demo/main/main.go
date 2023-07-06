@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"os"
 
+	"datastore/common"
 	"datastore/datastore"
 	"datastore/dsimpl"
 
@@ -26,17 +26,6 @@ func parseArgs() *dsimpl.ServiceArgs {
 	}
 }
 
-// getenv returns the value of an environment variable or a default value if
-// no such environment variable has been set.
-func getenv(key string, defaultValue string) string {
-	var value string
-	var ok bool
-	if value, ok = os.LookupEnv(key); !ok {
-		value = defaultValue
-	}
-	return value
-}
-
 func main() {
 	args := parseArgs()
 
@@ -50,7 +39,7 @@ func main() {
 	datastore.RegisterDatastoreServer(server, datastoreServer)
 
 	// define network/port
-	port := getenv("SERVERPORT", "50050")
+	port := common.Getenv("SERVERPORT", "50050")
 	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", port))
 	if err != nil {
 		log.Fatalf("net.Listen() failed: %v", err)
