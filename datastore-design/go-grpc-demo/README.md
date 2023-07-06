@@ -50,14 +50,14 @@ timescale/timescaledb-ha   pg15-latest   ad39c4fbc5c4   2 months ago    3.37GB
 ```
 
 ```text
-$ docker run -d --name timescaledb -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword timescale/timescaledb-ha:pg15-latest
-4e040e51c6c644a1cb815fddfc6d321c080a56a11bccbd95a0b7cc54b649a26a
+$ docker run -d --name timescaledb -p 5433:5432 -e POSTGRES_PASSWORD=mysecretpassword timescale/timescaledb-ha:pg15-latest
+753a96bdd455e2819c44e529186979afbb759bfcd9674d2d3ca91b63466ad6ff
 ```
 
 ```text
 $ docker ps -a
-CONTAINER ID   IMAGE                                  COMMAND                  CREATED         STATUS         PORTS                                                           NAMES
-4e040e51c6c6   timescale/timescaledb-ha:pg15-latest   "/docker-entrypoint.…"   3 seconds ago   Up 2 seconds   8008/tcp, 0.0.0.0:5432->5432/tcp, :::5432->5432/tcp, 8081/tcp   timescaledb
+CONTAINER ID   IMAGE                                  COMMAND                  CREATED          STATUS          PORTS                                                           NAMES
+753a96bdd455   timescale/timescaledb-ha:pg15-latest   "/docker-entrypoint.…"   32 seconds ago   Up 31 seconds   8008/tcp, 8081/tcp, 0.0.0.0:5433->5432/tcp, :::5433->5432/tcp   timescaledb
 ...
 ```
 
@@ -66,8 +66,6 @@ $ PGPASSWORD=mysecretpassword psql -h localhost -U postgres
 psql (15.3 (Ubuntu 15.3-1.pgdg18.04+1), server 15.2 (Ubuntu 15.2-1.pgdg22.04+1))
 Type "help" for help.
 
-postgres=# \d
-Did not find any relations.
 postgres=#
 ```
 
