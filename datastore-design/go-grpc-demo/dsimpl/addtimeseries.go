@@ -11,14 +11,12 @@ func (svcInfo *ServiceInfo) AddTimeSeries(
 	ctx context.Context, request *datastore.AddTSRequest) (
 		*datastore.AddTSResponse, error) {
 
-	fmt.Printf(
-		"AddTimeSeries(); Id: %v; Metadata: %v\n", request.Id, request.Metadata)
-
-	// TODO: add time series to storage backend
-
-	response := datastore.AddTSResponse{
-		Status: -1, // for now
+	err := svcInfo.Sbe.AddTimeSeries(request)
+	if err != nil {
+		return nil, fmt.Errorf("svcInfo.Sbe.AddTimeSeries() failed: %v", err)
 	}
 
-	return &response, nil
+	return &datastore.AddTSResponse{
+		Status: -1, // for now
+	}, nil
 }

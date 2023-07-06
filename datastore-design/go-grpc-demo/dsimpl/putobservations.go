@@ -11,13 +11,12 @@ func (svcInfo *ServiceInfo) PutObservations(
 	ctx context.Context, request *datastore.PutObsRequest) (
 		*datastore.PutObsResponse, error) {
 
-	fmt.Printf("PutObservations(); Tsobs: %v\n", request.Tsobs)
-
-	// TODO: add observations to storage backend
-
-	response := datastore.PutObsResponse{
-		Status: -1, // for now
+	err := svcInfo.Sbe.PutObservations(request)
+	if err != nil {
+		return nil, fmt.Errorf("svcInfo.Sbe.PutObservations() failed: %v", err)
 	}
 
-	return &response, nil
+	return &datastore.PutObsResponse{
+		Status: -1, // for now
+	}, nil
 }

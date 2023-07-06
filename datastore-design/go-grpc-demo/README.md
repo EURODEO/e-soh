@@ -63,31 +63,16 @@ service Datastore {
 
 ```text
 $ grpcurl -d '{"id": 1234, "metadata": {"field1": "value1", "field2": "value2", "field3": "value3"}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.AddTimeSeries
-{
-  "status": -1
-}
+...
 ```
 
 ```text
 $ grpcurl -d '{"tsobs": [{"tsid": 1234, "obs": [{"time": 10, "value": 123.456, "metadata": {"field1": "value1", "field2": "value2"}}]}]}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.PutObservations
-{
-  "status": -1
-}
+...
 ```
 
 ```text
 $ grpcurl -d '{"tsids": [1234, 5678, 9012], "fromtime": 156, "totime": 163}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
-{
-  "status": -1,
-  "tsobs": [
-    {
-      "tsid": "1234",
-      "obs": [
-        {
-          "time": "156",
-          "value": 10,
-          "metadata": {
-            "field1": "value1 (0)",
 ...
 ```
 
