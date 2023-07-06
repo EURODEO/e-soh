@@ -29,7 +29,49 @@ If necessary, generate a `go.sum` file:
 go mod tidy
 ```
 
-## Compiling and running the server
+## Installing and running TimescaleDB in a docker container
+
+Currently the datastore server is using a TimescaleDB server as its only storage backend (for both
+metadata and observations). The following commands shows how TimescaleDB can be run in a docker
+container:
+
+```text
+$ docker pull timescale/timescaledb-ha:pg15-latest
+pg15-latest: Pulling from timescale/timescaledb-ha
+095da3dbe359: Pull complete
+...
+```
+
+```text
+$ docker images -a
+REPOSITORY                 TAG           IMAGE ID       CREATED         SIZE
+timescale/timescaledb-ha   pg15-latest   ad39c4fbc5c4   2 months ago    3.37GB
+...
+```
+
+```text
+$ docker run -d --name timescaledb -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword timescale/timescaledb-ha:pg15-latest
+4e040e51c6c644a1cb815fddfc6d321c080a56a11bccbd95a0b7cc54b649a26a
+```
+
+```text
+$ docker ps -a
+CONTAINER ID   IMAGE                                  COMMAND                  CREATED         STATUS         PORTS                                                           NAMES
+4e040e51c6c6   timescale/timescaledb-ha:pg15-latest   "/docker-entrypoint.…"   3 seconds ago   Up 2 seconds   8008/tcp, 0.0.0.0:5432->5432/tcp, :::5432->5432/tcp, 8081/tcp   timescaledb
+...
+```
+
+```text
+$ PGPASSWORD=mysecretpassword psql -h localhost -U postgres
+psql (15.3 (Ubuntu 15.3-1.pgdg18.04+1), server 15.2 (Ubuntu 15.2-1.pgdg22.04+1))
+Type "help" for help.
+
+postgres=# \d
+Did not find any relations.
+postgres=#
+```
+
+## Compiling and running the datastore server
 
 ```text
 $ go build -o server main/main.go && ./server
@@ -42,11 +84,18 @@ The following environment variables are supported:
 
 Variable | Mandatory | Default value | Description
 :--      | :--       | :--           | :--
-`SERVERPORT`| No  | `50050` | Server port number
+`SERVERPORT`       | No  | `50050`            | Server port number
+`TSDBHOST`         | No  | `localhost`        | TimescaleDB host
+`TSDBPORT`         | No  | `5433`             | TimescaleDB port number
+`TSDBUSER`         | No  | `postgres`         | TimescaleDB user name
+`TSDBPASSWORD`     | No  | `mysecretpassword` | TimescaleDB password
+`TSDBDBNAME`       | No  | `data`             | TimescaleDB database name
+`TSDBRESET`        | No  | `false`            | Whether to reset the TimescaleDB database (drop, (re)create, define schema etc.)
 
-## Testing the server with gRPCurl
+## Testing the datastore server with gRPCurl
 
-The server can be tested with [gRPCurl](https://github.com/fullstorydev/grpcurl) like this:
+The datastore server can be tested with [gRPCurl](https://github.com/fullstorydev/grpcurl) like
+this:
 
 ```text
 $ grpcurl -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 list
@@ -76,7 +125,7 @@ $ grpcurl -d '{"tsids": [1234, 5678, 9012], "fromtime": 156, "totime": 163}' -pl
 ...
 ```
 
-## Testing the server with a Python client
+## Testing the datastore server with a Python client
 
 ### Compiling the protobuf file
 

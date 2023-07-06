@@ -9,7 +9,7 @@ import (
 	"datastore/datastore"
 	"datastore/dsimpl"
 	"datastore/storagebackend"
-	"datastore/storagebackend/postgres"
+	"datastore/storagebackend/timescaledb"
 
 	"google.golang.org/grpc"
 )
@@ -17,10 +17,10 @@ import (
 func createStorageBackend() (storagebackend.StorageBackend, error) {
 	var sbe storagebackend.StorageBackend
 
-	// only Postgres supported for now
-	sbe, err := postgres.NewPostgres()
+	// only TimescaleDB supported for now
+	sbe, err := timescaledb.NewTimescaleDB()
 	if err != nil {
-		return nil, fmt.Errorf("postgres.NewPostgres() failed: %v", err)
+		return nil, fmt.Errorf("timescaledb.NewTimescaleDB() failed: %v", err)
 	}
 
 	return sbe, nil
