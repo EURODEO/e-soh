@@ -1,10 +1,9 @@
 package dsimpl
 
-type ServiceArgs struct {
-	Arg1 string // for now
-	Arg2 string // for now
-}
+import (
+	"datastore/storagebackend"
+)
 
 type ServiceInfo struct {
-	Args ServiceArgs
+	Sbe storagebackend.StorageBackend
 }

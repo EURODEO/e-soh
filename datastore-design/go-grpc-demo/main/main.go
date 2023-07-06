@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"log"
 	"net"
@@ -9,32 +8,37 @@ import (
 	"datastore/common"
 	"datastore/datastore"
 	"datastore/dsimpl"
+	"datastore/storagebackend"
+	"datastore/storagebackend/postgres"
 
 	"google.golang.org/grpc"
 )
 
-// parseArgs parses and returns command-line arguments.
-func parseArgs() *dsimpl.ServiceArgs {
-	arg1 := flag.String("arg1", "value1", "argument 1 (just an example for now)")
-	arg2 := flag.String("arg2", "value2", "argument 2 (just an example for now)")
+func createStorageBackend() (storagebackend.StorageBackend, error) {
+	var sbe storagebackend.StorageBackend
 
-	flag.Parse()
-
-	return &dsimpl.ServiceArgs{
-		Arg1: *arg1,
-		Arg2: *arg2,
+	// only Postgres supported for now
+	sbe, err := postgres.NewPostgres()
+	if err != nil {
+		return nil, fmt.Errorf("postgres.NewPostgres() failed: %v", err)
 	}
+
+	return sbe, nil
 }
 
 func main() {
-	args := parseArgs()
-
 	// create gRPC server
 	server := grpc.NewServer()
 
+	// create storage backend
+	sbe, err := createStorageBackend()
+	if err != nil {
+		log.Fatalf("createStorageBackend() failed: %v", err)
+	}
+
 	// register service implementation
 	var datastoreServer datastore.DatastoreServer = &dsimpl.ServiceInfo{
-		Args: *args,
+		Sbe: sbe,
 	}
 	datastore.RegisterDatastoreServer(server, datastoreServer)
 
