@@ -3,7 +3,8 @@
 ## Overview
 
 This directory contains code that demonstrates how the E-SOH datastore could
-be implemented as a [gRPC](https://grpc.io/) service written in Go.
+be implemented as a [gRPC](https://grpc.io/) service written in
+[Go](https://go.dev/).
 
 The code has been tested in the following environment:
 
@@ -34,6 +35,14 @@ go mod tidy
 $ go build -o server main/main.go && ./server
 2023/07/05 15:16:41 starting server
 ```
+
+## Environment variables
+
+The following environment variables are supported:
+
+Variable | Mandatory | Default value | Description
+:--      | :--       | :--           | :--
+`SERVERPORT`| No  | `50050` | Server port number
 
 ## Testing the server with gRPCurl
 
