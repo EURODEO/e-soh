@@ -5,10 +5,10 @@ package datastore;
 option go_package = "./datastore";
 
 // Notes:
-// - A time series has globally unique ID, serves a container/context for
+// - A 'time series' has a globally unique ID, serves a container/context for
 //   observations, and contains overall metadata that are independent of obs
 //   time.
-// - An observation belongs to a time series and contains obs time, obs value,
+// - An 'observation' belongs to a time series and contains obs time, obs value,
 //   and metadata that depend on obs time.
 // - All obs times are Unix timestamp (i.e. relative to Unix epoch)
 
