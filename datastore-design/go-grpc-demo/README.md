@@ -23,7 +23,7 @@ If necessary, compile the protobuf file first. The following command generates
 the directory/file `datastore/datastore.pb.go`:
 
 ```text
-protoc protobuf/datastore.proto --go_out=plugins=grpc:.
+protoc protobuf/datastore.proto --go_out=plugins=grpc:. --go-grpc_out=require_unimplemented_servers=false:.
 ```
 
 ## Generating a go.sum file
