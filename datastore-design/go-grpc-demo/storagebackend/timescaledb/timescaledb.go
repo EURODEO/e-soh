@@ -82,9 +82,9 @@ func resetDB(host, port, user, password, dbname string) (
 			param_id TEXT NOT NULL,
 			UNIQUE (station_id, param_id),
 			pos GEOGRAPHY(Point) NOT NULL,
-			other1 TEXT,
-			other2 TEXT,
-			other3 TEXT)
+			other1 TEXT, -- additional metadata to be defined
+			other2 TEXT, -- ----''----
+			other3 TEXT) -- ----''----
 		`)
 	if err != nil {
 		return nil, fmt.Errorf(
@@ -97,7 +97,9 @@ func resetDB(host, port, user, password, dbname string) (
 			ts_id integer REFERENCES time_series(id) ON DELETE CASCADE,
 			tstamp timestamp, -- obs time (NOT NULL, but implied by being part of PK)
 			value double precision, -- obs value
-			PRIMARY KEY (ts_id, tstamp))
+			PRIMARY KEY (ts_id, tstamp),
+			field1 TEXT, -- additional metadata to be defined
+			field2 TEXT) -- ----''----
 		`)
 	if err != nil {
 		return nil, fmt.Errorf("db.Exec(CREATE TABLE observations ...) failed: %v", err)
