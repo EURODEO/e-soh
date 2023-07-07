@@ -67,7 +67,7 @@ CONTAINER ID   IMAGE                                  COMMAND                  C
 ```
 
 ```text
-$ PGPASSWORD=mysecretpassword psql -h localhost -U postgres
+$ PGPASSWORD=mysecretpassword psql -h localhost -p 5433 -U postgres
 psql (15.3 (Ubuntu 15.3-1.pgdg18.04+1), server 15.2 (Ubuntu 15.2-1.pgdg22.04+1))
 Type "help" for help.
 
