@@ -118,8 +118,7 @@ func resetDB(host, port, user, password, dbname string) (
 	}
 
 	// (re)create database
-	cmd = exec.Command(
-		"createdb", "-w", "-h", host, "-p", port, "-U", user, dbname)
+	cmd = exec.Command("createdb", "-w", "-h", host, "-p", port, "-U", user, dbname)
 	if err := execCmd(cmd.Path, cmd); err != nil {
 		return nil, fmt.Errorf("execCmd() failed: %v", err)
 	}
@@ -133,7 +132,43 @@ func resetDB(host, port, user, password, dbname string) (
 	// create PostGIS extension
 	_, err = db.Exec("CREATE EXTENSION postgis")
 	if err != nil {
-		return nil, fmt.Errorf("db.Exec() failed: %v", err)
+		return nil, fmt.Errorf("db.Exec(CREATE EXTENSION postgis) failed: %v", err)
+	}
+
+	// create time series table
+	_, err = db.Exec(`
+		CREATE TABLE time_series (
+			id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+			station_id TEXT NOT NULL,
+			param_id TEXT NOT NULL,
+			UNIQUE (station_id, param_id),
+			pos GEOGRAPHY(Point) NOT NULL,
+			other_metadata JSONB NOT NULL)
+		`)
+	if err != nil {
+		return nil, fmt.Errorf(
+			"db.Exec(CREATE TABLE time_series ...) failed: %v", err)
+	}
+
+	// create observations table
+	_, err = db.Exec(`
+		CREATE TABLE observations (
+			ts_id integer REFERENCES time_series(id) ON DELETE CASCADE,
+			tstamp timestamp, -- obs time (NOT NULL, but implied by being part of PK)
+			value double precision, -- obs value
+			PRIMARY KEY (ts_id, tstamp))
+		`)
+	if err != nil {
+		return nil, fmt.Errorf("db.Exec(CREATE TABLE observations ...) failed: %v", err)
+	}
+
+	// convert observations table to hypertable
+	_, err = db.Exec(`
+		SELECT create_hypertable(
+			'observations', 'tstamp', chunk_time_interval => INTERVAL '1 hour')
+		`)
+	if err != nil {
+		return nil, fmt.Errorf("db.Exec(SELECT create_hypertable ...) failed: %v", err)
 	}
 
 	return db, nil
