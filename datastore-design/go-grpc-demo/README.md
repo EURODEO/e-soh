@@ -110,7 +110,23 @@ $ grpcurl -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 describe
 datastore.Datastore is a service:
 service Datastore {
   rpc AddTimeSeries ( .datastore.AddTSRequest ) returns ( .datastore.AddTSResponse );
-  ...
+...
+```
+
+```text
+$ grpcurl -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 describe .datastore.AddTSRequest
+message AddTSRequest {
+  int64 id = 1;
+  .datastore.TSMetadata metadata = 2;
+}
+```
+
+```text
+$ grpcurl -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 describe .datastore.TSMetadata
+datastore.TSMetadata is a message:
+message TSMetadata {
+  string station_id = 1;
+...
 ```
 
 ```text
