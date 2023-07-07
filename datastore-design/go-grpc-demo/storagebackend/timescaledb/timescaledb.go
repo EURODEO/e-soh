@@ -143,7 +143,9 @@ func resetDB(host, port, user, password, dbname string) (
 			param_id TEXT NOT NULL,
 			UNIQUE (station_id, param_id),
 			pos GEOGRAPHY(Point) NOT NULL,
-			other_metadata JSONB NOT NULL)
+			other1 TEXT,
+			other2 TEXT,
+			other3 TEXT)
 		`)
 	if err != nil {
 		return nil, fmt.Errorf(

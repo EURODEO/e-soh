@@ -25,9 +25,13 @@ service Datastore {
 //---------------------------------------------------------------------------
 
 message TSMetadata {
-  string field1 = 1; // for now
-  string field2 = 2; // for now
-  string field3 = 3; // for now
+  string station_id = 1;
+  string param_id = 2;
+  double lat = 3;
+  double lon = 4;
+  string other1 = 5; // for now
+  string other2 = 6; // for now
+  string other3 = 7; // for now
   // ...
 }
 
