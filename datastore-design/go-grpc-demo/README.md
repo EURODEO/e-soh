@@ -8,9 +8,14 @@ be implemented as a [gRPC](https://grpc.io/) service written in
 
 The code has been tested in the following environment:
 
-- OS: Ubuntu 18.04 Bionic
-- Go: 1.20.5
-- protoc: libprotoc 3.0.0
+|   |   |
+|---|---|
+| OS | Ubuntu 18.04 Bionic |
+| [Go](https://go.dev/) | 1.20.5 |
+| [protoc](https://github.com/google/protobuf/) | libprotoc 3.0.0 |
+| [Docker](https://www.docker.com/) | version 24.0.2, build cb74dfc |
+| [PostgreSQL](https://www.postgresql.org/) | 15.3 (Ubuntu 15.3-1.pgdg18.04+1) |
+| [TimescaleDB](https://hub.docker.com/r/timescale/timescaledb) | latest-pg15 |
 
 ## Compiling the protobuf file
 
