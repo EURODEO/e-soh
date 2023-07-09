@@ -24,6 +24,8 @@ func createInsertVals(
 			obs.Metadata.Field1,
 			obs.Metadata.Field2,
 		}
+		// TODO: only add observations that are within the valid time range
+		// (typically: [now - 24h, now])
 		*valsExpr = append(
 			*valsExpr, fmt.Sprintf("($%d, to_timestamp($%d), $%d, $%d, $%d)",
 			index+1, index+2, index+3, index+4, index+5))
@@ -66,6 +68,9 @@ func insertObsForTS(db *sql.DB, tsObs *datastore.TSObservations) error {
 	if err != nil {
 		return fmt.Errorf("db.Exec() failed: %v", err)
 	}
+
+	// TODO: delete observations that have now become too old
+	// (possibly this could be done less often in some background thread)
 
 	return nil
 }
