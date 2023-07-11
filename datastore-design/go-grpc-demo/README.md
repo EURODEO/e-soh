@@ -37,7 +37,7 @@ go mod tidy
 ## Installing and running TimescaleDB in a docker container
 
 Currently the datastore server is using a TimescaleDB server as its only storage backend (for both
-metadata and observations). The following commands shows how TimescaleDB can be run in a docker
+metadata and observations). The following commands show how TimescaleDB can be run in a docker
 container:
 
 ```text
