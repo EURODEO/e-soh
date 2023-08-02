@@ -10,14 +10,15 @@ The code has been tested in the following environment:
 
 |   |   |
 |---|---|
-| OS | Ubuntu 22.04 Jammy |
+| OS | [Ubuntu](https://ubuntu.com/) [22.04 Jammy](https://releases.ubuntu.com/jammy/) |
 | [Go](https://go.dev/) | 1.20.6 |
 | [protoc](https://github.com/google/protobuf/) | libprotoc 3.12.4 |
-| [protoc-gen-go](https://pkg.go.dev/google.golang.org/protobuf/cmd/protoc-gen-go) | v1.31.0 |
-| [protoc-gen-go-grpc](https://pkg.go.dev/google.golang.org/grpc/cmd/protoc-gen-go-grpc) | v1.3.0 |
-| [Docker](https://www.docker.com/) | version 24.0.5, build ced0996 |
+| [protoc-gen-go](https://pkg.go.dev/google.golang.org/protobuf/cmd/protoc-gen-go) | 1.31.0 |
+| [protoc-gen-go-grpc](https://pkg.go.dev/google.golang.org/grpc/cmd/protoc-gen-go-grpc) | 1.3.0 |
+| [Docker](https://www.docker.com/) | 24.0.5 |
 | [PostgreSQL](https://www.postgresql.org/) | 15.3 (Ubuntu 15.3-1.pgdg18.04+1) |
 | [TimescaleDB](https://hub.docker.com/r/timescale/timescaledb) | latest-pg15 |
+| [Python](https://www.python.org/) | 3.11 |
 
 ## Compiling the protobuf file
 

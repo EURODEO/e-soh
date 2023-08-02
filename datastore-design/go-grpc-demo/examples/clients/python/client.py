@@ -1,18 +1,22 @@
 #!/usr/bin/env python3
 
-# tested with Python 3.9
+# tested with Python 3.11
 
 import datastore_pb2 as dstore
 import datastore_pb2_grpc as dstore_grpc
 import grpc
 
 
-def callAddTSRequest(stub):
-    print('calling AddTSRequest() ...')
+def callAddTimeSeries(stub):
+    print('calling AddTimeSeries() ...')
     tsMData = dstore.TSMetadata(
-        field1='value1',
-        field2='value2',
-        field3='value3',
+        station_id='18700',
+        param_id='211',
+        lat=59.91,
+        lon=10.75,
+        other1='value1',
+        other2='value2',
+        other3='value3',
     )
     request = dstore.AddTSRequest(
         id=1234,
@@ -30,7 +34,7 @@ def callPutObservations(stub):
     )
     obs = [
         dstore.Observation(
-            time=10,
+            time=160,
             value=123.456,
             metadata=obsMData,
         )
@@ -63,6 +67,6 @@ if __name__ == '__main__':
     with grpc.insecure_channel('localhost:50050') as channel:
         stub = dstore_grpc.DatastoreStub(channel)
 
-        callAddTSRequest(stub)
+        callAddTimeSeries(stub)
         callPutObservations(stub)
         callGetObservations(stub)
