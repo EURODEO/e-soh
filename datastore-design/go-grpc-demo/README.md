@@ -18,7 +18,9 @@ The code has been tested in the following environment:
 | [Docker](https://www.docker.com/) | 24.0.5 |
 | [PostgreSQL](https://www.postgresql.org/) | 15.3 (Ubuntu 15.3-1.pgdg18.04+1) |
 | [TimescaleDB](https://hub.docker.com/r/timescale/timescaledb) | latest-pg15 |
+For Python client example:
 | [Python](https://www.python.org/) | 3.11 |
+| [grpcio-tools](https://grpc.io/docs/languages/python/quickstart/) | 1.56.2 |
 
 ## Compiling the protobuf file
 
