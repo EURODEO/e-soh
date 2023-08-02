@@ -10,10 +10,12 @@ The code has been tested in the following environment:
 
 |   |   |
 |---|---|
-| OS | Ubuntu 18.04 Bionic |
-| [Go](https://go.dev/) | 1.20.5 |
-| [protoc](https://github.com/google/protobuf/) | libprotoc 3.0.0 |
-| [Docker](https://www.docker.com/) | version 24.0.2, build cb74dfc |
+| OS | Ubuntu 22.04 Jammy |
+| [Go](https://go.dev/) | 1.20.6 |
+| [protoc](https://github.com/google/protobuf/) | libprotoc 3.12.4 |
+| [protoc-gen-go](https://pkg.go.dev/google.golang.org/protobuf/cmd/protoc-gen-go) | v1.31.0 |
+| [protoc-gen-go-grpc](https://pkg.go.dev/google.golang.org/grpc/cmd/protoc-gen-go-grpc) | v1.3.0 |
+| [Docker](https://www.docker.com/) | version 24.0.5, build ced0996 |
 | [PostgreSQL](https://www.postgresql.org/) | 15.3 (Ubuntu 15.3-1.pgdg18.04+1) |
 | [TimescaleDB](https://hub.docker.com/r/timescale/timescaledb) | latest-pg15 |
 
@@ -23,8 +25,15 @@ If necessary, compile the protobuf file first. The following command generates
 the directory/file `datastore/datastore.pb.go`:
 
 ```text
-protoc protobuf/datastore.proto --go_out=plugins=grpc:.
+protoc --go_out=. --go-grpc_out=. protobuf/datastore.proto
 ```
+
+### Troubleshooting
+If `protoc` fails, it may be necessary to first install these:
+- `protoc-gen-go`:
+  - typically: `go install google.golang.org/protobuf/cmd/protoc-gen-go@latest`
+- `protoc-gen-go-grpc`:
+  - typically: `go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest`
 
 ## Generating a go.sum file
 
@@ -135,7 +144,7 @@ $ grpcurl -d '{"id": 1234, "metadata": {"station_id": "18700", "param_id": "211"
 ```
 
 ```text
-$ grpcurl -d '{"tsobs": [{"tsid": 1234, "obs": [{"time": 10, "value": 123.456, "metadata": {"field1": "value1", "field2": "value2"}}]}]}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.PutObservations
+$ grpcurl -d '{"tsobs": [{"tsid": 1234, "obs": [{"time": 160, "value": 123.456, "metadata": {"field1": "value1", "field2": "value2"}}]}]}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.PutObservations
 ...
 ```
 

@@ -2,10 +2,9 @@ module datastore
 
 go 1.20
 
-require (
-	google.golang.org/grpc v1.56.1
-	google.golang.org/protobuf v1.31.0
-)
+require google.golang.org/grpc v1.56.1
+
+require google.golang.org/protobuf v1.31.0 // indirect
 
 require (
 	github.com/golang/protobuf v1.5.3 // indirect

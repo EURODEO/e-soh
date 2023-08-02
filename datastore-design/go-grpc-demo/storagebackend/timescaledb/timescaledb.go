@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"datastore/common"
 	"fmt"
+	"os"
 	"os/exec"
 
 	_ "github.com/lib/pq"
@@ -49,15 +50,19 @@ func resetDB(host, port, user, password, dbname string) (
 		return nil
 	}
 
+	env := append(os.Environ(), fmt.Sprintf("PGPASSWORD=%s", password))
+
 	// drop any existing database
 	cmd := exec.Command(
 		"dropdb", "-w", "-f", "--if-exists", "-h", host, "-p", port, "-U", user, dbname)
+	cmd.Env = env
 	if err := execCmd(cmd.Path, cmd); err != nil {
 		return nil, fmt.Errorf("execCmd() failed: %v", err)
 	}
 
 	// (re)create database
 	cmd = exec.Command("createdb", "-w", "-h", host, "-p", port, "-U", user, dbname)
+	cmd.Env = env
 	if err := execCmd(cmd.Path, cmd); err != nil {
 		return nil, fmt.Errorf("execCmd() failed: %v", err)
 	}
