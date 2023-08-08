@@ -1,0 +1,31 @@
+services:
+  timescale:
+    image: timescale/timescaledb-ha:pg15-latest
+    ports:
+      - 5433:5432
+    volumes:
+      - ts-data:/home/postgres/pgdata/data # works! (persistent)
+      #- ts-data:/var/lib/postgresql/data # fails! (not persistent)
+      - ./ts-init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_DB=data
+  main:
+    build:
+      context: .
+      dockerfile: Dockerfile.main
+    ports:
+      - "8008:50050"
+    networks:
+      - default
+    #restart: on-failure
+    command: ["sleep", "infinity"]
+
+volumes:
+  ts-data:
+
+networks:
+  default:
+    driver: bridge
+

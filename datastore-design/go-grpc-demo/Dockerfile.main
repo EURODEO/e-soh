@@ -1,0 +1,41 @@
+# useful commands:
+# docker build --tag main . -f Dockerfile.main
+# docker run -it main /bin/bash
+# docker image ls
+# docker image rm -f main
+# ...
+
+FROM golang:latest
+
+WORKDIR /app
+
+# install protoc
+RUN apt-get update
+RUN apt install -y protobuf-compiler
+
+# install protoc-gen-go
+RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+
+# install protoc-gen-go-grpc
+RUN go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+
+# copy source files
+COPY go.mod ./
+COPY main/ main/
+COPY dsimpl/ dsimpl/
+COPY storagebackend/ storagebackend/
+COPY common/ common/
+COPY protobuf/ protobuf/
+
+# fix dependencies
+RUN go mod tidy
+
+# compile proto file
+RUN protoc --go_out=. --go-grpc_out=. protobuf/datastore.proto
+
+# build datastore server
+RUN go build -o dsserver main/main.go
+
+EXPOSE 50050
+
+CMD [ "./dsserver" ]

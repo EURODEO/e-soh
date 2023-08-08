@@ -6,94 +6,40 @@ This directory contains code that demonstrates how the E-SOH datastore could
 be implemented as a [gRPC](https://grpc.io/) service written in
 [Go](https://go.dev/).
 
+Currently the datastore server is using a TimescaleDB server as its only
+storage backend (for both metadata and observations).
+
 The code has been tested in the following environment:
+
+### Service
 
 |   |   |
 |---|---|
 | OS | [Ubuntu](https://ubuntu.com/) [22.04 Jammy](https://releases.ubuntu.com/jammy/) |
-| [Go](https://go.dev/) | 1.20.6 |
-| [protoc](https://github.com/google/protobuf/) | libprotoc 3.12.4 |
-| [protoc-gen-go](https://pkg.go.dev/google.golang.org/protobuf/cmd/protoc-gen-go) | 1.31.0 |
-| [protoc-gen-go-grpc](https://pkg.go.dev/google.golang.org/grpc/cmd/protoc-gen-go-grpc) | 1.3.0 |
 | [Docker](https://www.docker.com/) | 24.0.5 |
-| [PostgreSQL](https://www.postgresql.org/) | 15.3 (Ubuntu 15.3-1.pgdg18.04+1) |
-| [TimescaleDB](https://hub.docker.com/r/timescale/timescaledb) | latest-pg15 |
-For Python client example:
+| [Docker Compose](https://www.docker.com/) | 2.20.2 |
+
+### Python client example
+
+|   |   |
+|---|---|
+| OS | Same as service |
 | [Python](https://www.python.org/) | 3.11 |
 | [grpcio-tools](https://grpc.io/docs/languages/python/quickstart/) | 1.56.2 |
 
-## Compiling the protobuf file
 
-If necessary, compile the protobuf file first. The following command generates
-the directory/file `datastore/datastore.pb.go`:
+## Using docker compose to manage the service
 
-```text
-protoc --go_out=. --go-grpc_out=. protobuf/datastore.proto
-```
+`docker compose up`
 
-### Troubleshooting
-If `protoc` fails, it may be necessary to first install these:
-- `protoc-gen-go`:
-  - typically: `go install google.golang.org/protobuf/cmd/protoc-gen-go@latest`
-- `protoc-gen-go-grpc`:
-  - typically: `go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest`
+`docker compose down`
 
-## Generating a go.sum file
-
-If necessary, generate a `go.sum` file:
-
-```text
-go mod tidy
-```
-
-## Installing and running TimescaleDB in a docker container
-
-Currently the datastore server is using a TimescaleDB server as its only storage backend (for both
-metadata and observations). The following commands show how TimescaleDB can be run in a docker
-container:
-
-```text
-$ docker pull timescale/timescaledb-ha:pg15-latest
-pg15-latest: Pulling from timescale/timescaledb-ha
-095da3dbe359: Pull complete
-...
-```
-
-```text
-$ docker images -a
-REPOSITORY                 TAG           IMAGE ID       CREATED         SIZE
-timescale/timescaledb-ha   pg15-latest   ad39c4fbc5c4   2 months ago    3.37GB
-...
-```
-
-```text
-$ docker run -d --name timescaledb -p 5433:5432 -e POSTGRES_PASSWORD=mysecretpassword timescale/timescaledb-ha:pg15-latest
-753a96bdd455e2819c44e529186979afbb759bfcd9674d2d3ca91b63466ad6ff
-```
-
-```text
-$ docker ps -a
-CONTAINER ID   IMAGE                                  COMMAND                  CREATED          STATUS          PORTS                                                           NAMES
-753a96bdd455   timescale/timescaledb-ha:pg15-latest   "/docker-entrypoint.…"   32 seconds ago   Up 31 seconds   8008/tcp, 8081/tcp, 0.0.0.0:5433->5432/tcp, :::5433->5432/tcp   timescaledb
-...
-```
-
-```text
-$ PGPASSWORD=mysecretpassword psql -h localhost -p 5433 -U postgres
-psql (15.3 (Ubuntu 15.3-1.pgdg18.04+1), server 15.2 (Ubuntu 15.2-1.pgdg22.04+1))
-Type "help" for help.
-
-postgres=#
-```
-
-## Compiling and running the datastore server
-
-```text
-$ go build -o server main/main.go && ./server
-2023/07/05 15:16:41 starting server
-```
+MORE DETAILS HERE!
 
 ## Environment variables
+
+TO BE OBSOLETED BY A SECTION ABOUT ENVIRONMENT VARIABLES RELEVANT TO
+DOCKER COMPOSE ONLY (to override fields in docker-compose.yml)
 
 The following environment variables are supported:
 
@@ -107,9 +53,9 @@ Variable | Mandatory | Default value | Description
 `TSDBDBNAME`       | No  | `data`             | TimescaleDB database name
 `TSDBRESET`        | No  | `false`            | Whether to reset the TimescaleDB database (drop, (re)create, define schema etc.)
 
-## Testing the datastore server with gRPCurl
+## Testing the datastore service with gRPCurl
 
-The datastore server can be tested with [gRPCurl](https://github.com/fullstorydev/grpcurl) like
+The datastore service can be tested with [gRPCurl](https://github.com/fullstorydev/grpcurl) like
 this:
 
 ```text
@@ -156,7 +102,7 @@ $ grpcurl -d '{"tsids": [1234, 5678, 9012], "fromtime": 156, "totime": 163}' -pl
 ...
 ```
 
-## Testing the datastore server with a Python client
+## Testing the datastore service with a Python client
 
 ### Compiling the protobuf file
 
