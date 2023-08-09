@@ -7,35 +7,35 @@
 
 FROM golang:latest
 
+SHELL ["/bin/bash", "-eux", "-o", "pipefail", "-c"]
+
 WORKDIR /app
 
 # install protoc
-RUN apt-get update
-RUN apt install -y protobuf-compiler
+RUN apt-get update \
+    && apt-get -y upgrade \
+    && apt-get install -y --no-install-recommends \
+    protobuf-compiler \
+    # install protoc-gen-go
+    && go install google.golang.org/protobuf/cmd/protoc-gen-go@latest \
+    # install protoc-gen-go-grpc
+    && go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest \
+    # Cleanup
+    && rm -rf /usr/tmp  \
+    && apt-get autoremove -y \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# install protoc-gen-go
-RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+# copy source files, include via dockerignore
+COPY . /go-grpc-demo
 
-# install protoc-gen-go-grpc
-RUN go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-
-# copy source files
-COPY go.mod ./
-COPY main/ main/
-COPY dsimpl/ dsimpl/
-COPY storagebackend/ storagebackend/
-COPY common/ common/
-COPY protobuf/ protobuf/
-
-# fix dependencies
-RUN go mod tidy
-
-# compile proto file
-RUN protoc --go_out=. --go-grpc_out=. protobuf/datastore.proto
-
-# build datastore server
-RUN go build -o dsserver main/main.go
-
-EXPOSE 50050
+WORKDIR /go-grpc-demo
+RUN \
+    # compile proto file \
+    protoc --go_out=. --go-grpc_out=. protobuf/datastore.proto \
+    # fix dependencies
+    && go mod tidy  \
+    # build datastore server
+    && go build -o dsserver main/main.go
 
 CMD [ "./dsserver" ]

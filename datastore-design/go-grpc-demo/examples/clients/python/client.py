@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-
 # tested with Python 3.11
+import os
 
 import datastore_pb2 as dstore
 import datastore_pb2_grpc as dstore_grpc
@@ -64,7 +64,7 @@ def callGetObservations(stub):
 
 if __name__ == '__main__':
 
-    with grpc.insecure_channel('localhost:50050') as channel:
+    with grpc.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") as channel:
         stub = dstore_grpc.DatastoreStub(channel)
 
         callAddTimeSeries(stub)

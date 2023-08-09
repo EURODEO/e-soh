@@ -1,3 +1,6 @@
+version: '3.8'
+name: go-grpc-demo
+
 services:
   timescale:
     image: timescale/timescaledb-ha:pg15-latest
@@ -11,21 +14,54 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=mysecretpassword
       - POSTGRES_DB=data
+    restart: on-failure
+    healthcheck:
+      test: [ "CMD-SHELL", "sh -c pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 5s
+      timeout: 1s
+      retries: 3
+      start_period: 30s   # Failures in 30 seconds do not mark container as unhealthy
+    networks:
+      datastore-network:
+
   main:
     build:
       context: .
       dockerfile: Dockerfile.main
     ports:
-      - "8008:50050"
+      - "50050:50050"
+    environment:
+      - TSDBHOST=timescale
+      - TSDBPORT=5432
+    restart: on-failure
     networks:
-      - default
-    #restart: on-failure
-    command: ["sleep", "infinity"]
+      datastore-network:
+    depends_on:
+      timescale:
+        condition: service_healthy
+
+  client:
+    build:
+      context: ./
+      dockerfile: examples/clients/python/Dockerfile.client
+    environment:
+      - DSHOST=main
+      - DSPORT=50050
+    networks:
+      datastore-network:
+    depends_on:
+      main:
+        condition: service_started
+    command:
+      - "/bin/bash"
+      - "-c"
+      - |
+        echo "sleep for 5sec"
+        sleep 5
+        python client.py
 
 volumes:
   ts-data:
 
 networks:
-  default:
-    driver: bridge
-
+  datastore-network:

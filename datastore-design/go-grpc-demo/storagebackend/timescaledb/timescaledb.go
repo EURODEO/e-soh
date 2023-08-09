@@ -23,8 +23,8 @@ func (sbe *TimescaleDB) Description() string {
 // Returns (DB, nil) upon success, otherwise (..., error).
 func openDB(host, port, user, password, dbname string) (*sql.DB, error) {
 	connInfo := fmt.Sprintf(
-	    "host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-        host, port,	user, password, dbname)
+		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+		host, port, user, password, dbname)
 
 	db, err := sql.Open("postgres", connInfo)
 	if err != nil {
@@ -52,7 +52,7 @@ func NewTimescaleDB() (*TimescaleDB, error) {
 		return nil, fmt.Errorf("openDB() failed: %v", err)
 	}
 
-	if err = sbe.Db.Ping(); err != nil  {
+	if err = sbe.Db.Ping(); err != nil {
 		return nil, fmt.Errorf("sbe.Db.Ping() failed: %v", err)
 	}
 

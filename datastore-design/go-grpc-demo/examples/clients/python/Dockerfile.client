@@ -1,0 +1,30 @@
+FROM python:3.11-slim-bookworm
+
+SHELL ["/bin/bash", "-eux", "-o", "pipefail", "-c"]
+
+ENV CLIENT_PATH=/clients/python
+
+COPY examples/clients/python/client.py "${CLIENT_PATH}/client.py"
+COPY examples/clients/python/requirements.txt "${CLIENT_PATH}/requirements.txt"
+COPY protobuf/datastore.proto /protobuf/datastore.proto
+
+# hadolint ignore=DL3013
+RUN apt-get update \
+    && apt-get -y upgrade \
+    && pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir --upgrade -r "${CLIENT_PATH}/requirements.txt" \
+    # Cleanup
+    && rm -rf /usr/tmp  \
+    && apt-get autoremove -y \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Compiling the protobuf file
+RUN python -m grpc_tools.protoc  \
+    --proto_path=protobuf protobuf/datastore.proto  \
+    --python_out=$CLIENT_PATH  \
+    --grpc_python_out=$CLIENT_PATH
+
+WORKDIR ${CLIENT_PATH}
+SHELL ["/bin/bash", "-eu", "-o", "pipefail", "-c"]
+CMD ["python", "client.py"]
