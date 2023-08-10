@@ -34,6 +34,12 @@ services:
       - TSDBHOST=timescale
       - TSDBPORT=5432
     restart: on-failure
+    healthcheck:
+      test: [ "CMD-SHELL", "exit $(/bin/grpc_health_probe-linux-amd64 -addr=localhost:50050)" ]
+      interval: 5s
+      timeout: 1s
+      retries: 3
+      start_period: 30s   # Failures in 30 seconds do not mark container as unhealthy
     networks:
       datastore-network:
     depends_on:
@@ -51,14 +57,7 @@ services:
       datastore-network:
     depends_on:
       main:
-        condition: service_started
-    command:
-      - "/bin/bash"
-      - "-c"
-      - |
-        echo "sleep for 5sec"
-        sleep 5
-        python client.py
+        condition: service_healthy
 
 volumes:
   ts-data:

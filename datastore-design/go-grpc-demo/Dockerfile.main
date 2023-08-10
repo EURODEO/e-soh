@@ -7,6 +7,8 @@
 
 FROM golang:latest
 
+ARG VERSION_GRPC_HEALTH_PROBE=v0.4.19
+
 SHELL ["/bin/bash", "-eux", "-o", "pipefail", "-c"]
 
 WORKDIR /app
@@ -20,6 +22,10 @@ RUN apt-get update \
     && go install google.golang.org/protobuf/cmd/protoc-gen-go@latest \
     # install protoc-gen-go-grpc
     && go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest \
+    # install grpc healtcheck service \
+    && arch=$(echo "$(uname)-$(dpkg --print-architecture)" | tr '[:upper:]' '[:lower:]') \
+    && wget -q --directory-prefix "/bin" "https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${VERSION_GRPC_HEALTH_PROBE}/grpc_health_probe-${arch}" \
+    && chmod +x "/bin/grpc_health_probe-${arch}" \
     # Cleanup
     && rm -rf /usr/tmp  \
     && apt-get autoremove -y \

@@ -12,6 +12,8 @@ import (
 	"datastore/storagebackend/timescaledb"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/health"
+	"google.golang.org/grpc/health/grpc_health_v1"
 )
 
 func createStorageBackend() (storagebackend.StorageBackend, error) {
@@ -29,6 +31,7 @@ func createStorageBackend() (storagebackend.StorageBackend, error) {
 func main() {
 	// create gRPC server
 	server := grpc.NewServer()
+	grpc_health_v1.RegisterHealthServer(server, health.NewServer())
 
 	// create storage backend
 	sbe, err := createStorageBackend()
