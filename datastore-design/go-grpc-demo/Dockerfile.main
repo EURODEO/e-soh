@@ -24,8 +24,8 @@ RUN apt-get update \
     && go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest \
     # install grpc healtcheck service \
     && arch=$(echo "$(uname)-$(dpkg --print-architecture)" | tr '[:upper:]' '[:lower:]') \
-    && wget -q --directory-prefix "/bin" "https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${VERSION_GRPC_HEALTH_PROBE}/grpc_health_probe-${arch}" \
-    && chmod +x "/bin/grpc_health_probe-${arch}" \
+    && wget -q --output-document "/bin/grpc_health_probe" "https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${VERSION_GRPC_HEALTH_PROBE}/grpc_health_probe-${arch}" \
+    && chmod +x "/bin/grpc_health_probe" \
     # Cleanup
     && rm -rf /usr/tmp  \
     && apt-get autoremove -y \
