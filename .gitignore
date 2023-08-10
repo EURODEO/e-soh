@@ -1,0 +1,5 @@
+# Code editors
+.idea/
+
+# Python
+venv/
