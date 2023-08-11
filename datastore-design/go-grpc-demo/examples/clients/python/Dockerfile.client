@@ -4,9 +4,7 @@ SHELL ["/bin/bash", "-eux", "-o", "pipefail", "-c"]
 
 ENV CLIENT_PATH=/clients/python
 
-COPY examples/clients/python/client.py "${CLIENT_PATH}/client.py"
 COPY examples/clients/python/requirements.txt "${CLIENT_PATH}/requirements.txt"
-COPY protobuf/datastore.proto /protobuf/datastore.proto
 
 # hadolint ignore=DL3013
 RUN apt-get update \
@@ -19,11 +17,15 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+COPY protobuf/datastore.proto /protobuf/datastore.proto
+
 # Compiling the protobuf file
 RUN python -m grpc_tools.protoc  \
     --proto_path=protobuf protobuf/datastore.proto  \
     --python_out=$CLIENT_PATH  \
     --grpc_python_out=$CLIENT_PATH
+
+COPY examples/clients/python/client.py "${CLIENT_PATH}/client.py"
 
 WORKDIR ${CLIENT_PATH}
 SHELL ["/bin/bash", "-eu", "-o", "pipefail", "-c"]

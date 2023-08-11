@@ -9,9 +9,9 @@ import (
 
 func (svcInfo *ServiceInfo) GetObservations(
 	ctx context.Context, request *datastore.GetObsRequest) (
-		*datastore.GetObsResponse, error) {
+	*datastore.GetObsResponse, error) {
 
-	if request.Totime < request.Fromtime {
+	if request.Totime.AsTime().Before(request.Fromtime.AsTime()) {
 		return nil, fmt.Errorf("To(%d) < From(%d)", request.Totime,
 			request.Fromtime)
 	}

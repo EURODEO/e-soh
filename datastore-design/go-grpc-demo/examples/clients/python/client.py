@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 # tested with Python 3.11
 import os
+from datetime import datetime
+
+from google.protobuf.timestamp_pb2 import Timestamp
 
 import datastore_pb2 as dstore
 import datastore_pb2_grpc as dstore_grpc
@@ -32,9 +35,11 @@ def callPutObservations(stub):
         field1='value1',
         field2='value2',
     )
+    timestamp = Timestamp()
+    timestamp.FromDatetime(datetime.now())
     obs = [
         dstore.Observation(
-            time=160,
+            time=timestamp,
             value=123.456,
             metadata=obsMData,
         )
@@ -53,10 +58,15 @@ def callPutObservations(stub):
 
 def callGetObservations(stub):
     print('calling GetObservations() ...')
+    from_time = Timestamp()
+    from_time.FromDatetime(datetime(2023, 1, 1))
+    to_time = Timestamp()
+    to_time.FromDatetime(datetime(2023, 10, 1))
+
     request = dstore.GetObsRequest(
         tsids=[1234, 5678, 9012],
-        fromtime=156,
-        totime=163,
+        fromtime=from_time,
+        totime=to_time,
     )
     response = stub.GetObservations(request)
     print('    response: {}'.format(response))

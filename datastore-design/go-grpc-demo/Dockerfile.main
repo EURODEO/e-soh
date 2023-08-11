@@ -17,7 +17,7 @@ WORKDIR /app
 RUN apt-get update \
     && apt-get -y upgrade \
     && apt-get install -y --no-install-recommends \
-    protobuf-compiler \
+    protobuf-compiler libprotobuf-dev \
     # install protoc-gen-go
     && go install google.golang.org/protobuf/cmd/protoc-gen-go@latest \
     # install protoc-gen-go-grpc

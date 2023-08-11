@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package datastore;
 
+import "google/protobuf/timestamp.proto";
+
 option go_package = "./datastore";
 
 // Notes:
@@ -10,7 +12,7 @@ option go_package = "./datastore";
 //   time.
 // - An 'observation' belongs to a time series and contains obs time, obs value,
 //   and metadata that depend on obs time.
-// - All obs times are Unix timestamp (i.e. relative to Unix epoch)
+// - All obs times are of type google.protobuf.Timestamp
 
 service Datastore {
   rpc AddTimeSeries(AddTSRequest) returns (AddTSResponse);
@@ -54,7 +56,7 @@ message ObsMetadata {
 }
 
 message Observation {
-  int64 time = 1; // obs time
+  google.protobuf.Timestamp time = 1; // obs time
   double value = 2; // for now
   ObsMetadata metadata = 3;
 }
@@ -79,8 +81,8 @@ message PutObsResponse {
 
 message GetObsRequest {
   repeated int64 tsids = 1; // assuming distinct time series IDs
-  int64 fromtime = 2; // earliest obs time
-  int64 totime = 3; // latest obs time
+  google.protobuf.Timestamp fromtime = 2; // earliest obs time
+  google.protobuf.Timestamp totime = 3; // latest obs time
 }
 
 message GetObsResponse {
