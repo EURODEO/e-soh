@@ -13,7 +13,7 @@ import (
 // open-ended range [fromTime, toTime>.
 // Returns nil upon success, otherwise error.
 func retrieveObsForTS(
-	db *sql.DB, tsID int64, fromTime *timestamppb.Timestamp, toTime *timestamppb.Timestamp, obs *[]*datastore.Observation) error {
+	db *sql.DB, tsID int64, fromTime, toTime *timestamppb.Timestamp, obs *[]*datastore.Observation) error {
 
 	rows, err := db.Query(`
 		SELECT EXTRACT(EPOCH FROM tstamp), value, field1, field2 FROM observations
