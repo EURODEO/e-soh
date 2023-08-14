@@ -14,7 +14,7 @@ CREATE TABLE time_series (
 
 CREATE TABLE observations (
 	ts_id integer REFERENCES time_series(id) ON DELETE CASCADE,
-	tstamp timestamp, -- obs time (NOT NULL, but implied by being part of PK)
+	tstamp timestamptz, -- obs time (NOT NULL, but implied by being part of PK)
 	value double precision, -- obs value
 	PRIMARY KEY (ts_id, tstamp),
 	field1 TEXT, -- additional metadata to be defined

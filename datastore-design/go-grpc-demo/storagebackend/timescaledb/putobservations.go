@@ -10,16 +10,16 @@ import (
 )
 
 // createInsertVals generates from tsObs two arrays:
-// - in valsExpr: the list of arguments to the VALUES clause in the SQL INSERT
-//   statement, and
-// - in vals: the total, flat list of all values.
+//   - in valsExpr: the list of arguments to the VALUES clause in the SQL INSERT
+//     statement, and
+//   - in vals: the total, flat list of all values.
 func createInsertVals(
 	tsObs *datastore.TSObservations, valsExpr *[]string, vals *[]interface{}) {
 	index := 0
 	for _, obs := range tsObs.Obs {
 		vals0 := []interface{}{
 			tsObs.Tsid,
-			obs.Time,
+			float64(obs.Time.Seconds) + float64(obs.Time.Nanos)/1e9,
 			obs.Value,
 			obs.Metadata.Field1,
 			obs.Metadata.Field2,
@@ -28,7 +28,7 @@ func createInsertVals(
 		// (typically: [now - 24h, now])
 		*valsExpr = append(
 			*valsExpr, fmt.Sprintf("($%d, to_timestamp($%d), $%d, $%d, $%d)",
-			index+1, index+2, index+3, index+4, index+5))
+				index+1, index+2, index+3, index+4, index+5))
 		*vals = append(*vals, vals0...)
 		index += len(vals0)
 	}
@@ -40,7 +40,7 @@ func insertObsForTS(db *sql.DB, tsObs *datastore.TSObservations) error {
 	var err error
 	var rows *sql.Rows
 
-    // ensure that the time series ID already exists
+	// ensure that the time series ID already exists
 	rows, err = db.Query("SELECT id FROM time_series WHERE id = $1", tsObs.Tsid)
 	if err != nil {
 		return fmt.Errorf("db.Query() failed: %v", err)
