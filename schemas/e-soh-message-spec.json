@@ -1,0 +1,287 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.wmo.int/wis2/broker/message/0.9.0/schema.yml",
+  "title": "WMO WIS 2.0 broker message schema",
+  "description": "WMO WIS 2.0 broker message schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "UUID (RFC4122) - Guarantee uniqueness of the message over (at least) a 24h period."
+    },
+    "version": {
+      "type": "string",
+      "description": "Version of message specification.",
+      "const": "v04"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "Feature"
+      ]
+    },
+    "geometry": {
+      "oneOf": [
+        {
+          "enum": [
+            null
+          ]
+        },
+        {
+          "type": "object",
+          "required": [
+            "type",
+            "coordinates"
+          ],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "Point"
+              ]
+            },
+            "coordinates": {
+              "type": "array",
+              "minItems": 2,
+              "items": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "type",
+            "coordinates"
+          ],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "Polygon"
+              ]
+            },
+            "coordinates": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "minItems": 4,
+                "items": {
+                  "type": "array",
+                  "minItems": 2,
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "properties": {
+      "type": "object",
+      "properties": {
+        "pubtime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Identifies the date/time of when the file was posted/published, in RFC3339 format.\nThe publication date/time is critical for subscribers to prevent message loss by knowing\ntheir lag (how far behind the publisher they are).\n"
+        },
+        "data_id": {
+          "type": "string",
+          "description": "Unique identifier of the data as defined by the data producer.\nData producers SHOULD NOT use an opaque id, but something meaningful to support client side filtering.\n"
+        },
+        "metadata_id": {
+          "type": "string",
+          "description": "Identifier for associated discovery metadata record to which the notification applies to."
+        },
+        "datetime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Identifies the date/time of the data being published, in RFC3339 format."
+        },
+        "start_datetime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Identifies the start date/time date of the data being published, in RFC3339 format."
+        },
+        "end_datetime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Identifies the end date/time date of the data being published, in RFC3339 format."
+        },
+        "cache": {
+          "type": "boolean",
+          "description": "Whether the data in the notification should be cached (if not specified, the default value is `true`).\nWhen set to `false`, WIS2 Global Cache services do not cache the canonical link, and publish the\nnotification with an unmodified canonical link (which points back to the endpoint as specified by the data producer).\nThe notification is always published by the Global Cache regardless to the `cache` topic.\n",
+          "default": true
+        },
+        "integrity": {
+          "type": "object",
+          "description": "Specifies a checksum to be applied to the data to ensure that the download is accurate.",
+          "properties": {
+            "method": {
+              "type": "string",
+              "description": "A specific set of methods for calculating the checksum algorithms:\n* ``sha256``: the Secure Hash Algorithm 2, 256 bits, value is base64 encoded.\n* ``sha384``: the Secure Hash Algorithm 2, 384 bits, value is base64 encoded.\n* ``sha512``: the Secure Hash Algorithm 2, 512 bits, value is base64 encoded.\n* ``sha3-256``: the Secure Hash Algorithm 3, 256 bits, value is base64 encoded.\n* ``sha3-384``: the Secure Hash Algorithm 3, 384 bits, value is base64 encoded.\n* ``sha3-512``: the Secure Hash Algorithm 3, 512 bits, value is base64 encoded.\n",
+              "enum": [
+                "sha256",
+                "sha384",
+                "sha512",
+                "sha3-256",
+                "sha3-384",
+                "sha3-512"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "description": "Checksum value."
+            }
+          },
+          "required": [
+            "method",
+            "value"
+          ]
+        },
+        "content": {
+          "type": "object",
+          "description": "Used to embed small products inline within the message.",
+          "properties": {
+            "encoding": {
+              "type": "string",
+              "description": "Encoding of content",
+              "enum": [
+                "utf-8",
+                "base64",
+                "gzip"
+              ]
+            },
+            "size": {
+              "type": "integer",
+              "maximum": 4096,
+              "description": "Number of bytes contained in the file. Together with the ``integrity`` property, it provides additional assurance that file content was accurately received.\nNote that the limit takes into account the data encoding used, including data compression (for example `gzip`).\n"
+            },
+            "value": {
+              "type": "string",
+              "description": "The inline content of the file.",
+              "maxLength": 4096
+            }
+          },
+          "required": [
+            "encoding",
+            "size",
+            "value"
+          ]
+        }
+      },
+      "required": [
+        "pubtime",
+        "data_id"
+      ],
+      "oneOf": [
+        {
+          "allOf": [
+            {
+              "required": [
+                "start_datetime",
+                "end_datetime"
+              ]
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "required": [
+                "datetime"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "links": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "href",
+          "rel"
+        ],
+        "properties": {
+          "href": {
+            "type": "string",
+            "example": "http://data.example.com/buildings/123"
+          },
+          "rel": {
+            "type": "string",
+            "example": "alternate"
+          },
+          "type": {
+            "type": "string",
+            "example": "application/geo+json"
+          },
+          "hreflang": {
+            "type": "string",
+            "example": "en"
+          },
+          "title": {
+            "type": "string",
+            "example": "Trierer Strasse 70, 53115 Bonn"
+          },
+          "length": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "id",
+    "version",
+    "type",
+    "geometry",
+    "properties",
+    "links"
+  ],
+  "example": {
+    "id": "31e9d66a-cd83-4174-9429-b932f1abe1be",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        6.146255135536194,
+        46.223296618227444
+      ]
+    },
+    "properties": {
+      "pubtime": "2022-03-20T04:50:18.314854383Z",
+      "datetime": "2022-03-20T04:45:00Z",
+      "integrity": {
+        "method": "sha512",
+        "value": "A2KNxvks...S8qfSCw=="
+      },
+      "data_id": "dataset/123/data-granule/UANT01_CWAO_200445___15103.bufr4",
+      "metadata_id": "urn:x-wmo:md:can:eccc-msc:observations.swob",
+      "content": {
+        "encoding": "utf-8",
+        "value": "encoded bytes from the file",
+        "size": 457
+      }
+    },
+    "links": [
+      {
+        "href": "https://example.org/data/4Pubsub/92c557ef-d28e-4713-91af-2e2e7be6f8ab.bufr4",
+        "rel": "canonical",
+        "type": "application/x-bufr"
+      },
+      {
+        "href": "https://example.org/oapi/collections/my-dataset/items/my-data-granule",
+        "rel": "item",
+        "type": "application/json"
+      }
+    ]
+  }
+}
