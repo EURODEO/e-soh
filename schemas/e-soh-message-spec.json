@@ -112,7 +112,7 @@
           "type": "string",
           "description": "Provide the URL to a standard or specific license, enter 'Freely Distributed' or 'None', or describe any restrictions to data access and distribution in free text."
         },
-        "conventions": {
+        "Conventions": {
           "type": "array",
           "items": {
             "type": "string"

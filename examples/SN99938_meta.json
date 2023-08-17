@@ -1,0 +1,46 @@
+{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            31.4643,
+            80.1058
+        ]
+    },
+    "properties": {
+        "pubtime": "2019-09-03T10:01:35.325086+00:00",
+        "title": "Observations from station KVIT\u00d8YA SN99938",
+        "data_id": "metno_obs_SN99938",
+        "start_datetime": "1996-01-01T03:00:00.000000000",
+        "end_datetime": "2019-09-03T10:00:00.000000000",
+        "integrity": {
+            "method": "sha256",
+            "value": "c7a0635f1393bf842d4d31fd4254bec6f08e559a905c7e546677ea782db8d20c"
+        },
+        "keywords": [
+            "observations"
+        ],
+        "Conventions": [
+            "ACDD-1.3",
+            "CF-1.6"
+        ],
+        "history": [
+            "2019-09-03T10:01:35.325086+00:00: frost write netcdf"
+        ],
+        "summary": "Surface meteorological observations from the observation network operated by the Norwegian Meteorological Institute. Data are received and quality controlled using the local KVALOBS system. Observation stations are normally operated according to WMO requirements, although specifications are not followed on some remote stations for practical matters. Stations may have more parameters than reported in this dataset.",
+        "institution": "Norwegian Meteorological Institute",
+        "source": "Meterological surface observation via frost.met.no",
+        "creator_name": "Norwegian Meteorological Institute",
+        "creator_url": "https://met.no",
+        "creator_email": "observasjon@met.no"
+    },
+    "links": [
+        {
+            "href": "placeholder, this need to be set up when we have decided about datasources, should link to where the data set can be downloaded, and for multiple applications such as json, netCDF or buffr",
+            "rel": "item",
+            "type": "application/json"
+        }
+    ],
+    "id": "fa9902cb-2e9d-4588-821a-621ca586ebef",
+    "version": "v04"
+}
