@@ -1,23 +1,8 @@
 import xarray as xr
 import json
-import hashlib
-import subprocess
 
-def hash_file(file_path: str, hash_method: str) -> str:
-    """
-    Calls the openssl hash program found on om most linux instralation.
-
-    Keyword arguemnts:
-    file_path (str) -- path to file that need hashing
-    hash_method (str) -- hashing algorithm used to has file
-
-    Return:
-    str -- Returns a string with the file hash
-    """
-	
-    return str(subprocess.check_output(["openssl", hash_method, file_path])).split("=")[-1].strip().strip("\\n'")
     
-def create_json_from_netcdf_metdata(path: str, integrity_hash: str = "sha256") -> str:
+def create_json_from_netcdf_metdata(ds: xr.Dataset) -> str:
     """
     This function takes a netCDF file with ACDD and CF standard
     and creates a json string containing specified metadata fields
@@ -25,9 +10,6 @@ def create_json_from_netcdf_metdata(path: str, integrity_hash: str = "sha256") -
 
     Keyword arguemnts:
     path (str) -- path to the netcdf file
-    integrity_hash (str) -- hashing method used to create the file fingerprint,
-                      supported methods are sha256, sha384, sha512, sha3-256,
-                      sha3-384 and sha3-512
 
     Return:
     str -- a json in string format
@@ -36,28 +18,22 @@ def create_json_from_netcdf_metdata(path: str, integrity_hash: str = "sha256") -
     Raises error if the geometry type from netCDF attribute geospatial_bounds
     are unknown.
     """        
+    
+    #ds = xr.open_dataset(path)
 
-
-    path = "../test_data/SN99938.nc"
-    ds = xr.open_dataset(path)
-
-    geospatial = ds.attrs["geospatial_bounds"]
-
-    geospatial = geospatial.replace("(", " ").replace(")", "").split(" ")
-
-
-    geometry_type = geospatial[0]
-
-    if geometry_type == "POINT":
+    if (geometry_type := ds.attrs["spatial_representation"]) == "point":
         geometry_type = "Point"
-        coords = [float(i) for i in geospatial[1:]]
-    elif geometry_type == "POLYGON":
-        raise NotImplementedError("Handling of polygons not yet implemented.")
+        coords = [float(ds.attrs["geospatial_lat_min"]), float(ds.attrs["geospatial_lon_min"])]
+    elif geometry_type == "polygon":
+        geometry_type = "Polygon"
+        coords = [[float(ds.attrs["geospatial_lat_min"]), float(ds.attrs["geospatial_lon_min"])],
+                  [float(ds.attrs["geospatial_lat_min"]), float(ds.attrs["geospatial_lon_max"])],
+                  [float(ds.attrs["geospatial_lat_max"]), float(ds.attrs["geospatial_lon_min"])],
+                  [float(ds.attrs["geospatial_lat_max"]), float(ds.attrs["geospatial_lon_max"])]]
+
         
     else:
         raise ValueError("Unknown geometry type")
-
-    ds.attrs["geospatial_bounds"]
 
     message_json = {
         "type": "Feature",
@@ -65,13 +41,9 @@ def create_json_from_netcdf_metdata(path: str, integrity_hash: str = "sha256") -
             "coordinates": coords
             },
         "properties": {
-            "pubtime": ds.attrs["date_created"],
             "title": ds.attrs["title"],
             "data_id": ds.attrs["id"],
-            "start_datetime": str(ds["time"].min().data),
-            "end_datetime": str(ds["time"].max().data),
-            "integrity": {"method": "sha256", 
-                        "value": hash_file(path, "sha256")},
+            "metadata_id": ds.attrs["naming_authority"]+":"+ds.attrs["id"],
             "keywords": ds.attrs["keywords"].split(","),
             "Conventions": ds.attrs["Conventions"].split(","),
             "history": ds.attrs["history"].split("\n")
@@ -79,14 +51,14 @@ def create_json_from_netcdf_metdata(path: str, integrity_hash: str = "sha256") -
         },
         "links": [
             {
-                "href": "placeholder, this need to be set up when we have decided about datasources, should link to where the data set can be downloaded, and for multiple applications such as json, netCDF or buffr",
+                "href": ds.attrs["references"],
                 "rel": "item",
                 "type": "application/json"
             }
         ]
         }
 
-    message_json["properties"].update({i:ds.attrs[i] for i in ["summary", "institution", "source", "creator_name", "creator_url", "creator_email", "institution"]})
+    message_json["properties"].update({i:ds.attrs[i] for i in ["summary", "institution", "source", "creator_name", "creator_url", "creator_email", "institution", "license", "access_constraint"]})
 
 
 

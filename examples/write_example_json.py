@@ -2,7 +2,7 @@ from extract_metadata_netcdf import create_json_from_netcdf_metdata
 import json
 import uuid
 
-path = "../test_data/SN99938.nc"
+path = "../test_data/max_air_temperature_juvvasshoe-parent.nc"
 
 json_msg = create_json_from_netcdf_metdata(path)
 
