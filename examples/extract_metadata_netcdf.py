@@ -9,18 +9,15 @@ def create_json_from_netcdf_metdata(ds: xr.Dataset) -> str:
     in the e-soh-message-spec json schema.
 
     Keyword arguemnts:
-    path (str) -- path to the netcdf file
+    path (xr.Dataset) -- An instance of a xr.Dataset loaded from a netCDF
 
     Return:
     str -- a json in string format
 
     Raises:
-    Raises error if the geometry type from netCDF attribute geospatial_bounds
-    are unknown.
+    Raises error if the spatial_representation format is unrecognized.
     """        
     
-    #ds = xr.open_dataset(path)
-
     if (geometry_type := ds.attrs["spatial_representation"]) == "point":
         geometry_type = "Point"
         coords = [float(ds.attrs["geospatial_lat_min"]), float(ds.attrs["geospatial_lon_min"])]
@@ -45,7 +42,7 @@ def create_json_from_netcdf_metdata(ds: xr.Dataset) -> str:
             "data_id": ds.attrs["id"],
             "metadata_id": ds.attrs["naming_authority"]+":"+ds.attrs["id"],
             "keywords": ds.attrs["keywords"].split(","),
-            "Conventions": ds.attrs["Conventions"].split(","),
+            "Conventions": ds.attrs["Conventions"],
             "history": ds.attrs["history"].split("\n")
             
         },

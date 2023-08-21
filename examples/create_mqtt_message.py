@@ -11,11 +11,7 @@ import json
 #Create all metadata for json-payload
 
 
-def build_all_json_payloads_from_netCDF(path: str) -> list[str]:
-
-    #Open the the netCDF
-    ds = xr.open_dataset(path)
-
+def build_all_json_payloads_from_netCDF(ds: xr.Dataset) -> list[str]:
     json_msg = create_json_from_netcdf_metdata(ds)
 
     json_msg = json.loads(json_msg)
@@ -50,9 +46,6 @@ def build_all_json_payloads_from_netCDF(path: str) -> list[str]:
             
             #Set message publication time in RFC3339 format
             #Create UUID for the message, and state message format version
-            
-
-
             json_msg["id"] = str(uuid.uuid4())
             current_time = datetime.utcnow().replace(microsecond=0)
             current_time_str = current_time.strftime('%Y-%m-%dT%H:%M:%S.%f')
@@ -70,7 +63,8 @@ def build_all_json_payloads_from_netCDF(path: str) -> list[str]:
 
 if __name__ == "__main__":
     path = "../test_data/air_temperature_gullingen_skisenter-parent.nc"
-    build_all_json_payloads_from_netCDF(path)
+    ds = xr.load_dataset(path)
+    build_all_json_payloads_from_netCDF(ds)
 
 
     
