@@ -247,12 +247,22 @@
               "type": "string",
               "description": "The inline content of the file.",
               "maxLength": 4096
+            },
+            "standard_name": {
+              "type": "string",
+              "description": "CF standard for the data included in this message."
+            },
+            "unit": {
+              "type": "string",
+              "description": "Unit for the data"
             }
           },
           "required": [
             "encoding",
             "size",
-            "value"
+            "value",
+            "unit",
+            "standard_name"
           ]
         }
       },
