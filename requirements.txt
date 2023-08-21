@@ -1,0 +1,5 @@
+xarray==2023.7.0
+netCDF4==1.6.4
+numpy==1.25.2
+paho-mqtt==1.6.1
+jsonschema==4.19.0
