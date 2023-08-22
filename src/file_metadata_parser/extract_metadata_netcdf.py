@@ -1,6 +1,11 @@
-import xarray as xr
-import json
+from datetime import datetime
 
+import numpy as np
+import xarray as xr
+
+import uuid
+import json
+import copy
     
 def create_json_from_netcdf_metdata(ds: xr.Dataset) -> str:
     """
@@ -41,9 +46,9 @@ def create_json_from_netcdf_metdata(ds: xr.Dataset) -> str:
             "title": ds.attrs["title"],
             "data_id": ds.attrs["id"],
             "metadata_id": ds.attrs["naming_authority"]+":"+ds.attrs["id"],
-            "keywords": ds.attrs["keywords"].split(","),
+            "keywords": ds.attrs["keywords"],
             "Conventions": ds.attrs["Conventions"],
-            "history": ds.attrs["history"].split("\n")
+            "history": ds.attrs["history"]
             
         },
         "links": [
@@ -64,5 +69,49 @@ def create_json_from_netcdf_metdata(ds: xr.Dataset) -> str:
 
 
 
+def build_all_json_payloads_from_netCDF(ds: xr.Dataset) -> list[str]:
+    json_msg = create_json_from_netcdf_metdata(ds)
 
+    json_msg = json.loads(json_msg)
+
+    json_msg["version"] = "v0.1"
+
+    obs_var = ds.variables
+
+    messages = []
+    #select all datapoints from the last 24h of dataset timeseries
+    ds_subset = ds.sel(time=slice(ds.time[-1] - np.timedelta64(1, "D"), ds.time[-1]))
+
+    for obs_set in ds_subset:
+        data = ds_subset[obs_set]
+        for value, time in zip(data.data, data.time.data):
+
+            time = np.datetime_as_string(time)
+            json_msg["properties"]["datetime"] = time
+
+            content_str = f"{value}"
+            content = {
+                "encoding": "utf-8",
+                "standard_name": data.attrs["standard_name"],
+                "unit": data.attrs["units"],
+                "size": len(str.encode(content_str, "utf-8")),
+                "value": content_str
+            }
+
+            json_msg["content"] = content
+            
+            #Set message publication time in RFC3339 format
+            #Create UUID for the message, and state message format version
+            json_msg["id"] = str(uuid.uuid4())
+            current_time = datetime.utcnow().replace(microsecond=0)
+            current_time_str = current_time.strftime('%Y-%m-%dT%H:%M:%S.%f')
+
+            json_msg["properties"]["pubtime"] = f"{current_time_str[:-3]}{current_time_str[-3:].zfill(6)}Z"
+    
+
+            messages.append(copy.deepcopy(json_msg))
+
+
+    # Returns all complete messages
+    return messages
 
