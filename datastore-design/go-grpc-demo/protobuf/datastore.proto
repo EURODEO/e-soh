@@ -16,8 +16,7 @@ option go_package = "./datastore";
 
 service Datastore {
   rpc AddTimeSeries(AddTSRequest) returns (AddTSResponse);
-  //rpc DescribeTimeSeries(DescribeTSRequest) returns (DescribeTSResponse);
-  //rpc FindTimeSeries(FindTSRequest) returns (FindTSResponse);
+  rpc FindTimeSeries(FindTSRequest) returns (FindTSResponse);
   //rpc DeleteTimeSeries(DeleteTSRequest) returns (DeleteTSResponse);
   //rpc UpdateTimeSeries(UpdateTSRequest) returns (UpdateTSResponse);
   rpc PutObservations(PutObsRequest) returns (PutObsResponse);
@@ -26,14 +25,20 @@ service Datastore {
 
 //---------------------------------------------------------------------------
 
+message Point { // horizontal position
+  double lat = 1; // latitude degrees in range [-90, 90]
+  double lon = 2; // longitude degrees in range [-180, 180]
+}
+
+//---------------------------------------------------------------------------
+
 message TSMetadata {
   string station_id = 1;
   string param_id = 2;
-  double lat = 3;
-  double lon = 4;
-  string other1 = 5; // for now
-  string other2 = 6; // for now
-  string other3 = 7; // for now
+  Point pos = 3;
+  string other1 = 4; // for now
+  string other2 = 5; // for now
+  string other3 = 6; // for now
   // ...
 }
 
@@ -45,6 +50,27 @@ message AddTSRequest {
 message AddTSResponse {
   int32 status = 1;
   string error = 2; // empty on success
+}
+
+//---------------------------------------------------------------------------
+
+message Polygon { // horizontal area
+  // three or more points with an implicit edge between the first and last point
+  repeated Point point = 1;
+}
+
+message FindTSRequest {
+  repeated string station_ids = 1; // if specified, only return time series matching any of these station IDs
+  repeated string param_ids = 2; // if specified, only return time series matching any of these param IDs
+  Polygon inside = 3; // if specified, only return time series located inside this area
+  // TODO: add search filters for other metadata
+}
+
+message FindTSResponse {
+  int32 status = 1;
+  string error = 2; // empty on success
+  repeated int64 ids = 3; // matching time series IDs
+  repeated TSMetadata metadata = 4; // corresponding metadata
 }
 
 //---------------------------------------------------------------------------

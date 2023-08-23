@@ -1,15 +1,12 @@
 package timescaledb
 
 import (
-	"database/sql"
 	"datastore/datastore"
-	"fmt"
-	"math"
 
 	_ "github.com/lib/pq"
-	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
+/* OBSOLETE
 // retrieveObsForTS retrieves into obs observations for time series tsID in
 // open-ended range [fromTime, toTime>.
 // Returns nil upon success, otherwise error.
@@ -48,24 +45,28 @@ func retrieveObsForTS(
 
 	return nil
 }
+*/
 
-// GetObservations ... (see documentation in StorageBackend interface)
-func (sbe *TimescaleDB) GetObservations(request *datastore.GetObsRequest) (
-	*datastore.GetObsResponse, error) {
+// FindTimeSeries ... (see documentation in StorageBackend interface)
+func (sbe *TimescaleDB) FindTimeSeries(request *datastore.FindTSRequest) (
+	*datastore.FindTSResponse, error) {
 
-	// TODO: validate request.Tsids (ensure it doesn't contain duplicates etc.)
-	tsObs := make([]*datastore.TSObservations, len(request.Tsids))
-	for i, tsID := range request.Tsids {
-		obs := []*datastore.Observation{}
-		if err := retrieveObsForTS(
-			sbe.Db, tsID, request.Fromtime, request.Totime, &obs); err != nil {
-			return nil, fmt.Errorf("retrieveObsForTS() failed (i: %d, tsID: %d): %v", i, tsID, err)
-		}
-		tsObs[i] = &datastore.TSObservations{
-			Tsid: tsID,
-			Obs:  obs,
-		}
-	}
+	// TODO: parse request ...
 
-	return &datastore.GetObsResponse{Tsobs: tsObs}, nil
+	// // TODO: validate request.Tsids (ensure it doesn't contains duplicates etc.)
+	// tsObs := make([]*datastore.TSObservations, len(request.Tsids))
+	// for i, tsID := range request.Tsids {
+	// 	obs := []*datastore.Observation{}
+	// 	if err := retrieveObsForTS(
+	// 		sbe.Db, tsID, request.Fromtime, request.Totime, &obs); err != nil {
+	// 		return nil, fmt.Errorf("retrieveObsForTS() failed (i: %d, tsID: %d): %v", i, tsID, err)
+	// 	}
+	// 	tsObs[i] = &datastore.TSObservations{
+	// 		Tsid: tsID,
+	// 		Obs:  obs,
+	// 	}
+	// }
+
+	// FOR NOW RETURN EMPTY RESULT
+	return &datastore.FindTSResponse{}, nil
 }

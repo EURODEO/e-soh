@@ -2,8 +2,9 @@ package timescaledb
 
 import (
 	"database/sql"
-	"datastore/datastore"
 	"fmt"
+
+	datastore "datastore/datastore"
 
 	_ "github.com/lib/pq"
 )
@@ -46,9 +47,9 @@ func (sbe *TimescaleDB) AddTimeSeries(request *datastore.AddTSRequest) error {
         VALUES ($1, $2, $3, ST_MakePoint($4, $5), $6, $7, $8)
     `
     _, err = sbe.Db.Exec(
-	    cmd, request.Id, request.Metadata.StationId, request.Metadata.ParamId, request.Metadata.Lon,
-		request.Metadata.Lat, request.Metadata.Other1, request.Metadata.Other2,
-		request.Metadata.Other3)
+	    cmd, request.Id, request.Metadata.StationId, request.Metadata.ParamId,
+		request.Metadata.Pos.Lon, request.Metadata.Pos.Lat, request.Metadata.Other1,
+		request.Metadata.Other2, request.Metadata.Other3)
 	if err != nil {
 		return fmt.Errorf("sbe.Db.Exec() failed: %v", err)
 	}

@@ -12,7 +12,7 @@ func (svcInfo *ServiceInfo) GetObservations(
 	*datastore.GetObsResponse, error) {
 
 	if request.Totime.AsTime().Before(request.Fromtime.AsTime()) {
-		return nil, fmt.Errorf("To(%d) < From(%d)", request.Totime,
+		return nil, fmt.Errorf("To(%v) < From(%v)", request.Totime,
 			request.Fromtime)
 	}
 
