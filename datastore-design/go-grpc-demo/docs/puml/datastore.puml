@@ -1,4 +1,4 @@
-@startuml "c4-container-relational-data-store-conventional"
+@startuml "c4-container-data-store"
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
 AddElementTag("microService", $shape=EightSidedShape(), $bgColor="CornflowerBlue", $fontColor="white", $legendText="micro service\neight sided")
@@ -7,12 +7,14 @@ ContainerDb(timescaledb, "Relational DB\n(TimescaleDB/\nPostgreSQL)")
 Container(datastore, "Data Store", "", "gRPC service\ndatastore.proto", $tags = "microService")
 Container(corrtest, "Correctness Testing", "", "")
 Container(perftest, "Performance Testing", "", "")
+Person(dev, "dev")
 System_Ext(ingestion, "Ingestion", "", "")
 System_Ext(edr, "Search and Access APIs\nOGC EDR", "", "")
 
 Rel(datastore, timescaledb, "access storage backend", "SQL")
 Rel_R(ingestion, datastore, "add (meta)data", "gRPC")
 Rel_L(edr, datastore, "search and access (meta)data", "gRPC")
+Rel(dev, datastore, "test manually", "gRPCurl")
 Rel(corrtest, datastore, "run test suite", "gRPC")
 Rel(perftest, datastore, "run test suite", "gRPC")
 
