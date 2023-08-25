@@ -20,7 +20,10 @@ path = argv[1]
 
 ds = xr.load_dataset(path)
 
-json_msg = build_all_json_payloads_from_netCDF(ds)
+with open("schemas/netcdf_to_e_soh_message_metno.json", "r") as file:
+	netcdf_def = json.load(file)
+
+json_msg = build_all_json_payloads_from_netCDF(ds, netcdf_def)
 
 json_msg = json_msg[-1]
 

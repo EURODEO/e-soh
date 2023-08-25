@@ -1,4 +1,5 @@
 from datetime import datetime
+from pathlib import Path
 
 import numpy as np
 import xarray as xr
@@ -6,8 +7,10 @@ import xarray as xr
 import uuid
 import json
 import copy
+
+
     
-def create_json_from_netcdf_metdata(ds: xr.Dataset) -> str:
+def create_json_from_netcdf_metdata(ds: xr.Dataset, map_netcdf: dict) -> str:
     """
     This function takes a netCDF file with ACDD and CF standard
     and creates a json string containing specified metadata fields
@@ -23,6 +26,8 @@ def create_json_from_netcdf_metdata(ds: xr.Dataset) -> str:
     Raises error if the spatial_representation format is unrecognized.
     """        
     
+    """
+    #Are we ever going to send polygon MQTT messages? or store polygons in datastore
     if (geometry_type := ds.attrs["spatial_representation"]) == "point":
         geometry_type = "Point"
         coords = [float(ds.attrs["geospatial_lat_min"]), float(ds.attrs["geospatial_lon_min"])]
@@ -36,20 +41,21 @@ def create_json_from_netcdf_metdata(ds: xr.Dataset) -> str:
         
     else:
         raise ValueError("Unknown geometry type")
+    """
 
+
+
+
+
+    """
     message_json = {
         "type": "Feature",
         "geometry":{"type": geometry_type,
             "coordinates": coords
             },
         "properties": {
-            "title": ds.attrs["title"],
             "data_id": ds.attrs["id"],
             "metadata_id": ds.attrs["naming_authority"]+":"+ds.attrs["id"],
-            "keywords": ds.attrs["keywords"],
-            "Conventions": ds.attrs["Conventions"],
-            "history": ds.attrs["history"]
-            
         },
         "links": [
             {
@@ -60,8 +66,37 @@ def create_json_from_netcdf_metdata(ds: xr.Dataset) -> str:
         ]
         }
 
-    message_json["properties"].update({i:ds.attrs[i] for i in ["summary", "institution", "source", "creator_name", "creator_url", "creator_email", "institution", "license", "access_constraint"]})
+    message_json["properties"].update({i:ds.attrs[i] for i in ["history","Conventions","keywords","title" ,"summary", "institution", "source", "creator_name", "creator_url", "creator_email", "institution", "license", "access_constraint"]})
+    """
 
+    message_json = {"properties": {}, "links": {}}
+
+    message_json["geometry"] = {"type": "Point", "coordinates": [float(ds.attrs[i]) for i in map_netcdf["geometry"]]}
+
+    #Get all fields from netCDF that need transformation before beeing added to the MQTT message
+    for key in map_netcdf["root"]["translation_fields"]:
+        match map_netcdf["root"]["translation_fields"][key][type]:
+            case "str":
+                message_json[key] = f"{map_netcdf['root']['translation_fields'][key]['sep']}".join([ds.attrs[i] for i in map_netcdf["root"]["translation_fields"][key]["fields"])
+            case "list":
+                message_json[key] = [ds.attrs[field] for field in map_netcdf["root"]["translation_fields"][key]["fields"]]
+            
+
+
+
+    for level in ["properties", "links"]:
+        pass
+    for key in map_netcdf["translation_fields"]:
+        message_json["properties"][key] = map_netcdf["translation_fields"][key]["sep"].join([ds.attrs[i] for i in map_netcdf["translation_fields"][key]["fields"]])
+
+
+    #Get all fields that do not need transformation
+    message_json["properties"].update({i:ds.attrs[i] for i in map_netcdf["persistant_fields"]})
+
+    message_json["links"] = {}
+
+    for key in map_netcdf["links"]:
+        message_json["links"].update({i:ds.attrs[map_netcdf["links"][key][i]] for i in map_netcdf["links"][key]})
 
 
     return(json.dumps(message_json))
@@ -69,8 +104,8 @@ def create_json_from_netcdf_metdata(ds: xr.Dataset) -> str:
 
 
 
-def build_all_json_payloads_from_netCDF(ds: xr.Dataset) -> list[str]:
-    json_msg = create_json_from_netcdf_metdata(ds)
+def build_all_json_payloads_from_netCDF(ds: xr.Dataset, mapping_json: dict) -> list[str]:
+    json_msg = create_json_from_netcdf_metdata(ds, mapping_json)
 
     json_msg = json.loads(json_msg)
 
