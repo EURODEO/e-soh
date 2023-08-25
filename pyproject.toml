@@ -1,0 +1,7 @@
+[project]
+name = "e_soh_ingest_and_event_queue"
+description = "Code for parsing and publishing metadata to the E-SOH members"
+readme = "README.md"
+
+[tool.pytest.ini_options]
+pythonpath = "."
