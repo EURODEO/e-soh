@@ -35,6 +35,15 @@ The code has been tested in the following environment:
 
 MORE DETAILS HERE!
 
+## Compiling datastore.proto to prevent IDEs from complaining
+
+Whenever `datastore.proto` changes, it should be complied locally in order for
+IDEs to recognize the current types and symbols.
+
+```text
+protoc --go_out=. --go-grpc_out=. protobuf/datastore.proto
+```
+
 ## Environment variables
 
 TO BE OBSOLETED BY A SECTION ABOUT ENVIRONMENT VARIABLES RELEVANT TO
@@ -54,17 +63,16 @@ Variable | Mandatory | Default value | Description
 
 ## Testing the datastore service with gRPCurl
 
-The datastore service can be tested with [gRPCurl](https://github.com/fullstorydev/grpcurl) like
-this:
+The datastore service can be tested with [gRPCurl](https://github.com/fullstorydev/grpcurl). Below are a few examples:
 
-List all services defined in protobuf/datastore.proto:
+### List all services defined in the proto file
 
 ```text
 $ grpcurl -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 list
 datastore.Datastore
 ```
 
-Describe all services defined in protobuf/datastore.proto:
+### Describe all services defined in the proto file
 
 ```text
 $ grpcurl -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 describe
@@ -74,7 +82,7 @@ service Datastore {
 ...
 ```
 
-Describe method AddTimeSeries:
+### Describe method AddTimeSeries
 
 ```text
 $ grpcurl -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 describe datastore.Datastore.AddTimeSeries
@@ -82,48 +90,62 @@ datastore.Datastore.AddTimeSeries is a method:
 rpc AddTimeSeries ( .datastore.AddTSRequest ) returns ( .datastore.AddTSResponse );
 ```
 
-Describe message AddTSRequest:
+### Describe message AddTSRequest
 
 ```text
 $ grpcurl -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 describe .datastore.AddTSRequest
+datastore.AddTSRequest is a message:
 message AddTSRequest {
   int64 id = 1;
   .datastore.TSMetadata metadata = 2;
 }
 ```
 
-Describe message TSMetadata:
-
-```text
-$ grpcurl -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 describe .datastore.TSMetadata
-datastore.TSMetadata is a message:
-message TSMetadata {
-  string station_id = 1;
-...
-```
-
-Add a time series:
+### Add a time series
 
 ```text
 $ grpcurl -d '{"id": 1234, "metadata": {"station_id": "18700", "param_id": "211", "pos": {"lat": 59.91, "lon": 10.75}, "other1": "value1", "other2": "value2", "other3": "value3"}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.AddTimeSeries
 ...
 ```
 
-Find all time series:
+### Find all time series
 
 ```text
 $ grpcurl -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.FindTimeSeries
 ...
 ```
 
-Insert observations into time series 1234:
+### Find time series inside a polygon
+
+#### Error case 1: too few points
+
+```text
+$ grpcurl -d '{"inside": {"points": [{"lat": 1, "lon": 1}, {"lat": 3, "lon": 1}]}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.FindTimeSeries
+...
+```
+
+#### Error case 2: identical endpoints
+
+```text
+$ grpcurl -d '{"inside": {"points": [{"lat": 1, "lon": 1}, {"lat": 3, "lon": 1}, {"lat": 3, "lon": 3}, {"lat": 1, "lon": 1}]}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.FindTimeSeries
+...
+```
+
+#### Correct case
+
+```text
+$ grpcurl -d '{"inside": {"points": [{"lat": 1, "lon": 1}, {"lat": 1, "lon": 3}, {"lat": 3, "lon": 3}, {"lat": 3, "lon": 1}, {"lat": 1, "lon": 2}]}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.FindTimeSeries
+...
+```
+
+### Insert observations into time series 1234
 
 ```text
 $ grpcurl -d '{"tsobs": [{"tsid": 1234, "obs": [{"time": "2023-01-01T00:00:10Z", "value": 123.456, "metadata": {"field1": "value1", "field2": "value2"}}]}]}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.PutObservations
 ...
 ```
 
-Retrieve observations within a time range from time series 1234, 5678, and 9012:
+### Retrieve observations within a time range from time series 1234, 5678, and 9012
 
 ```text
 $ grpcurl -d '{"tsids": [1234, 5678, 9012], "fromtime": "2023-01-01T00:00:05Z", "totime": "2023-01-01T00:00:13Z"}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations

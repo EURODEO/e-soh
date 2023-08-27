@@ -2,71 +2,126 @@ package timescaledb
 
 import (
 	"datastore/datastore"
+	"fmt"
 
+	postgis "github.com/cridenour/go-postgis"
 	_ "github.com/lib/pq"
 )
 
-/* OBSOLETE
-// retrieveObsForTS retrieves into obs observations for time series tsID in
-// open-ended range [fromTime, toTime>.
-// Returns nil upon success, otherwise error.
-func retrieveObsForTS(
-	db *sql.DB, tsID int64, fromTime, toTime *timestamppb.Timestamp, obs *[]*datastore.Observation) error {
-
-	rows, err := db.Query(`
-		SELECT EXTRACT(EPOCH FROM tstamp), value, field1, field2 FROM observations
-		WHERE ts_id = $1
-		AND tstamp >= to_timestamp($2)
-		AND tstamp <  to_timestamp($3)
-		ORDER BY tstamp ASC
-	`, tsID, float64(fromTime.Seconds)+float64(fromTime.Nanos)/1e9, float64(toTime.Seconds)+float64(toTime.Nanos)/1e9)
-	if err != nil {
-		return fmt.Errorf("db.Query() failed: %v", err)
+// matchAnyValCond creates the sub-condition of a WHERE clause that checks if string column 'name'
+// matches any of a set of values.
+// Returns the sub-condition to be appended to a WHERE clause.
+func matchAnyValCond(name string, values []string) string {
+	if len(values) == 0 {
+		return ""
 	}
-	for rows.Next() {
-		var (
-			obsTime        float64
-			obsVal         float64
-			field1, field2 string
-		)
-		if err := rows.Scan(&obsTime, &obsVal, &field1, &field2); err != nil {
-			return fmt.Errorf("rows.Scan() failed: %v", err)
+	inArg := ""
+	for i, value := range values {
+		if i > 0 {
+			inArg += ","
 		}
-		intpart, div := math.Modf(obsTime)
-		(*obs) = append(*obs, &datastore.Observation{
-			Time:  &timestamppb.Timestamp{Seconds: int64(intpart), Nanos: int32(div * 1e9)},
-			Value: obsVal,
-			Metadata: &datastore.ObsMetadata{
-				Field1: field1,
-				Field2: field2,
-			},
-		})
+		inArg += fmt.Sprintf("'%s'", value)
+	}
+	return fmt.Sprintf(" AND %s IN (%s)", name, inArg)
+}
+
+func equal(p1, p2 *datastore.Point) bool {
+	return (p1.Lat == p2.Lat) && (p1.Lon == p2.Lon)
+}
+
+// insidePolygonCond creates a sub-condition of a WHERE clause that checks if geo point column
+// 'name' is contained in a geo polygon.
+// Returns the sub-condition to be appended to a WHERE clause.
+func insidePolygonCond(name string, polygon0 *datastore.Polygon) (string, error) {
+
+	if polygon0 == nil {
+		// absent polygon => disable filtering (note: "" is equivalent to " AND TRUE")
+		return "", nil
 	}
 
-	return nil
+	points := polygon0.Points
+
+	// validate
+	if len(points) < 3 {
+		return "", fmt.Errorf("polygon must contain at least 3 points; found %d", len(points))
+	}
+	if equal(points[0], points[len(points) - 1]) {
+		return "", fmt.Errorf("polygon endpoints must be different")
+	}
+
+	// construct the polygon ring of the WKT representation
+	// (see https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry;
+	// note that only a single ring is supported for now)
+	polygonRing := ""
+	points = append(points, points[0]) // close polygon
+	for i, point := range points  {
+		if i > 0 {
+			polygonRing += ","
+		}
+		polygonRing += fmt.Sprintf("%f %f", point.Lon, point.Lat)
+	}
+
+	srid := "4326" // spatial reference system ID
+
+	return fmt.Sprintf(
+		" AND ST_WITHIN(ST_SetSRID(%s::geometry, %s), ST_GeomFromText('polygon((%s))', %s))",
+		name, srid, polygonRing, srid), nil
 }
-*/
 
 // FindTimeSeries ... (see documentation in StorageBackend interface)
 func (sbe *TimescaleDB) FindTimeSeries(request *datastore.FindTSRequest) (
 	*datastore.FindTSResponse, error) {
 
-	// TODO: parse request ...
+	query := `
+		SELECT id, station_id, param_id, pos, other1, other2, other3 FROM time_series WHERE TRUE
+	`
 
-	// // TODO: validate request.Tsids (ensure it doesn't contains duplicates etc.)
-	// tsObs := make([]*datastore.TSObservations, len(request.Tsids))
-	// for i, tsID := range request.Tsids {
-	// 	obs := []*datastore.Observation{}
-	// 	if err := retrieveObsForTS(
-	// 		sbe.Db, tsID, request.Fromtime, request.Totime, &obs); err != nil {
-	// 		return nil, fmt.Errorf("retrieveObsForTS() failed (i: %d, tsID: %d): %v", i, tsID, err)
-	// 	}
-	// 	tsObs[i] = &datastore.TSObservations{
-	// 		Tsid: tsID,
-	// 		Obs:  obs,
-	// 	}
-	// }
+	query += matchAnyValCond("station_id", request.StationIds)
+	query += matchAnyValCond("param_id", request.ParamIds)
+	if inPolyCond, err := insidePolygonCond("pos", request.Inside); err != nil {
+		return nil, fmt.Errorf("insidePolygonCond() failed: %v", err)
+	} else {
+		query += inPolyCond
+	}
+	// TODO: add more filters
 
-	// FOR NOW RETURN EMPTY RESULT
-	return &datastore.FindTSResponse{}, nil
+	rows, err := sbe.Db.Query(query)
+	if err != nil {
+		return nil, fmt.Errorf("sbe.Db.Query() failed: %v", err)
+	}
+
+	tsIDs := []int64{}
+	tsMData := []*datastore.TSMetadata{}
+
+	for rows.Next() {
+		var (
+			tsID int64
+			stationID string
+			paramID string
+			pos postgis.PointS
+			other1 string
+			other2 string
+			other3 string
+		)
+
+		if err := rows.Scan(
+			&tsID, &stationID, &paramID, &pos, &other1, &other2, &other3); err != nil {
+			return nil, fmt.Errorf("rows.Scan() failed: %v", err)
+		}
+
+		tsIDs = append(tsIDs, tsID)
+		tsMData = append(tsMData, &datastore.TSMetadata{
+			StationId: stationID,
+			ParamId: paramID,
+			Pos: &datastore.Point{
+				Lat: pos.Y,
+				Lon: pos.X,
+			},
+			Other1: other1,
+			Other2: other2,
+			Other3: other3,
+		})
+	}
+
+	return &datastore.FindTSResponse{Ids: tsIDs, Metadata: tsMData}, nil
 }

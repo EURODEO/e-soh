@@ -56,7 +56,7 @@ message AddTSResponse {
 
 message Polygon { // horizontal area
   // three or more points with an implicit edge between the first and last point
-  repeated Point point = 1;
+  repeated Point points = 1;
 }
 
 message FindTSRequest {
