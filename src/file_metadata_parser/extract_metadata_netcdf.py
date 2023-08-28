@@ -4,9 +4,21 @@ from pathlib import Path
 import numpy as np
 import xarray as xr
 
+import jinja2 as j2
+
 import uuid
 import json
 import copy
+
+def get_attrs(ds: xr.Dataset, var: str):
+    """
+    Get the attributes from the correct level in netCDF
+    """
+    metdata_dict = getattr(ds, var)
+    if hasattr(metdata_dict, "attr"):
+        return metdata_dict.attr
+    else:
+        return metdata_dict
 
 
     
@@ -14,93 +26,72 @@ def create_json_from_netcdf_metdata(ds: xr.Dataset, map_netcdf: dict) -> str:
     """
     This function takes a netCDF file with ACDD and CF standard
     and creates a json string containing specified metadata fields
-    in the e-soh-message-spec json schema.
+    in the e-soh-message-spec json schema. This function only extract the constant fields
+    from the netcdf.
 
     Keyword arguemnts:
     path (xr.Dataset) -- An instance of a xr.Dataset loaded from a netCDF
+    map_netcdf (dict) -- a json formated for datafield parsing from netCDF
 
     Return:
     str -- a json in string format
 
-    Raises:
-    Raises error if the spatial_representation format is unrecognized.
     """        
-    
-    """
-    #Are we ever going to send polygon MQTT messages? or store polygons in datastore
-    if (geometry_type := ds.attrs["spatial_representation"]) == "point":
-        geometry_type = "Point"
-        coords = [float(ds.attrs["geospatial_lat_min"]), float(ds.attrs["geospatial_lon_min"])]
-    elif geometry_type == "polygon":
-        geometry_type = "Polygon"
-        coords = [[float(ds.attrs["geospatial_lat_min"]), float(ds.attrs["geospatial_lon_min"])],
-                  [float(ds.attrs["geospatial_lat_min"]), float(ds.attrs["geospatial_lon_max"])],
-                  [float(ds.attrs["geospatial_lat_max"]), float(ds.attrs["geospatial_lon_min"])],
-                  [float(ds.attrs["geospatial_lat_max"]), float(ds.attrs["geospatial_lon_max"])]]
 
-        
-    else:
-        raise ValueError("Unknown geometry type")
-    """
-
-
-
-
-
-    """
-    message_json = {
-        "type": "Feature",
-        "geometry":{"type": geometry_type,
-            "coordinates": coords
-            },
-        "properties": {
-            "data_id": ds.attrs["id"],
-            "metadata_id": ds.attrs["naming_authority"]+":"+ds.attrs["id"],
-        },
-        "links": [
-            {
-                "href": ds.attrs["references"],
-                "rel": "item",
-                "type": "application/json"
-            }
-        ]
-        }
-
-    message_json["properties"].update({i:ds.attrs[i] for i in ["history","Conventions","keywords","title" ,"summary", "institution", "source", "creator_name", "creator_url", "creator_email", "institution", "license", "access_constraint"]})
-    """
-
-    message_json = {"properties": {}, "links": {}}
-
-    message_json["geometry"] = {"type": "Point", "coordinates": [float(ds.attrs[i]) for i in map_netcdf["geometry"]]}
-
-    #Get all fields from netCDF that need transformation before beeing added to the MQTT message
-    for key in map_netcdf["root"]["translation_fields"]:
-        match map_netcdf["root"]["translation_fields"][key][type]:
-            case "str":
-                message_json[key] = f"{map_netcdf['root']['translation_fields'][key]['sep']}".join([ds.attrs[i] for i in map_netcdf["root"]["translation_fields"][key]["fields"])
-            case "list":
-                message_json[key] = [ds.attrs[field] for field in map_netcdf["root"]["translation_fields"][key]["fields"]]
+    def get_metadata_dict(json_message_target: dict, sub_map: dict) -> None:
+        for netcdf_attr_target in sub_map["translation_fields"]:
+            netcdf_metadata = get_attrs(ds, netcdf_attr_target)
+            current_sub_dict = sub_map["translation_fields"][netcdf_attr_target]
             
+            json_message_target.update(populate_json_message({}, netcdf_metadata, current_sub_dict))
+
+            if "persistant_fields" in sub_map:
+                json_message_target.update({i:netcdf_metadata[i] for i in sub_map["persistant_fields"][netcdf_attr_target]})
+
+    def populate_json_message(json_message_target: dict, netcdf_metadata: dict, current_sub_dict: dict) -> dict:
+        """
+        """
+
+        for key in current_sub_dict:
+            if key == "inpt_type":
+                continue
+            match current_sub_dict[key]["inpt_type"]:
+                case "str":
+                    json_message_target[key] = f"{current_sub_dict[key]['sep']}".join([ds.attrs[i] for i in current_sub_dict[key]["fields"]])
+                case "list":
+                    json_message_target[key] = [netcdf_metadata[field] for field in current_sub_dict[key]["fields"]]
+                case "raw":
+                    json_message_target[key] = current_sub_dict[key]["value"]
+                case "multi":
+                    if key not in json_message_target:
+                        json_message_target[key] = {}
+                    
+                    json_message_target[key].update(populate_json_message({}, netcdf_metadata, current_sub_dict[key]))
+
+        return json_message_target
 
 
 
-    for level in ["properties", "links"]:
-        pass
-    for key in map_netcdf["translation_fields"]:
-        message_json["properties"][key] = map_netcdf["translation_fields"][key]["sep"].join([ds.attrs[i] for i in map_netcdf["translation_fields"][key]["fields"]])
+    def populate_links(json_message_target: dict, sub_map: dict) -> None:
+        for netcdf_attr_target in sub_map["translation_fields"]:
+            netcdf_metadata = get_attrs(ds, netcdf_attr_target)
+            current_sub_dict = sub_map["translation_fields"][netcdf_attr_target]
+            json_message_target += [populate_json_message({}, netcdf_metadata, i) for i in current_sub_dict]
+
+            if "persistant_fields" in sub_map:
+                pass
+ 
 
 
-    #Get all fields that do not need transformation
-    message_json["properties"].update({i:ds.attrs[i] for i in map_netcdf["persistant_fields"]})
+    message_json = {"properties": {}, "links": []}
 
-    message_json["links"] = {}
+    get_metadata_dict(message_json, map_netcdf["root"])
+    get_metadata_dict(message_json["properties"], map_netcdf["properties"])
+    populate_links(message_json["links"], map_netcdf["links"])
 
-    for key in map_netcdf["links"]:
-        message_json["links"].update({i:ds.attrs[map_netcdf["links"][key][i]] for i in map_netcdf["links"][key]})
-
+    print(message_json["geometry"])
 
     return(json.dumps(message_json))
-
 
 
 
@@ -149,4 +140,13 @@ def build_all_json_payloads_from_netCDF(ds: xr.Dataset, mapping_json: dict) -> l
 
     # Returns all complete messages
     return messages
+
+
+
+if __name__ == "__main__":
+    ds = xr.load_dataset("../../test/test_data/air_temperature_gullingen_skisenter-parent.nc")
+    with open("../../schemas/netcdf_to_e_soh_message_metno.json") as file:
+        j_read_netcdf = json.load(file)
+
+    print(create_json_from_netcdf_metdata(ds, j_read_netcdf))
 
