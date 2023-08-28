@@ -8,8 +8,7 @@ import (
 )
 
 func (svcInfo *ServiceInfo) AddTimeSeries(
-	ctx context.Context, request *datastore.AddTSRequest) (
-		*datastore.AddTSResponse, error) {
+	ctx context.Context, request *datastore.AddTSRequest) (*datastore.AddTSResponse, error) {
 
 	err := svcInfo.Sbe.AddTimeSeries(request)
 	if err != nil {

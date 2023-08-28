@@ -12,6 +12,10 @@ type StorageBackend interface {
 	// Returns nil upon success, otherwise error.
 	AddTimeSeries(*datastore.AddTSRequest) error
 
+	// DeleteTimeSeries deletes a set of time series from the storage.
+	// Returns nil upon success, otherwise error.
+	DeleteTimeSeries(*datastore.DeleteTSRequest) error
+
 	// PutObservations inserts observations in the storage.
 	// Returns nil upon success, otherwise error.
 	PutObservations(*datastore.PutObsRequest) error

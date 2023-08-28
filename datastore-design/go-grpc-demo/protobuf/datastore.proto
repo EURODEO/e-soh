@@ -16,9 +16,8 @@ option go_package = "./datastore";
 
 service Datastore {
   rpc AddTimeSeries(AddTSRequest) returns (AddTSResponse);
-  //rpc DescribeTimeSeries(DescribeTSRequest) returns (DescribeTSResponse);
   //rpc FindTimeSeries(FindTSRequest) returns (FindTSResponse);
-  //rpc DeleteTimeSeries(DeleteTSRequest) returns (DeleteTSResponse);
+  rpc DeleteTimeSeries(DeleteTSRequest) returns (DeleteTSResponse);
   //rpc UpdateTimeSeries(UpdateTSRequest) returns (UpdateTSResponse);
   rpc PutObservations(PutObsRequest) returns (PutObsResponse);
   rpc GetObservations(GetObsRequest) returns (GetObsResponse);
@@ -43,6 +42,17 @@ message AddTSRequest {
 }
 
 message AddTSResponse {
+  int32 status = 1;
+  string error = 2; // empty on success
+}
+
+//---------------------------------------------------------------------------
+
+message DeleteTSRequest {
+  repeated int64 ids = 1;
+}
+
+message DeleteTSResponse {
   int32 status = 1;
   string error = 2; // empty on success
 }
