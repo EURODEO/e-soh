@@ -10,12 +10,15 @@ import uuid
 import json
 import copy
 
+
 def get_attrs(ds: xr.Dataset, var: str):
     """
     Get the attributes from the correct level in netCDF
     """
     metdata_dict = getattr(ds, var)
-    if hasattr(metdata_dict, "attr"):
+    if hasattr(metdata_dict, "attrs"):
+        return metdata_dict.attrs
+    elif hasattr(metdata_dict, "attr"):
         return metdata_dict.attr
     else:
         return metdata_dict
@@ -42,7 +45,6 @@ def create_json_from_netcdf_metdata(ds: xr.Dataset, map_netcdf: dict) -> str:
         for netcdf_attr_target in sub_map["translation_fields"]:
             netcdf_metadata = get_attrs(ds, netcdf_attr_target)
             current_sub_dict = sub_map["translation_fields"][netcdf_attr_target]
-            
             json_message_target.update(populate_json_message({}, netcdf_metadata, current_sub_dict))
 
             if "persistant_fields" in sub_map:
@@ -57,7 +59,7 @@ def create_json_from_netcdf_metdata(ds: xr.Dataset, map_netcdf: dict) -> str:
                 continue
             match current_sub_dict[key]["inpt_type"]:
                 case "str":
-                    json_message_target[key] = f"{current_sub_dict[key]['sep']}".join([ds.attrs[i] for i in current_sub_dict[key]["fields"]])
+                    json_message_target[key] = f"{current_sub_dict[key]['sep']}".join([netcdf_metadata[i] for i in current_sub_dict[key]["fields"]])
                 case "list":
                     json_message_target[key] = [netcdf_metadata[field] for field in current_sub_dict[key]["fields"]]
                 case "raw":
@@ -66,7 +68,7 @@ def create_json_from_netcdf_metdata(ds: xr.Dataset, map_netcdf: dict) -> str:
                     if key not in json_message_target:
                         json_message_target[key] = {}
                     
-                    json_message_target[key].update(populate_json_message({}, netcdf_metadata, current_sub_dict[key]))
+                    json_message_target[key].update(populate_json_message({},  netcdf_metadata, current_sub_dict[key]))
 
         return json_message_target
 
@@ -89,7 +91,6 @@ def create_json_from_netcdf_metdata(ds: xr.Dataset, map_netcdf: dict) -> str:
     get_metadata_dict(message_json["properties"], map_netcdf["properties"])
     populate_links(message_json["links"], map_netcdf["links"])
 
-    print(message_json["geometry"])
 
     return(json.dumps(message_json))
 
@@ -144,8 +145,16 @@ def build_all_json_payloads_from_netCDF(ds: xr.Dataset, mapping_json: dict) -> l
 
 
 if __name__ == "__main__":
+    print("Load METno data")
     ds = xr.load_dataset("../../test/test_data/air_temperature_gullingen_skisenter-parent.nc")
     with open("../../schemas/netcdf_to_e_soh_message_metno.json") as file:
+        j_read_netcdf = json.load(file)
+
+    print(create_json_from_netcdf_metdata(ds, j_read_netcdf), "\n\n\n\n")
+
+    print("Load KNMI data")
+    ds = xr.load_dataset("../../test/test_data/20221231.nc_bck")
+    with open("../../schemas/netcdf_to_e_soh_message_knmi.json") as file:
         j_read_netcdf = json.load(file)
 
     print(create_json_from_netcdf_metdata(ds, j_read_netcdf))
