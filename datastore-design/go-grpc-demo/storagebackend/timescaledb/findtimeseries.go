@@ -3,6 +3,7 @@ package timescaledb
 import (
 	"datastore/datastore"
 	"fmt"
+	"strings"
 
 	postgis "github.com/cridenour/go-postgis"
 	_ "github.com/lib/pq"
@@ -17,18 +18,15 @@ func matchAnyValCond(phVals *[]interface{}, name string, values []string) string
 		return ""
 	}
 
-	inArg := ""
+	inArgs := []string{}
 	phIndex := len(*phVals) + 1 // ensure placeholders start at $1, not $0
-	for i, value := range values {
-		if i > 0 {
-			inArg += ","
-		}
-		inArg += fmt.Sprintf("$%d", phIndex)
+	for _, value := range values {
+		inArgs = append(inArgs, fmt.Sprintf("$%d", phIndex))
 		*phVals = append(*phVals, value)
 		phIndex++
 	}
 
-	return fmt.Sprintf(" AND %s IN (%s)", name, inArg)
+	return fmt.Sprintf(" AND %s IN (%s)", name, strings.Join(inArgs, ","))
 }
 
 func equal(p1, p2 *datastore.Point) bool {
