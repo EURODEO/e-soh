@@ -115,6 +115,13 @@ $ grpcurl -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.D
 ...
 ```
 
+### Find time series matching any of a list of station IDs
+
+```text
+$ grpcurl -d '{"station_ids": ["18700", "17800"]}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.FindTimeSeries
+...
+```
+
 ### Find time series inside a polygon
 
 #### Error case 1: too few points

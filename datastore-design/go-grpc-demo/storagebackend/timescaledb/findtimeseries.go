@@ -9,19 +9,25 @@ import (
 )
 
 // matchAnyValCond creates the sub-condition of a WHERE clause that checks if string column 'name'
-// matches any of a set of values.
-// Returns the sub-condition to be appended to a WHERE clause.
-func matchAnyValCond(name string, values []string) string {
+// matches any of a set of values. Placeholder values are appended to phVals.
+// Returns sub-condition (with placeholders) to be appended to a WHERE clause.
+func matchAnyValCond(phVals *[]interface{}, name string, values []string) string {
+
 	if len(values) == 0 {
 		return ""
 	}
+
 	inArg := ""
+	phIndex := len(*phVals) + 1 // ensure placeholders start at $1, not $0
 	for i, value := range values {
 		if i > 0 {
 			inArg += ","
 		}
-		inArg += fmt.Sprintf("'%s'", value)
+		inArg += fmt.Sprintf("$%d", phIndex)
+		*phVals = append(*phVals, value)
+		phIndex++
 	}
+
 	return fmt.Sprintf(" AND %s IN (%s)", name, inArg)
 }
 
@@ -31,7 +37,8 @@ func equal(p1, p2 *datastore.Point) bool {
 
 // insidePolygonCond creates a sub-condition of a WHERE clause that checks if geo point column
 // 'name' is contained in a geo polygon.
-// Returns the sub-condition to be appended to a WHERE clause.
+// Returns (the sub-condition to be appended to a WHERE clause, nil) upon success, otherwise
+// (..., error).
 func insidePolygonCond(name string, polygon0 *datastore.Polygon) (string, error) {
 
 	if polygon0 == nil {
@@ -76,16 +83,21 @@ func (sbe *TimescaleDB) FindTimeSeries(request *datastore.FindTSRequest) (
 		SELECT id, station_id, param_id, pos, other1, other2, other3 FROM time_series WHERE TRUE
 	`
 
-	query += matchAnyValCond("station_id", request.StationIds)
-	query += matchAnyValCond("param_id", request.ParamIds)
-	if inPolyCond, err := insidePolygonCond("pos", request.Inside); err != nil {
+	phVals := []interface{}{} // placeholder values
+
+	query += matchAnyValCond(&phVals, "station_id", request.StationIds)
+
+	query += matchAnyValCond(&phVals, "param_id", request.ParamIds)
+
+	if cond, err := insidePolygonCond("pos", request.Inside); err != nil {
 		return nil, fmt.Errorf("insidePolygonCond() failed: %v", err)
 	} else {
-		query += inPolyCond
+		query += cond
 	}
+
 	// TODO: add more filters
 
-	rows, err := sbe.Db.Query(query)
+	rows, err := sbe.Db.Query(query, phVals...)
 	if err != nil {
 		return nil, fmt.Errorf("sbe.Db.Query() failed: %v", err)
 	}
