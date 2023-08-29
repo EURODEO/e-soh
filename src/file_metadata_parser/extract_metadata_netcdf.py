@@ -191,7 +191,7 @@ def build_all_json_payloads_from_netCDF(ds: xr.Dataset,
 
     json_msg = json.loads(json_msg)
 
-    json_msg["version"] = "v0.1"
+    json_msg["version"] = "v4.0"
 
     messages = []
     # select all datapoints from the last 24h of dataset timeseries
