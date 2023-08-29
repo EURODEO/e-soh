@@ -248,4 +248,6 @@ if __name__ == "__main__":
     with open("../../schemas/netcdf_to_e_soh_message_knmi.json") as file:
         j_read_netcdf = json.load(file)
 
-    print(build_all_json_payloads_from_netCDF(ds, j_read_netcdf)[0])
+    for station in ds.station:
+        print(build_all_json_payloads_from_netCDF(
+            ds.sel(station=station), j_read_netcdf)[0])

@@ -13,9 +13,15 @@
         "creator_email": "observation_data_archive@met.no",
         "license": "http://spdx.org/licenses/CC-BY-4.0(CC-BY-4.0)",
         "access_constraint": "Open",
-        "datetime": "2023-06-14T14:00:00.000000000",
-        "pubtime": "2023-08-22T13:33:21.000000000Z"
+        "datetime": "2023-06-13T14:00:00.000000000",
+        "pubtime": "2023-08-29T08:43:38.000000000Z"
     },
+    "links": [
+        {
+            "href": "https://data.met.no/dataset/8a0744b7-f0dc-4929-8700-f1285e76df36(Dataset landing page)",
+            "rel": "canonical"
+        }
+    ],
     "geometry": {
         "type": "Point",
         "coordinates": [
@@ -23,16 +29,14 @@
             6.4697
         ]
     },
-    "links": {
-        "href": "https://data.met.no/dataset/8a0744b7-f0dc-4929-8700-f1285e76df36(Dataset landing page)"
-    },
+    "type": "Feature",
     "version": "v04",
     "content": {
         "encoding": "utf-8",
         "standard_name": "air_temperature",
         "unit": "degC",
         "size": 18,
-        "value": "22.899999618530273"
+        "value": "20.700000762939453"
     },
-    "id": "269fe6e9-f10d-4d34-9615-f80fae9131da"
+    "id": "3dae3e50-2b88-463d-ad84-ee68ff2c1745"
 }

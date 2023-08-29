@@ -12,25 +12,34 @@ Supply path to netCDF file at commandline.
 
 """
 
-if (project_root_path := subprocess.getoutput("git rev-parse --show-toplevel")) != os.getcwd():
-    print(project_root_path)
-    os.chdir(project_root_path)
+# Only writes last message from the list of messages created in build_all_json_payloads_from_netCDF
 
-path = argv[1]
 
+print("Load METno data")
+path = "test/test_data/air_temperature_gullingen_skisenter-parent.nc"
 ds = xr.load_dataset(path)
 
-with open("schemas/netcdf_to_e_soh_message_metno.json", "r") as file:
-	netcdf_def = json.load(file)
+with open("schemas/netcdf_to_e_soh_message_metno.json") as file:
+    j_read_netcdf = json.load(file)
 
-json_msg = build_all_json_payloads_from_netCDF(ds, netcdf_def)
-
-json_msg = json_msg[-1]
-
-
-#Only writes last message from the list of messages created in build_all_json_payloads_from_netCDF
-json_msg["id"] = str(uuid.uuid4())
+json_msg = build_all_json_payloads_from_netCDF(
+    ds, j_read_netcdf)[0]
 json_msg["version"] = "v04"
 
 with open(f"examples/{path.split('/')[-1].strip('.nc')}_meta.json", "w") as file:
-	file.write(json.dumps(json_msg, indent=4))
+    file.write(json.dumps(json_msg, indent=4))
+
+print("Load KNMI data")
+path = "test/test_data/20221231.nc"
+ds = xr.load_dataset(path)
+with open("schemas/netcdf_to_e_soh_message_knmi.json") as file:
+    j_read_netcdf = json.load(file)
+
+for station in ds.station:
+    json_msg = build_all_json_payloads_from_netCDF(
+        ds.sel(station=station), j_read_netcdf)[0]
+    break
+
+
+with open(f"examples/{path.split('/')[-1].strip('.nc')}_meta.json", "w") as file:
+    file.write(json.dumps(json_msg, indent=4))
