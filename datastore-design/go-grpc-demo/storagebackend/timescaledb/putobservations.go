@@ -48,6 +48,7 @@ func insertObsForTS(db *sql.DB, tsObs *datastore.TSObservations) error {
 	if !rows.Next() {
 		return fmt.Errorf("time series ID %d not found", tsObs.Tsid)
 	}
+	defer rows.Close()
 
 	// insert or update (i.e. "upsert") observations for this time series ID
 

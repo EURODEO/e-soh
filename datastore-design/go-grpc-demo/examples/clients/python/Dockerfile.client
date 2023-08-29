@@ -26,7 +26,10 @@ RUN python -m grpc_tools.protoc  \
     --grpc_python_out=$CLIENT_PATH
 
 COPY examples/clients/python/client.py "${CLIENT_PATH}/client.py"
+COPY examples/test-data/KNMI/20221231.nc "/test-data/KNMI/20221231.nc"
+COPY examples/clients/python/parameters.py "${CLIENT_PATH}/parameters.py"
+COPY examples/clients/python/client_knmi_station.py "${CLIENT_PATH}/client_knmi_station.py"
 
 WORKDIR ${CLIENT_PATH}
 SHELL ["/bin/bash", "-eu", "-o", "pipefail", "-c"]
-CMD ["python", "client.py"]
+CMD ["/bin/bash", "-c", "./client.py; ./client_knmi_station.py"]

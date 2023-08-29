@@ -4,12 +4,38 @@
 #
 #    pip-compile --no-emit-index-url
 #
-grpcio==1.56.2
+certifi==2023.7.22
+    # via netcdf4
+cftime==1.6.2
+    # via netcdf4
+grpcio==1.57.0
     # via grpcio-tools
-grpcio-tools==1.56.2
+grpcio-tools==1.57.0
     # via -r requirements.in
-protobuf==4.24.0
+netcdf4==1.6.4
+    # via -r requirements.in
+numpy==1.25.2
+    # via
+    #   cftime
+    #   netcdf4
+    #   pandas
+    #   xarray
+packaging==23.1
+    # via xarray
+pandas==2.0.3
+    # via xarray
+protobuf==4.24.1
     # via grpcio-tools
+python-dateutil==2.8.2
+    # via pandas
+pytz==2023.3
+    # via pandas
+six==1.16.0
+    # via python-dateutil
+tzdata==2023.3
+    # via pandas
+xarray==2023.8.0
+    # via -r requirements.in
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
