@@ -158,6 +158,7 @@ def build_all_json_payloads_from_netCDF(ds: xr.Dataset,
     Here, the name of each field should be the same name from which we should import metadata from in the netCDF.
     For getting global attributes the name "attrs" should be used.
     For each attribute to map, we create a block.
+    Each allowed block is described below.
 
     ```
     "name_of_field_in_the_mqtt_message": {
