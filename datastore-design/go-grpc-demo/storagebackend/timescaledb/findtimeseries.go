@@ -65,19 +65,16 @@ func insidePolygonCond(name string, polygon0 *datastore.Polygon) (string, error)
 	// construct the polygon ring of the WKT representation
 	// (see https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry;
 	// note that only a single ring is supported for now)
-	polygonRing := ""
-	for i, point := range points  {
-		if i > 0 {
-			polygonRing += ","
-		}
-		polygonRing += fmt.Sprintf("%f %f", point.Lon, point.Lat)
+	polygonRing := []string{}
+	for _, point := range points  {
+		polygonRing = append(polygonRing, fmt.Sprintf("%f %f", point.Lon, point.Lat))
 	}
 
 	srid := "4326" // spatial reference system ID
 
 	return fmt.Sprintf(
 		" AND ST_WITHIN(ST_SetSRID(%s::geometry, %s), ST_GeomFromText('polygon((%s))', %s))",
-		name, srid, polygonRing, srid), nil
+		name, srid, strings.Join(polygonRing, ""), srid), nil
 }
 
 // FindTimeSeries ... (see documentation in StorageBackend interface)
