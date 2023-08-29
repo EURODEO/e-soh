@@ -4,7 +4,6 @@ import paho.mqtt.client as mqtt
 import xarray as xr
 
 import json
-import uuid
 
 
 MQTT_HOST = ""
@@ -17,7 +16,7 @@ json_netcdf_def = "../schemas/netcdf_to_e_soh_message_metno.json"
 
 ds = xr.load_dataset(path)
 with open(json_netcdf_def, "r") as file:
-	netcdf_def = json.load(file)
+    netcdf_def = json.load(file)
 
 messages = build_all_json_payloads_from_netCDF(ds, json)
 
@@ -29,10 +28,4 @@ pub_client.connect(MQTT_HOST)
 
 
 for m in messages:
-	pub_client.publish(MQTT_TOPIC, json.dumps(m))
-
-
-
-
- 
-
+    pub_client.publish(MQTT_TOPIC, json.dumps(m))
