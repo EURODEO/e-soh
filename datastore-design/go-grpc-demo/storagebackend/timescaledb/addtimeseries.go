@@ -19,6 +19,7 @@ func (sbe *TimescaleDB) AddTimeSeries(request *datastore.AddTSRequest) error {
 	if err != nil {
 		return fmt.Errorf("sbe.Db.Query(1) failed: %v", err)
 	}
+	defer rows.Close()
 	if rows.Next() {
 		return fmt.Errorf("time series ID %d already exists", request.Id)
 	}
@@ -30,6 +31,7 @@ func (sbe *TimescaleDB) AddTimeSeries(request *datastore.AddTSRequest) error {
 	if err != nil {
 		return fmt.Errorf("sbe.Db.Query(2) failed: %v", err)
 	}
+	defer rows.Close()
 	if rows.Next() {
 		var id int64
 		err = rows.Scan(&id)

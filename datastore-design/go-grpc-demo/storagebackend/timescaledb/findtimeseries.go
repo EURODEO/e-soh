@@ -89,6 +89,7 @@ func (sbe *TimescaleDB) FindTimeSeries(request *datastore.FindTSRequest) (
 	if err != nil {
 		return nil, fmt.Errorf("sbe.Db.Query() failed: %v", err)
 	}
+	defer rows.Close()
 
 	tseries := []*datastore.TimeSeries{}
 

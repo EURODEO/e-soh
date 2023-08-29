@@ -26,6 +26,7 @@ func retrieveObsForTS(
 	if err != nil {
 		return fmt.Errorf("db.Query() failed: %v", err)
 	}
+	defer rows.Close()
 	for rows.Next() {
 		var (
 			obsTime        float64
