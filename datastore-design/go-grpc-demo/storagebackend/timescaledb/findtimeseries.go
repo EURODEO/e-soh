@@ -34,10 +34,11 @@ func equal(p1, p2 *datastore.Point) bool {
 }
 
 // insidePolygonCond creates a sub-condition of a WHERE clause that checks if geo point column
-// 'name' is contained in a geo polygon.
-// Returns (the sub-condition to be appended to a WHERE clause, nil) upon success, otherwise
-// (..., error).
-func insidePolygonCond(name string, polygon0 *datastore.Polygon) (string, error) {
+// 'name' is contained in a geo polygon. Placeholder values are appended to phVals.
+// Returns (the sub-condition (with placeholders) to be appended to a WHERE clause, nil) upon
+// success, otherwise (..., error).
+func insidePolygonCond(
+	phVals *[]interface{}, name string, polygon0 *datastore.Polygon) (string, error) {
 
 	if polygon0 == nil {
 		// absent polygon => disable filtering (note: "" is equivalent to " AND TRUE")
@@ -58,8 +59,11 @@ func insidePolygonCond(name string, polygon0 *datastore.Polygon) (string, error)
 	// (see https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry;
 	// note that only a single ring is supported for now)
 	polygonRing := []string{}
+	phIndex := len(*phVals) + 1 // ensure placeholders start at $1, not $0
 	for _, point := range points  {
-		polygonRing = append(polygonRing, fmt.Sprintf("%f %f", point.Lon, point.Lat))
+		polygonRing = append(polygonRing, fmt.Sprintf("$%d $%d", phIndex, phIndex + 1))
+		*phVals = append(*phVals, point.Lon, point.Lat)
+		phIndex += 2
 	}
 
 	srid := "4326" // spatial reference system ID
