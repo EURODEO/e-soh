@@ -90,8 +90,7 @@ func (sbe *TimescaleDB) FindTimeSeries(request *datastore.FindTSRequest) (
 		return nil, fmt.Errorf("sbe.Db.Query() failed: %v", err)
 	}
 
-	tsIDs := []int64{}
-	tsMData := []*datastore.TSMetadata{}
+	tseries := []*datastore.TimeSeries{}
 
 	for rows.Next() {
 		var (
@@ -109,19 +108,21 @@ func (sbe *TimescaleDB) FindTimeSeries(request *datastore.FindTSRequest) (
 			return nil, fmt.Errorf("rows.Scan() failed: %v", err)
 		}
 
-		tsIDs = append(tsIDs, tsID)
-		tsMData = append(tsMData, &datastore.TSMetadata{
-			StationId: stationID,
-			ParamId: paramID,
-			Pos: &datastore.Point{
-				Lat: pos.Y,
-				Lon: pos.X,
+		tseries = append(tseries, &datastore.TimeSeries{
+			Id: tsID,
+			Metadata: &datastore.TSMetadata{
+				StationId: stationID,
+				ParamId: paramID,
+				Pos: &datastore.Point{
+					Lat: pos.Y,
+					Lon: pos.X,
+				},
+				Other1: other1,
+				Other2: other2,
+				Other3: other3,
 			},
-			Other1: other1,
-			Other2: other2,
-			Other3: other3,
 		})
 	}
 
-	return &datastore.FindTSResponse{Ids: tsIDs, Metadata: tsMData}, nil
+	return &datastore.FindTSResponse{Tseries: tseries}, nil
 }

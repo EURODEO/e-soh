@@ -66,11 +66,15 @@ message FindTSRequest {
   // TODO: add search filters for other metadata
 }
 
+message TimeSeries {
+  int64 id = 1;
+  TSMetadata metadata = 2;
+}
+
 message FindTSResponse {
   int32 status = 1;
   string error = 2; // empty on success
-  repeated int64 ids = 3; // matching time series IDs
-  repeated TSMetadata metadata = 4; // corresponding metadata
+  repeated TimeSeries tseries = 3; // matching time series
 }
 
 //---------------------------------------------------------------------------
