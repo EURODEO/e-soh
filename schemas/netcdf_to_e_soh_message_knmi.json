@@ -1,20 +1,17 @@
 {
 	"root": {
 		"translation_fields": {
-			"attrs": {
+			"iso_dataset": {
 				"geometry": {
 					"type": {
-						"inpt_type": "str",
-						"fields": [
-							"spatial_representation"
-						],
-						"sep": ""
+						"inpt_type": "raw",
+						"value": "point"
 					},
 					"coordinates": {
 						"inpt_type": "list",
 						"fields": [
-							"geospatial_lat_min",
-							"geospatial_lon_min"
+							"max-x",
+							"max-y"
 						]
 					},
 					"inpt_type": "multi"
@@ -28,14 +25,49 @@
 	},
 	"properties": {
 		"translation_fields": {
-			"attrs": {
+			"iso_dataset": {
 				"metadata_id": {
 					"fields": [
-						"naming_authority",
-						"id"
+						"organisationName_metadata",
+						"metadata_id"
 					],
 					"inpt_type": "str",
 					"sep": ":"
+				},
+				"creator_url": {
+					"fields": [
+						"url_metadata"
+					],
+					"inpt_type": "str",
+					"sep": ""
+				},
+				"creator_email": {
+					"fields": [
+						"email_metadata"
+					],
+					"inpt_type": "str",
+					"sep": ""
+				},
+				"keywords": {
+					"fields": [
+						"keyword"
+					],
+					"inpt_type": "str",
+					"sep": ""
+				},
+				"access_constraint": {
+					"fields": [
+						"accessConstraints"
+					],
+					"inpt_type": "str",
+					"sep": ""
+				},
+				"summary": {
+					"fields": [
+						"abstract"
+					],
+					"inpt_type": "str",
+					"sep": ""
 				}
 			}
 		},
@@ -45,14 +77,7 @@
 				"institution",
 				"Conventions",
 				"history",
-				"keywords",
-				"summary",
-				"source",
-				"creator_name",
-				"creator_url",
-				"creator_email",
-				"license",
-				"access_constraint"
+				"source"
 			]
 		}
 	},
