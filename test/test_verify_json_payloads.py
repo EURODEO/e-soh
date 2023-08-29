@@ -18,10 +18,14 @@ def test_verify_json_payload_netcdf(netcdf_file_path):
         e_soh_mqtt_message_schema = json.load(file)
 
     with open("schemas/netcdf_to_e_soh_message_metno.json", "r") as file:
-        netcdf_map = json.load(file)
+        netcdf_map_metno = json.load(file)
 
+    with open("schemas/netcdf_to_e_soh_message_metno.json", "r") as file:
+        netcdf_map_knmi = json.load(file)
+
+    ds = xr.load_dataset(netcdf_file_path)
     json_payloads = build_all_json_payloads_from_netCDF(
-        xr.load_dataset(netcdf_file_path), netcdf_map)
+        ds, netcdf_map)
 
     for payload in json_payloads:
         assert Draft202012Validator(
