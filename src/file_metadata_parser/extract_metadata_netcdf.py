@@ -42,12 +42,17 @@ def create_json_from_netcdf_metdata(ds: xr.Dataset, map_netcdf: dict) -> str:
     """        
 
     def get_metadata_dict(json_message_target: dict, sub_map: dict) -> None:
-        for netcdf_attr_target in sub_map["translation_fields"]:
-            netcdf_metadata = get_attrs(ds, netcdf_attr_target)
-            current_sub_dict = sub_map["translation_fields"][netcdf_attr_target]
-            json_message_target.update(populate_json_message({}, netcdf_metadata, current_sub_dict))
+        if "translation_fields" in sub_map:
+            for netcdf_attr_target in sub_map["translation_fields"]:
+                netcdf_metadata = get_attrs(ds, netcdf_attr_target)
+                current_sub_dict = sub_map["translation_fields"][netcdf_attr_target]
+                json_message_target.update(populate_json_message({}, netcdf_metadata, current_sub_dict))
 
-            if "persistant_fields" in sub_map:
+            print("\n\n",sub_map,"\n\n")
+        if "persistant_fields" in sub_map:
+            for netcdf_attr_target in sub_map["persistant_fields"]:
+                netcdf_metadata = get_attrs(ds, netcdf_attr_target)
+                current_sub_dict = sub_map["persistant_fields"][netcdf_attr_target]
                 json_message_target.update({i:netcdf_metadata[i] for i in sub_map["persistant_fields"][netcdf_attr_target]})
 
     def populate_json_message(json_message_target: dict, netcdf_metadata: dict, current_sub_dict: dict) -> dict:
@@ -91,6 +96,10 @@ def create_json_from_netcdf_metdata(ds: xr.Dataset, map_netcdf: dict) -> str:
     get_metadata_dict(message_json["properties"], map_netcdf["properties"])
     populate_links(message_json["links"], map_netcdf["links"])
 
+    #Perform some transformations to comply with message schema
+    message_json["geometry"]["type"] = message_json["geometry"]["type"][0].upper() + message_json["geometry"]["type"][1:]
+
+    message_json["geometry"]["coordinates"] = list(np.array(message_json["geometry"]["coordinates"], dtype=float))
 
     return(json.dumps(message_json))
 
