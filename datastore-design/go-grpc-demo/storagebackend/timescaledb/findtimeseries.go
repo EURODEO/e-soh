@@ -59,18 +59,17 @@ func insidePolygonCond(
 	// (see https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry;
 	// note that only a single ring is supported for now)
 	polygonRing := []string{}
-	phIndex := len(*phVals) + 1 // ensure placeholders start at $1, not $0
 	for _, point := range points  {
-		polygonRing = append(polygonRing, fmt.Sprintf("$%d $%d", phIndex, phIndex + 1))
-		*phVals = append(*phVals, point.Lon, point.Lat)
-		phIndex += 2
+		polygonRing = append(polygonRing, fmt.Sprintf("%f %f", point.Lon, point.Lat))
 	}
 
 	srid := "4326" // spatial reference system ID
 
+	*phVals = append(*phVals, fmt.Sprintf("polygon((%s))", strings.Join(polygonRing, ",")))
+
 	return fmt.Sprintf(
-		" AND ST_WITHIN(ST_SetSRID(%s::geometry, %s), ST_GeomFromText('polygon((%s))', %s))",
-		name, srid, strings.Join(polygonRing, ""), srid), nil
+		" AND ST_WITHIN(ST_SetSRID(%s::geometry, %s), ST_GeomFromText($%d, %s))",
+		name, srid, len(*phVals), srid), nil
 }
 
 // FindTimeSeries ... (see documentation in StorageBackend interface)
@@ -87,7 +86,7 @@ func (sbe *TimescaleDB) FindTimeSeries(request *datastore.FindTSRequest) (
 
 	query += matchAnyValCond(&phVals, "param_id", request.ParamIds)
 
-	if cond, err := insidePolygonCond("pos", request.Inside); err != nil {
+	if cond, err := insidePolygonCond(&phVals, "pos", request.Inside); err != nil {
 		return nil, fmt.Errorf("insidePolygonCond() failed: %v", err)
 	} else {
 		query += cond
