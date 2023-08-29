@@ -9,18 +9,23 @@ class mapper():
 
     def __init__(self):
         with open("schemas/institution_mapping.json", "r") as file:
-            self.path_to_maps = json.loads(file)
+            self.path_to_maps = json.load(file)
 
-            self.maps = []
+        self.maps = {}
+
+    def _verify_known_institution(self, institution):
+        if institution not in self.path_to_maps:
+            raise ValueError(f"There are no defined mapping for the institution {institution}")
 
     def __call__(self, institution: str) -> dict:
         """
         Call an instance of this class for the correct json mapping given the intitution name.
         Must be same name as the global field from netCDF.
         """
+        self._verify_known_institution(institution)
         if institution not in self.maps:
             with open(self.path_to_maps[institution], "r") as file:
-                self.maps[institution] = json.loads(file)
+                self.maps[institution] = json.load(file)
 
         return self.maps[institution]
 
@@ -31,4 +36,8 @@ class mapper():
 
         for key in self.path_to_maps:
             with open(self.path_to_maps[key], "r") as file:
-                self.maps[key] = json.loads(file)
+                self.maps[key] = json.load(file)
+
+
+if __name__ == "__main__":
+    mapper()

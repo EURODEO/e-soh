@@ -34,6 +34,10 @@
 					"inpt_type": "str",
 					"sep": ":"
 				},
+				"data_id": {
+					"inpt_type": "raw",
+					"value": "placeholder"
+				},
 				"creator_url": {
 					"fields": [
 						"url_metadata"

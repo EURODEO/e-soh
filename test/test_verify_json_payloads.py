@@ -1,5 +1,5 @@
 from src.file_metadata_parser.extract_metadata_netcdf import build_all_json_payloads_from_netCDF
-
+from src.mapper import mapper
 
 import pytest
 import glob
@@ -17,19 +17,15 @@ def test_verify_json_payload_netcdf(netcdf_file_path):
     with open("schemas/e-soh-message-spec.json", "r") as file:
         e_soh_mqtt_message_schema = json.load(file)
 
-    with open("schemas/netcdf_to_e_soh_message_metno.json", "r") as file:
-        netcdf_map_metno = json.load(file)
-
-    with open("schemas/netcdf_to_e_soh_message_metno.json", "r") as file:
-        netcdf_map_knmi = json.load(file)
-
     ds = xr.load_dataset(netcdf_file_path)
+
+    select_map = mapper()
+
     json_payloads = build_all_json_payloads_from_netCDF(
-        ds, netcdf_map)
+        ds, select_map(ds.attrs["institution"]))
 
     for payload in json_payloads:
-        assert Draft202012Validator(
-            e_soh_mqtt_message_schema).is_valid(payload)
+        assert Draft202012Validator(e_soh_mqtt_message_schema).validate(payload) is None
 
 
 if __name__ == "__main__":
