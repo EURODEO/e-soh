@@ -46,21 +46,13 @@ func insidePolygonCond(name string, polygon0 *datastore.Polygon) (string, error)
 
 	points := polygon0.Points
 
-	// validate polygon and close it if necessary
-	if len(points) < 3 {
-		return "", fmt.Errorf("polygon must contain at least 3 points; found %d", len(points))
-	}
-	if equal(points[0], points[len(points) - 1]) { // endpoints equal -> polygon already closed
-		if len(points) == 3 {
-			return "", fmt.Errorf(
-				"polygon must contain at least 4 points when endpoints are equal; found %d",
-				len(points))
-		}
-	} else { // endpoints different, so close polygon
-		points = append(points, points[0])
+	if (len(points) > 0) && !equal(points[0], points[len(points) - 1]) {
+		points = append(points, points[0]) // close polygon
 	}
 
-	// assert(equal(points[0], points[len(points) - 1]))
+	if len(points) < 4 {
+		return "", fmt.Errorf("polygon contains too few points")
+	}
 
 	// construct the polygon ring of the WKT representation
 	// (see https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry;
