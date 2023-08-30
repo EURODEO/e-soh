@@ -49,8 +49,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("createStorageBackend() failed: %v", err)
 	}
-	// TODO: Implement closing of the pool
-	//defer sbe.Db.Close()
 
 	// register service implementation
 	var datastoreServer datastore.DatastoreServer = &dsimpl.ServiceInfo{

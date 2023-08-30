@@ -20,15 +20,9 @@ from google.protobuf.timestamp_pb2 import Timestamp
 def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
     time_series_request_messages = []
     observation_request_messages = []
-    # TODO: How to deal with IDs. At the moment, I set them manually, but if the database or server could handle it,
-    #   it would help when going for parallel processing when inserting. Do we want to use a UUID?
     ts_id = 1
 
     with xr.open_dataset(file_path, engine="netcdf4", chunks=None) as file:  # chunks=None to disable dask
-        # TODO: The coords are not the same for every timeseries. There are 4 out of the 432 observations that have a
-        #   different lat, lon and height. For the test data we use the first row. In the future we should look at
-        #   iterating over the coords and if the 4 outliers are valid. This outliers can be found with:
-        #   [np.array_equal(file["lat"].values[0], lats, equal_nan=True) for lats in file["lat"].values[1:]]
         for station_id, latitude, longitude, height in zip(
             file["station"].values, file["lat"].values[0], file["lon"].values[0], file["height"].values[0]
         ):

@@ -20,8 +20,6 @@ from google.protobuf.timestamp_pb2 import Timestamp
 def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
     time_series_request_messages = []
     observation_request_messages = []
-    # TODO: How to deal with IDs. At the moment, I set them manually, but if the database or server could handle it,
-    #   it would help when going for parallel processing when inserting. Do we want to use a UUID?
     ts_id = 1
 
     with xr.open_dataset(file_path, engine="netcdf4", chunks=None) as file:  # chunks=None to disable dask
