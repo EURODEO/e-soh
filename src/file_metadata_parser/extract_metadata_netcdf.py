@@ -104,8 +104,8 @@ def create_json_from_netcdf_metdata(ds: xr.Dataset, map_netcdf: dict) -> str:
 
     def populate_links(ds: xr.Dataset, json_message_target: dict, sub_map: dict) -> None:
         """
-        This function updates the json_message_target dict with fields from the netCDF. Perform same task as
-        get met
+        This function updates the json_message_target dict with fields from the netCDF.
+        Perform same task as get_metadata_dict
 
         Keyword arguents:
         ds (xarray.Dataset) -- A netCDF loaded in to a xarray dataset.
