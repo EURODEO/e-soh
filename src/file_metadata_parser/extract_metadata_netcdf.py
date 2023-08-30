@@ -179,8 +179,8 @@ def build_all_json_payloads_from_netCDF(ds: xr.Dataset,
     ```
     "name_of_field_in_the_mqtt_message": {
         "fields": [ a list of metadata fields to get from current variable ]
-        "inpt_type": "str" #This inpt_type will procude a string from all varibale listet in fields,
-                            separated by sep
+        "inpt_type": "str" #This inpt_type will procude a string from all varibales
+                            listet in fields, separated by sep
         "sep": "the seperator between each variable in fields
     }
 
@@ -204,8 +204,6 @@ def build_all_json_payloads_from_netCDF(ds: xr.Dataset,
                                meaning they can be nested
     }
     ```
-
-
     """
     json_msg = create_json_from_netcdf_metdata(ds, mapping_json)
 
