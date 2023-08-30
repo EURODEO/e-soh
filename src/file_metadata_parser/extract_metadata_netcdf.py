@@ -44,7 +44,8 @@ def create_json_from_netcdf_metdata(ds: xr.Dataset, map_netcdf: dict) -> str:
         Keyword arguents:
         ds (xarray.Dataset) -- A netCDF loaded in to a xarray dataset.
         json_message_target (dict) -- This dict is where all extracted metadata is stored.
-        sub_map (dict) -- This is a sub-dict from the entire json specifying how to extract metadata fields
+        sub_map (dict) -- This is a sub-dict from the entire json specifying
+                          how to extract metadata fields
         """
         if "translation_fields" in sub_map:
             for netcdf_attr_target in sub_map["translation_fields"]:
@@ -60,17 +61,21 @@ def create_json_from_netcdf_metdata(ds: xr.Dataset, map_netcdf: dict) -> str:
                 current_sub_dict = sub_map["persistant_fields"][netcdf_attr_target]
 
                 json_message_target.update(
-                    {i: netcdf_metadata[i] for i in sub_map["persistant_fields"][netcdf_attr_target]})
+                    {i: netcdf_metadata[i] for i in
+                     sub_map["persistant_fields"][netcdf_attr_target]})
 
-    def populate_json_message(json_message_target: dict, netcdf_metadata: dict, current_sub_dict: dict) -> dict:
+    def populate_json_message(json_message_target: dict,
+                              netcdf_metadata: dict,
+                              current_sub_dict: dict) -> dict:
         """
         This function contains the loop for actually assing values in to the json_message_target.
 
         Keyword arguents:
         json_message_target (dict) -- This dict is where all extracted metadata is stored.
-        netcdf_metadata (dict) -- This dict contains a dict of all metadata fields from a variable, or the
-                                   global variables.
-        sub_map (dict) -- This is a sub-dict from the entire json specifying how to extract metadata fields
+        netcdf_metadata (dict) -- This dict contains a dict of all metadata fields from a variable,
+                                  or the global variables.
+        sub_map (dict) -- This is a sub-dict from the entire json specifying how to
+                          extract metadata fields
         """
 
         for key in current_sub_dict:
@@ -135,32 +140,38 @@ def create_json_from_netcdf_metdata(ds: xr.Dataset, map_netcdf: dict) -> str:
 
 def build_all_json_payloads_from_netCDF(ds: xr.Dataset,
                                         mapping_json: dict,
-                                        timediff: np.timedelta64 = np.timedelta64(1, "D")) -> list[str]:
+                                        timediff: np.timedelta64 = np.timedelta64(1, "D"))\
+        -> list[str]:
     """
-    This function expects a xarray.Dataset with observations from one station. And will only extract data
-    from variable that have the "standard_name" metadata field set.
+    This function expects a xarray.Dataset with observations from one station.
+    Will only extract data from variable that have the "standard_name" metadata field set.
 
     ### Keyword arguments:
     ds (xarray.Dataset) -- A netCDF loaded in to a xarray dataset
-    mapping_json (dict) -- The json that specifies how metadata should be mapped from netCDF to mqtt message
+    mapping_json (dict) -- The json that specifies how metadata should be mapped from
+                           netCDF to mqtt message
 
     Returns:
-    list[dict] -- returns a list with mqtt messages, one for each variable for each timestep in the interval
-                  specified
+    list[dict] -- returns a list with mqtt messages,
+                  one for each variable for each timestep in the interval specified.
 
     ## The mapping json
-    The mapping json contians all information about how and what fields to parse from the netCDF data.
+    The mapping json contians all information about how \n
+    and what fields to parse from the netCDF data.
     The E-SOH message spec has 2 sub-json fields and some top-level data fields.
-    These are also the top level fields in the mapping json. On the top level the name "root" is resverd for
-    defining variables that should be on the root level of the mqtt message json.
-    "properties" and "links" are defined fields in the mqtt message spec. At the root level of the mapping json, any
-    other fields are ignored.
+    These are also the top level fields in the mapping json.
+    On the top level the name "root" is resverd for defining variables \n
+    that should be on the root level of the mqtt message json.
+    "properties" and "links" are defined fields in the mqtt message spec. At the root level of the
+    mapping json, any other fields are ignored.
     Each of the root-level fields in the mapping json can contain two subfields.
-    "traslation_fields" and "persistant_fields", "translation_fields" contains the fields that can not be directly
-    translated from the netCDF metadata. "persistant_fields" contains a list of all fields that can be directly liftet
+    "traslation_fields" and "persistant_fields", "translation_fields" contains the
+    fields that can not be directly translated from the netCDF metadata.
+    "persistant_fields" contains a list of all fields that can be directly lifted\n
     over to the mqtt message json.
     In both "persistant_fields" and "translation_fields" the can be an unlimited number of fields.
-    Here, the name of each field should be the same name from which we should import metadata from in the netCDF.
+    Here, the name of each field should be the same name
+    from which we should import metadata from in the netCDF.
     For getting global attributes the name "attrs" should be used.
     For each attribute to map, we create a block.
     Each allowed block is described below.
@@ -168,7 +179,8 @@ def build_all_json_payloads_from_netCDF(ds: xr.Dataset,
     ```
     "name_of_field_in_the_mqtt_message": {
         "fields": [ a list of metadata fields to get from current variable ]
-        "inpt_type": "str" #This inpt_type will procude a string from all varibale listet in fields, separated by sep
+        "inpt_type": "str" #This inpt_type will procude a string from all varibale listet in fields,
+                            separated by sep
         "sep": "the seperator between each variable in fields
     }
 
@@ -180,14 +192,15 @@ def build_all_json_payloads_from_netCDF(ds: xr.Dataset,
 
     "name_of_field_in_the_mqtt_message": {
         "value": "string to be put in to mqtt message"
-        "inpt_type": "raw" # This inpt_type will take the data in the value field and put it in the mqtt message
+        "inpt_type": "raw" # This inpt_type will take the data in the value field
+                             and put it in the mqtt message
 
     }
 
     "name_of_field_in_the_mqtt_message": {
         { A dict containing more allowed blocks }
-        "inpt_type": "multi" # This field indicates that there are more block in a dict here. Will recursivly resolve
-                               "multi" inpt_types meaning they can be nested.
+        "inpt_type": "multi" # This field indicates that there are more block in a dict here.
+                               Will recursivly resolve "multi" inpt_types meaning they can be nested
     }
     ```
 
