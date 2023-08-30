@@ -1,10 +1,6 @@
 from src.file_metadata_parser.extract_metadata_netcdf import build_all_json_payloads_from_netCDF
-from sys import argv
 import xarray as xr
 import json
-import uuid
-import subprocess
-import os
 
 """
 Small script to wirte json payloads instead of sending them to a mqtt-broker.

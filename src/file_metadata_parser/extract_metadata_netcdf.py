@@ -201,7 +201,6 @@ def build_all_json_payloads_from_netCDF(ds: xr.Dataset,
 
     messages = []
 
-
     ds_subset = ds.sel(time=slice(
         ds.time[-1] - timediff, ds.time[-1]))
 
