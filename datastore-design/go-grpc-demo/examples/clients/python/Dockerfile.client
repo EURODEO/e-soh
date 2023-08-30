@@ -32,4 +32,4 @@ COPY examples/clients/python/client_knmi_station.py "${CLIENT_PATH}/client_knmi_
 
 WORKDIR ${CLIENT_PATH}
 SHELL ["/bin/bash", "-eu", "-o", "pipefail", "-c"]
-CMD ["/bin/bash", "-c", "./client.py; ./client_knmi_station.py"]
+CMD ["/bin/bash", "-c", "./client_knmi_station.py; ./client.py"]
