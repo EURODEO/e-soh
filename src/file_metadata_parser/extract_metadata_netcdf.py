@@ -110,7 +110,8 @@ def create_json_from_netcdf_metdata(ds: xr.Dataset, map_netcdf: dict) -> str:
         Keyword arguents:
         ds (xarray.Dataset) -- A netCDF loaded in to a xarray dataset.
         json_message_target (dict) -- This dict is where all extracted metadata is stored.
-        sub_map (dict) -- This is a sub-dict from the entire json specifying how to extract metadata fields
+        sub_map (dict) -- This is a sub-dict from the entire json specifying
+                          how to extract metadata fields
         """
         for netcdf_attr_target in sub_map["translation_fields"]:
             netcdf_metadata = get_attrs(ds, netcdf_attr_target)
