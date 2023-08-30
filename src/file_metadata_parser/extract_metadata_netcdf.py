@@ -200,7 +200,8 @@ def build_all_json_payloads_from_netCDF(ds: xr.Dataset,
     "name_of_field_in_the_mqtt_message": {
         { A dict containing more allowed blocks }
         "inpt_type": "multi" # This field indicates that there are more block in a dict here.
-                               Will recursivly resolve "multi" inpt_types meaning they can be nested
+                               Will recursivly resolve "multi" inpt_types
+                               meaning they can be nested
     }
     ```
 
