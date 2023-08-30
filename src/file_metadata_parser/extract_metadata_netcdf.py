@@ -50,6 +50,7 @@ def create_json_from_netcdf_metdata(ds: xr.Dataset, map_netcdf: dict) -> str:
             for netcdf_attr_target in sub_map["translation_fields"]:
                 netcdf_metadata = get_attrs(ds, netcdf_attr_target)
                 current_sub_dict = sub_map["translation_fields"][netcdf_attr_target]
+
                 json_message_target.update(populate_json_message(
                     {}, netcdf_metadata, current_sub_dict))
 
@@ -57,6 +58,7 @@ def create_json_from_netcdf_metdata(ds: xr.Dataset, map_netcdf: dict) -> str:
             for netcdf_attr_target in sub_map["persistant_fields"]:
                 netcdf_metadata = get_attrs(ds, netcdf_attr_target)
                 current_sub_dict = sub_map["persistant_fields"][netcdf_attr_target]
+
                 json_message_target.update(
                     {i: netcdf_metadata[i] for i in sub_map["persistant_fields"][netcdf_attr_target]})
 
@@ -78,11 +80,14 @@ def create_json_from_netcdf_metdata(ds: xr.Dataset, map_netcdf: dict) -> str:
                 case "str":
                     json_message_target[key] = f"{current_sub_dict[key]['sep']}".join(
                         [netcdf_metadata[i] for i in current_sub_dict[key]["fields"]])
+
                 case "list":
                     json_message_target[key] = [netcdf_metadata[field]
                                                 for field in current_sub_dict[key]["fields"]]
+
                 case "raw":
                     json_message_target[key] = current_sub_dict[key]["value"]
+
                 case "multi":
                     if key not in json_message_target:
                         json_message_target[key] = {}
@@ -195,7 +200,8 @@ def build_all_json_payloads_from_netCDF(ds: xr.Dataset,
     json_msg["version"] = "v4.0"
 
     messages = []
-    # select all datapoints from the last 24h of dataset timeseries
+
+
     ds_subset = ds.sel(time=slice(
         ds.time[-1] - timediff, ds.time[-1]))
 
