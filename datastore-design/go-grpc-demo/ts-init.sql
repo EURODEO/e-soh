@@ -5,12 +5,14 @@ CREATE TABLE time_series (
 	station_id TEXT NOT NULL,
 	param_id TEXT NOT NULL,
 	UNIQUE (station_id, param_id),
-	pos GEOGRAPHY(Point) NOT NULL,
+	pos GEOGRAPHY(Point, 4326) NOT NULL,
 	other1 TEXT, -- additional metadata to be defined
 	other2 TEXT, -- ----''----
 	other3 TEXT  -- ----''----
     -- ...
 );
+
+CREATE INDEX ts_geom_idx ON time_series USING GIST(pos);
 
 CREATE TABLE observations (
 	ts_id integer REFERENCES time_series(id) ON DELETE CASCADE,

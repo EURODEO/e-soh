@@ -131,13 +131,6 @@ $ grpcurl -d '{"inside": {"points": [{"lat": 1, "lon": 1}, {"lat": 3, "lon": 1}]
 ...
 ```
 
-#### Error case 2: identical endpoints
-
-```text
-$ grpcurl -d '{"inside": {"points": [{"lat": 1, "lon": 1}, {"lat": 3, "lon": 1}, {"lat": 3, "lon": 3}, {"lat": 1, "lon": 1}]}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.FindTimeSeries
-...
-```
-
 #### Correct case
 
 ```text
