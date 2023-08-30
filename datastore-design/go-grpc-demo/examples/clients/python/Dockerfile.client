@@ -9,6 +9,7 @@ COPY examples/test-data/KNMI/20221231.nc "/test-data/KNMI/20221231.nc"
 # hadolint ignore=DL3013
 RUN apt-get update \
     && apt-get -y upgrade \
+    && apt-get -y install build-essential \
     # Cleanup
     && rm -rf /usr/tmp  \
     && apt-get autoremove -y \
