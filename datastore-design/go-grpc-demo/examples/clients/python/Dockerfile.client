@@ -4,13 +4,11 @@ SHELL ["/bin/bash", "-eux", "-o", "pipefail", "-c"]
 
 ENV CLIENT_PATH=/clients/python
 
-COPY examples/clients/python/requirements.txt "${CLIENT_PATH}/requirements.txt"
+COPY examples/test-data/KNMI/20221231.nc "/test-data/KNMI/20221231.nc"
 
 # hadolint ignore=DL3013
 RUN apt-get update \
     && apt-get -y upgrade \
-    && pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir --upgrade -r "${CLIENT_PATH}/requirements.txt" \
     # Cleanup
     && rm -rf /usr/tmp  \
     && apt-get autoremove -y \
@@ -18,6 +16,10 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY protobuf/datastore.proto /protobuf/datastore.proto
+COPY examples/clients/python/requirements.txt "${CLIENT_PATH}/requirements.txt"
+
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir --upgrade -r "${CLIENT_PATH}/requirements.txt"
 
 # Compiling the protobuf file
 RUN python -m grpc_tools.protoc  \
@@ -25,9 +27,8 @@ RUN python -m grpc_tools.protoc  \
     --python_out=$CLIENT_PATH  \
     --grpc_python_out=$CLIENT_PATH
 
-COPY examples/clients/python/client.py "${CLIENT_PATH}/client.py"
-COPY examples/test-data/KNMI/20221231.nc "/test-data/KNMI/20221231.nc"
 COPY examples/clients/python/parameters.py "${CLIENT_PATH}/parameters.py"
+COPY examples/clients/python/client.py "${CLIENT_PATH}/client.py"
 COPY examples/clients/python/client_knmi_station.py "${CLIENT_PATH}/client_knmi_station.py"
 
 WORKDIR ${CLIENT_PATH}
