@@ -48,8 +48,8 @@ services:
 
   client:
     build:
-      context: ./
-      dockerfile: examples/clients/python/Dockerfile.client
+      context: ../../
+      dockerfile: datastore-design/go-grpc-demo/examples/clients/python/Dockerfile.client
     environment:
       - DSHOST=main
       - DSPORT=50050
