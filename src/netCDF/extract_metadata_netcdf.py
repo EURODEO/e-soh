@@ -218,6 +218,8 @@ def build_all_json_payloads_from_netCDF(ds: xr.Dataset,
         ds.time[-1] - timediff, ds.time[-1]))
 
     for obs_set in ds_subset:
+        if obs_set in mapping_json["ignore"]:
+            continue
         data = ds_subset[obs_set]
         if "standard_name" not in data.attrs:
             continue
