@@ -80,13 +80,17 @@ def insert_data(time_series_request_messages: List, observation_request_messages
         print(f"Inserting {len(time_series_request_messages)} time series requests.")
         time_series_insert_start = perf_counter()
         with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as executor:
-            executor.map(client.AddTimeSeries, time_series_request_messages)
+            for _ in executor.map(client.AddTimeSeries, time_series_request_messages):
+                # Getting all values from the iterator ensures any exceptions are rethrown
+                # See https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Executor.map
+                pass
         print(f"Finished time series insert {perf_counter() - time_series_insert_start}.")
 
         print(f"Inserting {len(observation_request_messages)} bulk observations requests.")
         obs_insert_start = perf_counter()
         with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as executor:
-            executor.map(client.PutObservations, observation_request_messages)
+            for _ in executor.map(client.PutObservations, observation_request_messages):
+                pass
         print(f"Finished observations bulk insert {perf_counter() - obs_insert_start}.")
 
 

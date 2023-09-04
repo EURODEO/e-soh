@@ -64,7 +64,7 @@ def callGetObservations(stub):
     to_time.FromDatetime(datetime(2023, 10, 1))
 
     request = dstore.GetObsRequest(
-        tsids=[1234, 5678, 9012],
+        tsids=[1234567890, 5678, 9012],
         fromtime=from_time,
         totime=to_time,
     )
