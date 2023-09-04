@@ -1,5 +1,5 @@
-from src.netCDF import build_all_json_payloads_from_netCDF
-from src.netCDF import mapper
+from src.netCDF.extract_metadata_netcdf import build_all_json_payloads_from_netCDF
+from src.netCDF.mapper import mapper
 
 import pytest
 import glob
