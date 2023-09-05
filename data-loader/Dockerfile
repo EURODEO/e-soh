@@ -2,8 +2,8 @@ FROM python:3.11-slim-bookworm
 
 SHELL ["/bin/bash", "-eux", "-o", "pipefail", "-c"]
 
-ENV PROJECT_GO_GRPC_PATH="datastore-design/go-grpc-demo"
-ENV PROJECT_PYTHON_PATH="${PROJECT_GO_GRPC_PATH}/examples/clients/python"
+ENV PROJECT_DATASTORE_PATH="datastore"
+ENV PROJECT_PYTHON_PATH="data-loader"
 ENV DOCKER_PATH="/clients/python"
 
 COPY "test-data/KNMI/20221231.nc" "/test-data/KNMI/20221231.nc"
@@ -18,7 +18,7 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-COPY "${PROJECT_GO_GRPC_PATH}/protobuf/datastore.proto" "/protobuf/datastore.proto"
+COPY "${PROJECT_DATASTORE_PATH}/protobuf/datastore.proto" "/protobuf/datastore.proto"
 COPY "${PROJECT_PYTHON_PATH}/requirements.txt" "${DOCKER_PATH}/requirements.txt"
 
 RUN pip install --no-cache-dir --upgrade pip \
@@ -31,9 +31,9 @@ RUN python -m grpc_tools.protoc  \
     --grpc_python_out="${DOCKER_PATH}"
 
 COPY "${PROJECT_PYTHON_PATH}/parameters.py" "${DOCKER_PATH}/parameters.py"
-COPY "${PROJECT_PYTHON_PATH}/client.py" "${DOCKER_PATH}/client.py"
 COPY "${PROJECT_PYTHON_PATH}/client_knmi_station.py" "${DOCKER_PATH}/client_knmi_station.py"
 
 WORKDIR "${DOCKER_PATH}"
 SHELL ["/bin/bash", "-eu", "-o", "pipefail", "-c"]
-CMD ["/bin/bash", "-c", "./client_knmi_station.py && ./client.py"]
+# TODO: Fix logging so it shows up line by line instead of at once
+CMD ["/bin/bash", "-c", "./client_knmi_station.py "]

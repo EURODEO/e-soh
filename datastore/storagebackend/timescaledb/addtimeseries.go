@@ -14,7 +14,7 @@ func (sbe *TimescaleDB) AddTimeSeries(request *datastore.AddTSRequest) error {
 	var err error
 	var rows *sql.Rows
 
-    // ensure that the time series ID doesn't already exist
+	// ensure that the time series ID doesn't already exist
 	rows, err = sbe.Db.Query("SELECT id FROM time_series WHERE id = $1", request.Id)
 	if err != nil {
 		return fmt.Errorf("sbe.Db.Query(1) failed: %v", err)
@@ -46,12 +46,12 @@ func (sbe *TimescaleDB) AddTimeSeries(request *datastore.AddTSRequest) error {
 	defer rows.Close()
 
 	// insert new time series
-    cmd := `
+	cmd := `
 	    INSERT INTO time_series (id, station_id, param_id, pos, other1, other2, other3)
         VALUES ($1, $2, $3, ST_MakePoint($4, $5), $6, $7, $8)
     `
-    _, err = sbe.Db.Exec(
-	    cmd, request.Id, request.Metadata.StationId, request.Metadata.ParamId,
+	_, err = sbe.Db.Exec(
+		cmd, request.Id, request.Metadata.StationId, request.Metadata.ParamId,
 		request.Metadata.Pos.Lon, request.Metadata.Pos.Lat, request.Metadata.Other1,
 		request.Metadata.Other2, request.Metadata.Other3)
 	if err != nil {
