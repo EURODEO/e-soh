@@ -4,9 +4,10 @@ import (
 	"database/sql"
 	"datastore/datastore"
 	"fmt"
+	"math"
+
 	_ "github.com/lib/pq"
 	"google.golang.org/protobuf/types/known/timestamppb"
-	"math"
 )
 
 // retrieveObsForTS retrieves into obs observations for time series tsID in
@@ -25,6 +26,7 @@ func retrieveObsForTS(
 	if err != nil {
 		return fmt.Errorf("db.Query() failed: %v", err)
 	}
+	defer rows.Close()
 	for rows.Next() {
 		var (
 			obsTime        float64
@@ -44,6 +46,9 @@ func retrieveObsForTS(
 			},
 		})
 	}
+	// TODO: When inserting many timeseries check if the closing is necessary or if the implicit close is enough.
+	//       (Implicit close happens when iterating over every row).
+	defer rows.Close()
 
 	return nil
 }
@@ -52,7 +57,7 @@ func retrieveObsForTS(
 func (sbe *TimescaleDB) GetObservations(request *datastore.GetObsRequest) (
 	*datastore.GetObsResponse, error) {
 
-	// TODO: validate request.Tsids (ensure it doesn't contains duplicates etc.)
+	// TODO: validate request.Tsids (ensure it doesn't contain duplicates etc.)
 	tsObs := make([]*datastore.TSObservations, len(request.Tsids))
 	for i, tsID := range request.Tsids {
 		obs := []*datastore.Observation{}

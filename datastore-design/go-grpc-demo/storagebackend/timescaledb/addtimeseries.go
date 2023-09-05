@@ -2,8 +2,9 @@ package timescaledb
 
 import (
 	"database/sql"
-	"datastore/datastore"
 	"fmt"
+
+	datastore "datastore/datastore"
 
 	_ "github.com/lib/pq"
 )
@@ -18,9 +19,11 @@ func (sbe *TimescaleDB) AddTimeSeries(request *datastore.AddTSRequest) error {
 	if err != nil {
 		return fmt.Errorf("sbe.Db.Query(1) failed: %v", err)
 	}
+	defer rows.Close()
 	if rows.Next() {
 		return fmt.Errorf("time series ID %d already exists", request.Id)
 	}
+	rows.Close()
 
 	// ensure that the (station ID, param ID) combo doesn't already exist
 	rows, err = sbe.Db.Query(
@@ -29,6 +32,7 @@ func (sbe *TimescaleDB) AddTimeSeries(request *datastore.AddTSRequest) error {
 	if err != nil {
 		return fmt.Errorf("sbe.Db.Query(2) failed: %v", err)
 	}
+	defer rows.Close()
 	if rows.Next() {
 		var id int64
 		err = rows.Scan(&id)
@@ -39,6 +43,7 @@ func (sbe *TimescaleDB) AddTimeSeries(request *datastore.AddTSRequest) error {
 			"(station_id, param_id) combo (%s, %s) already exists for time series ID %d",
 			request.Metadata.StationId, request.Metadata.ParamId, id)
 	}
+	defer rows.Close()
 
 	// insert new time series
     cmd := `
@@ -46,9 +51,9 @@ func (sbe *TimescaleDB) AddTimeSeries(request *datastore.AddTSRequest) error {
         VALUES ($1, $2, $3, ST_MakePoint($4, $5), $6, $7, $8)
     `
     _, err = sbe.Db.Exec(
-	    cmd, request.Id, request.Metadata.StationId, request.Metadata.ParamId, request.Metadata.Lon,
-		request.Metadata.Lat, request.Metadata.Other1, request.Metadata.Other2,
-		request.Metadata.Other3)
+	    cmd, request.Id, request.Metadata.StationId, request.Metadata.ParamId,
+		request.Metadata.Pos.Lon, request.Metadata.Pos.Lat, request.Metadata.Other1,
+		request.Metadata.Other2, request.Metadata.Other3)
 	if err != nil {
 		return fmt.Errorf("sbe.Db.Exec() failed: %v", err)
 	}

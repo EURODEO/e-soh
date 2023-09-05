@@ -1,6 +1,8 @@
 package storagebackend
 
-import "datastore/datastore"
+import (
+	datastore "datastore/datastore"
+)
 
 // StorageBackend is the interface for an observation storage backend.
 type StorageBackend interface {
@@ -15,6 +17,10 @@ type StorageBackend interface {
 	// DeleteTimeSeries deletes a set of time series from the storage.
 	// Returns nil upon success, otherwise error.
 	DeleteTimeSeries(*datastore.DeleteTSRequest) error
+
+	// FindTimeSeries finds a set of time series in the storage.
+	// Returns nil upon success, otherwise error.
+	FindTimeSeries(*datastore.FindTSRequest) (*datastore.FindTSResponse, error)
 
 	// PutObservations inserts observations in the storage.
 	// Returns nil upon success, otherwise error.

@@ -35,6 +35,15 @@ The code has been tested in the following environment:
 
 MORE DETAILS HERE!
 
+## Compiling datastore.proto to prevent IDEs from complaining
+
+Whenever `datastore.proto` changes, it should be complied locally in order for
+IDEs to recognize the current types and symbols.
+
+```text
+protoc --go_out=. --go-grpc_out=. protobuf/datastore.proto
+```
+
 ## Environment variables
 
 TO BE OBSOLETED BY A SECTION ABOUT ENVIRONMENT VARIABLES RELEVANT TO
@@ -95,7 +104,7 @@ message AddTSRequest {
 ### Add a time series
 
 ```text
-$ grpcurl -d '{"id": 1234, "metadata": {"station_id": "18700", "param_id": "211", "lat": 59.91, "lon": 10.75, "other1": "value1", "other2": "value2", "other3": "value3"}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.AddTimeSeries
+$ grpcurl -d '{"id": 1234, "metadata": {"station_id": "18700", "param_id": "211", "pos": {"lat": 59.91, "lon": 10.75}, "other1": "value1", "other2": "value2", "other3": "value3"}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.AddTimeSeries
 ...
 ```
 
@@ -106,14 +115,44 @@ $ grpcurl -d '{"ids": [1234, 5678]}' -plaintext -proto protobuf/datastore.proto 
 ...
 ```
 
-### Insert observations into time series 1234
+### Find all time series
+
+```text
+$ grpcurl -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.FindTimeSeries
+...
+```
+
+### Find time series matching any of a list of station IDs
+
+```text
+$ grpcurl -d '{"station_ids": ["18700", "17800"]}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.FindTimeSeries
+...
+```
+
+### Find time series inside a polygon
+
+#### Error case 1: too few points
+
+```text
+$ grpcurl -d '{"inside": {"points": [{"lat": 1, "lon": 1}, {"lat": 3, "lon": 1}]}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.FindTimeSeries
+...
+```
+
+#### Correct case
+
+```text
+$ grpcurl -d '{"inside": {"points": [{"lat": 1, "lon": 1}, {"lat": 1, "lon": 3}, {"lat": 3, "lon": 3}, {"lat": 3, "lon": 1}, {"lat": 1, "lon": 2}]}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.FindTimeSeries
+...
+```
+
+### Insert observations into a time series
 
 ```text
 $ grpcurl -d '{"tsobs": [{"tsid": 1234, "obs": [{"time": "2023-01-01T00:00:10Z", "value": 123.456, "metadata": {"field1": "value1", "field2": "value2"}}]}]}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.PutObservations
 ...
 ```
 
-### Retrieve observations within a time range from time series 1234, 5678, and 9012
+### Retrieve observations within a time range from a set of time series
 
 ```text
 $ grpcurl -d '{"tsids": [1234, 5678, 9012], "fromtime": "2023-01-01T00:00:05Z", "totime": "2023-01-01T00:00:13Z"}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
@@ -139,4 +178,14 @@ The python client can be run like this:
 $ python examples/clients/python/client.py
 calling AddTSRequest() ...
 ...
+```
+
+Testing the performance can be done with:
+```bash
+$ python -m cProfile -o <cprofile_output_file> <path_to_python_script>
+```
+
+Generate a dot graph / tree with:
+```bash
+$ gprof2dot --colour-nodes-by-selftime -f pstats <cprofile_output_file> | dot -Tpng -o <output_graph_file>
 ```
