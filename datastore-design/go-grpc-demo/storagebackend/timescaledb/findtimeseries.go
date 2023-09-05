@@ -68,7 +68,7 @@ func insidePolygonCond(
 	*phVals = append(*phVals, fmt.Sprintf("polygon((%s))", strings.Join(polygonRing, ",")))
 
 	return fmt.Sprintf(
-		" AND ST_DWITHIN(ST_SetSRID(%s::geometry, %s), ST_GeomFromText($%d, %s)::geography, 0.0)",
+		" AND ST_DWITHIN(%s, ST_GeomFromText($%d, %s)::geography, 0.0)",
 		name, srid, len(*phVals), srid), nil
 }
 
