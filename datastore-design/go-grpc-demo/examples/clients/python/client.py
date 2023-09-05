@@ -22,7 +22,7 @@ def callAddTimeSeries(stub):
         other3='value3',
     )
     request = dstore.AddTSRequest(
-        id=1234,
+        id=1234567890,
         metadata=tsMData,
     )
     response = stub.AddTimeSeries(request)
@@ -47,7 +47,7 @@ def callPutObservations(stub):
     request = dstore.PutObsRequest(
         tsobs=[
             dstore.TSObservations(
-                tsid=1234,
+                tsid=1234567890,
                 obs=obs,
             )
         ],
@@ -64,7 +64,7 @@ def callGetObservations(stub):
     to_time.FromDatetime(datetime(2023, 10, 1))
 
     request = dstore.GetObsRequest(
-        tsids=[1234, 5678, 9012],
+        tsids=[1234567890, 5678, 9012],
         fromtime=from_time,
         totime=to_time,
     )

@@ -21,6 +21,7 @@ func (sbe *TimescaleDB) AddTimeSeries(request *datastore.AddTSRequest) error {
 	if rows.Next() {
 		return fmt.Errorf("time series ID %d already exists", request.Id)
 	}
+	rows.Close()
 
 	// ensure that the (station ID, param ID) combo doesn't already exist
 	rows, err = sbe.Db.Query(
@@ -39,6 +40,7 @@ func (sbe *TimescaleDB) AddTimeSeries(request *datastore.AddTSRequest) error {
 			"(station_id, param_id) combo (%s, %s) already exists for time series ID %d",
 			request.Metadata.StationId, request.Metadata.ParamId, id)
 	}
+	defer rows.Close()
 
 	// insert new time series
     cmd := `

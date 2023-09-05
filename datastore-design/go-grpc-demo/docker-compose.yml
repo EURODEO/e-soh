@@ -5,7 +5,7 @@ services:
   timescale:
     image: timescale/timescaledb-ha:pg15-latest
     ports:
-      - 5433:5432
+      - "5433:5432"
     volumes:
       - ts-data:/home/postgres/pgdata/data # works! (persistent)
       #- ts-data:/var/lib/postgresql/data # fails! (not persistent)
@@ -48,8 +48,8 @@ services:
 
   client:
     build:
-      context: ./
-      dockerfile: examples/clients/python/Dockerfile.client
+      context: ../../
+      dockerfile: datastore-design/go-grpc-demo/examples/clients/python/Dockerfile.client
     environment:
       - DSHOST=main
       - DSPORT=50050

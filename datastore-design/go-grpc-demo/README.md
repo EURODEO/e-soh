@@ -122,3 +122,13 @@ $ python examples/clients/python/client.py
 calling AddTSRequest() ...
 ...
 ```
+
+Testing the performance can be done with:
+```bash
+$ python -m cProfile -o <cprofile_output_file> <path_to_python_script>
+```
+
+Generate a dot graph / tree with:
+```bash
+$ gprof2dot --colour-nodes-by-selftime -f pstats <cprofile_output_file> | dot -Tpng -o <output_graph_file>
+```

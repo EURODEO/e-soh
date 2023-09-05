@@ -44,6 +44,9 @@ func retrieveObsForTS(
 			},
 		})
 	}
+	// TODO: When inserting many timeseries check if the closing is necessary or if the implicit close is enough.
+	//       (Implicit close happens when iterating over every row).
+	defer rows.Close()
 
 	return nil
 }

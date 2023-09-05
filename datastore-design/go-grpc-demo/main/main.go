@@ -1,15 +1,16 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"net"
-
+	"context"
 	"datastore/common"
 	"datastore/datastore"
 	"datastore/dsimpl"
 	"datastore/storagebackend"
 	"datastore/storagebackend/timescaledb"
+	"fmt"
+	"log"
+	"net"
+	"time"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
@@ -29,8 +30,18 @@ func createStorageBackend() (storagebackend.StorageBackend, error) {
 }
 
 func main() {
+	reqTimeLogger := func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+		start := time.Now()
+		resp, err := handler(ctx, req)
+		reqTime := time.Since(start)
+		if info.FullMethod != "/grpc.health.v1.Health/Check" {
+			log.Printf("time for method %q: %d ms", info.FullMethod, reqTime.Milliseconds())
+		}
+		return resp, err
+	}
+
 	// create gRPC server
-	server := grpc.NewServer()
+	server := grpc.NewServer(grpc.UnaryInterceptor(reqTimeLogger))
 	grpc_health_v1.RegisterHealthServer(server, health.NewServer())
 
 	// create storage backend
