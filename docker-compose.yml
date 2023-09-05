@@ -1,15 +1,16 @@
 version: '3.8'
-name: go-grpc-demo
+name: datastore
 
 services:
-  timescale:
+  db:
     image: timescale/timescaledb-ha:pg15-latest
+#    image: kartoza/postgis:15  # Use this instead of the official image as it has an arm64 image
     ports:
       - "5433:5432"
     volumes:
-      - ts-data:/home/postgres/pgdata/data # works! (persistent)
-      #- ts-data:/var/lib/postgresql/data # fails! (not persistent)
-      - ./ts-init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ts-data:/home/postgres/pgdata/data # for timescale image
+#      - ts-data:/var/lib/postgresql/data # for postgres image
+      - ./datastore/ts-init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=mysecretpassword
@@ -24,14 +25,13 @@ services:
     networks:
       datastore-network:
 
-  main:
+  store:
     build:
-      context: .
-      dockerfile: Dockerfile.main
+      context: datastore
     ports:
       - "50050:50050"
     environment:
-      - TSDBHOST=timescale
+      - TSDBHOST=db
       - TSDBPORT=5432
     restart: on-failure
     healthcheck:
@@ -43,20 +43,33 @@ services:
     networks:
       datastore-network:
     depends_on:
-      timescale:
+      db:
         condition: service_healthy
 
   client:
     build:
-      context: ../../
-      dockerfile: datastore-design/go-grpc-demo/examples/clients/python/Dockerfile.client
+      context: .  # TODO: Needed to get proto file. Find a better solution
+      dockerfile: examples/clients/python/Dockerfile
     environment:
-      - DSHOST=main
+      - DSHOST=store
       - DSPORT=50050
     networks:
       datastore-network:
     depends_on:
-      main:
+      store:
+        condition: service_healthy
+
+  loader:
+    build:
+      context: .  # TODO: Needed to get proto file and test data. Find a better solution
+      dockerfile: data-loader/Dockerfile
+    environment:
+      - DSHOST=store
+      - DSPORT=50050
+    networks:
+      datastore-network:
+    depends_on:
+      store:
         condition: service_healthy
 
 volumes:

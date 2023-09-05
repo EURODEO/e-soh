@@ -47,7 +47,7 @@ func insidePolygonCond(
 
 	points := polygon0.Points
 
-	if (len(points) > 0) && !equal(points[0], points[len(points) - 1]) {
+	if (len(points) > 0) && !equal(points[0], points[len(points)-1]) {
 		points = append(points, points[0]) // close polygon
 	}
 
@@ -59,7 +59,7 @@ func insidePolygonCond(
 	// (see https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry;
 	// note that only a single ring is supported for now)
 	polygonRing := []string{}
-	for _, point := range points  {
+	for _, point := range points {
 		polygonRing = append(polygonRing, fmt.Sprintf("%f %f", point.Lon, point.Lat))
 	}
 
@@ -104,13 +104,13 @@ func (sbe *TimescaleDB) FindTimeSeries(request *datastore.FindTSRequest) (
 
 	for rows.Next() {
 		var (
-			tsID int64
+			tsID      int64
 			stationID string
-			paramID string
-			pos postgis.PointS
-			other1 string
-			other2 string
-			other3 string
+			paramID   string
+			pos       postgis.PointS
+			other1    string
+			other2    string
+			other3    string
 		)
 
 		if err := rows.Scan(
@@ -122,7 +122,7 @@ func (sbe *TimescaleDB) FindTimeSeries(request *datastore.FindTSRequest) (
 			Id: tsID,
 			Metadata: &datastore.TSMetadata{
 				StationId: stationID,
-				ParamId: paramID,
+				ParamId:   paramID,
 				Pos: &datastore.Point{
 					Lat: pos.Y,
 					Lon: pos.X,

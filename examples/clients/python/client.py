@@ -15,7 +15,7 @@ def callAddTimeSeries(stub):
     tsMData = dstore.TSMetadata(
         station_id='18700',
         param_id='211',
-        pos = dstore.Point(
+        pos=dstore.Point(
             lat=59.91,
             lon=10.75,
         ),

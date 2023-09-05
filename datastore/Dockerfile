@@ -1,5 +1,5 @@
 # useful commands:
-# docker build --tag main . -f Dockerfile.main
+# docker build --tag main . -f Dockerfile
 # docker run -it main /bin/bash
 # docker image ls
 # docker image rm -f main

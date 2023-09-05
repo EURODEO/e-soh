@@ -9,7 +9,7 @@ import (
 
 func (svcInfo *ServiceInfo) PutObservations(
 	ctx context.Context, request *datastore.PutObsRequest) (
-		*datastore.PutObsResponse, error) {
+	*datastore.PutObsResponse, error) {
 
 	err := svcInfo.Sbe.PutObservations(request)
 	if err != nil {

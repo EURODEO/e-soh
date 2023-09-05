@@ -34,8 +34,10 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                 tsMData = dstore.TSMetadata(
                     station_id=station_id,
                     param_id=param_id,
-                    lat=latitude,
-                    lon=longitude,
+                    pos=dstore.Point(
+                        lat=latitude,
+                        lon=longitude
+                    ),
                     other1=param_file.name,
                     other2=param_file.long_name,
                     other3="value3",
