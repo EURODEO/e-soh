@@ -1,0 +1,79 @@
+version: '3.8'
+name: datastore
+
+services:
+  db:
+    image: timescale/timescaledb-ha:pg15-latest
+#    image: kartoza/postgis:15  # Use this instead of the official image as it has an arm64 image
+    ports:
+      - "5433:5432"
+    volumes:
+      - ts-data:/home/postgres/pgdata/data # for timescale image
+#      - ts-data:/var/lib/postgresql/data # for postgres image
+      - ./datastore/ts-init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_DB=data
+    restart: on-failure
+    healthcheck:
+      test: [ "CMD-SHELL", "sh -c pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 5s
+      timeout: 1s
+      retries: 3
+      start_period: 30s   # Failures in 30 seconds do not mark container as unhealthy
+    networks:
+      datastore-network:
+
+  store:
+    build:
+      context: datastore
+    ports:
+      - "50050:50050"
+    environment:
+      - TSDBHOST=db
+      - TSDBPORT=5432
+    restart: on-failure
+    healthcheck:
+      test: [ "CMD-SHELL", "exit $(/bin/grpc_health_probe -addr=localhost:50050)" ]
+      interval: 5s
+      timeout: 1s
+      retries: 3
+      start_period: 30s   # Failures in 30 seconds do not mark container as unhealthy
+    networks:
+      datastore-network:
+    depends_on:
+      db:
+        condition: service_healthy
+
+  client:
+    build:
+      context: .  # TODO: Needed to get proto file. Find a better solution
+      dockerfile: examples/clients/python/Dockerfile
+    environment:
+      - DSHOST=store
+      - DSPORT=50050
+    networks:
+      datastore-network:
+    depends_on:
+      store:
+        condition: service_healthy
+
+  loader:
+    build:
+      context: .  # TODO: Needed to get proto file and test data. Find a better solution
+      dockerfile: data-loader/Dockerfile
+    environment:
+      - DSHOST=store
+      - DSPORT=50050
+    networks:
+      datastore-network:
+    depends_on:
+      store:
+        condition: service_healthy
+
+volumes:
+  ts-data:
+
+networks:
+  datastore-network:
