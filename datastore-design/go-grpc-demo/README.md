@@ -108,6 +108,13 @@ $ grpcurl -d '{"id": 1234, "metadata": {"station_id": "18700", "param_id": "211"
 ...
 ```
 
+### Delete one or more time series
+
+```text
+$ grpcurl -d '{"ids": [1234, 5678]}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.DeleteTimeSeries
+...
+```
+
 ### Find all time series
 
 ```text
@@ -138,14 +145,14 @@ $ grpcurl -d '{"inside": {"points": [{"lat": 1, "lon": 1}, {"lat": 1, "lon": 3},
 ...
 ```
 
-### Insert observations into time series 1234
+### Insert observations into a time series
 
 ```text
 $ grpcurl -d '{"tsobs": [{"tsid": 1234, "obs": [{"time": "2023-01-01T00:00:10Z", "value": 123.456, "metadata": {"field1": "value1", "field2": "value2"}}]}]}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.PutObservations
 ...
 ```
 
-### Retrieve observations within a time range from time series 1234, 5678, and 9012
+### Retrieve observations within a time range from a set of time series
 
 ```text
 $ grpcurl -d '{"tsids": [1234, 5678, 9012], "fromtime": "2023-01-01T00:00:05Z", "totime": "2023-01-01T00:00:13Z"}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
