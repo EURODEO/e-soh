@@ -22,8 +22,6 @@ services:
       timeout: 1s
       retries: 3
       start_period: 30s   # Failures in 30 seconds do not mark container as unhealthy
-    networks:
-      datastore-network:
 
   store:
     build:
@@ -40,8 +38,6 @@ services:
       timeout: 1s
       retries: 3
       start_period: 30s   # Failures in 30 seconds do not mark container as unhealthy
-    networks:
-      datastore-network:
     depends_on:
       db:
         condition: service_healthy
@@ -54,8 +50,6 @@ services:
     environment:
       - DSHOST=store
       - DSPORT=50050
-    networks:
-      datastore-network:
     depends_on:
       store:
         condition: service_healthy
@@ -68,14 +62,9 @@ services:
     environment:
       - DSHOST=store
       - DSPORT=50050
-    networks:
-      datastore-network:
     depends_on:
       store:
         condition: service_healthy
 
 volumes:
   ts-data:
-
-networks:
-  datastore-network:

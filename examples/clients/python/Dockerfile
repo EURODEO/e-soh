@@ -30,5 +30,4 @@ RUN python -m grpc_tools.protoc  \
 COPY "${PROJECT_PYTHON_PATH}/client.py" "${DOCKER_PATH}/client.py"
 
 WORKDIR "${DOCKER_PATH}"
-SHELL ["/bin/bash", "-eu", "-o", "pipefail", "-c"]
-CMD ["/bin/bash", "-c", "./client.py"]
+CMD ["python", "-u", "./client.py"]
