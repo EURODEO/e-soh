@@ -24,4 +24,5 @@ jobs:
         run: docker compose up --exit-code-from loader
 
       - name: Cleanup
+        if: always()
         run: docker compose down --volumes
