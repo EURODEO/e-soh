@@ -47,6 +47,7 @@ services:
         condition: service_healthy
 
   client:
+    profiles: ["client"]
     build:
       context: .  # TODO: Needed to get proto file. Find a better solution
       dockerfile: examples/clients/python/Dockerfile
@@ -60,6 +61,7 @@ services:
         condition: service_healthy
 
   loader:
+    profiles: ["loader"]
     build:
       context: .  # TODO: Needed to get proto file and test data. Find a better solution
       dockerfile: data-loader/Dockerfile

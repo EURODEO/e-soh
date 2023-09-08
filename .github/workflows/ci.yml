@@ -18,10 +18,10 @@ jobs:
         run: docker compose build
 
       - name: Test client runs without errors
-        run: docker compose up --exit-code-from client
+        run:  docker compose --profile client up --exit-code-from client
 
       - name: Test loader runs without errors
-        run: docker compose up --exit-code-from loader
+        run: docker compose --profile loader up --exit-code-from loader
 
       - name: Cleanup
         if: always()
