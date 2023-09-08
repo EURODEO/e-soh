@@ -14,8 +14,14 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v3
 
-      - name: Build docker container
+      - name: Build docker containers
         run: docker compose build
 
       - name: Test client runs without errors
         run: docker compose up --exit-code-from client
+
+      - name: Test loader runs without errors
+        run: docker compose up --exit-code-from loader
+
+      - name: Cleanup
+        run: docker compose down --volumes
