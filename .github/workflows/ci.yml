@@ -29,19 +29,13 @@ jobs:
       - name: Test client runs without errors
         run: docker compose run --rm client
 
-      - name: Set up for load test
+      - name: Run load test
         run: |
           python --version
           pip install -r load-test/requirements.txt
           python -m grpc_tools.protoc --proto_path=datastore/protobuf datastore.proto --python_out=load-test --grpc_python_out=load-test
-
-      - name: Run load test
-        uses: apardo04/locust-github-action@master
-        with:
-          LOCUSTFILE: "load-test/locustfile.py"
-          USERS: "1"
-          RATE: "1"
-          RUNTIME: "10s"
+          cd load-test
+          locust --headless -u 5 -r 1 --run-time 60
 
       - name: Cleanup
         if: always()
