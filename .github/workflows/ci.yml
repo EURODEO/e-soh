@@ -23,6 +23,9 @@ jobs:
       - name: Test loader runs without errors
         run: docker compose run --rm loader
 
+      - name: Integration test
+        run: docker compose run --rm integration
+
       - name: Test client runs without errors
         run: docker compose run --rm client
 

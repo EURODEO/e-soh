@@ -66,5 +66,17 @@ services:
       store:
         condition: service_healthy
 
+  integration:
+    profiles: ["integration"]
+    build:
+      context: .  # TODO: Needed to get proto file. Find a better solution
+      dockerfile: integration-test/Dockerfile
+    environment:
+      - DSHOST=store
+      - DSPORT=50050
+    depends_on:
+      store:
+        condition: service_healthy
+
 volumes:
   ts-data:
