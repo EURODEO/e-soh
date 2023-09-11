@@ -50,10 +50,8 @@ jobs:
       - name: Print results
         run: |
           pip install csvkit
-          response_time=$(csvgrep -c 2 -r "FindTimeSeries" store_stats.csv | csvcut -c 6 | tail -n +2)
-          echo "## FindTimeSeries average response time: $response_time ms" >> $GITHUB_STEP_SUMMARY
-          response_time=$(csvgrep -c 2 -r "GetObservations" store_stats.csv | csvcut -c 6 | tail -n +2)
-          echo "## GetObservations average response time: $response_time ms" >> $GITHUB_STEP_SUMMARY
+          echo "## FindTimeSeries average response time: $(csvgrep -c 2 -r "FindTimeSeries" store_stats.csv | csvcut -c 6 | tail -n +2) ms" >> $GITHUB_STEP_SUMMARY
+          echo "## GetObservations average response time: $(csvgrep -c 2 -r "GetObservations" store_stats.csv | csvcut -c 6 | tail -n +2) ms" >> $GITHUB_STEP_SUMMARY
 
       - name: Cleanup
         if: always()
