@@ -52,6 +52,9 @@ jobs:
           pip install csvkit
           echo "## FindTimeSeries average response time: $(csvgrep -c 2 -r "FindTimeSeries" load-test/store_stats.csv | csvcut -c 6 | tail -n +2) ms" >> $GITHUB_STEP_SUMMARY
           echo "## GetObservations average response time: $(csvgrep -c 2 -r "GetObservations" load-test/store_stats.csv | csvcut -c 6 | tail -n +2) ms" >> $GITHUB_STEP_SUMMARY
+          csvlook load-test/store_stats.csv >> $GITHUB_STEP_SUMMARY
+          csvlook load-test/store_stats_history.csv >> $GITHUB_STEP_SUMMARY
+          csvlook load-test/store_failures.csv >> $GITHUB_STEP_SUMMARY
 
       - name: Cleanup
         if: always()
