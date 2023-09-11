@@ -1,11 +1,13 @@
+# Use the following command to generate the python protobuf stuff in the correct place (from the root of the repository)
+# python -m grpc_tools.protoc --proto_path=datastore/protobuf datastore.proto --python_out=load-test --grpc_python_out=load-test
+
 import random
 from datetime import datetime
-import gevent
 
 import grpc_user
 import datastore_pb2 as dstore
 import datastore_pb2_grpc as dstore_grpc
-from locust import events, task
+from locust import task
 
 from google.protobuf.timestamp_pb2 import Timestamp
 
