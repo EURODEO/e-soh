@@ -17,11 +17,14 @@ jobs:
       - name: Build docker containers
         run: docker compose build
 
+      - name: Start docker stack
+        run: docker compose up -d
+
       - name: Test client runs without errors
-        run:  docker compose up client --exit-code-from client
+        run: docker compose run --rm client
 
       - name: Test loader runs without errors
-        run: docker compose up loader --exit-code-from loader
+        run: docker compose run --rm loader
 
       - name: Cleanup
         if: always()

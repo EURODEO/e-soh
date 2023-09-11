@@ -86,6 +86,7 @@ if __name__ == '__main__':
         stub = dstore_grpc.DatastoreStub(channel)
 
         callAddTimeSeries(stub)
+        callAddTimeSeries(stub)
         callPutObservations(stub)
         response = callGetObservations(stub)
 
