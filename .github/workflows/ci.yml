@@ -50,8 +50,6 @@ jobs:
       - name: Print results
         run: |
           pip install csvkit
-#          echo "## FindTimeSeries average response time: $(csvgrep -c 2 -r "FindTimeSeries" load-test/store_stats.csv | csvcut -c 6 | tail -n +2) ms" >> $GITHUB_STEP_SUMMARY
-#          echo "## GetObservations average response time: $(csvgrep -c 2 -r "GetObservations" load-test/store_stats.csv | csvcut -c 6 | tail -n +2) ms" >> $GITHUB_STEP_SUMMARY
           echo "## Stats" >> $GITHUB_STEP_SUMMARY
           csvlook load-test/store_stats.csv >> $GITHUB_STEP_SUMMARY
           echo "## Stats history" >> $GITHUB_STEP_SUMMARY
