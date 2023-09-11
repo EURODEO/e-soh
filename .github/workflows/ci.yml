@@ -20,11 +20,11 @@ jobs:
       - name: Start docker stack
         run: docker compose up -d
 
-      - name: Test client runs without errors
-        run: docker compose run --rm client
-
       - name: Test loader runs without errors
         run: docker compose run --rm loader
+
+      - name: Test client runs without errors
+        run: docker compose run --rm client
 
       - name: Cleanup
         if: always()
