@@ -29,6 +29,15 @@ jobs:
       - name: Test client runs without errors
         run: docker compose run --rm client
 
+      - name: Run load test
+        uses: apardo04/locust-github-action@master
+        with:
+          LOCUSTFILE: "load-test/locustfile.py"
+          REQUIREMENTS: "load-test/requirements.txt"
+          USERS: "1"
+          RATE: "1"
+          RUNTIME: "10s"
+
       - name: Cleanup
         if: always()
         run: docker compose down --volumes
