@@ -37,7 +37,6 @@ jobs:
 
       - name: Run load test
         uses: apardo04/locust-github-action@master
-        run:
         with:
           LOCUSTFILE: "load-test/locustfile.py"
           USERS: "1"
