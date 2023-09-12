@@ -75,7 +75,7 @@ datastore.Datastore
 ### Describe all services defined in the proto file
 
 ```text
-$ grpcurl -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 describe
+$ grpcurl -plaintext -proto protobuf/datastore.proto describe
 datastore.Datastore is a service:
 service Datastore {
   rpc AddTimeSeries ( .datastore.AddTSRequest ) returns ( .datastore.AddTSResponse );
@@ -85,7 +85,7 @@ service Datastore {
 ### Describe method AddTimeSeries
 
 ```text
-$ grpcurl -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 describe datastore.Datastore.AddTimeSeries
+$ grpcurl -plaintext -proto protobuf/datastore.proto describe datastore.Datastore.AddTimeSeries
 datastore.Datastore.AddTimeSeries is a method:
 rpc AddTimeSeries ( .datastore.AddTSRequest ) returns ( .datastore.AddTSResponse );
 ```
@@ -93,7 +93,7 @@ rpc AddTimeSeries ( .datastore.AddTSRequest ) returns ( .datastore.AddTSResponse
 ### Describe message AddTSRequest
 
 ```text
-$ grpcurl -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 describe .datastore.AddTSRequest
+$ grpcurl -plaintext -proto protobuf/datastore.proto describe .datastore.AddTSRequest
 datastore.AddTSRequest is a message:
 message AddTSRequest {
   int64 id = 1;
