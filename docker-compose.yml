@@ -17,13 +17,11 @@ services:
       - POSTGRES_DB=data
     restart: on-failure
     healthcheck:
-      test: [ "CMD-SHELL", "sh -c pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      test: [ "CMD-SHELL", "psql postgresql://postgres:mysecretpassword@localhost/data -c \"SELECT COUNT(*) from OBSERVATIONS\"" ]
       interval: 5s
       timeout: 1s
       retries: 3
       start_period: 30s   # Failures in 30 seconds do not mark container as unhealthy
-    networks:
-      datastore-network:
 
   store:
     build:
@@ -40,40 +38,45 @@ services:
       timeout: 1s
       retries: 3
       start_period: 30s   # Failures in 30 seconds do not mark container as unhealthy
-    networks:
-      datastore-network:
     depends_on:
       db:
         condition: service_healthy
 
   client:
+    profiles: ["test"]
     build:
       context: .  # TODO: Needed to get proto file. Find a better solution
       dockerfile: examples/clients/python/Dockerfile
     environment:
       - DSHOST=store
       - DSPORT=50050
-    networks:
-      datastore-network:
     depends_on:
       store:
         condition: service_healthy
 
   loader:
+    profiles: ["test"]
     build:
       context: .  # TODO: Needed to get proto file and test data. Find a better solution
       dockerfile: data-loader/Dockerfile
     environment:
       - DSHOST=store
       - DSPORT=50050
-    networks:
-      datastore-network:
+    depends_on:
+      store:
+        condition: service_healthy
+
+  integration:
+    profiles: ["test"]
+    build:
+      context: .  # TODO: Needed to get proto file. Find a better solution
+      dockerfile: integration-test/Dockerfile
+    environment:
+      - DSHOST=store
+      - DSPORT=50050
     depends_on:
       store:
         condition: service_healthy
 
 volumes:
   ts-data:
-
-networks:
-  datastore-network:

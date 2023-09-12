@@ -34,6 +34,4 @@ COPY "${PROJECT_PYTHON_PATH}/parameters.py" "${DOCKER_PATH}/parameters.py"
 COPY "${PROJECT_PYTHON_PATH}/client_knmi_station.py" "${DOCKER_PATH}/client_knmi_station.py"
 
 WORKDIR "${DOCKER_PATH}"
-SHELL ["/bin/bash", "-eu", "-o", "pipefail", "-c"]
-# TODO: Fix logging so it shows up line by line instead of at once
-CMD ["/bin/bash", "-c", "./client_knmi_station.py "]
+CMD ["python", "-u", "./client_knmi_station.py"]

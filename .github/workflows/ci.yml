@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+
+      - name: Build docker containers
+        run: docker compose --profile test build
+
+      - name: Start docker stack
+        run: docker compose up -d
+
+      - name: Test loader runs without errors
+        run: docker compose run --rm loader
+
+      - name: Integration test
+        run: docker compose run --rm integration
+
+      - name: Test client runs without errors
+        run: docker compose run --rm client
+
+      - name: Cleanup
+        if: always()
+        run: docker compose down --volumes

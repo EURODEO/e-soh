@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 # tested with Python 3.11
+# Generate protobuf code with following command from top level directory:
+# python -m grpc_tools.protoc --proto_path=datastore/protobuf datastore.proto --python_out=examples/clients/python --grpc_python_out=examples/clients/python
 import os
 from datetime import datetime
 
@@ -9,6 +11,8 @@ import datastore_pb2 as dstore
 import datastore_pb2_grpc as dstore_grpc
 import grpc
 
+MAGIC_ID = 1234567890
+MAGIC_VALUE = 123.456
 
 def callAddTimeSeries(stub):
     print('calling AddTimeSeries() ...')
@@ -24,7 +28,7 @@ def callAddTimeSeries(stub):
         other3='value3',
     )
     request = dstore.AddTSRequest(
-        id=1234567890,
+        id=MAGIC_ID,
         metadata=tsMData,
     )
     response = stub.AddTimeSeries(request)
@@ -42,14 +46,14 @@ def callPutObservations(stub):
     obs = [
         dstore.Observation(
             time=timestamp,
-            value=123.456,
+            value=MAGIC_VALUE,
             metadata=obsMData,
         )
     ]
     request = dstore.PutObsRequest(
         tsobs=[
             dstore.TSObservations(
-                tsid=1234567890,
+                tsid=MAGIC_ID,
                 obs=obs,
             )
         ],
@@ -73,6 +77,8 @@ def callGetObservations(stub):
     response = stub.GetObservations(request)
     print('    response: {}'.format(response))
 
+    return response
+
 
 if __name__ == '__main__':
 
@@ -81,4 +87,13 @@ if __name__ == '__main__':
 
         callAddTimeSeries(stub)
         callPutObservations(stub)
-        callGetObservations(stub)
+        response = callGetObservations(stub)
+
+    # Check response
+    found_at_least_one = False
+    for r in response.tsobs:
+        if r.tsid == MAGIC_ID:
+            for o in r.obs:
+                assert(o.value == MAGIC_VALUE)
+                found_at_least_one = True
+    assert found_at_least_one
