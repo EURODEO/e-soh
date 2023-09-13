@@ -1,0 +1,9 @@
+# Generate requirements.txt using:
+# pip-compile --upgrade --no-emit-index-url
+# Install using:
+# pip-sync
+
+grpcio-tools~=1.56
+fastapi~=0.103.1
+uvicorn[standard]~=0.23.2
+covjson-pydantic @ git+https://github.com/KNMI/covjson-pydantic@KDP-1761
