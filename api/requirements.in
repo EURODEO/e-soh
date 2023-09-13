@@ -6,4 +6,5 @@
 grpcio-tools~=1.56
 fastapi~=0.103.1
 uvicorn[standard]~=0.23.2
+gunicorn~=21.2
 covjson-pydantic @ git+https://github.com/KNMI/covjson-pydantic@KDP-1761

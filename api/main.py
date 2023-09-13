@@ -1,3 +1,7 @@
+# Run with:
+# For load testing:  gunicorn main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker
+# For developing:    uvicorn main:app --reload
+
 import os
 from datetime import datetime
 from datetime import timezone
@@ -31,13 +35,11 @@ def read_item(location_id: str):
     # TODO: There is no error handling of any kind at the moment! This is just a quick and dirty demo
     with grpc.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") as channel:
         grpc_stub = dstore_grpc.DatastoreStub(channel)
-        print(location_id)
         ts_request = dstore.FindTSRequest(
             station_ids=[location_id],
             param_ids=["rh"]   # TODO: Get from request
         )
         ts_response = grpc_stub.FindTimeSeries(ts_request)
-        # print(ts_response)
         assert len(ts_response.tseries) == 1
         ts_id = ts_response.tseries[0].id
 
