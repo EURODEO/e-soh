@@ -2,14 +2,11 @@
 import os
 from datetime import datetime
 
-
-import pytest
-
-from google.protobuf.timestamp_pb2 import Timestamp
-
 import datastore_pb2 as dstore
 import datastore_pb2_grpc as dstore_grpc
 import grpc
+import pytest
+from google.protobuf.timestamp_pb2 import Timestamp
 
 
 @pytest.fixture
@@ -19,10 +16,7 @@ def grpc_stub():
 
 
 def test_find_series_single_station_single_parameter(grpc_stub):
-    request = dstore.FindTSRequest(
-            station_ids=["06260"],
-            param_ids=["rh"]
-        )
+    request = dstore.FindTSRequest(station_ids=["06260"], param_ids=["rh"])
     response = grpc_stub.FindTimeSeries(request)
 
     assert len(response.tseries) == 1
@@ -31,9 +25,7 @@ def test_find_series_single_station_single_parameter(grpc_stub):
 
 
 def test_find_series_all_stations_single_parameter(grpc_stub):
-    request = dstore.FindTSRequest(
-        param_ids=["rh"]
-    )
+    request = dstore.FindTSRequest(param_ids=["rh"])
     response = grpc_stub.FindTimeSeries(request)
 
     assert len(response.tseries) == 55
@@ -48,11 +40,8 @@ def test_find_series_single_station_all_parameters(grpc_stub):
     assert len(response.tseries) == 44
 
 
-def test_get_values_single_station_single_paramters(grpc_stub):
-    ts_request = dstore.FindTSRequest(
-        station_ids=["06260"],
-        param_ids=["rh"]
-    )
+def test_get_values_single_station_single_parameters(grpc_stub):
+    ts_request = dstore.FindTSRequest(station_ids=["06260"], param_ids=["rh"])
     ts_response = grpc_stub.FindTimeSeries(ts_request)
     assert len(ts_response.tseries) == 1
     ts_id = ts_response.tseries[0].id
