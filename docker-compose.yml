@@ -42,6 +42,19 @@ services:
       db:
         condition: service_healthy
 
+  api:
+    build:
+      context: .  # TODO: Needed to get proto file. Find a better solution
+      dockerfile: api/Dockerfile
+    ports:
+        - "8008:8000"
+    environment:
+      - DSHOST=store
+      - DSPORT=50050
+    depends_on:
+      store:
+        condition: service_healthy
+
   client:
     profiles: ["test"]
     build:

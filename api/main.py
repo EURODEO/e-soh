@@ -1,10 +1,11 @@
 # Run with:
-# For load testing:  gunicorn main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker
 # For developing:    uvicorn main:app --reload
 
 import os
 from datetime import datetime
 from datetime import timezone
+
+from brotli_asgi import BrotliMiddleware
 
 from covjson_pydantic.ndarray import NdArray
 from fastapi import FastAPI
@@ -20,6 +21,7 @@ from covjson_pydantic.coverage import Coverage
 from covjson_pydantic.domain import Domain, DomainType, Axes, ValuesAxis
 
 app = FastAPI()
+app.add_middleware(BrotliMiddleware)
 
 
 @app.get("/")
