@@ -14,6 +14,10 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v3
 
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
       - name: Build docker containers
         run: docker compose --profile test build
 
@@ -28,6 +32,30 @@ jobs:
 
       - name: Test client runs without errors
         run: docker compose run --rm client
+
+      - name: Run load test
+        run: |
+          python --version
+          pip install -r load-test/requirements.txt
+          python -m grpc_tools.protoc --proto_path=datastore/protobuf datastore.proto --python_out=load-test --grpc_python_out=load-test
+          cd load-test
+          locust --headless -u 5 -r 1 --run-time 60 --only-summary --csv store
+
+      - name: Archive load test artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: performance
+          path: load-test/store_*.csv
+
+      - name: Print results
+        run: |
+          pip install csvkit
+          echo "## Stats" >> $GITHUB_STEP_SUMMARY
+          csvlook load-test/store_stats.csv >> $GITHUB_STEP_SUMMARY
+          echo "## Stats history" >> $GITHUB_STEP_SUMMARY
+          csvlook load-test/store_stats_history.csv >> $GITHUB_STEP_SUMMARY
+          echo "## Failures" >> $GITHUB_STEP_SUMMARY
+          csvlook load-test/store_failures.csv >> $GITHUB_STEP_SUMMARY
 
       - name: Cleanup
         if: always()
