@@ -261,7 +261,9 @@
       },
       "required": [
         "pubtime",
-        "data_id"
+        "data_id",
+        "metadata_id",
+        "source"
       ],
       "oneOf": [
         {
