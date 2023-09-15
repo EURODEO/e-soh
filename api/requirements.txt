@@ -33,6 +33,8 @@ httptools==0.6.0
     # via uvicorn
 idna==3.4
     # via anyio
+numpy==1.25.2
+    # via shapely
 packaging==23.1
     # via gunicorn
 protobuf==4.24.3
@@ -47,6 +49,8 @@ python-dotenv==1.0.0
     # via uvicorn
 pyyaml==6.0.1
     # via uvicorn
+shapely==2.0.1
+    # via -r requirements.in
 sniffio==1.3.0
     # via anyio
 starlette==0.27.0

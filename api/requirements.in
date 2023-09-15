@@ -9,3 +9,4 @@ fastapi~=0.103.1
 gunicorn~=21.2
 uvicorn[standard]~=0.23.2
 covjson-pydantic @ git+https://github.com/KNMI/covjson-pydantic@KDP-1761
+shapely~=2.0

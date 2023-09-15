@@ -69,7 +69,7 @@ func insidePolygonCond(
 
 	return fmt.Sprintf(
 		" AND ST_DWITHIN(%s, ST_GeomFromText($%d, %s)::geography, 0.0)",
-		name, srid, len(*phVals), srid), nil
+		name, len(*phVals), srid), nil
 }
 
 // FindTimeSeries ... (see documentation in StorageBackend interface)
