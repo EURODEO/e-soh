@@ -1,5 +1,5 @@
 # Run with:
-# For developing:    uvicorn main:app --reload --bind=0.0.0.0:8000
+# For developing:    uvicorn main:app --reload
 
 import os
 from datetime import datetime
@@ -32,7 +32,7 @@ app.add_middleware(BrotliMiddleware)
 def collect_data(time_serie, observations):
     lat = time_serie.metadata.pos.lat
     lon = time_serie.metadata.pos.lon
-    tuples = ((o.time.ToDatetime().replace(tzinfo=timezone.utc), o.value) for o in observations.obs)
+    tuples = ((o.time.ToDatetime(tzinfo=timezone.utc), o.value) for o in observations.obs)
     (times, values) = zip(*tuples)
     param_id = time_serie.metadata.param_id
 
