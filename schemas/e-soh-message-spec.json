@@ -23,11 +23,6 @@
     "geometry": {
       "oneOf": [
         {
-          "enum": [
-            null
-          ]
-        },
-        {
           "type": "object",
           "required": [
             "type",
