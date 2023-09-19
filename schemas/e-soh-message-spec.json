@@ -122,7 +122,7 @@
         },
         "metadata_id": {
           "type": "string",
-          "description": "Identifier for associated discovery metadata record to which the notification applies to."
+          "description": "Identifier for associated discovery metadata record to which the notification applies to. This id should make it possible to discover the data in the datastore."
         },
         "datetime": {
           "type": "string",
@@ -183,6 +183,14 @@
         "source": {
           "type": "string",
           "description": "The method of production of the original data. If it was model-generated, source should name the model and its version. If it is observational, source should characterize it. This attribute is defined in the CF Conventions."
+        },
+        "platform": {
+          "type": "string",
+          "description": "Name of the platform(s) that supported the sensor data used to create this data set or product. Platforms can be of any type, including satellite, ship, station, aircraft or other. Indicate controlled vocabulary used in platform_vocabulary."
+        },
+        "platform_vocabulary": {
+          "type": "string",
+          "description": "Controlled vocabulary for the names used in the 'platform' attribute."
         },
         "processing_level": {
           "type": "string",
@@ -263,7 +271,12 @@
         "pubtime",
         "data_id",
         "metadata_id",
-        "source"
+        "naming_authority",
+        "summary",
+        "Conventions",
+        "keywords",
+        "keywords_vocabulary",
+        "license"
       ],
       "oneOf": [
         {
