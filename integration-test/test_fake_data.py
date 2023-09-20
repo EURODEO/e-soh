@@ -33,23 +33,30 @@ def grpc_stub():
         yield dstore_grpc.DatastoreStub(channel)
 
 
-def dummy_timeseries_for_delete(fake_id, fake_str_id):
+@pytest.fixture(scope="function")
+def dummy_timeseries_for_delete():
+    dummy_id = 999999999
+    dummy_str_id = "999999999"
+
     ts_metadata = dstore.TSMetadata(
-        station_id=fake_str_id,
-        param_id=fake_str_id,
+        station_id=dummy_str_id,
+        param_id=dummy_str_id,
         pos=dstore.Point(lat=-60, lon=-160),
         other1="test_value1",
         other2="test_value2",
         other3="test_value3",
     )
     ts_add_request = dstore.AddTSRequest(
-        id=fake_id,
+        id=dummy_id,
         metadata=ts_metadata,
     )
     return ts_add_request
 
 
-def dummy_observations_for_delete(fake_id):
+@pytest.fixture(scope="function")
+def dummy_observations_for_delete():
+    dummy_id = 999999999
+
     obs_metadata = dstore.ObsMetadata(field1="test_value1", field2="test_value2")
     time_1 = Timestamp()
     time_1.FromDatetime(datetime(year=1999, month=9, day=9, hour=9, minute=9, tzinfo=timezone.utc))
@@ -63,38 +70,38 @@ def dummy_observations_for_delete(fake_id):
         dstore.Observation(time=time_3, value=3333.3333, metadata=obs_metadata),
     ]
     obs_put_request = dstore.PutObsRequest(
-        tsobs=[dstore.TSObservations(tsid=fake_id, obs=obs)],
+        tsobs=[dstore.TSObservations(tsid=dummy_id, obs=obs)],
     )
     return obs_put_request
 
 
-def test_delete_timeseries(grpc_stub):
-    fake_id = 999999999
-    fake_str_id = "999999999"
-    ts_add_request = dummy_timeseries_for_delete(fake_id=fake_id, fake_str_id=fake_str_id)
-    obs_put_request = dummy_observations_for_delete(fake_id=fake_id)
-
-    ts_add_response = grpc_stub.AddTimeSeries(ts_add_request)
+def test_delete_timeseries(grpc_stub, dummy_timeseries_for_delete, dummy_observations_for_delete):
+    ts_add_response = grpc_stub.AddTimeSeries(dummy_timeseries_for_delete)
     assert str(ts_add_response) == "status: -1\n"
 
-    obs_response = grpc_stub.PutObservations(obs_put_request)
+    obs_response = grpc_stub.PutObservations(dummy_observations_for_delete)
     assert str(obs_response) == "status: -1\n"
 
-    ts_find_request = dstore.FindTSRequest(station_ids=[fake_str_id], param_ids=[fake_str_id])
+    ts_find_request = dstore.FindTSRequest(
+        station_ids=[dummy_timeseries_for_delete.metadata.station_id],
+        param_ids=[dummy_timeseries_for_delete.metadata.param_id],
+    )
     ts_find_response = grpc_stub.FindTimeSeries(ts_find_request)
     assert len(ts_find_response.tseries) == 1
-    assert ts_find_response.tseries[0].id == fake_id
+    assert ts_find_response.tseries[0].id == dummy_timeseries_for_delete.id
 
     to_time = Timestamp()
     to_time.FromDatetime(datetime(year=1999, month=9, day=9, hour=9, minute=11, second=1, tzinfo=timezone.utc))
     obs_get_request = dstore.GetObsRequest(
-        tsids=[fake_id], fromtime=obs_put_request.tsobs[0].obs[0].time, totime=to_time
+        tsids=[dummy_timeseries_for_delete.id],
+        fromtime=dummy_observations_for_delete.tsobs[0].obs[0].time,
+        totime=to_time,
     )
     obs_get_response = grpc_stub.GetObservations(obs_get_request)
-    assert obs_get_response.tsobs[0].tsid == fake_id
+    assert obs_get_response.tsobs[0].tsid == dummy_timeseries_for_delete.id
     assert len(obs_get_response.tsobs[0].obs) == 3
 
-    ts_delete_request = dstore.DeleteTSRequest(ids=[fake_id])
+    ts_delete_request = dstore.DeleteTSRequest(ids=[dummy_timeseries_for_delete.id])
     ts_delete_response = grpc_stub.DeleteTimeSeries(ts_delete_request)
     assert str(ts_delete_response) == "status: -1\n"
 
@@ -102,41 +109,41 @@ def test_delete_timeseries(grpc_stub):
     assert len(ts_find_response.tseries) == 0
 
     obs_get_response = grpc_stub.GetObservations(obs_get_request)
-    assert obs_get_response.tsobs[0].tsid == fake_id
+    assert obs_get_response.tsobs[0].tsid == dummy_timeseries_for_delete.id
     assert len(obs_get_response.tsobs[0].obs) == 0
 
 
 @pytest.fixture(scope="module")
-def setup_fake_data_for_polygon(grpc_stub):
-    fake_id = 999999990
-    fake_str_id = "999999990"
+def setup_dummy_data_for_polygon(grpc_stub):
+    dummy_id = 999999990
+    dummy_str_id = "999999990"
     ts_metadata = dstore.TSMetadata(
-        station_id=fake_str_id,
-        param_id=fake_str_id,
+        station_id=dummy_str_id,
+        param_id=dummy_str_id,
         pos=dstore.Point(lat=80, lon=170),
         other1="test_value1",
         other2="test_value2",
         other3="test_value3",
     )
     ts_add_request_1 = dstore.AddTSRequest(
-        id=fake_id,
+        id=dummy_id,
         metadata=ts_metadata,
     )
     # grpc_stub.AddTimeSeries(ts_add_request_1)
     _handle_grpc_error(grpc_stub.AddTimeSeries, ts_add_request_1)
 
-    fake_id = 999999991
-    fake_str_id = "999999991"
+    dummy_id = 999999991
+    dummy_str_id = "999999991"
     ts_metadata = dstore.TSMetadata(
-        station_id=fake_str_id,
-        param_id=fake_str_id,
+        station_id=dummy_str_id,
+        param_id=dummy_str_id,
         pos=dstore.Point(lat=90, lon=180),
         other1="test_value4",
         other2="test_value5",
         other3="test_value6",
     )
     ts_add_request_2 = dstore.AddTSRequest(
-        id=fake_id,
+        id=dummy_id,
         metadata=ts_metadata,
     )
     # grpc_stub.AddTimeSeries(ts_add_request_2)
@@ -182,7 +189,7 @@ input_params_polygon = [
 
 
 @pytest.mark.parametrize("coords,expected", input_params_polygon)
-def test_get_observations_with_polygon(grpc_stub, setup_fake_data_for_polygon, coords, expected):
+def test_get_observations_with_polygon(grpc_stub, setup_dummy_data_for_polygon, coords, expected):
     ts_request = dstore.FindTSRequest(
         inside=dstore.Polygon(points=[dstore.Point(lat=lat, lon=lon) for lat, lon in coords])
     )
