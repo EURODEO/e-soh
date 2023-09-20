@@ -21,6 +21,8 @@ covjson-pydantic @ git+https://github.com/KNMI/covjson-pydantic@KDP-1761
     # via -r requirements.in
 fastapi==0.103.1
     # via -r requirements.in
+geojson-pydantic==1.0.0
+    # via -r requirements.in
 grpcio==1.58.0
     # via grpcio-tools
 grpcio-tools==1.58.0
@@ -33,7 +35,7 @@ httptools==0.6.0
     # via uvicorn
 idna==3.4
     # via anyio
-numpy==1.25.2
+numpy==1.26.0
     # via shapely
 packaging==23.1
     # via gunicorn
@@ -43,6 +45,7 @@ pydantic==2.3.0
     # via
     #   covjson-pydantic
     #   fastapi
+    #   geojson-pydantic
 pydantic-core==2.6.3
     # via pydantic
 python-dotenv==1.0.0
@@ -57,7 +60,7 @@ starlette==0.27.0
     # via
     #   brotli-asgi
     #   fastapi
-typing-extensions==4.7.1
+typing-extensions==4.8.0
     # via
     #   fastapi
     #   pydantic

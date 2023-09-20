@@ -11,6 +11,7 @@ from brotli_asgi import BrotliMiddleware
 from covjson_pydantic.ndarray import NdArray
 from fastapi import FastAPI
 from fastapi import Query, Path
+from geojson_pydantic import FeatureCollection, Feature, Point
 
 from google.protobuf.timestamp_pb2 import Timestamp
 from pydantic import AwareDatetime
@@ -22,7 +23,7 @@ import grpc
 from covjson_pydantic.coverage import Coverage, CoverageCollection
 from covjson_pydantic.domain import Domain, DomainType, Axes, ValuesAxis
 
-from shapely import wkt, buffer
+from shapely import wkt, buffer, geometry
 
 
 app = FastAPI()
@@ -78,6 +79,29 @@ def get_data_for_time_series(ts_response, grpc_stub):
 
 
 @app.get(
+    "/collections/observations/locations",
+    response_model=FeatureCollection,
+    response_model_exclude_none=True, )
+def get_locations(bbox: str = Query(..., example="5.0,52.0,6.0,52.1")) -> FeatureCollection:  # Hack to use string
+    left, bottom, right, top = map(str.strip, bbox.split(","))
+    poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
+    with grpc.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") as channel:
+        grpc_stub = dstore_grpc.DatastoreStub(channel)
+        ts_request = dstore.FindTSRequest(
+            param_ids=["tn"],  # Hack
+            inside=dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords])
+        )
+        ts_response = grpc_stub.FindTimeSeries(ts_request)
+
+        features = [
+            Feature(type="Feature", id=ts.metadata.station_id, properties=None,
+                    geometry=Point(type="Point", coordinates=(ts.metadata.pos.lon, ts.metadata.pos.lat)))
+            for ts in ts_response.tseries
+        ]
+        return FeatureCollection(features=features, type="FeatureCollection")
+
+
+@app.get(
     "/collections/observations/locations/{location_id}",
     response_model=Coverage,
     response_model_exclude_none=True, )
@@ -104,8 +128,6 @@ def get_data_position(coords: str = Query(..., example="POINT(5.179705 52.098821
     point = wkt.loads(coords)
     assert(point.geom_type == "Point")
     poly = buffer(point, 0.0001, quad_segs=1)  # Roughly 10 meters around the point
-    print(point)
-    print(poly, flush=True)
     return get_data_area(poly.wkt, parameter_name)
 
 
