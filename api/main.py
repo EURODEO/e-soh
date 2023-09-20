@@ -10,7 +10,7 @@ from brotli_asgi import BrotliMiddleware
 
 from covjson_pydantic.ndarray import NdArray
 from fastapi import FastAPI
-from fastapi import Query
+from fastapi import Query, Path
 
 from google.protobuf.timestamp_pb2 import Timestamp
 from pydantic import AwareDatetime
@@ -22,7 +22,7 @@ import grpc
 from covjson_pydantic.coverage import Coverage, CoverageCollection
 from covjson_pydantic.domain import Domain, DomainType, Axes, ValuesAxis
 
-from shapely import wkt
+from shapely import wkt, buffer
 
 
 app = FastAPI()
@@ -81,7 +81,8 @@ def get_data_for_time_series(ts_response, grpc_stub):
     "/collections/observations/locations/{location_id}",
     response_model=Coverage,
     response_model_exclude_none=True, )
-def get_data_location_id(location_id: str, parameter_name: str = Query(..., alias="parameter-name")):
+def get_data_location_id(location_id: str = Path(..., example="06260"),
+                         parameter_name: str = Query(..., alias="parameter-name", example="dd,ff,rh,pp,tn")):
     # TODO: There is no error handling of any kind at the moment! This is just a quick and dirty demo
     # TODO: Code does not handle nan when serialising to JSON
     with grpc.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") as channel:
@@ -95,10 +96,25 @@ def get_data_location_id(location_id: str, parameter_name: str = Query(..., alia
 
 
 @app.get(
+    "/collections/observations/position",
+    response_model=Coverage | CoverageCollection,
+    response_model_exclude_none=True, )
+def get_data_position(coords: str = Query(..., example="POINT(5.179705 52.0988218)"),
+                      parameter_name: str = Query(..., alias="parameter-name", example="dd,ff,rh,pp,tn")):
+    point = wkt.loads(coords)
+    assert(point.geom_type == "Point")
+    poly = buffer(point, 0.0001, quad_segs=1)  # Roughly 10 meters around the point
+    print(point)
+    print(poly, flush=True)
+    return get_data_area(poly.wkt, parameter_name)
+
+
+@app.get(
     "/collections/observations/area",
     response_model=Coverage | CoverageCollection,
     response_model_exclude_none=True, )
-def get_data_area(coords: str, parameter_name: str = Query(..., alias="parameter-name")):
+def get_data_area(coords: str = Query(..., example="POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))"),
+                  parameter_name: str = Query(..., alias="parameter-name", example="dd,ff,rh,pp,tn")):
     poly = wkt.loads(coords)
     assert(poly.geom_type == "Polygon")
     with grpc.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") as channel:
