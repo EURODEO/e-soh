@@ -77,8 +77,6 @@ services:
     depends_on:
       store:
         condition: service_healthy
-#      loader:
-#        condition: service_completed_successfully
 
 volumes:
   ts-data:
