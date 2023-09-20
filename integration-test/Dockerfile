@@ -28,6 +28,7 @@ RUN python -m grpc_tools.protoc  \
     --grpc_python_out="${DOCKER_PATH}"
 
 COPY "${PROJECT_PYTHON_PATH}/test_knmi.py" "${DOCKER_PATH}/test_knmi.py"
+COPY "${PROJECT_PYTHON_PATH}/test_dummy_data.py" "${DOCKER_PATH}/test_dummy_data.py"
 
 WORKDIR "${DOCKER_PATH}"
 CMD ["pytest"]
