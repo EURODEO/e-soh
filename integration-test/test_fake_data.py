@@ -15,18 +15,6 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
-def _handle_grpc_error(func, *args, **kwargs):
-    try:
-        return func(*args, **kwargs)
-    except grpc.RpcError as rpc_error:
-        for error in rpc_error.args:
-            if error.details.endswith("already exists"):
-                logger.info(error)
-            else:
-                logger.error(rpc_error)
-                raise rpc_error
-
-
 @pytest.fixture(scope="session")
 def grpc_stub():
     with grpc.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") as channel:
@@ -129,8 +117,7 @@ def setup_dummy_data_for_polygon(grpc_stub):
         id=dummy_id,
         metadata=ts_metadata,
     )
-    # grpc_stub.AddTimeSeries(ts_add_request_1)
-    _handle_grpc_error(grpc_stub.AddTimeSeries, ts_add_request_1)
+    grpc_stub.AddTimeSeries(ts_add_request_1)
 
     dummy_id = 999999991
     dummy_str_id = "999999991"
@@ -146,8 +133,7 @@ def setup_dummy_data_for_polygon(grpc_stub):
         id=dummy_id,
         metadata=ts_metadata,
     )
-    # grpc_stub.AddTimeSeries(ts_add_request_2)
-    _handle_grpc_error(grpc_stub.AddTimeSeries, ts_add_request_2)
+    grpc_stub.AddTimeSeries(ts_add_request_2)
 
     yield  # Hereafter teardown
 
