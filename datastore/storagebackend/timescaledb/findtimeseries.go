@@ -94,9 +94,6 @@ func (sbe *TimescaleDB) FindTimeSeries(request *datastore.FindTSRequest) (
 
 	// TODO: add more filters
 
-	fmt.Println("Query: ", query)
-	fmt.Println("phVals: ", phVals)
-
 	rows, err := sbe.Db.Query(query, phVals...)
 	if err != nil {
 		return nil, fmt.Errorf("sbe.Db.Query() failed: %v", err)
