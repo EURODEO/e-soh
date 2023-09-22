@@ -9,6 +9,10 @@ import pytest
 from google.protobuf.timestamp_pb2 import Timestamp
 
 
+def _strip_empty_parameters(**kwargs):
+    return {k: v for k, v in kwargs.items() if v}
+
+
 @pytest.fixture(scope="session")
 def grpc_stub():
     with grpc.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") as channel:
@@ -68,31 +72,49 @@ input_params_polygon = [
     (
         # Multiple stations within
         ((52.15, 4.90), (52.15, 5.37), (51.66, 5.37), (51.66, 4.90)),
+        None,
         {"number_of_timeseries": 132, "number_of_stations": 3, "station_ids": ["06260", "06348", "06356"]},
+    ),
+    (
+        # Multiple stations with a single parameter
+        ((52.15, 4.90), (52.15, 5.37), (51.66, 5.37), (51.66, 4.90)),
+        ["rh"],
+        {"number_of_timeseries": 3, "number_of_stations": 3, "station_ids": ["06260", "06348", "06356"]},
+    ),
+    (
+        # Multiple stations with multiple parameters
+        ((52.15, 4.90), (52.15, 5.37), (51.66, 5.37), (51.66, 4.90)),
+        ["dd", "rh", "tx"],
+        {"number_of_timeseries": 9, "number_of_stations": 3, "station_ids": ["06260", "06348", "06356"]},
     ),
     (
         # One station within
         ((52.11, 5.15), (52.11, 5.204), (52.08, 5.204), (52.08, 5.15)),
+        None,
         {"number_of_timeseries": 44, "number_of_stations": 1, "station_ids": ["06260"]},
     ),
     (
         # Nothing within
         ((51.82, 5.07), (51.82, 5.41), (51.73, 5.41), (51.73, 5.07)),
+        None,
         {"number_of_timeseries": 0, "number_of_stations": 0, "station_ids": []},
     ),
     (
         # Middle top
         ((52.0989, 4.17), (52.0989, 6.18), (52.09, 6.18), (52.09, 4.17)),
+        None,
         {"number_of_timeseries": 44, "number_of_stations": 1, "station_ids": ["06260"]},
     ),
     (
         # Middle bottom, should fall outside since polygon is curved because the earth is round (postgres geography).
         ((52.1, 4.17), (52.1, 6.18), (52.0989, 6.18), (52.0989, 4.17)),
+        None,
         {"number_of_timeseries": 0, "number_of_stations": 0, "station_ids": []},
     ),
     (
         # Complex polygon
         ((51.45, 3.47), (51.39, 3.67), (51.39, 4.28), (51.52, 4.96), (51.89, 5.46), (52.18, 5.30), (51.75, 3.68)),
+        None,
         {
             "number_of_timeseries": 352,
             "number_of_stations": 8,
@@ -102,6 +124,7 @@ input_params_polygon = [
     (
         # All stations in the Netherlands
         ((56.00, 2.85), (56.00, 7.22), (50.75, 7.22), (50.75, 2.85)),
+        None,
         {
             "number_of_timeseries": 2288,
             "number_of_stations": 52,
@@ -119,11 +142,14 @@ input_params_polygon = [
 ]
 
 
-@pytest.mark.parametrize("coords,expected", input_params_polygon)
-def test_get_observations_with_polygon(grpc_stub, coords, expected):
-    ts_request = dstore.FindTSRequest(
-        inside=dstore.Polygon(points=[dstore.Point(lat=lat, lon=lon) for lat, lon in coords])
-    )
+@pytest.mark.parametrize("coords,param_ids,expected", input_params_polygon)
+def test_get_observations_with_polygon(grpc_stub, coords, param_ids, expected):
+    inside = None
+    if coords:
+        inside = dstore.Polygon(points=[dstore.Point(lat=lat, lon=lon) for lat, lon in coords])
+
+    kwargs = _strip_empty_parameters(inside=inside, param_ids=param_ids)
+    ts_request = dstore.FindTSRequest(**kwargs)
     ts_response = grpc_stub.FindTimeSeries(ts_request)
 
     assert len(ts_response.tseries) == expected["number_of_timeseries"]  # parameters * number_of_stations
