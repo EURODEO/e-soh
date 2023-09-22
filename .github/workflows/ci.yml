@@ -11,6 +11,15 @@ env:
   LINE_LENGTH: 99  # TODO: would we like to increase this to 120?
 
 jobs:
+  docker-lint-hadolint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hadolint/hadolint-action@v3.1.0
+        with:
+          ignore: DL3008
+          recursive: true
+
   python-lint-black:
     runs-on: ubuntu-latest
     steps:
