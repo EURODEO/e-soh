@@ -23,10 +23,11 @@ jobs:
           python-version: '3.11'
           architecture: x64
 
+      - name: Install Black
+        run: pip install black
+
       - name: Lint Python with Black
-        uses: psf/black@stable
-        with:
-          options: "--check --verbose --line-length=$LINE_LENGTH"
+        run: black . --check --line-length=${LINE_LENGTH}
 
   python-lint-flake8:
     runs-on: ubuntu-latest
