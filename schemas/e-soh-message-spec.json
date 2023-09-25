@@ -273,8 +273,6 @@
         "naming_authority",
         "summary",
         "Conventions",
-        "keywords",
-        "keywords_vocabulary",
         "license"
       ],
       "oneOf": [
@@ -297,7 +295,12 @@
             }
           ]
         }
-      ]
+      ],
+      "dependentRequired": {
+        "keywords": [
+          "keywords_vocabulary"
+        ]
+      }
     },
     "links": {
       "type": "array",
