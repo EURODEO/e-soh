@@ -23,6 +23,6 @@ CREATE TABLE observations (
 	field2 TEXT -- ----''----
 );
 
-SELECT create_hypertable(
-	'observations', 'tstamp', chunk_time_interval => INTERVAL '1 hour'
-);
+-- SELECT create_hypertable(
+-- 	'observations', 'tstamp', chunk_time_interval => INTERVAL '1 hour'
+-- );

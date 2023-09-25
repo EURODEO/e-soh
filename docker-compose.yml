@@ -3,13 +3,13 @@ name: datastore
 
 services:
   db:
-    image: timescale/timescaledb-ha:pg15-latest
-#    image: kartoza/postgis:15  # Use this instead of the official image as it has an arm64 image
+#    image: timescale/timescaledb-ha:pg15-latest
+    image: kartoza/postgis:15  # Use this instead of the official image as it has an arm64 image
     ports:
       - "5433:5432"
     volumes:
-      - ts-data:/home/postgres/pgdata/data # for timescale image
-#      - ts-data:/var/lib/postgresql/data # for postgres image
+#      - ts-data:/home/postgres/pgdata/data # for timescale image
+      - ts-data:/var/lib/postgresql/data # for postgres image
       - ./datastore/ts-init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       - POSTGRES_USER=postgres
@@ -40,6 +40,19 @@ services:
       start_period: 30s   # Failures in 30 seconds do not mark container as unhealthy
     depends_on:
       db:
+        condition: service_healthy
+
+  api:
+    build:
+      context: .  # TODO: Needed to get proto file. Find a better solution
+      dockerfile: api/Dockerfile
+    ports:
+        - "8008:8000"
+    environment:
+      - DSHOST=store
+      - DSPORT=50050
+    depends_on:
+      store:
         condition: service_healthy
 
   client:
