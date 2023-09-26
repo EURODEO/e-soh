@@ -6,7 +6,7 @@ import (
 	"datastore/datastore"
 	"datastore/dsimpl"
 	"datastore/storagebackend"
-	"datastore/storagebackend/timescaledb"
+	"datastore/storagebackend/postgresql"
 	"fmt"
 	"log"
 	"net"
@@ -20,10 +20,10 @@ import (
 func createStorageBackend() (storagebackend.StorageBackend, error) {
 	var sbe storagebackend.StorageBackend
 
-	// only TimescaleDB supported for now
-	sbe, err := timescaledb.NewTimescaleDB()
+	// only PostgreSQL supported for now
+	sbe, err := postgresql.NewPostgreSQL()
 	if err != nil {
-		return nil, fmt.Errorf("timescaledb.NewTimescaleDB() failed: %v", err)
+		return nil, fmt.Errorf("postgresql.NewPostgreSQL() failed: %v", err)
 	}
 
 	return sbe, nil

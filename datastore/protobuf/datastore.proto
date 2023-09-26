@@ -7,18 +7,19 @@ import "google/protobuf/timestamp.proto";
 option go_package = "./datastore";
 
 // Notes:
-// - A 'time series' has a globally unique ID, serves a container/context for
-//   observations, and contains overall metadata that are independent of obs
-//   time.
-// - An 'observation' belongs to a time series and contains obs time, obs value,
-//   and metadata that depend on obs time.
-// - All obs times are of type google.protobuf.Timestamp
+// - A _time series_ is a context defined by a set of metadata (defined in TSMetadata below) that
+//   usually does not vary with observaion (time).
+// - An _observation_ consists of a set of of metadata (defined in ObsMetadata below) that usually
+//   varies with observation (time). Note that for simplicity the observation value itself (such as
+//   air temperature value 12.7) is also considered a metadata field (although strictly speaking
+//   this is the only field that is just data, not metadata).
+// - There is a 1:N relationship between time series and observations:
+//   * A given time series (= unique combination of time series metadata fields) is associated with
+//     one or more observations.
+//   * A given observation (= unique combination of observation metadata fields) is associated with
+//     exactly one time series.
 
 service Datastore {
-  rpc AddTimeSeries(AddTSRequest) returns (AddTSResponse);
-  rpc DeleteTimeSeries(DeleteTSRequest) returns (DeleteTSResponse);
-  rpc FindTimeSeries(FindTSRequest) returns (FindTSResponse);
-  //rpc UpdateTimeSeries(UpdateTSRequest) returns (UpdateTSResponse);
   rpc PutObservations(PutObsRequest) returns (PutObsResponse);
   rpc GetObservations(GetObsRequest) returns (GetObsResponse);
 }
@@ -30,103 +31,105 @@ message Point { // horizontal position
   double lon = 2; // longitude degrees in range [-180, 180]
 }
 
-//---------------------------------------------------------------------------
-
-message TSMetadata {
-  string station_id = 1;
-  string param_id = 2;
-  Point pos = 3;
-  string other1 = 4; // for now
-  string other2 = 5; // for now
-  string other3 = 6; // for now
-  // ...
-}
-
-message AddTSRequest {
-  int64 id = 1;
-  TSMetadata metadata = 2;
-}
-
-message AddTSResponse {
-  int32 status = 1;
-  string error = 2; // empty on success
-}
-
-//---------------------------------------------------------------------------
-
-message DeleteTSRequest {
-  repeated int64 ids = 1;
-}
-
-message DeleteTSResponse {
-  int32 status = 1;
-  string error = 2; // empty on success
-}
-
-//---------------------------------------------------------------------------
-
 message Polygon { // horizontal area; three or more points
   repeated Point points = 1;
 }
 
-message FindTSRequest {
-  repeated string station_ids = 1; // if specified, only return time series matching any of these station IDs
-  repeated string param_ids = 2; // if specified, only return time series matching any of these param IDs
-  Polygon inside = 3; // if specified, only return time series located inside this area
-  // TODO: add search filters for other metadata
+message TimeInterval {
+  google.protobuf.Timestamp start = 1;
+  google.protobuf.Timestamp end = 2;
 }
 
-message TimeSeries {
-  int64 id = 1;
-  TSMetadata metadata = 2;
+message Link {
+  string href = 1;
+  string rel = 2;
+  string type = 3;
+  string hreflang = 4;
+  string title = 5;
 }
 
-message FindTSResponse {
-  int32 status = 1;
-  string error = 2; // empty on success
-  repeated TimeSeries tseries = 3; // matching time series
+message TSMetadata {
+  string version = 1;
+  string type = 2;
+  string title = 3;
+  string summary = 4;
+  string keywords = 5;
+  string keywords_vocabulary = 6;
+  string license = 7;
+  string conventions = 8;
+  string naming_authority = 9;
+  string creator_type = 10;
+  string creator_name = 11;
+  string creator_email = 12;
+  string creator_url = 13;
+  string institution = 14;
+  string project = 15;
+  string source = 16;
+  string platform = 17;
+  string platform_vocabulary = 18;
+  string standard_name = 19;
+  string unit = 20;
+  string instrument = 21;
+  string instrument_vocabulary = 22;
+  repeated Link links = 23;
+}
+
+message ObsMetadata {
+  string id = 1;
+  oneof geometry {
+    Point geo_point = 2;
+    Polygon geo_polygon = 3;
+  }
+  google.protobuf.Timestamp pubtime = 4;
+  string data_id = 5;
+  string history = 6;
+  string metadata_id = 7;
+  oneof obstime {
+    google.protobuf.Timestamp obstime_instant = 8;
+    //TimeInterval obstime_interval = 9; -- unsupported for now
+  }
+  string processing_level = 10;
+  string value = 11;
 }
 
 //---------------------------------------------------------------------------
 
-message ObsMetadata {
-  string field1 = 1; // for now
-  string field2 = 2; // for now
-  // ...
+message Metadata1 { // denormalized (more redundancy)
+  TSMetadata ts_mdata = 1;
+  ObsMetadata obs_mdata = 2;
 }
 
-message Observation {
-  google.protobuf.Timestamp time = 1; // obs time
-  double value = 2; // for now
-  ObsMetadata metadata = 3;
-}
-
-message TSObservations {
-  int64 tsid = 1; // time series ID
-  repeated Observation obs = 2; // assuming strictly increasing obs time
+message Metadata2 { // normalized  (less redundancy)
+  TSMetadata ts_mdata = 1;
+  repeated ObsMetadata obs_mdata = 2;
 }
 
 //---------------------------------------------------------------------------
 
 message PutObsRequest {
-  repeated TSObservations tsobs = 1; // assuming distinct time series IDs
+  repeated Metadata1 observations = 1;
 }
 
 message PutObsResponse {
   int32 status = 1;
-  string error = 2; // empty on success
+  string error = 2; // any error description (empty on success)
 }
 
 //---------------------------------------------------------------------------
 
 message GetObsRequest {
-  repeated int64 tsids = 1; // assuming distinct time series IDs
-  google.protobuf.Timestamp fromtime = 2; // earliest obs time
-  google.protobuf.Timestamp totime = 3; // latest obs time
+  TimeInterval interval = 1; // only return observations in this time range
+  Polygon inside = 2; // if specified, only return observations in this area
+  repeated string platforms = 3; // if specified, only return observations matching any of these platform patterns
+  repeated string standard_names = 4; // if specified, only return observations matching any of these standard names
+  repeated string instruments = 5; // if specified, only return observations matching any of these instrument patterns
+  repeated string processing_levels = 6; // if specified, only return observations matching any of these processing levels
+  // TODO: add search filters for other metadata
 }
+
 
 message GetObsResponse {
   int32 status = 1;
-  string error = 2; // empty on success
-  repeated TSObservations tsobs = 3; // same time series IDs as in request
+  string error = 2; // any error description (empty on success)
+  repeated Metadata2 observations = 3;
 }
