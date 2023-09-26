@@ -3,7 +3,7 @@ FROM python:3.11-slim-bookworm
 SHELL ["/bin/bash", "-eux", "-o", "pipefail", "-c"]
 
 ENV PROJECT_DATASTORE_PATH="datastore"
-ENV PROJECT_PYTHON_PATH="examples/clients/python"
+ENV PROJECT_PYTHON_PATH="integration-test"
 ENV DOCKER_PATH="/clients/python"
 
 # hadolint ignore=DL3013
@@ -27,7 +27,8 @@ RUN python -m grpc_tools.protoc  \
     --python_out="${DOCKER_PATH}"  \
     --grpc_python_out="${DOCKER_PATH}"
 
-COPY "${PROJECT_PYTHON_PATH}/client.py" "${DOCKER_PATH}/client.py"
+COPY "${PROJECT_PYTHON_PATH}/test_knmi.py" "${DOCKER_PATH}/test_knmi.py"
+COPY "${PROJECT_PYTHON_PATH}/test_delete.py" "${DOCKER_PATH}/test_delete.py"
 
 WORKDIR "${DOCKER_PATH}"
-CMD ["python", "-u", "./client.py"]
+CMD ["pytest"]

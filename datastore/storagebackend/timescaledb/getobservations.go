@@ -59,6 +59,7 @@ func (sbe *TimescaleDB) GetObservations(request *datastore.GetObsRequest) (
 
 	// TODO: validate request.Tsids (ensure it doesn't contain duplicates etc.)
 	tsObs := make([]*datastore.TSObservations, len(request.Tsids))
+	// Making this loop parallel actually slows things down (probably due to parallel queries to postgres)
 	for i, tsID := range request.Tsids {
 		obs := []*datastore.Observation{}
 		if err := retrieveObsForTS(

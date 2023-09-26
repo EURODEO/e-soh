@@ -3,12 +3,13 @@ FROM python:3.11-slim-bookworm
 SHELL ["/bin/bash", "-eux", "-o", "pipefail", "-c"]
 
 ENV PROJECT_DATASTORE_PATH="datastore"
-ENV PROJECT_PYTHON_PATH="examples/clients/python"
-ENV DOCKER_PATH="/clients/python"
+ENV PROJECT_PYTHON_PATH="api"
+ENV DOCKER_PATH="/app"
 
 # hadolint ignore=DL3013
 RUN apt-get update \
     && apt-get -y upgrade \
+    && apt-get install -y --no-install-recommends git \
     # Cleanup
     && rm -rf /usr/tmp  \
     && apt-get autoremove -y \
@@ -27,7 +28,7 @@ RUN python -m grpc_tools.protoc  \
     --python_out="${DOCKER_PATH}"  \
     --grpc_python_out="${DOCKER_PATH}"
 
-COPY "${PROJECT_PYTHON_PATH}/client.py" "${DOCKER_PATH}/client.py"
+COPY "${PROJECT_PYTHON_PATH}/main.py" "${DOCKER_PATH}/main.py"
 
 WORKDIR "${DOCKER_PATH}"
-CMD ["python", "-u", "./client.py"]
+CMD ["gunicorn", "main:app", "--workers=4", "--worker-class=uvicorn.workers.UvicornWorker", "--bind=0.0.0.0:8000"]
