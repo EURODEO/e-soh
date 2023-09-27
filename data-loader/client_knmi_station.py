@@ -29,15 +29,15 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
             station_slice = file.sel(station=station_id)
 
             for param_id in knmi_parameter_names:
+                # print(station_id, param_id)
                 param_file = station_slice[param_id]
                 ts_mdata = dstore.TSMetadata(
                     platform=station_id,
                     instrument=param_id,
-                    title=param_file.name,
-                    # standard_name=param_file.standard_name,  # TODO: Not always set, deal with this later
+                    title=param_file.long_name,
+                    standard_name=param_file.standard_name if 'standard_name' in param_file.attrs else None
                 )
 
-                observations = []
                 for time, obs_value in zip(pd.to_datetime(param_file["time"].data).to_pydatetime(), param_file.data):
                     ts = Timestamp()
                     ts.FromDatetime(time)
@@ -52,6 +52,7 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                     )
                     observations.append(dstore.Metadata1(ts_mdata=ts_mdata, obs_mdata=obs_mdata))
 
+            # print(len(observations))
             observation_request_messages.append(dstore.PutObsRequest(observations=observations))
 
     return observation_request_messages
