@@ -32,7 +32,9 @@ The code has been tested in the following environment:
 Example commands:
 
 `docker compose up --build`
+
 `docker compose ps -a`
+
 `docker compose down --volumes`
 
 MORE DETAILS HERE!
@@ -152,7 +154,7 @@ If necessary, compile the protobuf file first. The following command generates t
 `datastore_pb2.py` and `datastore_grpc.py` under `examples/clients/python/`:
 
 ```text
-python -m grpc_tools.protoc --proto_path=protobuf protobuf/datastore.proto --python_out=examples/clients/python --grpc_python_out=examples/clients/python
+python -m grpc_tools.protoc --proto_path=datastore/protobuf datastore.proto --python_out=examples/clients/python --grpc_python_out=examples/clients/python
 ```
 
 ### Running the client
@@ -161,7 +163,7 @@ The python client can be run like this:
 
 ```text
 $ python examples/clients/python/client.py
-calling AddTSRequest() ...
+response from callPutObs: status: -1
 ...
 ```
 
