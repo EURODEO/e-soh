@@ -35,7 +35,8 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                     platform=station_id,
                     instrument=param_id,
                     title=param_file.long_name,
-                    standard_name=param_file.standard_name if 'standard_name' in param_file.attrs else None
+                    standard_name=param_file.standard_name if 'standard_name' in param_file.attrs else None,
+                    unit=param_file.units if 'units' in param_file.attrs else None
                 )
 
                 for time, obs_value in zip(pd.to_datetime(param_file["time"].data).to_pydatetime(), param_file.data):

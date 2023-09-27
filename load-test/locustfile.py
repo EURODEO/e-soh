@@ -12,32 +12,27 @@ from locust import task
 from google.protobuf.timestamp_pb2 import Timestamp
 
 
+parameters = ["ff", "dd", "rh", "pp", "tn"]
+stations = ["06203", "06204", "06205", "06207", "06208", "06211", "06214", "06215", "06235", "06239", "06242", "06251", "06260", "06269", "06270", "06275", "06279", "06280", "06290", "06310", "06317", "06319", "06323", "06330", "06340", "06344", "06348", "06350", "06356", "06370", "06375", "06380", "78871", "78873"]
+
+
 class StoreGrpcUser(grpc_user.GrpcUser):
     host = "localhost:50050"
     stub_class = dstore_grpc.DatastoreStub
 
     @task
-    def find_debilt_humidity(self):
-        ts_request = dstore.FindTSRequest(
-            station_ids=["06260"],
-            param_ids=["rh"]
-        )
-        ts_response = self.stub.FindTimeSeries(ts_request)
-        assert len(ts_response.tseries) == 1
-
-    @task
-    def get_data_random_timeserie(self):
-        ts_id = random.randint(1, 55*44)
-
+    def get_data_for_single_timeserie(self):
         from_time = Timestamp()
         from_time.FromDatetime(datetime(2022, 12, 31))
         to_time = Timestamp()
-        to_time.FromDatetime(datetime(2023, 11, 1))
+        to_time.FromDatetime(datetime(2023, 1, 1))
+
+
         request = dstore.GetObsRequest(
-            tsids=[ts_id],
-            fromtime=from_time,
-            totime=to_time,
+            interval=dstore.TimeInterval(start=from_time, end=to_time),
+            platforms=[random.choice(stations)],
+            instruments=[random.choice(parameters)],
+
         )
         response = self.stub.GetObservations(request)
-        assert len(response.tsobs[0].obs) == 144
-
+        assert len(response.observations[0].obs_mdata) == 144
