@@ -58,8 +58,6 @@ func getTimeSeries(
 
 	rows, err := db.Query(query, phVals...)
 	if err != nil {
-		fmt.Printf("query: %v\n", query)
-		fmt.Printf("phVals: %v\n", phVals)
 		return fmt.Errorf("db.Query() failed: %v", err)
 	}
 	defer rows.Close()
@@ -126,47 +124,58 @@ func getTimeSeries(
 }
 
 // getGeoPoints retrieves into geoPoints all points in table geo_point inside polygon.
+// If no polygon is specified, all available points are retrieved.
 // Returns nil upon success, otherwise error.
 func getGeoPoints(
 	db *sql.DB, polygon *datastore.Polygon, geoPoints map[int64]*datastore.Point) error {
 
-	if polygon == nil {
-		return fmt.Errorf("polygon == nil")
+	var rows *sql.Rows
+	var err error
+
+	if polygon == nil { // get all points
+
+		rows, err = db.Query("SELECT id, point FROM geo_point")
+		if err != nil {
+			return fmt.Errorf("db.Query(1) failed: %v", err)
+		}
+
+	} else { // get all points in polygon
+
+		points := polygon.Points
+
+		equal := func(p1, p2 *datastore.Point) bool {
+			return (p1.Lat == p2.Lat) && (p1.Lon == p2.Lon)
+		}
+
+		if (len(points) > 0) && !equal(points[0], points[len(points)-1]) {
+			points = append(points, points[0]) // close polygon
+		}
+
+		if len(points) < 4 {
+			return fmt.Errorf("polygon contains too few points")
+		}
+
+		// construct the polygon ring of the WKT representation
+	    // (see https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry;
+	    // note that only a single ring is supported for now)
+	    polygonRing := []string{}
+	    for _, point := range points {
+	   		polygonRing = append(polygonRing, fmt.Sprintf("%f %f", point.Lon, point.Lat))
+	    }
+
+		srid := "4326" // spatial reference system ID
+		whereExpr := fmt.Sprintf(
+			"ST_DWITHIN(point, ST_GeomFromText($1, %s)::geography, 0.0)", srid)
+
+		query := fmt.Sprintf(`
+			SELECT id, point FROM geo_point WHERE %s`, whereExpr)
+
+		rows, err = db.Query(query, fmt.Sprintf("polygon((%s))", strings.Join(polygonRing, ",")))
+		if err != nil {
+			return fmt.Errorf("db.Query(2) failed: %v", err)
+		}
 	}
 
-	points := polygon.Points
-
-	equal := func(p1, p2 *datastore.Point) bool {
-		return (p1.Lat == p2.Lat) && (p1.Lon == p2.Lon)
-	}
-
-	if (len(points) > 0) && !equal(points[0], points[len(points)-1]) {
-		points = append(points, points[0]) // close polygon
-	}
-
-	if len(points) < 4 {
-		return fmt.Errorf("polygon contains too few points")
-	}
-
-	// construct the polygon ring of the WKT representation
-    // (see https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry;
-    // note that only a single ring is supported for now)
-    polygonRing := []string{}
-    for _, point := range points {
-   		polygonRing = append(polygonRing, fmt.Sprintf("%f %f", point.Lon, point.Lat))
-    }
-
-	srid := "4326" // spatial reference system ID
-	whereExpr := fmt.Sprintf(
-		"ST_DWITHIN(point, ST_GeomFromText($1, %s)::geography, 0.0)", srid)
-
-	query := fmt.Sprintf(`
-		SELECT id, point FROM geo_point WHERE %s`, whereExpr)
-
-	rows, err := db.Query(query, fmt.Sprintf("polygon((%s))", strings.Join(polygonRing, ",")))
-	if err != nil {
-		return fmt.Errorf("db.Query() failed: %v", err)
-	}
 	defer rows.Close()
 
 	for rows.Next() {
@@ -244,12 +253,11 @@ func getMdataFilter(
 }
 
 // getObs gets into obs all observations from table observation that match time range and other
-// metadata in request, time series in timeSeries, and geo points in geoPoints (disabling geo
-// filtering altogether if gpInfos is nil).
+// metadata in request, time series in timeSeries, and geo points in geoPoints.
 // Returns nil upon success, otherwise error.
 func getObs(
 	db *sql.DB, request *datastore.GetObsRequest, timeSeries map[int64]*datastore.TSMetadata,
-	geoPoints map[int64]*datastore.Point, obs *[]*datastore.Metadata2) error {
+	geoPoints map[int64]*datastore.Point, allGeoPoints bool, obs *[]*datastore.Metadata2) error {
 
 	phVals := []interface{}{} // placeholder values
 
@@ -259,12 +267,8 @@ func getObs(
 	}
 
 	gpIDs := []string{}
-	if geoPoints != nil {
-		for id := range geoPoints {
-			gpIDs = append(gpIDs, fmt.Sprintf("%d", id))
-		}
-	} else {
-		gpIDs = nil
+	for id := range geoPoints {
+		gpIDs = append(gpIDs, fmt.Sprintf("%d", id))
 	}
 
 	timeExpr := getTimeFilter(request.GetInterval())
@@ -274,6 +278,13 @@ func getObs(
 		// TODO: add search filters for more observation columns
 	}, &phVals)
 
+	var geoPointsFilter string
+	if allGeoPoints {
+		geoPointsFilter = "TRUE" // disable filter, since at least one point will match anyway
+	} else {
+		geoPointsFilter = createSetFilter("geo_point_id", gpIDs)
+	}
+
 	query := fmt.Sprintf(`
 		SELECT ts_id, id, geo_point_id, pubtime, data_id, history, metadata_id, obstime_instant,
 		    processing_level, value
@@ -282,7 +293,7 @@ func getObs(
 		ORDER BY ts_id, obstime_instant
 	`,
 	createSetFilter("ts_id", tsIDs),
-	createSetFilter("geo_point_id", gpIDs),
+	geoPointsFilter,
 	timeExpr, obsMdataExpr)
 
 	rows, err := db.Query(query, phVals...)
@@ -357,16 +368,13 @@ func (sbe *PostgreSQL) GetObservations(request *datastore.GetObsRequest) (
 	}
 
 	geoPoints := map[int64]*datastore.Point{}
-	if inside := request.GetInside(); inside != nil {
-		if err = getGeoPoints(sbe.Db, inside, geoPoints); err != nil {
-			return nil, fmt.Errorf("getGeoPoints() failed: %v", err)
-		}
-	} else {
-		geoPoints = nil // no geo search requested; disable filter altogether
+	if err = getGeoPoints(sbe.Db, request.GetInside(), geoPoints); err != nil {
+		return nil, fmt.Errorf("getGeoPoints() failed: %v", err)
 	}
 
 	obs := []*datastore.Metadata2{}
-	if err = getObs(sbe.Db, request, timeSeries, geoPoints, &obs); err != nil {
+	if err = getObs(
+		sbe.Db, request, timeSeries, geoPoints, request.GetInside() == nil, &obs); err != nil {
 		return nil, fmt.Errorf("getObs() failed: %v", err)
 	}
 

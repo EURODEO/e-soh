@@ -111,13 +111,10 @@ func createPlaceholders(formats []string) []string {
 
 // createSetFilter creates expression used in a WHERE clause for testing
 // if the value in column colName is included in a set of string values.
-// The filter is disabled (--> return TRUE) if the set is nil (= not requested!).
 // The filter is fully closed (--> return FALSE) if the set non-nil but empty.
 // Returns expression, TRUE or FALSE.
 func createSetFilter(colName string, vals []string) string {
-	if vals == nil {
-		return "TRUE" // set not requested; disable filter altogether
-	}
+	// assert(vals != nil)
 	if len(vals) == 0 {
 		return "FALSE" // set requested, but nothing will match
 	}
