@@ -119,7 +119,7 @@ func getTimeSeriesID(
 	}
 	if nrows == 0 {
 		formats := []string{}
-		for _ = range colVals {
+		for range colVals {
 			formats = append(formats, "$%d")
 		} // TODO: check if we can initialize array with the same value without looping
 
