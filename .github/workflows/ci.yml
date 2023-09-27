@@ -7,6 +7,9 @@ on:
     tags:
       - '[0-9]+.[0-9]+.[0-9]+'
 
+permissions:
+  contents: read
+
 env:
   LINE_LENGTH: 99  # TODO: would we like to increase this to 120?
 
