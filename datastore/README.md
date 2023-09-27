@@ -71,14 +71,14 @@ The datastore service can be tested with [gRPCurl](https://github.com/fullstoryd
 ### List all services defined in the proto file
 
 ```text
-$ grpcurl -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 list
+$ grpcurl -plaintext -proto datastore/protobuf/datastore.proto 127.0.0.1:50050 list
 datastore.Datastore
 ```
 
 ### Describe all services defined in the proto file
 
 ```text
-$ grpcurl -plaintext -proto protobuf/datastore.proto describe
+$ grpcurl -plaintext -proto datastore/protobuf/datastore.proto describe
 datastore.Datastore is a service:
 service Datastore {
   rpc GetObservations ( .datastore.GetObsRequest ) returns ( .datastore.GetObsResponse );
@@ -89,7 +89,7 @@ service Datastore {
 ### Describe method PutObservations
 
 ```text
-$ grpcurl -plaintext -proto protobuf/datastore.proto describe datastore.Datastore.PutObservations
+$ grpcurl -plaintext -proto datastore/protobuf/datastore.proto describe datastore.Datastore.PutObservations
 datastore.Datastore.PutObservations is a method:
 rpc PutObservations ( .datastore.PutObsRequest ) returns ( .datastore.PutObsResponse );
 ```
@@ -97,7 +97,7 @@ rpc PutObservations ( .datastore.PutObsRequest ) returns ( .datastore.PutObsResp
 ### Describe message PutObsRequest
 
 ```text
-$ grpcurl -plaintext -proto protobuf/datastore.proto describe .datastore.PutObsRequest
+$ grpcurl -plaintext -proto datastore/protobuf/datastore.proto describe .datastore.PutObsRequest
 datastore.PutObsRequest is a message:
 message PutObsRequest {
   repeated .datastore.Metadata1 observations = 1;
@@ -107,42 +107,42 @@ message PutObsRequest {
 ### Insert observations
 
 ```text
-$ grpcurl -d '{"observations": [{"ts_mdata": {"version": "version_dummy", "type": "type_dummy", "standard_name": "air_temperature", "unit": "celsius"}, "obs_mdata": {"id": "id_dummy", "geo_point": {"lat": 59.91, "lon": 10.75}, "pubtime": "2023-01-01T00:00:10Z", "data_id": "data_id_dummy", "obstime_instant": "2023-01-01T00:00:00Z", "value": "123.456"}}]}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.PutObservations
+$ grpcurl -d '{"observations": [{"ts_mdata": {"version": "version_dummy", "type": "type_dummy", "standard_name": "air_temperature", "unit": "celsius"}, "obs_mdata": {"id": "id_dummy", "geo_point": {"lat": 59.91, "lon": 10.75}, "pubtime": "2023-01-01T00:00:10Z", "data_id": "data_id_dummy", "obstime_instant": "2023-01-01T00:00:00Z", "value": "123.456"}}]}' -plaintext -proto datastore/protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.PutObservations
 ...
 ```
 
 ### Retrieve all observations
 
 ```text
-$ grpcurl -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
+$ grpcurl -plaintext -proto datastore/protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
 ...
 ```
 
 ### Retrieve observations in a time range
 
 ```text
-$ grpcurl -d '{"interval": {"start": "2023-01-01T00:00:00Z", "end": "2023-01-01T00:00:10Z"}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
+$ grpcurl -d '{"interval": {"start": "2023-01-01T00:00:00Z", "end": "2023-01-01T00:00:10Z"}}' -plaintext -proto datastore/protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
 ...
 ```
 
 ### Retrieve observations in a polygon
 
 ```text
-$ grpcurl -d '{"inside": {"points": [{"lat": 59.90, "lon": 10.70}, {"lat": 59.90, "lon": 10.80}, {"lat": 60, "lon": 10.80}, {"lat": 60, "lon": 10.70}]}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
+$ grpcurl -d '{"inside": {"points": [{"lat": 59.90, "lon": 10.70}, {"lat": 59.90, "lon": 10.80}, {"lat": 60, "lon": 10.80}, {"lat": 60, "lon": 10.70}]}}' -plaintext -proto datastore/protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
 ...
 ```
 
 ### Retrieve observations in both a time range and a polygon
 
 ```text
-$ grpcurl -d '{"interval": {"start": "2023-01-01T00:00:00Z", "end": "2023-01-01T00:00:10Z"}, "inside": {"points": [{"lat": 59.90, "lon": 10.70}, {"lat": 59.90, "lon": 10.80}, {"lat": 60, "lon": 10.80}, {"lat": 60, "lon": 10.70}]}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
+$ grpcurl -d '{"interval": {"start": "2023-01-01T00:00:00Z", "end": "2023-01-01T00:00:10Z"}, "inside": {"points": [{"lat": 59.90, "lon": 10.70}, {"lat": 59.90, "lon": 10.80}, {"lat": 60, "lon": 10.80}, {"lat": 60, "lon": 10.70}]}}' -plaintext -proto datastore/protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
 ...
 ```
 
 ### Retrieve wind speed and air temperature observations in a time range and a polygon
 
 ```text
-$ grpcurl -d '{"standard_names": ["wind_speed", "air_temperature"], "interval": {"start": "2023-01-01T00:00:00Z", "end": "2023-01-01T00:00:10Z"}, "inside": {"points": [{"lat": 59.90, "lon": 10.70}, {"lat": 59.90, "lon": 10.80}, {"lat": 60, "lon": 10.80}, {"lat": 60, "lon": 10.70}]}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
+$ grpcurl -d '{"standard_names": ["wind_speed", "air_temperature"], "interval": {"start": "2023-01-01T00:00:00Z", "end": "2023-01-01T00:00:10Z"}, "inside": {"points": [{"lat": 59.90, "lon": 10.70}, {"lat": 59.90, "lon": 10.80}, {"lat": 60, "lon": 10.80}, {"lat": 60, "lon": 10.70}]}}' -plaintext -proto datastore/protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
 ...
 ```
 
