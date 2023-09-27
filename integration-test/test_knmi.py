@@ -10,6 +10,7 @@ from google.protobuf.timestamp_pb2 import Timestamp
 
 
 NUMBER_OF_PARAMETERS = 44
+NUMBER_OF_STATIONS = 55
 
 
 @pytest.fixture(scope="session")
@@ -19,52 +20,50 @@ def grpc_stub():
 
 
 def test_find_series_single_station_single_parameter(grpc_stub):
-    request = dstore.FindTSRequest(station_ids=["06260"], param_ids=["rh"])
-    response = grpc_stub.FindTimeSeries(request)
+    request = dstore.GetObsRequest(platforms=["06260"], instruments=["rh"])
+    response = grpc_stub.GetObservations(request)
 
-    assert len(response.tseries) == 1
-    assert response.tseries[0].metadata.pos.lat == 52.098821802977
-    assert response.tseries[0].metadata.pos.lon == 5.1797058644882
+    assert len(response.observations) == 1
+    obs_mdata = response.observations[0].obs_mdata[0]
+    assert obs_mdata.geo_point.lat == 52.098821802977
+    assert obs_mdata.geo_point.lon == 5.1797058644882
 
 
 def test_find_series_all_stations_single_parameter(grpc_stub):
-    request = dstore.FindTSRequest(param_ids=["rh"])
-    response = grpc_stub.FindTimeSeries(request)
+    request = dstore.GetObsRequest(param_ids=["rh"])
+    response = grpc_stub.GetObservations(request)
 
-    assert len(response.tseries) == 55
+    assert len(response.observations) == NUMBER_OF_STATIONS
 
 
 def test_find_series_single_station_all_parameters(grpc_stub):
-    request = dstore.FindTSRequest(
-        station_ids=["06260"],
-    )
-    response = grpc_stub.FindTimeSeries(request)
+    request = dstore.GetObsRequest(station_ids=["06260"])
+    response = grpc_stub.GetObservations(request)
 
-    assert len(response.tseries) == NUMBER_OF_PARAMETERS
+    assert len(response.observations) == NUMBER_OF_PARAMETERS
 
 
 def test_get_values_single_station_single_parameters(grpc_stub):
-    ts_request = dstore.FindTSRequest(station_ids=["06260"], param_ids=["rh"])
-    ts_response = grpc_stub.FindTimeSeries(ts_request)
-    assert len(ts_response.tseries) == 1
-    ts_id = ts_response.tseries[0].id
+    ts_request = dstore.GetObsRequest(station_ids=["06260"], param_ids=["rh"])
+    ts_response = grpc_stub.GetObservations(ts_request)
+    assert len(ts_response.observations) == 1
+    ts_id = ts_response.observations[0].ObsMetadata.id
 
     from_time = Timestamp()
     from_time.FromDatetime(datetime(2022, 12, 31))
     to_time = Timestamp()
     to_time.FromDatetime(datetime(2023, 11, 1))
-    request = dstore.GetObsRequest(
-        tsids=[ts_id],
-        fromtime=from_time,
-        totime=to_time,
-    )
+    time_interval = dstore.TimeInterval(start=from_time, end=to_time)
+    request = dstore.GetObsRequest(tsids=[ts_id], interval=time_interval)
     response = grpc_stub.GetObservations(request)
 
-    assert len(response.tsobs) == 1
-    assert response.tsobs[0].tsid == ts_id
-    assert len(response.tsobs[0].obs) == 144
-    assert response.tsobs[0].obs[0].value == 95.0
-    assert response.tsobs[0].obs[-1].value == 59.0
+    assert len(response.observations) == 1
+    observations = response.observations[0].obs_mdata
+    # TODO: ts_id is not returened, do we want to use UUID aka obs_mdta.id?
+    # assert observation.tsid == ts_id
+    assert len(observations) == 144
+    assert observations[0].value == 95.0
+    assert observations[-1].value == 59.0
 
 
 input_params_polygon = [
@@ -135,13 +134,12 @@ input_params_polygon = [
 
 @pytest.mark.parametrize("coords,param_ids,expected_station_ids", input_params_polygon)
 def test_get_observations_with_polygon(grpc_stub, coords, param_ids, expected_station_ids):
-    ts_request = dstore.FindTSRequest(
-        inside=dstore.Polygon(points=[dstore.Point(lat=lat, lon=lon) for lat, lon in coords]), param_ids=param_ids
-    )
-    ts_response = grpc_stub.FindTimeSeries(ts_request)
+    polygon = dstore.Polygon(points=[dstore.Point(lat=lat, lon=lon) for lat, lon in coords])
+    get_obs_request = dstore.GetObsRequest(inside=polygon, param_ids=param_ids)
+    get_obs_response = grpc_stub.GetObservations(get_obs_request)
 
-    actual_station_ids = sorted({ts.metadata.station_id for ts in ts_response.tseries})
+    actual_station_ids = sorted({ts.ts_mdata.platform for ts in get_obs_response.observations})
     assert actual_station_ids == expected_station_ids
     number_of_parameters = len(param_ids) if param_ids else NUMBER_OF_PARAMETERS
     expected_number_of_timeseries = number_of_parameters * len(expected_station_ids)
-    assert len(ts_response.tseries) == expected_number_of_timeseries
+    assert len(get_obs_response.obs_mdata) == expected_number_of_timeseries
