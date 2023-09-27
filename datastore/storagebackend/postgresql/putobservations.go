@@ -219,8 +219,10 @@ func updateLatestObsTime(
 	obsTime0 := common.Tstamp2float64Secs(obsTime)
 
 	updateInTable := func(table string, id int64) error {
-		cmd := fmt.Sprintf(
-			"UPDATE %s SET latest_obs_time=to_timestamp(%f) WHERE id=%d", table, obsTime0, id)
+		cmd := fmt.Sprintf(`
+			UPDATE %s SET latest_obs_time = to_timestamp(%f)
+			WHERE (id = %d) AND (latest_obs_time < to_timestamp(%f))
+		`, table, obsTime0, id, obsTime0)
 		if _, err := db.Exec(cmd); err != nil {
 			return fmt.Errorf("db.Exec() failed: %v", err)
 		}
