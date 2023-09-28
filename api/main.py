@@ -1,6 +1,6 @@
 # Run with:
 # For developing:    uvicorn main:app --reload
-
+import itertools
 import os
 from datetime import datetime
 from datetime import timezone
@@ -9,6 +9,9 @@ from itertools import groupby
 from brotli_asgi import BrotliMiddleware
 
 from covjson_pydantic.ndarray import NdArray
+from covjson_pydantic.observed_property import ObservedProperty
+from covjson_pydantic.parameter import Parameter
+from covjson_pydantic.reference_system import ReferenceSystemConnectionObject, ReferenceSystem
 from fastapi import FastAPI
 from fastapi import Query, Path
 from geojson_pydantic import FeatureCollection, Feature, Point
@@ -53,19 +56,29 @@ def get_data_for_time_series(get_obs_request):
         data.sort(key=lambda x: x[0])
         # The multiple coverage logic is not needed for this endpoint, but we want to share this code between endpoints
         for (lat, lon, times), group in groupby(data, lambda x: x[0]):
+            referencing = [
+                ReferenceSystemConnectionObject(coordinates=["y", "x"],
+                                                system=ReferenceSystem(type="GeographicCRS", id="http://www.opengis.net/def/crs/EPSG/0/4326")),
+                ReferenceSystemConnectionObject(coordinates=["z"],
+                                                system=ReferenceSystem(type="TemporalRS", calendar="Gregorian")),
+            ]
             domain = Domain(domainType=DomainType.point_series,
                             axes=Axes(x=ValuesAxis[float](values=[lon]),
                                       y=ValuesAxis[float](values=[lat]),
-                                      t=ValuesAxis[AwareDatetime](values=times)))
+                                      t=ValuesAxis[AwareDatetime](values=times)),
+                            referencing=referencing)
+            group1, group2 = itertools.tee(group, 2)  # Want to use generator twice
+            parameters = {param_id: Parameter(observedProperty=ObservedProperty(label={"en": param_id}))
+                          for ((_, _, _), param_id, values) in group1}
             ranges = {param_id: NdArray(values=values, axisNames=["t", "y", "x"], shape=[len(values), 1, 1])
-                      for ((_, _, _), param_id, values) in group}
+                      for ((_, _, _), param_id, values) in group2}
 
-            coverages.append(Coverage(domain=domain, ranges=ranges))
+            coverages.append(Coverage(domain=domain, parameters=parameters, ranges=ranges))
 
         if len(coverages) == 1:
             return coverages[0]
         else:
-            return CoverageCollection(coverages=coverages)
+            return CoverageCollection(coverages=coverages, parameters=coverages[0].parameters)  # HACK to take parameters from first one
 
 
 @app.get(
