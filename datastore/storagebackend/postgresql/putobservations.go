@@ -407,7 +407,7 @@ func (sbe *PostgreSQL) PutObservations(request *datastore.PutObsRequest) error {
 		*tsInfo0.omds = append(*tsInfo0.omds, obs.GetObsMdata())
 	}
 
-	// insert observations for each time series
+	// insert/update observations for each time series
 	for tsID, tsInfo := range tsInfos {
 		if err := upsertObsForTS(
 			sbe.Db, tsID, tsInfo.obsTimes, tsInfo.gpIDs, tsInfo.omds); err != nil {
