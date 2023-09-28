@@ -122,7 +122,7 @@ message GetObsRequest {
   Polygon inside = 2; // if specified, only return observations in this area
   repeated string platforms = 3; // if specified, only return observations matching any of these platform patterns
   repeated string standard_names = 4; // if specified, only return observations matching any of these standard names
-  repeated string instruments = 5; // if specified, only return observations matching any of these instrument patterns
+  repeated string instruments = 5; // if specified, only return observations matching any of these instruments
   repeated string processing_levels = 6; // if specified, only return observations matching any of these processing levels
   // TODO: add search filters for other metadata
 }
