@@ -27,22 +27,6 @@
 		}
 	},
 	"properties": {
-		"translation_fields": {
-			"attrs": {
-				"metadata_id": {
-					"fields": [
-						"naming_authority",
-						"id"
-					],
-					"inpt_type": "str",
-					"sep": ":"
-				},
-				"data_id": {
-					"inpt_type": "raw",
-					"value": "placeholder"
-				}
-			}
-		},
 		"persistant_fields": {
 			"attrs": [
 				"title",
@@ -50,13 +34,17 @@
 				"Conventions",
 				"history",
 				"keywords",
+				"keywords_vocabulary",
 				"summary",
 				"source",
 				"creator_name",
 				"creator_url",
 				"creator_email",
 				"license",
-				"access_constraint"
+				"access_constraint",
+				"platform",
+				"platform_vocabulary",
+				"naming_authority"
 			]
 		}
 	},

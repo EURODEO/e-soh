@@ -1,5 +1,4 @@
-from src.netCDF.extract_metadata_netcdf import build_all_json_payloads_from_netCDF
-from src.netCDF.mapper import mapper
+from esoh.ingest.main import ingest_to_pipeline
 
 import pytest
 import glob
@@ -10,23 +9,37 @@ from jsonschema import Draft202012Validator
 import json
 
 
-@pytest.mark.parametrize("netcdf_file_path", glob.glob("test/test_data/*.nc"))
-def test_verify_json_payload_netcdf(netcdf_file_path):
-
+@pytest.mark.parametrize("netcdf_file_path", glob.glob("test/test_data/met_norway/*.nc"))
+def test_verify_json_payload_metno_netcdf(netcdf_file_path):
     # Load the schema
     with open("schemas/e-soh-message-spec.json", "r") as file:
         e_soh_mqtt_message_schema = json.load(file)
 
     ds = xr.load_dataset(netcdf_file_path)
 
-    select_map = mapper()
+    msg_build = ingest_to_pipeline(None, "testing", testing=True)
 
-    json_payloads = build_all_json_payloads_from_netCDF(
-        ds, select_map(ds.attrs["institution"]))
+    json_payloads = msg_build.build_messages(ds, input_type="netCDF")
+
+    for payload in json_payloads:
+        assert Draft202012Validator(e_soh_mqtt_message_schema).validate(payload) is None
+
+
+@pytest.mark.parametrize("netcdf_file_path", glob.glob("test/test_data/knmi/*.nc"))
+def test_verify_json_payload_knmi_netcdf(netcdf_file_path):
+    with open("schemas/e-soh-message-spec.json", "r") as file:
+        e_soh_mqtt_message_schema = json.load(file)
+
+    ds = xr.load_dataset(netcdf_file_path)
+
+    msg_build = ingest_to_pipeline(None, "testing", testing=True)
+
+    json_payloads = msg_build.build_messages(ds, input_type="netCDF")
 
     for payload in json_payloads:
         assert Draft202012Validator(e_soh_mqtt_message_schema).validate(payload) is None
 
 
 if __name__ == "__main__":
-    test_verify_json_payload_netcdf(glob.glob("test/test_data/*nc"))
+    [test_verify_json_payload_knmi_netcdf(i) for i in glob.glob("test/test_data/knmi/*nc")]
+    pass

@@ -1,7 +1,22 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
 [project]
-name = "e_soh_ingest_and_event_queue"
-description = "Code for parsing and publishing metadata to the E-SOH members"
+name = "esoh"
+description = "This project is made for parsing and publishing metadata to the E-SOH project."
+version = "0.0.2"
 readme = "README.md"
+requires-python = ">=3.10"
+classifiers = ["Programming Language :: Python :: 3"]
+
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+optional-dependencies = { dev = { file = ["requirements-dev.txt"] } }
+
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [tool.pytest.ini_options]
 pythonpath = "."

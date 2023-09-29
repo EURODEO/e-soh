@@ -1,11 +1,10 @@
-from datetime import datetime
-
 import numpy as np
 import xarray as xr
 
-import uuid
 import json
 import copy
+
+from esoh.ingest.netCDF.mapper import mapper
 
 
 def get_attrs(ds: xr.Dataset, var: str):
@@ -140,7 +139,6 @@ def create_json_from_netcdf_metdata(ds: xr.Dataset, map_netcdf: dict) -> str:
 
 
 def build_all_json_payloads_from_netCDF(ds: xr.Dataset,
-                                        mapping_json: dict,
                                         timediff: np.timedelta64 = np.timedelta64(1, "D"))\
         -> list[str]:
     """
@@ -206,6 +204,9 @@ def build_all_json_payloads_from_netCDF(ds: xr.Dataset,
     }
     ```
     """
+
+    mapping_json = mapper()(ds.attrs["institution"])
+
     json_msg = create_json_from_netcdf_metdata(ds, mapping_json)
 
     json_msg = json.loads(json_msg)
@@ -238,15 +239,6 @@ def build_all_json_payloads_from_netCDF(ds: xr.Dataset,
             }
 
             json_msg["content"] = content
-
-            # Set message publication time in RFC3339 format
-            # Create UUID for the message, and state message format version
-            json_msg["id"] = str(uuid.uuid4())
-            current_time = datetime.utcnow().replace(microsecond=0)
-            current_time_str = current_time.strftime('%Y-%m-%dT%H:%M:%S.%f')
-
-            json_msg["properties"][
-                "pubtime"] = f"{current_time_str[:-3]}{current_time_str[-3:].zfill(6)}Z"
 
             messages.append(copy.deepcopy(json_msg))
 

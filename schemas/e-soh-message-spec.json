@@ -23,11 +23,6 @@
     "geometry": {
       "oneOf": [
         {
-          "enum": [
-            null
-          ]
-        },
-        {
           "type": "object",
           "required": [
             "type",
@@ -104,6 +99,18 @@
           "type": "string",
           "description": "A comma-separated list of key words and/or phrases. Keywords may be common words or phrases, terms from a controlled vocabulary (GCMD is often used), or URIs for terms from a controlled vocabulary (see also 'keywords_vocabulary' attribute)."
         },
+        "keywords_vocabulary": {
+          "type": "string",
+          "description": "If you are using a controlled vocabulary for the words/phrases in your 'keywords' attribute, this is the unique name or identifier of the vocabulary from which keywords are taken. If more than one keyword vocabulary is used, each may be presented with a prefix and a following comma, so that keywords may optionally be prefixed with the controlled vocabulary key."
+        },
+        "instrument": {
+          "type": "string",
+          "description": "Name of the contributing instrument(s) or sensor(s) used to create this data set or product. Indicate controlled vocabulary used in instrument_vocabulary."
+        },
+        "instrument_vocabulary": {
+          "type": "string",
+          "description": "Controlled vocabulary for the names used in the 'instrument' attribute."
+        },
         "license": {
           "type": "string",
           "description": "Provide the URL to a standard or specific license, enter 'Freely Distributed' or 'None', or describe any restrictions to data access and distribution in free text."
@@ -122,7 +129,7 @@
         },
         "metadata_id": {
           "type": "string",
-          "description": "Identifier for associated discovery metadata record to which the notification applies to."
+          "description": "Identifier for associated discovery metadata record to which the notification applies to. This id should make it possible to discover the data in the datastore."
         },
         "datetime": {
           "type": "string",
@@ -183,6 +190,14 @@
         "source": {
           "type": "string",
           "description": "The method of production of the original data. If it was model-generated, source should name the model and its version. If it is observational, source should characterize it. This attribute is defined in the CF Conventions."
+        },
+        "platform": {
+          "type": "string",
+          "description": "Name of the platform(s) that supported the sensor data used to create this data set or product. Platforms can be of any type, including satellite, ship, station, aircraft or other. Indicate controlled vocabulary used in platform_vocabulary."
+        },
+        "platform_vocabulary": {
+          "type": "string",
+          "description": "Controlled vocabulary for the names used in the 'platform' attribute."
         },
         "processing_level": {
           "type": "string",
@@ -261,7 +276,12 @@
       },
       "required": [
         "pubtime",
-        "data_id"
+        "data_id",
+        "metadata_id",
+        "naming_authority",
+        "summary",
+        "Conventions",
+        "license"
       ],
       "oneOf": [
         {
@@ -283,7 +303,15 @@
             }
           ]
         }
-      ]
+      ],
+      "dependentRequired": {
+        "keywords": [
+          "keywords_vocabulary"
+        ],
+        "instrument": [
+          "instrument_vocabulary"
+        ]
+      }
     },
     "links": {
       "type": "array",

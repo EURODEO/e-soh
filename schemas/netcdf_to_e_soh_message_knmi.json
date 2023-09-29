@@ -38,6 +38,18 @@
 					"inpt_type": "raw",
 					"value": "placeholder"
 				},
+				"naming_authority": {
+					"inpt_type": "raw",
+					"value": "nl.knmi"
+				},
+				"keywords_vocabulary": {
+					"inpt_type": "raw",
+					"value": "placeholder"
+				},
+				"license": {
+					"inpt_type": "raw",
+					"value": "No license provided"
+				},
 				"creator_url": {
 					"fields": [
 						"url_metadata"
