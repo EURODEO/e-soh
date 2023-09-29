@@ -79,5 +79,6 @@
 			]
 		}
 	},
-	"description": "This json defines what fields to take from a netCDF file in to a E-SOH MQTT message. Fields in the translation have different names between the netCDF and MQTT message. persistant_fields are fields that can be directly extrated from the netCDF. This file is defined for netCDF created at METno."
+	"description": "This json defines what fields to take from a netCDF file in to a E-SOH MQTT message. Fields in the translation have different names between the netCDF and MQTT message. persistant_fields are fields that can be directly extrated from the netCDF. This file is defined for netCDF created at METno.",
+	"ignore": []
 }
