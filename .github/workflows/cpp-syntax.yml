@@ -19,8 +19,6 @@ jobs:
           style: Allman
           repo-root: ./src/esoh/ingest/bufr/
 
-      - name: Fail fast?!
+      - name: Fail fast
         if: steps.linter.outputs.checks-failed > 0
-        run: echo "Some files failed the linting checks!"
-        # for actual deployment
-        # run: exit 1
+        run: exit 1
