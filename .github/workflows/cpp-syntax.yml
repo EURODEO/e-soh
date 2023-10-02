@@ -7,17 +7,14 @@ on:
     branches: [main]
 
 jobs:
-  cpp-linter:
+  build:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: cpp-linter/cpp-linter-action@v2
-        id: linter
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          style: Allman
 
-      - name: Fail fast
-        if: steps.linter.outputs.checks-failed > 0
-        run: exit 1
+    steps:
+    - uses: actions/checkout@v2
+    - uses: DoozyX/clang-format-lint-action@v0.14
+      with:
+        source: './src/esoh/ingest/bufr'
+        extensions: 'h,cpp'
+        clangFormatVersion: 14
+        style: Allman
