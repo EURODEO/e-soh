@@ -1,0 +1,218 @@
+{
+    "id": "141a3160-3623-451a-952a-d7234c5a7aa5",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            69.9363,
+            28.3773,
+            418.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T00:00:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_pressure",
+            "unit": "Pa",
+            "size": 5,
+            "value": "96460"
+        },
+        "pubtime": "2023-09-28T15:39:34.000000",
+        "platform": "0-578-0-96890",
+        "platform_name": "KORGAASEN"
+    }
+}{
+    "id": "562d65a0-80de-4dca-8dd3-9f3bcbc72a7e",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            69.9363,
+            28.3773,
+            418.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T00:00:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_pressure_at_mean_sea_level",
+            "unit": "Pa",
+            "size": 6,
+            "value": "101480"
+        },
+        "pubtime": "2023-09-28T15:39:34.000000",
+        "platform": "0-578-0-96890",
+        "platform_name": "KORGAASEN"
+    }
+}{
+    "id": "d98ad384-143d-4f46-a1d0-d5eea7e8f492",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            69.9363,
+            28.3773,
+            418.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T00:00:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "279.15"
+        },
+        "pubtime": "2023-09-28T15:39:34.000000",
+        "platform": "0-578-0-96890",
+        "platform_name": "KORGAASEN"
+    }
+}{
+    "id": "55145ad3-2735-41cf-b8bb-53674ae3a3b7",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            69.9363,
+            28.3773,
+            418.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T00:00:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "dew_point_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "277.48"
+        },
+        "pubtime": "2023-09-28T15:39:34.000000",
+        "platform": "0-578-0-96890",
+        "platform_name": "KORGAASEN"
+    }
+}{
+    "id": "3c553375-b890-4656-a687-225f28286377",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            69.9363,
+            28.3773,
+            418.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T00:00:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "relative_humidity",
+            "unit": "1",
+            "size": 2,
+            "value": "89"
+        },
+        "pubtime": "2023-09-28T15:39:34.000000",
+        "platform": "0-578-0-96890",
+        "platform_name": "KORGAASEN"
+    }
+}{
+    "id": "b8ed50e6-9f4c-435d-8858-d96b4bdab85d",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            69.9363,
+            28.3773,
+            418.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T00:00:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "116"
+        },
+        "pubtime": "2023-09-28T15:39:34.000000",
+        "platform": "0-578-0-96890",
+        "platform_name": "KORGAASEN"
+    }
+}{
+    "id": "62d4221c-f076-4def-8ad4-47002ca661d0",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            69.9363,
+            28.3773,
+            418.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T00:00:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 3,
+            "value": "3.3"
+        },
+        "pubtime": "2023-09-28T15:39:34.000000",
+        "platform": "0-578-0-96890",
+        "platform_name": "KORGAASEN"
+    }
+}{
+    "id": "086251b1-609b-4ab3-b000-456c8eea6d1b",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            69.9363,
+            28.3773,
+            418.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "start_datetime": "2023-08-22T23:00:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "integral_wrt_time_of_surface_downwelling_longwave_flux_in_air",
+            "unit": "W s m-2",
+            "size": 9,
+            "value": "1.234e+06"
+        },
+        "pubtime": "2023-09-28T15:39:34.000000",
+        "platform": "0-578-0-96890",
+        "platform_name": "KORGAASEN",
+        "end_datetime": "2023-08-23T00:00:00.000000"
+    }
+}

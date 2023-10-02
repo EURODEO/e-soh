@@ -1,0 +1,2451 @@
+{
+    "id": "b5806960-d59d-4e93-b7e5-73c0de9d4442",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -10.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "284.78"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "591b5edb-9f91-4de1-8fae-03ccf7a501f3",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -20.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "284.68"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "bc52177c-b142-45d2-852e-02af484e77f1",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -30.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "284.39"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "38ab3e9a-e092-4e38-b8ba-3bfb39730c7e",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -40.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "284.09"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "9fc9d3fe-ee73-45be-aee5-2ca26755dccc",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -50.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.88"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "94465c8d-b116-418a-ad13-232661e67a99",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -60.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.83"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "c7985a65-0928-46d7-b640-d275e220d6b0",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -70.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.75"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "db0b3840-1d94-4e2b-8881-9b193473f203",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -80.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.68"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "94d972af-9119-4a33-9230-2ae83e586183",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -90.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.63"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "dfed7e02-849f-4745-8571-08e6bdf393af",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -100.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.61"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "cbf71425-d21d-4f0d-8b54-25c8cf8c1cea",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -110.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.59"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "9c2cf48d-f04b-447f-b4b5-dde28375763b",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -120.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.58"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "f6c15a5e-8e3b-4496-a7fb-c83f615e7811",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -130.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.55"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "8740bee6-3b9b-453d-a7c3-a37838f3aee2",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -140.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.56"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "485b1180-1239-49da-9e4f-65974b8575cd",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -150.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.57"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "3e2938df-3729-4a7b-a3d0-b05d5cab5286",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -160.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.55"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "f75ef8b3-dd49-4d47-9f2f-783e288627ab",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -170.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.54"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "572eabfc-e070-42f3-aa8b-70dcaa2467ce",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -180.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.52"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "605d9042-af5d-4776-ad9d-3618833831ad",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -190.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.51"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "1412f4b6-0dbe-42c7-95ff-745e98d81519",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -200.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.51"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "0862440e-4fe5-4d8d-b755-b9bd275c7807",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -210.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 5,
+            "value": "283.5"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "6633d373-174e-45f3-affe-24ad2f244925",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -220.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 5,
+            "value": "283.5"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "499d0da1-6561-45b4-a731-08b5034c8eb2",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -230.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.48"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "5befc9ad-48e6-402c-9799-3e2127c63b43",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -240.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.47"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "2e480868-389a-49b7-ac8b-24c73b4cd545",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -250.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.45"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "a55be2c5-00b7-4636-aeb0-85281aaeaa60",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -260.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.43"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "bf15e27e-43f6-436e-a804-a70782c24082",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -270.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.42"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "ffe2ee89-55e8-4f60-ac3c-064e08087363",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -280.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.41"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "c87a6a64-fcc4-45f4-8a13-89b2c100046c",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -290.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.39"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "6ba3211d-807c-4071-8b74-e35434684f3e",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -300.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.36"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "7f40a01d-aeff-4535-98f5-b3d35f70af22",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -310.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.35"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "89d62a6e-0266-49d4-b13a-3ea5f66fd8f5",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -320.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.33"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "80e03711-e17a-4eeb-8290-d0a8dc5daf4c",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -330.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.32"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "5cc6b279-1276-4d3c-a999-93c98a41472b",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -340.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.31"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "94f9fc10-37ea-4cf0-8254-19fd6cdd75c8",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -350.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 5,
+            "value": "283.3"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "ac3b613e-55d9-4c0f-bfe1-784109e33089",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -360.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.29"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "f2009b7b-6c8c-47bd-81fc-70bc36286a50",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -370.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.27"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "9a65cbe0-ddfc-4ee6-8d0c-5c1dd6278da0",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -380.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.26"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "1ebdb3c6-1388-47df-b837-3dfb93002809",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -390.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.23"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "cbc58441-fe80-49b0-8937-ed09137b448f",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -400.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.23"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "fee5cf31-3d0a-4df2-92f9-1643e9dc827d",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -410.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.21"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "db4087b2-1f3e-4388-8331-26efe07ec85c",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -420.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.17"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "ba25aacf-3166-4ae6-8b6c-885eb5b0bfad",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -430.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.15"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "95d76deb-d8e3-49ff-ae19-89cf0cb69a98",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -440.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.13"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "c6561f5a-d582-464e-8eca-fd55fa73173f",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -450.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.13"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "25e57fa3-7f66-43a7-9c18-bce0504edafa",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -460.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.12"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "12d50e88-37fa-445d-8d12-f725089d1f96",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -470.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 5,
+            "value": "283.1"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "5106e57c-61a5-4f8c-bb6f-8bf3ddd773c7",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -480.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "283.05"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "761655e3-6860-4da1-926e-36e0ce42e225",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -490.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 3,
+            "value": "283"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "f20c93a5-a4fd-43e6-8229-e6a05ee0f681",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -500.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "282.98"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "53065786-6af5-4328-a14c-b2d7a47c552a",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -510.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "282.96"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "e6e70d7a-cca3-4607-baf7-8759aa11145e",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -520.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "282.94"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "355837de-e9a9-41d4-aa5b-08f19652f23b",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -530.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "282.92"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "6d4ef299-08fd-4b97-b44d-d33709aaf5c4",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -540.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "282.88"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "e4ab8476-31c2-4829-80a4-f1f5b28c09b7",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -550.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "282.83"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "deef5c85-fa84-4ed0-989f-3e4b22833c73",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -560.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "282.75"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "dacdedd6-1ff4-4b3a-8756-c782a019c965",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -570.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "282.72"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "b31069ef-b2eb-4508-b53f-d2261d0168d8",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -580.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "282.69"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "25503e41-4b76-453a-b10f-0c12ed0d87be",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -590.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "282.65"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "565a5062-bf7d-4a81-8a21-76fec0dab953",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -600.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "282.61"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "fc045f02-dc51-4727-8c23-db0a437ae5d8",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -610.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "282.58"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "90675702-e3e9-4036-925b-ca06f4617808",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -620.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "282.56"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "78881653-bc56-4e6c-9e8d-fd0d85ae7d4e",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -630.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "282.55"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "59f35243-4fd1-48d3-a567-38734aaf40e9",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -640.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "282.52"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "ef1530d2-9a20-4fd9-8406-00f6c9c2da66",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -650.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "282.49"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "12ce59b6-4b3e-4673-91a4-7726be17fdbf",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -660.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "282.45"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "8c992fdd-b752-4259-83db-a193d033d79c",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -670.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "282.41"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "7194e5e8-9132-4914-9f81-2839b09cab6c",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -680.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "282.38"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "06884f12-472f-4e49-bd24-f62a66124f8b",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -690.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "282.34"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "4c0b4090-4959-401d-af04-4482801dec60",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -700.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "282.29"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "984788cf-f94c-4fd3-b4dc-491d1c960305",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -710.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "282.25"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "4159ac82-5d4a-4214-91de-00941bdf3286",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -720.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 5,
+            "value": "282.2"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "0f137ebd-60fc-42a3-95a8-d1e380dc065c",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -730.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "282.18"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "ccc3dc4f-6ec2-4ce5-b769-324d06e1415a",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -740.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "282.16"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "2c03710a-4280-4092-9059-4469642b8a25",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -750.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "282.11"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "b4822660-1b7d-4ace-aa7c-fb2b696a0ab0",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -760.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "282.04"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "6a771651-1fcb-4e55-a188-30b9ac440cd0",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -770.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "282.01"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "ff74d232-f3be-4bc8-8810-7820f57ffd11",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -780.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "281.99"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "9f523d73-a7ca-446b-9487-6b2de92800e0",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -790.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "281.94"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "349f68d4-850f-44d0-9d5d-60d3d11808e8",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -800.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "281.89"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "1b758b62-5fa1-4d32-a4dd-74161716621b",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -810.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "281.85"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "2e86aae2-cf76-4ee7-b700-d48b1f80250d",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -820.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 5,
+            "value": "281.8"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "866d78f0-6b21-47be-8a8e-74d7d7eff09a",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -830.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "281.74"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "30910d96-b31c-4530-9dd5-94766ccd1c47",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -840.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "281.71"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "cd0e65dc-70cd-44e9-badd-14e558cd0e4e",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -850.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "281.64"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "8801d014-c6f0-46a9-b585-1a8111e532e8",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -860.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "281.57"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "bada8ff3-4ea8-4d69-917f-cc58b0bc4ba9",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -870.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "281.54"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "c943b23c-a7bb-4b13-8863-bf7ecf51e226",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -880.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "281.47"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "e5cffa16-ace2-4359-b9e6-30bf2617f65e",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -890.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "281.41"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "bda6387c-2c55-47cf-9730-f82da96325a4",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -900.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "281.35"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "7d3ef198-e7ac-4818-adf1-4eeaf36c4d09",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -910.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "281.26"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "1cbcdc03-911a-4841-97e1-cd727b7e0468",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -920.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "281.18"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "a916d58d-3a41-4b99-8e9f-4c91f143d273",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -930.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "281.06"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "f43dc42f-ed90-48fb-a67c-b2e411e53b2c",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -940.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "281.01"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "41c5b3f4-9fe8-4fae-9165-3ede79298887",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -950.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "280.91"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "01099be5-1bb5-45f5-9073-bcfce0b47ac1",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -960.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "280.85"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "65d69fce-0fc7-41c9-9ecf-f91b7be09bbb",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -970.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 5,
+            "value": "280.8"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}{
+    "id": "59a44185-0385-4bf6-95a8-968a38731d36",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            56.85,
+            -9.73,
+            -980.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-05-22T18:47:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "280.73"
+        },
+        "pubtime": "2023-09-28T15:39:32.000000"
+    }
+}

@@ -1,0 +1,351 @@
+{
+    "id": "65507960-197b-4de4-ba96-3311922a9165",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            43.38,
+            7.83
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T00:00:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_pressure",
+            "unit": "Pa",
+            "size": 6,
+            "value": "101460"
+        },
+        "pubtime": "2023-09-28T15:39:39.000000",
+        "platform_name": "BOUEE_COTE D'AZUR"
+    }
+}{
+    "id": "2909654f-25f1-4cb2-81de-c6de21405462",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            43.38,
+            7.83
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T00:00:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_pressure_at_mean_sea_level",
+            "unit": "Pa",
+            "size": 6,
+            "value": "101480"
+        },
+        "pubtime": "2023-09-28T15:39:39.000000",
+        "platform_name": "BOUEE_COTE D'AZUR"
+    }
+}{
+    "id": "422aa5c7-ad3c-4590-9bf2-7fb8f3625859",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            43.38,
+            7.83
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T00:00:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "300.95"
+        },
+        "pubtime": "2023-09-28T15:39:39.000000",
+        "platform_name": "BOUEE_COTE D'AZUR"
+    }
+}{
+    "id": "43395301-35c3-4f9b-b7f7-21cb7cce47f0",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            43.38,
+            7.83
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T00:00:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "dew_point_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "298.55"
+        },
+        "pubtime": "2023-09-28T15:39:39.000000",
+        "platform_name": "BOUEE_COTE D'AZUR"
+    }
+}{
+    "id": "aff5241f-2a0b-4cda-acac-955bd42a7b30",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            43.38,
+            7.83
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T00:00:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "relative_humidity",
+            "unit": "1",
+            "size": 2,
+            "value": "87"
+        },
+        "pubtime": "2023-09-28T15:39:39.000000",
+        "platform_name": "BOUEE_COTE D'AZUR"
+    }
+}{
+    "id": "5b375393-0787-4cf1-9657-36270d3cc4b8",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            43.38,
+            7.83
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T00:00:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "250"
+        },
+        "pubtime": "2023-09-28T15:39:39.000000",
+        "platform_name": "BOUEE_COTE D'AZUR"
+    }
+}{
+    "id": "0fa15062-d478-4a56-ad0c-dbe712c85c04",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            43.38,
+            7.83
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T00:00:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 3,
+            "value": "1.6"
+        },
+        "pubtime": "2023-09-28T15:39:39.000000",
+        "platform_name": "BOUEE_COTE D'AZUR"
+    }
+}{
+    "id": "18eb6f18-2642-4216-9a8a-3eeeab3b7f02",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            41.74,
+            7.59
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T00:00:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_pressure",
+            "unit": "Pa",
+            "size": 6,
+            "value": "101530"
+        },
+        "pubtime": "2023-09-28T15:39:39.000000",
+        "platform_name": "BOUEE_AJACCIO"
+    }
+}{
+    "id": "c15a0847-a63d-475b-9b1e-bb5af624662e",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            41.74,
+            7.59
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T00:00:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_pressure_at_mean_sea_level",
+            "unit": "Pa",
+            "size": 6,
+            "value": "101550"
+        },
+        "pubtime": "2023-09-28T15:39:39.000000",
+        "platform_name": "BOUEE_AJACCIO"
+    }
+}{
+    "id": "7541cd9b-beeb-4584-aa80-eecc1c6e673a",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            41.74,
+            7.59
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T00:00:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "299.85"
+        },
+        "pubtime": "2023-09-28T15:39:39.000000",
+        "platform_name": "BOUEE_AJACCIO"
+    }
+}{
+    "id": "021f08c3-78f6-4576-8f9c-464b5122671b",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            41.74,
+            7.59
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T00:00:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "dew_point_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "298.05"
+        },
+        "pubtime": "2023-09-28T15:39:39.000000",
+        "platform_name": "BOUEE_AJACCIO"
+    }
+}{
+    "id": "aebfaf2c-ebcc-47fc-8ede-036a4bf75a16",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            41.74,
+            7.59
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T00:00:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "relative_humidity",
+            "unit": "1",
+            "size": 2,
+            "value": "90"
+        },
+        "pubtime": "2023-09-28T15:39:39.000000",
+        "platform_name": "BOUEE_AJACCIO"
+    }
+}{
+    "id": "42ec8b68-d8f6-4bcb-834f-c121b14d6b28",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            41.74,
+            7.59
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T00:00:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "330"
+        },
+        "pubtime": "2023-09-28T15:39:39.000000",
+        "platform_name": "BOUEE_AJACCIO"
+    }
+}{
+    "id": "b6e9557e-8d40-4164-8f3f-60d3a60eff4d",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            41.74,
+            7.59
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T00:00:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 3,
+            "value": "1.6"
+        },
+        "pubtime": "2023-09-28T15:39:39.000000",
+        "platform_name": "BOUEE_AJACCIO"
+    }
+}

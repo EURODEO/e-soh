@@ -1,0 +1,176 @@
+{
+    "id": "ba3a4c3d-4ced-470e-921d-648ec488f37c",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.9081,
+            -2.8948
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T00:02:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_pressure",
+            "unit": "Pa",
+            "size": 6,
+            "value": "102100"
+        },
+        "pubtime": "2023-09-28T15:39:38.000000",
+        "platform_name": "Channel"
+    }
+}{
+    "id": "4e3a5380-6402-4ed8-a81b-061134ec0ae7",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.9081,
+            -2.8948
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T00:02:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_pressure_at_mean_sea_level",
+            "unit": "Pa",
+            "size": 6,
+            "value": "102120"
+        },
+        "pubtime": "2023-09-28T15:39:38.000000",
+        "platform_name": "Channel"
+    }
+}{
+    "id": "e506ccd8-2fbc-4fad-a9c0-cd0e30466ffd",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.9081,
+            -2.8948
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T00:02:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "290.15"
+        },
+        "pubtime": "2023-09-28T15:39:38.000000",
+        "platform_name": "Channel"
+    }
+}{
+    "id": "aa8bd0d4-f2ef-4ab4-9ac0-1681f1681ad4",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.9081,
+            -2.8948
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T00:02:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "dew_point_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "289.28"
+        },
+        "pubtime": "2023-09-28T15:39:38.000000",
+        "platform_name": "Channel"
+    }
+}{
+    "id": "d45fbf9e-78cb-4031-9b7e-6c2098119fcd",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.9081,
+            -2.8948
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T00:02:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "relative_humidity",
+            "unit": "1",
+            "size": 2,
+            "value": "95"
+        },
+        "pubtime": "2023-09-28T15:39:38.000000",
+        "platform_name": "Channel"
+    }
+}{
+    "id": "b88b576c-1a37-4f92-b0ee-18c578798bed",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.9081,
+            -2.8948
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T00:02:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "286"
+        },
+        "pubtime": "2023-09-28T15:39:38.000000",
+        "platform_name": "Channel"
+    }
+}{
+    "id": "98529361-6db1-45d1-818c-36da9acaeb5d",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.9081,
+            -2.8948
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T00:02:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 3,
+            "value": "2.4"
+        },
+        "pubtime": "2023-09-28T15:39:38.000000",
+        "platform_name": "Channel"
+    }
+}
