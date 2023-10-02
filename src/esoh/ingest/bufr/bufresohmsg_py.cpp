@@ -7,7 +7,6 @@
  *
  */
 
-
 #include <iostream>
 #include <fstream>
 #include <filesystem>
@@ -16,20 +15,18 @@
 #include <sstream>
 #include <string>
 #include <filesystem>
-
+#include <list>
 
 #include "Descriptor.h"
 #include "Tables.h"
 #include "ESOHBufr.h"
 #include "bufresohmsg_py.h"
 
-#include <pybind11/pybind11.h>
-
 bool norbufr_init_bufrtables(std::string tables_dir)
 {
 
     std::string tbl_dir;
-    if( tables_dir.size() )
+    if (tables_dir.size())
     {
         tbl_dir = tables_dir;
     }
@@ -41,24 +38,23 @@ bool norbufr_init_bufrtables(std::string tables_dir)
     std::string eccBtable_dir(tbl_dir);
     std::string eccDtable_dir(tbl_dir);
 
-    for(const auto & entry : std::filesystem::directory_iterator(eccBtable_dir))
+    for (const auto &entry : std::filesystem::directory_iterator(eccBtable_dir))
     {
         auto vers = std::stoi(entry.path().filename().string());
-        TableB * tb_e = new TableB( entry.path().string() +"/element.table");
+        TableB *tb_e = new TableB(entry.path().string() + "/element.table");
         (*tb)[vers] = tb_e;
-        TableC * tc_e = new TableC( entry.path().string() +"/codetables");
+        TableC *tc_e = new TableC(entry.path().string() + "/codetables");
         (*tc)[vers] = tc_e;
     }
 
-    for(const auto & entry : std::filesystem::directory_iterator(eccDtable_dir))
+    for (const auto &entry : std::filesystem::directory_iterator(eccDtable_dir))
     {
         auto vers = std::stoi(entry.path().filename().string());
-        TableD * tb_d = new TableD( entry.path().string() +"/sequence.def");
+        TableD *tb_d = new TableD(entry.path().string() + "/sequence.def");
         (*td)[vers] = tb_d;
     }
 
     return true;
-
 }
 
 bool norbufr_init_oscar(std::string oscardb_dir)
@@ -67,20 +63,20 @@ bool norbufr_init_oscar(std::string oscardb_dir)
     return ret;
 }
 
-std::string norbufr_bufresohmsg(std::string fname)
+std::list<std::string> norbufr_bufresohmsg(std::string fname)
 {
 
-    std::string ret;
+    std::list<std::string> ret;
 
-    std::ifstream bufrFile(fname.c_str(),std::ios_base::in | std::ios_base::binary);
+    std::ifstream bufrFile(fname.c_str(), std::ios_base::in | std::ios_base::binary);
 
-    while( bufrFile.good() )
+    while (bufrFile.good())
     {
 
         ESOHBufr *bufr = new ESOHBufr;
         bufr->setOscar(&oscar);
 
-        if ( bufrFile >> *bufr )
+        if (bufrFile >> *bufr)
         {
 
             bufr->setTableB(tb->at(bufr->getVersionMaster() && tb->find(bufr->getVersionMaster()) != tb->end() ? bufr->getVersionMaster() : tb->rbegin()->first));
@@ -89,13 +85,12 @@ std::string norbufr_bufresohmsg(std::string fname)
 
             bufr->extractDescriptors();
 
-            ret += bufr->msg();
-
+            std::list<std::string> msg = bufr->msg();
+            ret.insert(ret.end(), msg.begin(), msg.end());
         }
     }
 
     return ret;
-
 }
 
 std::string norbufr_bufrprint(std::string fname)
@@ -103,14 +98,14 @@ std::string norbufr_bufrprint(std::string fname)
 
     std::stringstream ret;
 
-    std::ifstream bufrFile(fname.c_str(),std::ios_base::in | std::ios_base::binary);
+    std::ifstream bufrFile(fname.c_str(), std::ios_base::in | std::ios_base::binary);
 
-    while( bufrFile.good() )
+    while (bufrFile.good())
     {
 
         ESOHBufr *bufr = new ESOHBufr;
 
-        if ( bufrFile >> *bufr )
+        if (bufrFile >> *bufr)
         {
 
             bufr->setTableB(tb->at(bufr->getVersionMaster() && tb->find(bufr->getVersionMaster()) != tb->end() ? bufr->getVersionMaster() : tb->rbegin()->first));
@@ -120,28 +115,30 @@ std::string norbufr_bufrprint(std::string fname)
             bufr->extractDescriptors();
 
             ret << *bufr;
-
         }
     }
 
     return ret.str();
-
 }
 
 bool norbufr_destroy_bufrtables()
 {
 
-    for( auto i : *tb ) delete i.second;
+    for (auto i : *tb)
+        delete i.second;
     delete tb;
-    for( auto i : *tc ) delete i.second;
+    for (auto i : *tc)
+        delete i.second;
     delete tc;
-    for( auto i : *td ) delete i.second;
+    for (auto i : *td)
+        delete i.second;
     delete td;
 
     return true;
 }
 
-PYBIND11_MODULE(bufresohmsg_py, m) {
+PYBIND11_MODULE(bufresohmsg_py, m)
+{
     m.doc() = "bufresoh E-SOH MQTT message generator plugin";
 
     m.def("init_bufrtables_py", &norbufr_init_bufrtables, "Init BUFR Tables");
@@ -152,5 +149,3 @@ PYBIND11_MODULE(bufresohmsg_py, m) {
 
     m.def("init_oscar_py", &norbufr_init_oscar, "Init OSCAR db");
 }
-
-

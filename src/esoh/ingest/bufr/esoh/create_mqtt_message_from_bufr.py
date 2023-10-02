@@ -6,7 +6,7 @@ from bufresohmsg_py import bufresohmsg_py, \
     destroy_bufrtables_py
 
 
-def bufr2mqtt(bufr_file_path: str) -> str:
+def bufr2mqtt(bufr_file_path: str) -> list[str]:
     """
     This function creates the e-soh-message-spec json schema(s) from a BUFR file.
 
@@ -38,14 +38,16 @@ if __name__ == "__main__":
             if i > 0:
                 if os.path.exists(file_name):
                     msg = bufr2mqtt(file_name)
-                    print(msg)
+                    for m in msg:
+                        print(m)
                 else:
                     print("File not exists: {0}".format(file_name))
                     exit(1)
 
     else:
         msg = bufr2mqtt(test_path)
-        print(msg)
+        for m in msg:
+            print(m)
 
     destroy_bufrtables_py()
 
