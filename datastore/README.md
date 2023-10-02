@@ -71,7 +71,7 @@ The datastore service can be tested with [gRPCurl](https://github.com/fullstoryd
 ### List all services defined in the proto file
 
 ```text
-$ grpcurl -plaintext -proto datastore/protobuf/datastore.proto 127.0.0.1:50050 list
+$ grpcurl -plaintext -proto datastore/protobuf/datastore.proto list
 datastore.Datastore
 ```
 
