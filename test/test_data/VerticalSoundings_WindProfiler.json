@@ -1,0 +1,1405 @@
+{
+    "id": "4ff27f08-50b8-4d8e-a084-ff7eaaf8cc24",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            1004.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "223"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "87d429eb-0f75-472c-a247-be570900d7da",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            1004.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 1,
+            "value": "8"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "51b7792b-0831-4714-ad3f-35052c71a42b",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            1504.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "225"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "3bec8766-860a-4ad0-912b-732a01a09eec",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            1504.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 3,
+            "value": "8.4"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "6e2b3a4a-eabe-4288-abca-07d0f708b032",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            2004.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "229"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "d8991306-4074-4d04-9c23-00188dbe1f6b",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            2004.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 3,
+            "value": "9.2"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "2bcc8512-4e84-4856-8e6b-fcb195dc5ef6",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            2504.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "233"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "36d74607-7f09-4953-a3d9-0f28b775817b",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            2504.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 3,
+            "value": "9.9"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "2450534b-e434-4395-aee8-850ec37c337e",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            3004.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "237"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "8eaa3794-8f4a-4055-a962-9a178b73e7b4",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            3004.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 4,
+            "value": "10.3"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "6aee0399-50c9-4893-ae49-c643fb9654a6",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            3504.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "239"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "24be3dc4-1c57-46b4-b053-1ba4e220a77c",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            3504.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 4,
+            "value": "10.8"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "1d74034a-071a-4d0e-b6b7-67e54a1f13a3",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            4004.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "239"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "30c5a11d-7854-4b86-8672-34d069ced591",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            4004.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 4,
+            "value": "11.6"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "af434a5a-4dd0-4b89-98ae-4c2fd4bc53e0",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            4504.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "235"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "61588080-1a8f-4461-a281-1bac8f9ff152",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            4504.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 4,
+            "value": "11.8"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "1ef9b499-5cf0-4bbf-90f4-5ef6a9d27faf",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            5004.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "227"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "caf5a971-058c-40ab-af69-55f8c2eed7c8",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            5004.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 2,
+            "value": "11"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "f0751653-3979-4ce2-a428-e57e1a15c73d",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            5504.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "220"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "a0747451-5e9e-41bd-a9ed-e0ee8fb66365",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            5504.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 4,
+            "value": "10.3"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "e5147807-954c-4411-bb76-c2cc997dc4d5",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            6004.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "217"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "84001155-cca7-4bf1-aa41-10a69ed56f09",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            6004.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 4,
+            "value": "10.1"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "1772b0e0-6e08-433e-8ba3-dc3c5af8bd66",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            6504.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "220"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "99f469c7-b2d3-4aa9-b80b-298531d93593",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            6504.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 4,
+            "value": "10.6"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "e28232db-7326-40d6-8580-b0dfc340082c",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            7004.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "225"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "c3681eb5-8bc9-4ff3-9f63-5ffa3100441a",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            7004.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 4,
+            "value": "11.8"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "41d1df0b-ae7a-4ae4-9c4e-d6d3d34aeb04",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            7504.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "225"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "757e7e78-e705-4f64-b5b5-86e81700d97b",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            7504.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 4,
+            "value": "12.4"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "12ce6ea1-989c-40c3-9dd2-25990fb23873",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            8004.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "223"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "58f0b1fa-aad3-462d-8cf1-0c299c724467",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            8004.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 4,
+            "value": "12.6"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "7754d6f7-b195-43cf-b2c4-ace5635f8da3",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            8504.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "223"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "cb3dcacd-9731-4d55-9648-1dfa5b41a38b",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            8504.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 4,
+            "value": "12.8"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "f8a76787-a7cc-4006-910d-cffaab9baac7",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            9004.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "227"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "55a50bfb-bb18-4ab7-8484-6d6ed494d0fe",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            9004.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 4,
+            "value": "14.2"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "62038494-d2d9-4805-a5c8-21d1de2652b9",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            9504.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "233"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "b22a9f08-e03d-46ce-a57c-b3d69986fb85",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            9504.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 4,
+            "value": "16.6"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "091c8299-cea9-43d6-8c03-f6d721bb3c2c",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            10004.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "236"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "db500ce6-2e9c-4d1d-90f9-adfcae76c062",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            10004.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 4,
+            "value": "19.1"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "3b4c4ab8-c918-4223-804e-39e5be698fb7",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            10504.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "238"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "26b1dfea-cd5d-48ed-91fa-b7ecf8e23046",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            10504.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 4,
+            "value": "20.9"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "77dbf72f-524a-4c66-967f-330be7c35ad7",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            11004.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "240"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "07de68e6-0f82-4740-af8d-bbe8f2d97c4e",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            11004.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 4,
+            "value": "20.9"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "e4dc859e-b416-4311-b50d-82e085da41e0",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            11504.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "239"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "22dbcaac-81b7-4f8e-be60-2a51ff3d849c",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            11504.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 4,
+            "value": "19.8"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "a2314055-9a21-4bc5-839d-e1e6b6381efe",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            12004.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "237"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "ff5e5339-3979-48e8-a303-8c2bbc56144f",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            12004.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 4,
+            "value": "18.9"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "96749ebf-b1b0-4159-9826-efbe8ac37ecb",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            12504.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "237"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "e238f09f-f915-4770-bdee-ac0aef0cc766",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            12504.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 4,
+            "value": "17.2"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "57ea085d-242b-45d3-abd3-f4350f56ec8a",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            13004.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "240"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "153ff672-fece-431a-87ff-1f981a3fc388",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            13004.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 4,
+            "value": "15.7"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "7ef01bec-24fd-489b-8751-2427e28fc712",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            13504.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "242"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}{
+    "id": "529a8532-8dec-4707-8136-ea34d9b09c83",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            57.35,
+            -7.37,
+            13504.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:45:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 4,
+            "value": "14.7"
+        },
+        "pubtime": "2023-09-28T15:39:44.000000",
+        "platform": "0-20000-0-03021",
+        "platform_name": "LOCHBOISDALE"
+    }
+}

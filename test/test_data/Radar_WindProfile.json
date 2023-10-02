@@ -1,0 +1,1027 @@
+{
+    "id": "b7c08b02-1523-48db-8fa5-e70b08d9c072",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            1640.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "301"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "c340c327-fe31-43b8-a93d-bb5b278c1cbf",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            1640.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 3,
+            "value": "5.3"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "3094bcdb-0cfb-49f3-9ba6-920ba42ab91e",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            1690.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "308"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "433e4e10-4a5d-4795-a37f-8e840b2f1f5b",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            1690.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 3,
+            "value": "6.2"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "bc869363-9cb8-4104-924e-65b822a8746a",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            1740.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "300"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "0afe2fda-2468-41cd-836a-29c62f8c7494",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            1740.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 3,
+            "value": "6.4"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "885b752d-32db-4f99-9097-995ecd258486",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            1790.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "296"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "8602785c-8d61-4270-a38a-41ab79a6eb04",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            1790.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 3,
+            "value": "6.3"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "7fe96f3b-664a-42a1-b867-6c5bfc89da58",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            1830.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "298"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "2e2d7daa-1d76-4ead-906d-e2f62db1fa87",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            1830.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 3,
+            "value": "6.3"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "505f35aa-2e3d-43ef-b737-dd185e4d2119",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            1880.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "294"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "2154a1b3-3fe8-4793-a8a8-fde3fbc9ddbc",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            1880.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 3,
+            "value": "6.7"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "651dc449-1143-4adc-a201-d08deacd511c",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            1930.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "300"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "c8e01d98-516c-43da-9249-50838dbd4b3e",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            1930.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 3,
+            "value": "7.2"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "e8752d6f-2d71-47b5-9f6b-5e989f92d861",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            1980.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "301"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "b8895918-661b-466b-b020-5501af5b0464",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            1980.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 3,
+            "value": "7.3"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "6f4b363a-bfb9-46e9-b50d-ad8b9453c5e4",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            2020.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "302"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "78f5f0c9-8326-4630-b1e6-421b3a3cbc52",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            2020.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 1,
+            "value": "8"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "1428ec79-ae6c-44d1-ae7a-385b43c57dd8",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            2070.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "298"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "00c3a46d-9dae-431a-8fda-e21d2a86c576",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            2070.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 3,
+            "value": "8.4"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "b3da7006-ec52-4ceb-bae7-4c16d73698d8",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            2120.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "297"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "a0675114-1258-4698-9837-214846bbc65c",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            2120.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 1,
+            "value": "9"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "2f0121f8-f08f-4c36-8bc6-8afc38b7223b",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            2170.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "300"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "5a492284-6472-4b0b-a2bc-24809ad0b932",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            2170.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 3,
+            "value": "9.3"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "90b0a700-6884-494f-8bf6-3eca703d08fd",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            2210.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "299"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "d9ed5eff-d1bf-4efd-b7a1-ee98a390f9da",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            2210.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 3,
+            "value": "9.8"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "61825ac0-f7df-49c5-aba1-401b685c7464",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            2260.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "301"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "a22de981-e4f4-4f59-bf87-da5bac315d41",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            2260.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 4,
+            "value": "10.6"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "924ca894-a15d-49b8-9f31-7ff0e1a7d2a2",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            2310.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "300"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "d7699c92-72f2-439c-b9d2-5d9db002db19",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            2310.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 4,
+            "value": "11.3"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "c4d7d564-3e8b-4031-9261-5ca7ce1f5f89",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            2360.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "302"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "328e8db8-3c5f-491d-ad26-421279d887c8",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            2360.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 4,
+            "value": "11.8"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "b8903228-9d58-4782-bbf8-bb8bdc83eba1",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            2400.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "300"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "d7423c03-e456-4738-be2f-46d217ce3719",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            2400.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 4,
+            "value": "12.7"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "ac7a2651-f840-403b-b3b9-4499c29f7378",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            2450.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "294"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "8037f4d4-fe6d-4327-941f-d0b99bc28b97",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            2450.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 4,
+            "value": "12.4"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "572f80bb-1097-4741-99ed-fe5a89529fe4",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            2500.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "290"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}{
+    "id": "7786b968-76a4-484c-9681-303ecbf51231",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            49.5011,
+            16.7885,
+            2500.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-22T23:59:00.000000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 4,
+            "value": "12.3"
+        },
+        "pubtime": "2023-09-28T15:39:33.000000",
+        "platform": "0-20000-0-11718",
+        "platform_name": "RADAR Skalky"
+    }
+}

@@ -1,4 +1,6 @@
 met-ingest/*
+
+*.o
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -175,3 +177,12 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+
+# C++ BUFR utilities
+src/esoh/ingest/bufr/bufrprint
+src/esoh/ingest/bufr/descriptor_info
+src/esoh/ingest/bufr/oscar_test
+
+
+
+
