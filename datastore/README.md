@@ -39,6 +39,22 @@ Example commands:
 
 MORE DETAILS HERE!
 
+## Collecting profiling stats from a running datastore service
+
+**STEP 1:** Start the service (or ensure it already runs).
+
+**STEP 2:** Collect profiling stats over a certain period, for example:
+
+`go tool pprof http://127.0.0.1:6060/debug/pprof/profile?seconds=220`
+
+(by default, the stats will be written to `~/pprof/`; see `go tool pprof --help` to see
+all options)
+
+**STEP 3:** Open a web page to visualize and inspect the results of a given profiling run,
+for example:
+
+`BROWSER=firefox go tool pprof -http=:8081 ~/pprof/pprof.dsserver.samples.cpu.001.pb.gz`
+
 ## Compiling datastore.proto to prevent IDEs from complaining
 
 Whenever `datastore.proto` changes, it should be complied locally in order for

@@ -28,6 +28,7 @@ services:
       context: datastore
     ports:
       - "50050:50050"
+      - "6060:6060" # for flame graphing
     environment:
       - PGHOST=db
       - PGPORT=5432

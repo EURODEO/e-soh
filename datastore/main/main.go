@@ -15,6 +15,10 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
 	"google.golang.org/grpc/health/grpc_health_v1"
+
+	_ "expvar"
+	"net/http"
+	_ "net/http/pprof"
 )
 
 func createStorageBackend() (storagebackend.StorageBackend, error) {
@@ -62,6 +66,12 @@ func main() {
 	if err != nil {
 		log.Fatalf("net.Listen() failed: %v", err)
 	}
+
+	// serve profiling info
+	log.Printf("serving profiling info\n")
+	go func() {
+		http.ListenAndServe(fmt.Sprintf("0.0.0.0:6060"), nil)
+	}()
 
 	// serve incoming requests
 	log.Printf("starting server\n")
