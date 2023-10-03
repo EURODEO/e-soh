@@ -82,14 +82,26 @@ func getTSColVals (tsMdata *datastore.TSMetadata) ([]interface{}, error) {
 }
 
 // getTimeSeriesID retrieves the ID of the row in table time_series that matches tsMdata,
-// inserting a new row if necessary.
+// inserting a new row if necessary. The ID is first looked up in a cache in order to save
+// unnecessary database access.
 // Returns (ID, nil) upon success, otherwise (..., error).
-func getTimeSeriesID(db *sql.DB, tsMdata *datastore.TSMetadata) (int64, error) {
+func getTimeSeriesID(
+	db *sql.DB, tsMdata *datastore.TSMetadata, cache map[string]int64) (int64, error) {
 
 	colVals, err := getTSColVals(tsMdata)
 	if err != nil {
 		return -1, fmt.Errorf("getTSColVals() failed: %v", err)
 	}
+
+	var id int64 = -1
+
+	// first try a cache lookup
+	cacheKey := fmt.Sprintf("%v", colVals)
+	if id, found := cache[cacheKey]; found {
+		return id, nil
+	}
+
+	// get ID from database (possibly creating a new entry)
 
 	whereExpr := []string{}
 	for i, col := range getTSMdataCols() {
@@ -104,7 +116,6 @@ func getTimeSeriesID(db *sql.DB, tsMdata *datastore.TSMetadata) (int64, error) {
 	}
 	defer rows.Close()
 
-	var id int64 = -1
 	nrows := 0
 	for rows.Next() {
 		nrows++
@@ -134,6 +145,9 @@ func getTimeSeriesID(db *sql.DB, tsMdata *datastore.TSMetadata) (int64, error) {
 			return -1, fmt.Errorf("db.QueryRow() failed: %v", err)
 		}
 	}
+
+	// cache ID
+	cache[cacheKey] = id
 
 	return id, nil;
 }
@@ -165,9 +179,20 @@ func getObsTime(obsMdata *datastore.ObsMetadata) (*timestamppb.Timestamp, error)
 // --- END a variant of getObsTime that also supports intervals ---------------------------------
 
 // getGeoPointID retrieves the ID of the row in table geo_point that matches point,
-// inserting a new row if necessary.
+// inserting a new row if necessary. The ID is first looked up in a cache in order to save
+// unnecessary database access.
 // Returns (ID, nil) upon success, otherwise (..., error).
-func getGeoPointID(db *sql.DB, point *datastore.Point) (int64, error) {
+func getGeoPointID(db *sql.DB, point *datastore.Point, cache map[string]int64) (int64, error) {
+
+	var id int64 = -1
+
+    // first try a cache lookup
+	cacheKey := fmt.Sprintf("%v %v", point.GetLon(), point.GetLat())
+	if id, found := cache[cacheKey]; found {
+		return id, nil
+	}
+
+	// get ID from database (possibly creating a new entry)
 
 	query := fmt.Sprintf(`SELECT id FROM geo_point WHERE point=ST_MakePoint($1, $2)::geography`)
 	rows, err := db.Query(query, point.GetLon(), point.GetLat())
@@ -177,7 +202,6 @@ func getGeoPointID(db *sql.DB, point *datastore.Point) (int64, error) {
 	}
 	defer rows.Close()
 
-	var id int64 = -1
 	nrows := 0
 	for rows.Next() {
 		nrows++
@@ -200,6 +224,9 @@ func getGeoPointID(db *sql.DB, point *datastore.Point) (int64, error) {
 			return -1, fmt.Errorf("db.QueryRow() failed: %v", err)
 		}
 	}
+
+	// cache ID
+	cache[cacheKey] = id
 
 	return id, nil;
 }
@@ -325,6 +352,9 @@ func (sbe *PostgreSQL) PutObservations(request *datastore.PutObsRequest) error {
 
 	tsInfos := map[int64]tsInfo{}
 
+	tsIDCache := map[string]int64{}
+	gpIDCache := map[string]int64{}
+
 	// populate tsInfos
 	for _, obs := range request.Observations {
 
@@ -333,12 +363,12 @@ func (sbe *PostgreSQL) PutObservations(request *datastore.PutObsRequest) error {
 			return fmt.Errorf("getObsTime() failed: %v", err)
 		}
 
-		tsID, err := getTimeSeriesID(sbe.Db, obs.GetTsMdata())
+		tsID, err := getTimeSeriesID(sbe.Db, obs.GetTsMdata(), tsIDCache)
 		if err != nil {
 			return fmt.Errorf("getTimeSeriesID() failed: %v", err)
 		}
 
-		gpID, err := getGeoPointID(sbe.Db, obs.GetObsMdata().GetGeoPoint())
+		gpID, err := getGeoPointID(sbe.Db, obs.GetObsMdata().GetGeoPoint(), gpIDCache)
 		if err != nil {
 			return fmt.Errorf("getGeoPointID() failed: %v", err)
 		}
