@@ -37,22 +37,12 @@ CREATE TABLE time_series (
 	license, conventions, naming_authority, creator_type, creator_name, creator_email,
 	creator_url, institution, project, source, platform, platform_vocabulary, standard_name,
 	unit, instrument, instrument_vocabulary, link_href, link_rel, link_type, link_hreflang,
-	link_title),
-
-	-- Time of most recent observation associated with this time series.
-	-- Used for quickly identifying time series that have become too old and can be deleted:
-	--     DELETE FROM time_series WHERE latest_obs_time < oldest_allowable_obs_time
-	latest_obs_time timestamptz NOT NULL
+	link_title)
 );
 
 CREATE TABLE geo_point (
 	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	point GEOGRAPHY(Point, 4326) NOT NULL UNIQUE,
-
-	-- Time of most recent observation associated with this point.
-	-- Used for quickly identifying points that have become too old and can be deleted:
-	--     DELETE FROM geo_point WHERE latest_obs_time < oldest_allowable_obs_time
-	latest_obs_time timestamptz NOT NULL
+	point GEOGRAPHY(Point, 4326) NOT NULL UNIQUE
 );
 
 CREATE INDEX geo_point_idx ON geo_point USING GIST(point);
