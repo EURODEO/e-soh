@@ -111,7 +111,6 @@ func getTimeSeriesID(
 	query := fmt.Sprintf(`SELECT id FROM time_series WHERE %s`, strings.Join(whereExpr, " AND "))
 	rows, err := db.Query(query, colVals...)
 	if err != nil {
-		fmt.Printf("query: %+v\ncolVals: %+v\n", query, colVals)
 		return -1, fmt.Errorf("db.Query() failed: %v", err)
 	}
 	defer rows.Close()
@@ -197,7 +196,6 @@ func getGeoPointID(db *sql.DB, point *datastore.Point, cache map[string]int64) (
 	query := fmt.Sprintf(`SELECT id FROM geo_point WHERE point=ST_MakePoint($1, $2)::geography`)
 	rows, err := db.Query(query, point.GetLon(), point.GetLat())
 	if err != nil {
-		fmt.Printf("\nquery: >%s< (lon: %v, lat: %v)\n\n", query, point.GetLon(), point.GetLat())
 		return -1, fmt.Errorf("db.Query() failed: %v", err)
 	}
 	defer rows.Close()
