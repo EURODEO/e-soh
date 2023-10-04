@@ -101,48 +101,37 @@ func getTimeSeriesID(
 		return id, nil
 	}
 
-	// get ID from database (possibly creating a new entry)
+	// then access database ...
 
-	whereExpr := []string{}
-	for i, col := range getTSMdataCols() {
-		whereExpr = append(whereExpr, fmt.Sprintf("%s=$%d", col, i + 1))
+	cols := getTSMdataCols()
+
+	formats := make([]string, len(colVals))
+	for i := 0; i < len(colVals); i++ {
+		formats[i] = "$%d"
 	}
 
-	query := fmt.Sprintf(`SELECT id FROM time_series WHERE %s`, strings.Join(whereExpr, " AND "))
-	rows, err := db.Query(query, colVals...)
+	createDoUpdateSetExpr := func() string {
+		expr := []string{}
+		for _, col := range cols {
+			expr = append(expr, fmt.Sprintf("%s = EXCLUDED.%s", col, col))
+		}
+		return strings.Join(expr, ",")
+	}
+
+	// NOTE: the 'WHERE false' is a feature that ensures that another transaction cannot
+	// delete the row
+	cmd := fmt.Sprintf(`
+		INSERT INTO time_series (%s) VALUES (%s)
+		ON CONFLICT ON CONSTRAINT unique_main DO UPDATE SET %s WHERE false RETURNING id
+		`,
+		strings.Join(cols, ","),
+		strings.Join(createPlaceholders(formats), ","),
+		createDoUpdateSetExpr(),
+	)
+
+	err = db.QueryRow(cmd, colVals...).Scan(&id)
 	if err != nil {
-		return -1, fmt.Errorf("db.Query() failed: %v", err)
-	}
-	defer rows.Close()
-
-	nrows := 0
-	for rows.Next() {
-		nrows++
-		if nrows > 1 { // ensure at most one matching row
-			return -1, fmt.Errorf("more than one matching row")
-		}
-		// get ID from existing row
-		if err := rows.Scan(&id); err != nil {
-			return -1, fmt.Errorf("rows.Scan() failed: %v", err)
-		}
-	}
-	if nrows == 0 {
-		formats := []string{}
-		for range colVals {
-			formats = append(formats, "$%d")
-		} // TODO: check if we can initialize array with the same value without looping
-
-		// get ID from new row
-		cols := getTSMdataCols()
-
-		cmd := fmt.Sprintf(
-			`INSERT INTO time_series (%s) VALUES (%s) RETURNING id`,
-			strings.Join(cols, ","),
-			strings.Join(createPlaceholders(formats), ","))
-		err := db.QueryRow(cmd, colVals...).Scan(&id)
-		if err != nil {
-			return -1, fmt.Errorf("db.QueryRow() failed: %v", err)
-		}
+		return -1, fmt.Errorf("db.QueryRow() failed: %v", err)
 	}
 
 	// cache ID
@@ -191,36 +180,18 @@ func getGeoPointID(db *sql.DB, point *datastore.Point, cache map[string]int64) (
 		return id, nil
 	}
 
-	// get ID from database (possibly creating a new entry)
+	// then access database ...
 
-	query := fmt.Sprintf(`SELECT id FROM geo_point WHERE point=ST_MakePoint($1, $2)::geography`)
-	rows, err := db.Query(query, point.GetLon(), point.GetLat())
+	// NOTE: the 'WHERE false' is a feature that ensures that another transaction cannot
+	// delete the row
+	cmd := fmt.Sprintf(`
+		INSERT INTO geo_point (point) VALUES (ST_MakePoint($1, $2)::geography)
+		ON CONFLICT (point) DO UPDATE SET point = EXCLUDED.point WHERE false RETURNING id`,
+	)
+
+	err := db.QueryRow(cmd, point.GetLon(), point.GetLat()).Scan(&id)
 	if err != nil {
-		return -1, fmt.Errorf("db.Query() failed: %v", err)
-	}
-	defer rows.Close()
-
-	nrows := 0
-	for rows.Next() {
-		nrows++
-		if nrows > 1 { // ensure at most one matching row
-			return -1, fmt.Errorf("more than one matching row")
-		}
-		// get ID from existing row
-		if err := rows.Scan(&id); err != nil {
-			return -1, fmt.Errorf("rows.Scan() failed: %v", err)
-		}
-	}
-	if nrows == 0 {
-		// get ID from new row
-		cmd := fmt.Sprintf(`
-			INSERT INTO geo_point (point)
-			VALUES (ST_MakePoint($1, $2)::geography) RETURNING id
-		`)
-		err := db.QueryRow(cmd, point.GetLon(), point.GetLat()).Scan(&id)
-		if err != nil {
-			return -1, fmt.Errorf("db.QueryRow() failed: %v", err)
-		}
+		return -1, fmt.Errorf("db.QueryRow() failed: %v", err)
 	}
 
 	// cache ID
