@@ -14,7 +14,7 @@ import (
 
 // getTSColVals gets the time series metadata column values from tsMdata.
 // Returns (column values, nil) upon success, otherwise (..., error).
-func getTSColVals (tsMdata *datastore.TSMetadata) ([]interface{}, error) {
+func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, error) {
 
 	colVals := []interface{}{}
 
@@ -70,7 +70,7 @@ func getTSColVals (tsMdata *datastore.TSMetadata) ([]interface{}, error) {
 		return linkVals, nil
 	}
 
-	for _, key := range []string{"href", "rel", "type", "hreflang", "title"}  {
+	for _, key := range []string{"href", "rel", "type", "hreflang", "title"} {
 		if linkVals, err := getLinkVals(key); err != nil {
 			return nil, fmt.Errorf("getLinkVals() failed: %v", err)
 		} else {
@@ -110,34 +110,54 @@ func getTimeSeriesID(
 		formats[i] = "$%d"
 	}
 
-	createDoUpdateSetExpr := func() string {
-		expr := []string{}
-		for _, col := range cols {
-			expr = append(expr, fmt.Sprintf("%s = EXCLUDED.%s", col, col))
-		}
-		return strings.Join(expr, ",")
+	// Get a Tx for making transaction requests.
+	tx, err := db.Begin()
+	if err != nil {
+		return -1, fmt.Errorf("db.Begin() failed: %v", err)
 	}
+	// Defer a rollback in case anything fails.
+	defer tx.Rollback()
 
 	// NOTE: the 'WHERE false' is a feature that ensures that another transaction cannot
 	// delete the row
-	cmd := fmt.Sprintf(`
+	insertCmd := fmt.Sprintf(`
 		INSERT INTO time_series (%s) VALUES (%s)
-		ON CONFLICT ON CONSTRAINT unique_main DO UPDATE SET %s WHERE false RETURNING id
+		ON CONFLICT ON CONSTRAINT unique_main DO UPDATE SET title = EXCLUDED.title WHERE false
 		`,
 		strings.Join(cols, ","),
 		strings.Join(createPlaceholders(formats), ","),
-		createDoUpdateSetExpr(),
 	)
 
-	err = db.QueryRow(cmd, colVals...).Scan(&id)
+	_, err = tx.Exec(insertCmd, colVals...)
 	if err != nil {
-		return -1, fmt.Errorf("db.QueryRow() failed: %v", err)
+		return -1, fmt.Errorf("tx.Exec() failed: %v", err)
+	}
+
+	whereExpr := []string{}
+	for i, col := range getTSMdataCols() {
+		whereExpr = append(whereExpr, fmt.Sprintf("%s=$%d", col, i+1))
+	}
+
+	selectCmd := fmt.Sprintf(`SELECT id FROM time_series WHERE %s`, strings.Join(whereExpr, " AND "))
+	// This selectCmd also works, but feels inefficient
+	//selectCmd := fmt.Sprintf(`SELECT id FROM time_series WHERE (%s) in ((%s))`,
+	//	strings.Join(cols, ","),
+	//	strings.Join(createPlaceholders(formats), ","),
+	//)
+	err = tx.QueryRow(selectCmd, colVals...).Scan(&id)
+	if err != nil {
+		return -1, fmt.Errorf("tx.QueryRow() failed: %v", err)
+	}
+
+	// Commit the transaction.
+	if err = tx.Commit(); err != nil {
+		return -1, fmt.Errorf("tx.Commit() failed: %v", err)
 	}
 
 	// cache ID
 	cache[cacheKey] = id
 
-	return id, nil;
+	return id, nil
 }
 
 // getObsTime extracts the obs time from obsMdata.
@@ -174,30 +194,51 @@ func getGeoPointID(db *sql.DB, point *datastore.Point, cache map[string]int64) (
 
 	var id int64 = -1
 
-    // first try a cache lookup
+	// first try a cache lookup
 	cacheKey := fmt.Sprintf("%v %v", point.GetLon(), point.GetLat())
 	if id, found := cache[cacheKey]; found {
 		return id, nil
 	}
 
-	// then access database ...
+	// Get a Tx for making transaction requests.
+	tx, err := db.Begin()
+	if err != nil {
+		return -1, fmt.Errorf("db.Begin() failed: %v", err)
+	}
+	// Defer a rollback in case anything fails.
+	defer tx.Rollback()
 
 	// NOTE: the 'WHERE false' is a feature that ensures that another transaction cannot
 	// delete the row
-	cmd := fmt.Sprintf(`
+	insertCmd := fmt.Sprintf(`
 		INSERT INTO geo_point (point) VALUES (ST_MakePoint($1, $2)::geography)
-		ON CONFLICT (point) DO UPDATE SET point = EXCLUDED.point WHERE false RETURNING id`,
+		ON CONFLICT (point) DO UPDATE SET point = EXCLUDED.point WHERE false`,
 	)
 
-	err := db.QueryRow(cmd, point.GetLon(), point.GetLat()).Scan(&id)
+	_, err = tx.Exec(insertCmd, point.GetLon(), point.GetLat())
 	if err != nil {
-		return -1, fmt.Errorf("db.QueryRow() failed: %v", err)
+		return -1, fmt.Errorf("tx.Exec() failed: %v", err)
+	}
+
+	selectCmd := fmt.Sprintf(`
+		SELECT id FROM geo_point WHERE point = ST_MakePoint($1, $2)::geography
+		`,
+	)
+
+	err = tx.QueryRow(selectCmd, point.GetLon(), point.GetLat()).Scan(&id)
+	if err != nil {
+		return -1, fmt.Errorf("tx.QueryRow() failed: %v", err)
+	}
+
+	// Commit the transaction.
+	if err = tx.Commit(); err != nil {
+		return -1, fmt.Errorf("tx.Commit() failed: %v", err)
 	}
 
 	// cache ID
 	cache[cacheKey] = id
 
-	return id, nil;
+	return id, nil
 }
 
 // createInsertVals generates from (tsID, obsTimes, gpIDs, and omds) two arrays:
@@ -224,16 +265,16 @@ func createInsertVals(
 			$%d,
 			$%d
 			)`,
-			index + 1,
-			index + 2,
-			index + 3,
-			index + 4,
-			index + 5,
-			index + 6,
-			index + 7,
-			index + 8,
-			index + 9,
-			index + 10,
+			index+1,
+			index+2,
+			index+3,
+			index+4,
+			index+5,
+			index+6,
+			index+7,
+			index+8,
+			index+9,
+			index+10,
 		)
 
 		phVals0 := []interface{}{
@@ -315,8 +356,8 @@ func (sbe *PostgreSQL) PutObservations(request *datastore.PutObsRequest) error {
 
 	type tsInfo struct {
 		obsTimes *[]*timestamppb.Timestamp
-		gpIDs *[]int64 // geo point IDs
-		omds *[]*datastore.ObsMetadata
+		gpIDs    *[]int64 // geo point IDs
+		omds     *[]*datastore.ObsMetadata
 	}
 
 	tsInfos := map[int64]tsInfo{}
@@ -353,8 +394,8 @@ func (sbe *PostgreSQL) PutObservations(request *datastore.PutObsRequest) error {
 			omds = []*datastore.ObsMetadata{}
 			tsInfos[tsID] = tsInfo{
 				obsTimes: &obsTimes,
-				gpIDs: &gpIDs,
-				omds: &omds,
+				gpIDs:    &gpIDs,
+				omds:     &omds,
 			}
 			tsInfo0, found = tsInfos[tsID]
 			// assert(found)
