@@ -10,9 +10,9 @@
 #ifndef _ESOHBUFR_
 #define _ESOHBUFR_
 
-#include <string>
-#include <map>
 #include <list>
+#include <map>
+#include <string>
 
 #include "rapidjson/document.h"
 #include "rapidjson/prettywriter.h"
@@ -44,10 +44,16 @@ static std::map<DescriptorId, std::pair<std::string, std::string>> cf_names = {
 
     {DescriptorId(20001, true), {"visibility_in_air", "m"}},
 
-    {DescriptorId(14002, true), {"integral_wrt_time_of_surface_downwelling_longwave_flux_in_air", "W s m-2"}},
-    {DescriptorId(14004, true), {"integral_wrt_time_of_surface_downwelling_shortwave_flux_in_air", "W s m-2"}},
-    {DescriptorId(14012, true), {"integral_wrt_time_of_surface_net_downward_longwave_flux", "W s m-2"}},
-    {DescriptorId(14013, true), {"integral_wrt_time_of_surface_net_downward_shortwave_flux", "W s m-2"}},
+    {DescriptorId(14002, true),
+     {"integral_wrt_time_of_surface_downwelling_longwave_flux_in_air",
+      "W s m-2"}},
+    {DescriptorId(14004, true),
+     {"integral_wrt_time_of_surface_downwelling_shortwave_flux_in_air",
+      "W s m-2"}},
+    {DescriptorId(14012, true),
+     {"integral_wrt_time_of_surface_net_downward_longwave_flux", "W s m-2"}},
+    {DescriptorId(14013, true),
+     {"integral_wrt_time_of_surface_net_downward_shortwave_flux", "W s m-2"}},
 
     {DescriptorId(22042, true), {"sea_water_temperature", "K"}},
     {DescriptorId(22043, true), {"sea_water_temperature", "K"}},
@@ -55,25 +61,31 @@ static std::map<DescriptorId, std::pair<std::string, std::string>> cf_names = {
 
 };
 
-class ESOHBufr : public NorBufr
-{
+class ESOHBufr : public NorBufr {
 
 public:
-    ESOHBufr();
-    std::list<std::string> msg() const;
-    void setOscar(Oscar *);
+  ESOHBufr();
+  std::list<std::string> msg() const;
+  void setOscar(Oscar *);
 
 private:
-    std::string addMessage(std::list<Descriptor>::const_iterator ci, rapidjson::Document &message, time_t *start_datetime = 0) const;
-    bool addDescriptor(Descriptor &D, rapidjson::Value &dest, rapidjson::Document::AllocatorType &) const;
-    bool addContent(const Descriptor &D, std::string cf_name, rapidjson::Document &) const;
-    bool setPlatformName(std::string v, rapidjson::Document &message, bool force = true) const;
-    bool setLocation(double lat, double lon, double hei, rapidjson::Document &) const;
-    bool updateLocation(double loc, int loc_index, rapidjson::Document &message) const;
+  std::string addMessage(std::list<Descriptor>::const_iterator ci,
+                         rapidjson::Document &message,
+                         time_t *start_datetime = 0) const;
+  bool addDescriptor(Descriptor &D, rapidjson::Value &dest,
+                     rapidjson::Document::AllocatorType &) const;
+  bool addContent(const Descriptor &D, std::string cf_name,
+                  rapidjson::Document &) const;
+  bool setPlatformName(std::string v, rapidjson::Document &message,
+                       bool force = true) const;
+  bool setLocation(double lat, double lon, double hei,
+                   rapidjson::Document &) const;
+  bool updateLocation(double loc, int loc_index,
+                      rapidjson::Document &message) const;
 
-    bool setDateTime(struct tm *, rapidjson::Document &) const;
-    bool setStartDateTime(struct tm *, rapidjson::Document &) const;
-    Oscar *oscar;
+  bool setDateTime(struct tm *, rapidjson::Document &) const;
+  bool setStartDateTime(struct tm *, rapidjson::Document &) const;
+  Oscar *oscar;
 };
 
 #endif
