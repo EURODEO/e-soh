@@ -122,10 +122,12 @@ func getTimeSeriesID(
 	// delete the row
 	insertCmd := fmt.Sprintf(`
 		INSERT INTO time_series (%s) VALUES (%s)
-		ON CONFLICT ON CONSTRAINT unique_main DO UPDATE SET title = EXCLUDED.title WHERE false
+		ON CONFLICT ON CONSTRAINT unique_main DO UPDATE SET %s = EXCLUDED.%s WHERE false
 		`,
 		strings.Join(cols, ","),
 		strings.Join(createPlaceholders(formats), ","),
+		cols[0],
+		cols[0],
 	)
 
 	_, err = tx.Exec(insertCmd, colVals...)
