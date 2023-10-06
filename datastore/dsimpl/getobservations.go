@@ -11,9 +11,13 @@ func (svcInfo *ServiceInfo) GetObservations(
 	ctx context.Context, request *datastore.GetObsRequest) (
 	*datastore.GetObsResponse, error) {
 
-	if request.Totime.AsTime().Before(request.Fromtime.AsTime()) {
-		return nil, fmt.Errorf("To(%v) < From(%v)", request.Totime,
-			request.Fromtime)
+	// do general validation of any obs time interval
+	if ti := request.Interval; ti != nil {
+		if ti.Start != nil && ti.End != nil {
+			if ti.End.AsTime().Before(ti.Start.AsTime()) {
+				return nil, fmt.Errorf("end(%v) < start(%v)", ti.End, ti.Start)
+			}
+		}
 	}
 
 	response, err := svcInfo.Sbe.GetObservations(request)

@@ -17,7 +17,7 @@ services:
       - POSTGRES_DB=data
     restart: on-failure
     healthcheck:
-      test: [ "CMD-SHELL", "psql postgresql://postgres:mysecretpassword@localhost/data -c \"SELECT COUNT(*) from OBSERVATIONS\"" ]
+      test: [ "CMD-SHELL", "psql postgresql://postgres:mysecretpassword@localhost/data -c \"SELECT COUNT(*) from OBSERVATION\"" ]
       interval: 5s
       timeout: 1s
       retries: 3
@@ -28,9 +28,10 @@ services:
       context: datastore
     ports:
       - "50050:50050"
+      - "6060:6060" # for flame graphing
     environment:
-      - TSDBHOST=db
-      - TSDBPORT=5432
+      - PGHOST=db
+      - PGPORT=5432
     restart: on-failure
     healthcheck:
       test: [ "CMD-SHELL", "exit $(/bin/grpc_health_probe -addr=localhost:50050)" ]

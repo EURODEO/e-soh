@@ -10,6 +10,7 @@ from google.protobuf.timestamp_pb2 import Timestamp
 
 
 NUMBER_OF_PARAMETERS = 44
+NUMBER_OF_STATIONS = 55
 
 
 @pytest.fixture(scope="session")
@@ -19,59 +20,45 @@ def grpc_stub():
 
 
 def test_find_series_single_station_single_parameter(grpc_stub):
-    request = dstore.FindTSRequest(station_ids=["06260"], param_ids=["rh"])
-    response = grpc_stub.FindTimeSeries(request)
+    request = dstore.GetObsRequest(platforms=["06260"], instruments=["rh"])
+    response = grpc_stub.GetObservations(request)
 
-    assert len(response.tseries) == 1
-    assert response.tseries[0].metadata.pos.lat == 52.098821802977
-    assert response.tseries[0].metadata.pos.lon == 5.1797058644882
+    assert len(response.observations) == 1
+    obs_mdata = response.observations[0].obs_mdata[0]
+    assert obs_mdata.geo_point.lat == 52.098821802977
+    assert obs_mdata.geo_point.lon == 5.1797058644882
 
 
 def test_find_series_all_stations_single_parameter(grpc_stub):
-    request = dstore.FindTSRequest(param_ids=["rh"])
-    response = grpc_stub.FindTimeSeries(request)
+    request = dstore.GetObsRequest(instruments=["rh"])
+    response = grpc_stub.GetObservations(request)
 
-    assert len(response.tseries) == 55
+    assert len(response.observations) == NUMBER_OF_STATIONS
 
 
 def test_find_series_single_station_all_parameters(grpc_stub):
-    request = dstore.FindTSRequest(
-        station_ids=["06260"],
-    )
-    response = grpc_stub.FindTimeSeries(request)
+    request = dstore.GetObsRequest(platforms=["06260"])
+    response = grpc_stub.GetObservations(request)
 
-    assert len(response.tseries) == NUMBER_OF_PARAMETERS
+    assert len(response.observations) == NUMBER_OF_PARAMETERS
 
 
 def test_get_values_single_station_single_parameters(grpc_stub):
-    ts_request = dstore.FindTSRequest(station_ids=["06260"], param_ids=["rh"])
-    ts_response = grpc_stub.FindTimeSeries(ts_request)
-    assert len(ts_response.tseries) == 1
-    ts_id = ts_response.tseries[0].id
+    ts_request = dstore.GetObsRequest(platforms=["06260"], instruments=["rh"])
+    response = grpc_stub.GetObservations(ts_request)
 
-    from_time = Timestamp()
-    from_time.FromDatetime(datetime(2022, 12, 31))
-    to_time = Timestamp()
-    to_time.FromDatetime(datetime(2023, 11, 1))
-    request = dstore.GetObsRequest(
-        tsids=[ts_id],
-        fromtime=from_time,
-        totime=to_time,
-    )
-    response = grpc_stub.GetObservations(request)
-
-    assert len(response.tsobs) == 1
-    assert response.tsobs[0].tsid == ts_id
-    assert len(response.tsobs[0].obs) == 144
-    assert response.tsobs[0].obs[0].value == 95.0
-    assert response.tsobs[0].obs[-1].value == 59.0
+    assert len(response.observations) == 1
+    observations = response.observations[0].obs_mdata
+    assert len(observations) == 144
+    assert float(observations[0].value) == 95.0
+    assert float(observations[-1].value) == 59.0
 
 
 input_params_polygon = [
     (
         # Multiple stations within
         ((52.15, 4.90), (52.15, 5.37), (51.66, 5.37), (51.66, 4.90)),
-        None,
+        ["rh"],
         ["06260", "06348", "06356"],
     ),
     (
@@ -89,37 +76,37 @@ input_params_polygon = [
     (
         # One station within
         ((52.11, 5.15), (52.11, 5.204), (52.08, 5.204), (52.08, 5.15)),
-        None,
+        ["rh"],
         ["06260"],
     ),
     (
         # Nothing within
         ((51.82, 5.07), (51.82, 5.41), (51.73, 5.41), (51.73, 5.07)),
-        None,
+        ["rh"],
         [],
     ),
     (
         # Middle top
         ((52.0989, 4.17), (52.0989, 6.18), (52.09, 6.18), (52.09, 4.17)),
-        None,
+        ["rh"],
         ["06260"],
     ),
     (
         # Middle bottom, should fall outside since polygon is curved because the earth is round (postgres geography).
         ((52.1, 4.17), (52.1, 6.18), (52.0989, 6.18), (52.0989, 4.17)),
-        None,
+        ["rh"],
         [],
     ),
     (
         # Complex polygon
         ((51.45, 3.47), (51.39, 3.67), (51.39, 4.28), (51.52, 4.96), (51.89, 5.46), (52.18, 5.30), (51.75, 3.68)),
-        None,
+        ["rh"],
         ["06260", "06310", "06323", "06340", "06343", "06348", "06350", "06356"],
     ),
     (
         # All stations in the Netherlands
         ((56.00, 2.85), (56.00, 7.22), (50.75, 7.22), (50.75, 2.85)),
-        None,
+        ["rh"],
         # fmt: off
         [
             "06201", "06203", "06204", "06205", "06207", "06208", "06211", "06214", "06215", "06225", "06229",
@@ -135,13 +122,12 @@ input_params_polygon = [
 
 @pytest.mark.parametrize("coords,param_ids,expected_station_ids", input_params_polygon)
 def test_get_observations_with_polygon(grpc_stub, coords, param_ids, expected_station_ids):
-    ts_request = dstore.FindTSRequest(
-        inside=dstore.Polygon(points=[dstore.Point(lat=lat, lon=lon) for lat, lon in coords]), param_ids=param_ids
-    )
-    ts_response = grpc_stub.FindTimeSeries(ts_request)
+    polygon = dstore.Polygon(points=[dstore.Point(lat=lat, lon=lon) for lat, lon in coords])
+    get_obs_request = dstore.GetObsRequest(inside=polygon, instruments=param_ids)
+    get_obs_response = grpc_stub.GetObservations(get_obs_request)
 
-    actual_station_ids = sorted({ts.metadata.station_id for ts in ts_response.tseries})
+    actual_station_ids = sorted({ts.ts_mdata.platform for ts in get_obs_response.observations})
     assert actual_station_ids == expected_station_ids
     number_of_parameters = len(param_ids) if param_ids else NUMBER_OF_PARAMETERS
     expected_number_of_timeseries = number_of_parameters * len(expected_station_ids)
-    assert len(ts_response.tseries) == expected_number_of_timeseries
+    assert len(get_obs_response.observations) == expected_number_of_timeseries

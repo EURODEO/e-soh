@@ -3,7 +3,7 @@
 
 AddElementTag("microService", $shape=EightSidedShape(), $bgColor="CornflowerBlue", $fontColor="white", $legendText="micro service\neight sided")
 
-ContainerDb(timescaledb, "Relational DB\n(TimescaleDB/\nPostgreSQL)")
+ContainerDb(postgresql, "Relational DB\n(PostgreSQL)")
 Container(datastore, "Data Store", "", "gRPC service\ndatastore.proto", $tags = "microService")
 Container(corrtest, "Correctness Testing", "", "")
 Container(perftest, "Performance Testing", "", "")
@@ -11,7 +11,7 @@ Person(dev, "dev")
 System_Ext(ingestion, "Ingestion", "", "")
 System_Ext(edr, "Search and Access APIs\nOGC EDR", "", "")
 
-Rel(datastore, timescaledb, "access storage backend", "SQL")
+Rel(datastore, postgresql, "access storage backend", "SQL")
 Rel_R(ingestion, datastore, "add (meta)data", "gRPC")
 Rel_L(edr, datastore, "search and access (meta)data", "gRPC")
 Rel(dev, datastore, "test manually", "gRPCurl")

@@ -1,6 +1,6 @@
 # Run with:
 # For developing:    uvicorn main:app --reload
-
+import itertools
 import os
 from datetime import datetime
 from datetime import timezone
@@ -9,6 +9,9 @@ from itertools import groupby
 from brotli_asgi import BrotliMiddleware
 
 from covjson_pydantic.ndarray import NdArray
+from covjson_pydantic.observed_property import ObservedProperty
+from covjson_pydantic.parameter import Parameter
+from covjson_pydantic.reference_system import ReferenceSystemConnectionObject, ReferenceSystem
 from fastapi import FastAPI
 from fastapi import Query, Path
 from geojson_pydantic import FeatureCollection, Feature, Point
@@ -30,52 +33,52 @@ app = FastAPI()
 app.add_middleware(BrotliMiddleware)
 
 
-def collect_data(time_serie, observations):
-    lat = time_serie.metadata.pos.lat
-    lon = time_serie.metadata.pos.lon
-    tuples = ((o.time.ToDatetime(tzinfo=timezone.utc), o.value) for o in observations.obs)
+def collect_data(ts_mdata, obs_mdata):
+    lat = obs_mdata[0].geo_point.lat  # HACK: For now assume they all have the same position
+    lon = obs_mdata[0].geo_point.lon
+    tuples = ((o.obstime_instant.ToDatetime(tzinfo=timezone.utc), float(o.value)) for o in obs_mdata)  # HACK: str -> float
     (times, values) = zip(*tuples)
-    param_id = time_serie.metadata.param_id
+    param_id = ts_mdata.instrument
 
     return (lat, lon, times), param_id, values
 
 
-def get_data_for_time_series(ts_response, grpc_stub):
-    from_time = Timestamp()
-    from_time.FromDatetime(datetime(2022, 12, 31))  # TODO: Get from request
-    to_time = Timestamp()
-    to_time.FromDatetime(datetime(2023, 11, 1))  # TODO: Get from request
-    request = dstore.GetObsRequest(
-        tsids=[ts.id for ts in ts_response.tseries],
-        fromtime=from_time,
-        totime=to_time,
-    )
-    response = grpc_stub.GetObservations(request)
+def get_data_for_time_series(get_obs_request):
+    with grpc.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") as channel:
+        grpc_stub = dstore_grpc.DatastoreStub(channel)
+        response = grpc_stub.GetObservations(get_obs_request)
 
-    for i in range(0, len(ts_response.tseries)):
-        assert response.tsobs[i].tsid == ts_response.tseries[i].id
+        # Collect data
+        coverages = []
+        data = [collect_data(md.ts_mdata, md.obs_mdata) for md in response.observations]
 
-    # Collect data
-    coverages = []
-    data = [collect_data(time_serie, observations) for (time_serie, observations) in zip(ts_response.tseries, response.tsobs)]
+        # Need to sort before using groupBy
+        data.sort(key=lambda x: x[0])
+        # The multiple coverage logic is not needed for this endpoint, but we want to share this code between endpoints
+        for (lat, lon, times), group in groupby(data, lambda x: x[0]):
+            referencing = [
+                ReferenceSystemConnectionObject(coordinates=["y", "x"],
+                                                system=ReferenceSystem(type="GeographicCRS", id="http://www.opengis.net/def/crs/EPSG/0/4326")),
+                ReferenceSystemConnectionObject(coordinates=["z"],
+                                                system=ReferenceSystem(type="TemporalRS", calendar="Gregorian")),
+            ]
+            domain = Domain(domainType=DomainType.point_series,
+                            axes=Axes(x=ValuesAxis[float](values=[lon]),
+                                      y=ValuesAxis[float](values=[lat]),
+                                      t=ValuesAxis[AwareDatetime](values=times)),
+                            referencing=referencing)
+            group1, group2 = itertools.tee(group, 2)  # Want to use generator twice
+            parameters = {param_id: Parameter(observedProperty=ObservedProperty(label={"en": param_id}))
+                          for ((_, _, _), param_id, values) in group1}
+            ranges = {param_id: NdArray(values=values, axisNames=["t", "y", "x"], shape=[len(values), 1, 1])
+                      for ((_, _, _), param_id, values) in group2}
 
-    # Need to sort before using groupBy
-    data.sort(key=lambda x: x[0])
-    # The multiple coverage logic is not needed for this endpoint, but we want to share this code between endpoints
-    for (lat, lon, times), group in groupby(data, lambda x: x[0]):
-        domain = Domain(domainType=DomainType.point_series,
-                        axes=Axes(x=ValuesAxis[float](values=[lon]),
-                                  y=ValuesAxis[float](values=[lat]),
-                                  t=ValuesAxis[AwareDatetime](values=times)))
-        ranges = {param_id: NdArray(values=values, axisNames=["t", "y", "x"], shape=[len(values), 1, 1])
-                  for ((_, _, _), param_id, values) in group}
+            coverages.append(Coverage(domain=domain, parameters=parameters, ranges=ranges))
 
-        coverages.append(Coverage(domain=domain, ranges=ranges))
-
-    if len(coverages) == 1:
-        return coverages[0]
-    else:
-        return CoverageCollection(coverages=coverages)
+        if len(coverages) == 1:
+            return coverages[0]
+        else:
+            return CoverageCollection(coverages=coverages, parameters=coverages[0].parameters)  # HACK to take parameters from first one
 
 
 @app.get(
@@ -87,16 +90,16 @@ def get_locations(bbox: str = Query(..., example="5.0,52.0,6.0,52.1")) -> Featur
     poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
     with grpc.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") as channel:
         grpc_stub = dstore_grpc.DatastoreStub(channel)
-        ts_request = dstore.FindTSRequest(
-            param_ids=["tn"],  # Hack
+        ts_request = dstore.GetObsRequest(
+            instruments=["tn"],  # Hack
             inside=dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords])
         )
-        ts_response = grpc_stub.FindTimeSeries(ts_request)
+        ts_response = grpc_stub.GetObservations(ts_request)
 
         features = [
-            Feature(type="Feature", id=ts.metadata.station_id, properties=None,
-                    geometry=Point(type="Point", coordinates=(ts.metadata.pos.lon, ts.metadata.pos.lat)))
-            for ts in ts_response.tseries
+            Feature(type="Feature", id=ts.ts_mdata.platform, properties=None,
+                    geometry=Point(type="Point", coordinates=(ts.obs_mdata[0].geo_point.lon, ts.obs_mdata[0].geo_point.lat)))  # HACK: Assume loc the same
+            for ts in ts_response.observations
         ]
         return FeatureCollection(features=features, type="FeatureCollection")
 
@@ -109,14 +112,14 @@ def get_data_location_id(location_id: str = Path(..., example="06260"),
                          parameter_name: str = Query(..., alias="parameter-name", example="dd,ff,rh,pp,tn")):
     # TODO: There is no error handling of any kind at the moment! This is just a quick and dirty demo
     # TODO: Code does not handle nan when serialising to JSON
-    with grpc.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") as channel:
-        grpc_stub = dstore_grpc.DatastoreStub(channel)
-        ts_request = dstore.FindTSRequest(
-            station_ids=[location_id],
-            param_ids=list(map(str.strip, parameter_name.split(",")))
-        )
-        ts_response = grpc_stub.FindTimeSeries(ts_request)
-        return get_data_for_time_series(ts_response, grpc_stub)
+    # TODO: Get time interval from request (example to create protobuf timestamp:
+    # from_time = Timestamp()
+    # from_time.FromDatetime(datetime(2022, 12, 31))
+    get_obs_request = dstore.GetObsRequest(
+        platforms=[location_id],
+        instruments=list(map(str.strip, parameter_name.split(",")))
+    )
+    return get_data_for_time_series(get_obs_request)
 
 
 @app.get(
@@ -139,11 +142,8 @@ def get_data_area(coords: str = Query(..., example="POLYGON((5.0 52.0, 6.0 52.0,
                   parameter_name: str = Query(..., alias="parameter-name", example="dd,ff,rh,pp,tn")):
     poly = wkt.loads(coords)
     assert(poly.geom_type == "Polygon")
-    with grpc.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") as channel:
-        grpc_stub = dstore_grpc.DatastoreStub(channel)
-        ts_request = dstore.FindTSRequest(
-            param_ids=list(map(str.strip, parameter_name.split(","))),
-            inside=dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords])
-        )
-        ts_response = grpc_stub.FindTimeSeries(ts_request)
-        return get_data_for_time_series(ts_response, grpc_stub)
+    get_obs_request = dstore.GetObsRequest(
+        instruments=list(map(str.strip, parameter_name.split(","))),
+        inside=dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords])
+    )
+    return get_data_for_time_series(get_obs_request)

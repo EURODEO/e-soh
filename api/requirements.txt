@@ -17,7 +17,7 @@ brotli-asgi==1.4.0
     # via -r requirements.in
 click==8.1.7
     # via uvicorn
-covjson-pydantic @ git+https://github.com/KNMI/covjson-pydantic@KDP-1761
+covjson-pydantic==0.2.0
     # via -r requirements.in
 fastapi==0.103.1
     # via -r requirements.in
@@ -41,12 +41,12 @@ packaging==23.1
     # via gunicorn
 protobuf==4.24.3
     # via grpcio-tools
-pydantic==2.3.0
+pydantic==2.4.1
     # via
     #   covjson-pydantic
     #   fastapi
     #   geojson-pydantic
-pydantic-core==2.6.3
+pydantic-core==2.10.1
     # via pydantic
 python-dotenv==1.0.0
     # via uvicorn

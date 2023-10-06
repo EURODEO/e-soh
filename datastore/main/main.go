@@ -6,7 +6,7 @@ import (
 	"datastore/datastore"
 	"datastore/dsimpl"
 	"datastore/storagebackend"
-	"datastore/storagebackend/timescaledb"
+	"datastore/storagebackend/postgresql"
 	"fmt"
 	"log"
 	"net"
@@ -15,15 +15,19 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
 	"google.golang.org/grpc/health/grpc_health_v1"
+
+	_ "expvar"
+	"net/http"
+	_ "net/http/pprof"
 )
 
 func createStorageBackend() (storagebackend.StorageBackend, error) {
 	var sbe storagebackend.StorageBackend
 
-	// only TimescaleDB supported for now
-	sbe, err := timescaledb.NewTimescaleDB()
+	// only PostgreSQL supported for now
+	sbe, err := postgresql.NewPostgreSQL()
 	if err != nil {
-		return nil, fmt.Errorf("timescaledb.NewTimescaleDB() failed: %v", err)
+		return nil, fmt.Errorf("postgresql.NewPostgreSQL() failed: %v", err)
 	}
 
 	return sbe, nil
@@ -62,6 +66,12 @@ func main() {
 	if err != nil {
 		log.Fatalf("net.Listen() failed: %v", err)
 	}
+
+	// serve profiling info
+	log.Printf("serving profiling info\n")
+	go func() {
+		http.ListenAndServe(fmt.Sprintf("0.0.0.0:6060"), nil)
+	}()
 
 	// serve incoming requests
 	log.Printf("starting server\n")
