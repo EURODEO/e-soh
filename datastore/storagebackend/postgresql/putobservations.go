@@ -141,11 +141,6 @@ func getTimeSeriesID(
 	}
 
 	selectCmd := fmt.Sprintf(`SELECT id FROM time_series WHERE %s`, strings.Join(whereExpr, " AND "))
-	// This selectCmd also works, but feels inefficient
-	//selectCmd := fmt.Sprintf(`SELECT id FROM time_series WHERE (%s) in ((%s))`,
-	//	strings.Join(cols, ","),
-	//	strings.Join(createPlaceholders(formats), ","),
-	//)
 	err = tx.QueryRow(selectCmd, colVals...).Scan(&id)
 	if err != nil {
 		return -1, fmt.Errorf("tx.QueryRow() failed: %v", err)
