@@ -38,23 +38,15 @@ func addWhereCondMatchAnyPattern(
 	*whereExpr = append(*whereExpr, fmt.Sprintf("(%s)", strings.Join(whereExprOR, " OR ")))
 }
 
-// getTimeSeries retrieves into timeSeries all time series in table time_series that match requested
-// metadata filters. If no metadata filters are specified, all available time series are retrieved.
-// Returns nil upon success, otherwise error.
-func getTimeSeries(
-	db *sql.DB, request *datastore.GetObsRequest,
-	timeSeries map[int64]*datastore.TSMetadata) error {
+func getTimeSeries(db *sql.DB, tsIDs []string, timeSeries map[int64]*datastore.TSMetadata) error {
 
 	phVals := []interface{}{} // placeholder values
-	whereExpr := getMdataFilter(request, []filterInfo{
-		{"platform", request.GetPlatforms()},
-		{"standard_name", request.GetStandardNames()},
-		{"instrument", request.GetInstruments()},
-		// TODO: add search filters for more time_series columns
-	}, &phVals)
 
 	query := fmt.Sprintf(
-		`SELECT id, %s FROM time_series WHERE %s`, strings.Join(getTSMdataCols(), ","), whereExpr)
+		`SELECT id, %s FROM time_series WHERE %s`,
+		strings.Join(getTSMdataCols(), ","),
+		createSetFilter("id", tsIDs),
+	)
 
 	rows, err := db.Query(query, phVals...)
 	if err != nil {
@@ -222,21 +214,17 @@ func getGeoFilter(polygon *datastore.Polygon, phVals *[]interface{}) (string, er
 // metadata in request, time series in timeSeries, and geo points in geoPoints.
 // Returns nil upon success, otherwise error.
 func getObs(
-	db *sql.DB, request *datastore.GetObsRequest, timeSeries map[int64]*datastore.TSMetadata,
-	obs *[]*datastore.Metadata2) error {
+	db *sql.DB, request *datastore.GetObsRequest, obs *[]*datastore.Metadata2) error {
 
 	phVals := []interface{}{} // placeholder values
-
-	tsIDs := []string{}
-	for id := range timeSeries {
-		tsIDs = append(tsIDs, fmt.Sprintf("%d", id))
-	}
 
 	timeExpr := getTimeFilter(request.GetInterval())
 
 	obsMdataExpr := getMdataFilter(request, []filterInfo{
-		{"processing_level", request.GetProcessingLevels()},
-		// TODO: add search filters for more observation columns
+		{"platform", request.GetPlatforms()},
+		{"standard_name", request.GetStandardNames()},
+		{"instrument", request.GetInstruments()},
+		// TODO: add search filters for more time_series columns
 	}, &phVals)
 
 	geoExpr, err := getGeoFilter(request.Inside, &phVals)
@@ -247,11 +235,10 @@ func getObs(
 	query := fmt.Sprintf(`
 		SELECT ts_id, observation.id, geo_point_id, pubtime, data_id, history, metadata_id, obstime_instant,
 		    processing_level, value, point
-		FROM observation JOIN geo_point gp ON observation.geo_point_id = gp.id
-		WHERE %s AND %s AND %s AND %s
+		FROM observation JOIN geo_point gp ON observation.geo_point_id = gp.id JOIN time_series ts on ts.id = observation.ts_id
+		WHERE %s AND %s AND %s
 		ORDER BY ts_id, obstime_instant
 	`,
-		createSetFilter("ts_id", tsIDs),
 		geoExpr, timeExpr, obsMdataExpr)
 
 	rows, err := db.Query(query, phVals...)
@@ -260,7 +247,7 @@ func getObs(
 	}
 	defer rows.Close()
 
-	currTsID := int64(-1)
+	obsMap := make(map[int64][]*datastore.ObsMetadata)
 	for rows.Next() {
 		var (
 			tsID            int64
@@ -279,19 +266,6 @@ func getObs(
 			&obsTimeInstant0, &processingLevel, &value, &point); err != nil {
 			return fmt.Errorf("rows.Scan() failed: %v", err)
 		}
-		if (len(*obs) == 0) || (tsID != currTsID) { // add new time series
-			currTsID = tsID
-			tsMdata, found := timeSeries[tsID]
-			if !found {
-				return fmt.Errorf("timeSeries[%d] not found", tsID)
-			}
-			*obs = append(*obs, &datastore.Metadata2{
-				TsMdata:  tsMdata,
-				ObsMdata: []*datastore.ObsMetadata{},
-			})
-		}
-
-		// add observation to current time series
 
 		obsMdata := &datastore.ObsMetadata{
 			Id: id,
@@ -310,8 +284,25 @@ func getObs(
 			ProcessingLevel: processingLevel,
 			Value:           value,
 		}
-		last := len(*obs) - 1
-		(*obs)[last].ObsMdata = append((*obs)[last].ObsMdata, obsMdata)
+		obsMap[tsID] = append(obsMap[tsID], obsMdata)
+	}
+
+	// Get timeseries
+	timeSeries := map[int64]*datastore.TSMetadata{}
+	tsIDs := []string{}
+	for id := range obsMap {
+		tsIDs = append(tsIDs, fmt.Sprintf("%d", id))
+	}
+	if err = getTimeSeries(db, tsIDs, timeSeries); err != nil {
+		return fmt.Errorf("getTimeSeries() failed: %v", err)
+	}
+
+	for tsID, obsMData := range obsMap {
+		fmt.Printf("%d, %d\n", tsID, len(obsMData))
+		*obs = append(*obs, &datastore.Metadata2{
+			TsMdata:  timeSeries[tsID],
+			ObsMdata: obsMData,
+		})
 	}
 
 	return nil
@@ -323,14 +314,9 @@ func (sbe *PostgreSQL) GetObservations(request *datastore.GetObsRequest) (
 
 	var err error
 
-	timeSeries := map[int64]*datastore.TSMetadata{}
-	if err = getTimeSeries(sbe.Db, request, timeSeries); err != nil {
-		return nil, fmt.Errorf("getTimeSeries() failed: %v", err)
-	}
-
 	obs := []*datastore.Metadata2{}
 	if err = getObs(
-		sbe.Db, request, timeSeries, &obs); err != nil {
+		sbe.Db, request, &obs); err != nil {
 		return nil, fmt.Errorf("getObs() failed: %v", err)
 	}
 
