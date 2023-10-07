@@ -299,7 +299,6 @@ func getObs(
 	}
 
 	for tsID, obsMData := range obsMap {
-		fmt.Printf("%d, %d\n", tsID, len(obsMData))
 		*obs = append(*obs, &datastore.Metadata2{
 			TsMdata:  timeSeries[tsID],
 			ObsMdata: obsMData,
