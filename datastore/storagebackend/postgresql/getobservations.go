@@ -233,13 +233,14 @@ func getObs(
 	}
 
 	query := fmt.Sprintf(`
-		SELECT ts_id, observation.id, geo_point_id, pubtime, data_id, history, metadata_id, obstime_instant,
-		    processing_level, value, point
-		FROM observation JOIN geo_point gp ON observation.geo_point_id = gp.id JOIN time_series ts on ts.id = observation.ts_id
+		SELECT ts_id, observation.id, geo_point_id, pubtime, data_id, history, metadata_id,
+			obstime_instant, processing_level, value, point
+		FROM observation
+		    JOIN geo_point gp ON observation.geo_point_id = gp.id
+			JOIN time_series ts on ts.id = observation.ts_id
 		WHERE %s AND %s AND %s
 		ORDER BY ts_id, obstime_instant
-	`,
-		geoExpr, timeExpr, obsMdataExpr)
+	`, geoExpr, timeExpr, obsMdataExpr)
 
 	rows, err := db.Query(query, phVals...)
 	if err != nil {
