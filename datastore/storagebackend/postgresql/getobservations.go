@@ -38,7 +38,10 @@ func addWhereCondMatchAnyPattern(
 	*whereExpr = append(*whereExpr, fmt.Sprintf("(%s)", strings.Join(whereExprOR, " OR ")))
 }
 
-func getTimeSeries(db *sql.DB, tsIDs []string, timeSeries map[int64]*datastore.TSMetadata) error {
+// getTSMetadata retrieves into tsMdata metadata of time series in table time_series that match
+// tsIDs. The keys of tsMdata are the time series IDs.
+// Returns nil upon success, otherwise error
+func getTSMetadata(db *sql.DB, tsIDs []string, tsMdata map[int64]*datastore.TSMetadata) error {
 
 	phVals := []interface{}{} // placeholder values
 
@@ -56,7 +59,7 @@ func getTimeSeries(db *sql.DB, tsIDs []string, timeSeries map[int64]*datastore.T
 
 	for rows.Next() {
 		var tsID int64
-		var tsMdata datastore.TSMetadata
+		var tsMdata0 datastore.TSMetadata
 
 		linkHref := pq.StringArray{}
 		linkRel := pq.StringArray{}
@@ -66,28 +69,28 @@ func getTimeSeries(db *sql.DB, tsIDs []string, timeSeries map[int64]*datastore.T
 
 		if err := rows.Scan(
 			&tsID,
-			&tsMdata.Version,
-			&tsMdata.Type,
-			&tsMdata.Title,
-			&tsMdata.Summary,
-			&tsMdata.Keywords,
-			&tsMdata.KeywordsVocabulary,
-			&tsMdata.License,
-			&tsMdata.Conventions,
-			&tsMdata.NamingAuthority,
-			&tsMdata.CreatorType,
-			&tsMdata.CreatorName,
-			&tsMdata.CreatorEmail,
-			&tsMdata.CreatorUrl,
-			&tsMdata.Institution,
-			&tsMdata.Project,
-			&tsMdata.Source,
-			&tsMdata.Platform,
-			&tsMdata.PlatformVocabulary,
-			&tsMdata.StandardName,
-			&tsMdata.Unit,
-			&tsMdata.Instrument,
-			&tsMdata.InstrumentVocabulary,
+			&tsMdata0.Version,
+			&tsMdata0.Type,
+			&tsMdata0.Title,
+			&tsMdata0.Summary,
+			&tsMdata0.Keywords,
+			&tsMdata0.KeywordsVocabulary,
+			&tsMdata0.License,
+			&tsMdata0.Conventions,
+			&tsMdata0.NamingAuthority,
+			&tsMdata0.CreatorType,
+			&tsMdata0.CreatorName,
+			&tsMdata0.CreatorEmail,
+			&tsMdata0.CreatorUrl,
+			&tsMdata0.Institution,
+			&tsMdata0.Project,
+			&tsMdata0.Source,
+			&tsMdata0.Platform,
+			&tsMdata0.PlatformVocabulary,
+			&tsMdata0.StandardName,
+			&tsMdata0.Unit,
+			&tsMdata0.Instrument,
+			&tsMdata0.InstrumentVocabulary,
 			&linkHref,
 			&linkRel,
 			&linkType,
@@ -107,9 +110,9 @@ func getTimeSeries(db *sql.DB, tsIDs []string, timeSeries map[int64]*datastore.T
 				Title:    linkTitle[i],
 			})
 		}
-		tsMdata.Links = links
+		tsMdata0.Links = links
 
-		timeSeries[tsID] = &tsMdata
+		tsMdata[tsID] = &tsMdata0
 	}
 
 	return nil
@@ -291,20 +294,20 @@ func getObs(db *sql.DB, request *datastore.GetObsRequest, obs *[]*datastore.Meta
 		obsMap[tsID] = append(obsMap[tsID], obsMdata)
 	}
 
-	// Get timeseries
-	timeSeries := map[int64]*datastore.TSMetadata{}
+	// get time series
+	tsMdata := map[int64]*datastore.TSMetadata{}
 	tsIDs := []string{}
 	for id := range obsMap {
 		tsIDs = append(tsIDs, fmt.Sprintf("%d", id))
 	}
-	if err = getTimeSeries(db, tsIDs, timeSeries); err != nil {
-		return fmt.Errorf("getTimeSeries() failed: %v", err)
+	if err = getTSMetadata(db, tsIDs, tsMdata); err != nil {
+		return fmt.Errorf("getTSMetadata() failed: %v", err)
 	}
 
-	for tsID, obsMData := range obsMap {
+	for tsID, obsMdata := range obsMap {
 		*obs = append(*obs, &datastore.Metadata2{
-			TsMdata:  timeSeries[tsID],
-			ObsMdata: obsMData,
+			TsMdata:  tsMdata[tsID],
+			ObsMdata: obsMdata,
 		})
 	}
 
