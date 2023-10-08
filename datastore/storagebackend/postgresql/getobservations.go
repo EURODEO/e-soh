@@ -43,15 +43,13 @@ func addWhereCondMatchAnyPattern(
 // Returns nil upon success, otherwise error
 func getTSMetadata(db *sql.DB, tsIDs []string, tsMdata map[int64]*datastore.TSMetadata) error {
 
-	phVals := []interface{}{} // placeholder values
-
 	query := fmt.Sprintf(
 		`SELECT id, %s FROM time_series WHERE %s`,
 		strings.Join(getTSMdataCols(), ","),
 		createSetFilter("id", tsIDs),
 	)
 
-	rows, err := db.Query(query, phVals...)
+	rows, err := db.Query(query)
 	if err != nil {
 		return fmt.Errorf("db.Query() failed: %v", err)
 	}
