@@ -210,11 +210,9 @@ func getGeoFilter(polygon *datastore.Polygon, phVals *[]interface{}) (string, er
 	return whereExpr, nil
 }
 
-// getObs gets into obs all observations from table observation that match time range and other
-// metadata in request, time series in timeSeries, and geo points in geoPoints.
+// getObs gets into obs all observations that match request.
 // Returns nil upon success, otherwise error.
-func getObs(
-	db *sql.DB, request *datastore.GetObsRequest, obs *[]*datastore.Metadata2) error {
+func getObs(db *sql.DB, request *datastore.GetObsRequest, obs *[]*datastore.Metadata2) error {
 
 	phVals := []interface{}{} // placeholder values
 
