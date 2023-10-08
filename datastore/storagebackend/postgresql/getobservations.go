@@ -227,7 +227,7 @@ func getObs(db *sql.DB, request *datastore.GetObsRequest, obs *[]*datastore.Meta
 
 	geoExpr, err := getGeoFilter(request.Inside, &phVals)
 	if err != nil {
-		return err
+		return fmt.Errorf("getGeoFilter() failed: %v", err)
 	}
 
 	query := fmt.Sprintf(`
