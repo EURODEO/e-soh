@@ -222,7 +222,12 @@ func getObs(db *sql.DB, request *datastore.GetObsRequest, obs *[]*datastore.Meta
 		{"platform", request.GetPlatforms()},
 		{"standard_name", request.GetStandardNames()},
 		{"instrument", request.GetInstruments()},
-		// TODO: add search filters for more time_series columns
+		// TODO: add search filters for more columns in table 'time_series'
+	}, &phVals)
+
+	obsMdataExpr := getMdataFilter([]filterInfo{
+		{"processing_level", request.GetProcessingLevels()},
+		// TODO: add search filters for more columns in table 'observation'
 	}, &phVals)
 
 	geoExpr, err := getGeoFilter(request.Inside, &phVals)
@@ -236,9 +241,9 @@ func getObs(db *sql.DB, request *datastore.GetObsRequest, obs *[]*datastore.Meta
 		FROM observation
 		    JOIN geo_point gp ON observation.geo_point_id = gp.id
 			JOIN time_series ts on ts.id = observation.ts_id
-		WHERE %s AND %s AND %s
+		WHERE %s AND %s AND %s AND %s
 		ORDER BY ts_id, obstime_instant
-	`, timeExpr, tsMdataExpr, geoExpr)
+	`, timeExpr, tsMdataExpr, obsMdataExpr, geoExpr)
 
 	rows, err := db.Query(query, phVals...)
 	if err != nil {
