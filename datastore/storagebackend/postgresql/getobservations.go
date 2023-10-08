@@ -143,8 +143,9 @@ type filterInfo struct {
 	patterns []string // NOTE: only []string supported for now
 }
 
-// getMdataFilter derives from request and filterInfos the expression used in a WHERE clause
-// for "match any" filtering on a set of attributes.
+// getMdataFilter derives from filterInfos the expression used in a WHERE clause for "match any"
+// filtering on a set of attributes.
+//
 // The expression will be of the form
 //
 //	(
@@ -154,10 +155,9 @@ type filterInfo struct {
 //	)
 //
 // Values to be used for query placeholders are appended to phVals.
+//
 // Returns expression.
-func getMdataFilter(
-	request *datastore.GetObsRequest, filterInfos []filterInfo,
-	phVals *[]interface{}) string {
+func getMdataFilter(filterInfos []filterInfo, phVals *[]interface{}) string {
 
 	whereExprAND := []string{}
 
@@ -218,7 +218,7 @@ func getObs(db *sql.DB, request *datastore.GetObsRequest, obs *[]*datastore.Meta
 
 	timeExpr := getTimeFilter(request.GetInterval())
 
-	tsMdataExpr := getMdataFilter(request, []filterInfo{
+	tsMdataExpr := getMdataFilter([]filterInfo{
 		{"platform", request.GetPlatforms()},
 		{"standard_name", request.GetStandardNames()},
 		{"instrument", request.GetInstruments()},
