@@ -238,7 +238,7 @@ func getObs(db *sql.DB, request *datastore.GetObsRequest, obs *[]*datastore.Meta
 			JOIN time_series ts on ts.id = observation.ts_id
 		WHERE %s AND %s AND %s
 		ORDER BY ts_id, obstime_instant
-	`, geoExpr, timeExpr, tsMdataExpr)
+	`, timeExpr, tsMdataExpr, geoExpr)
 
 	rows, err := db.Query(query, phVals...)
 	if err != nil {
