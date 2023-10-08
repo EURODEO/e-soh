@@ -218,7 +218,7 @@ func getObs(db *sql.DB, request *datastore.GetObsRequest, obs *[]*datastore.Meta
 
 	timeExpr := getTimeFilter(request.GetInterval())
 
-	obsMdataExpr := getMdataFilter(request, []filterInfo{
+	tsMdataExpr := getMdataFilter(request, []filterInfo{
 		{"platform", request.GetPlatforms()},
 		{"standard_name", request.GetStandardNames()},
 		{"instrument", request.GetInstruments()},
@@ -238,7 +238,7 @@ func getObs(db *sql.DB, request *datastore.GetObsRequest, obs *[]*datastore.Meta
 			JOIN time_series ts on ts.id = observation.ts_id
 		WHERE %s AND %s AND %s
 		ORDER BY ts_id, obstime_instant
-	`, geoExpr, timeExpr, obsMdataExpr)
+	`, geoExpr, timeExpr, tsMdataExpr)
 
 	rows, err := db.Query(query, phVals...)
 	if err != nil {
