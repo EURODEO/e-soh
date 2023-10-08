@@ -175,10 +175,13 @@ func getMdataFilter(filterInfos []filterInfo, phVals *[]interface{}) string {
 	return whereExpr
 }
 
-func getGeoFilter(polygon *datastore.Polygon, phVals *[]interface{}) (string, error) {
+// getGeoFilter derives from 'inside' the expression used in a WHERE clause for keeping
+// observations inside this polygon.
+// Returns expression.
+func getGeoFilter(inside *datastore.Polygon, phVals *[]interface{}) (string, error) {
 	whereExpr := "TRUE" // by default, don't filter
-	if polygon != nil { // get all points
-		points := polygon.Points
+	if inside != nil { // get all points
+		points := inside.Points
 
 		equal := func(p1, p2 *datastore.Point) bool {
 			return (p1.Lat == p2.Lat) && (p1.Lon == p2.Lon)
