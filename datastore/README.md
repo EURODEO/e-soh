@@ -93,6 +93,8 @@ Variable | Mandatory | Default value | Description
 `PGBUSER`        | No  | `postgres`         | PostgreSQL user name
 `PGPASSWORD`     | No  | `mysecretpassword` | PostgreSQL password
 `PGDBNAME`       | No  | `data`             | PostgreSQL database name
+`LOTIME`         | No  | `PT24H`            | The _earliest_ valid time defined either _dynamically_ as an ISO-8601 period (like `PT24H`) to be subtracted from the current time, or _statically_ as an ISO-8601 date-time (like `2023-10-02T14:59:00Z`).
+`HITIME`         | No  | `PT0H`             | Ditto for the _latest_ valid time. **NOTE:** `LOTIME` and `HITIME` must either both be dynamic or both be static.
 
 **TODO:** Ensure that these variables are [passed properly](https://docs.docker.com/compose/environment-variables/set-environment-variables/) to the relevant `docker compose`
 commands. Any secrets should be passed using a [special mechanism](https://docs.docker.com/compose/use-secrets/), etc.
