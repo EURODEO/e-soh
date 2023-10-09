@@ -28,6 +28,7 @@ from covjson_pydantic.domain import Domain, DomainType, Axes, ValuesAxis
 
 from shapely import wkt, buffer, geometry
 
+# TODO: Order in CoverageJSON dictionaries (parameters, ranges) is not fixed!
 
 app = FastAPI()
 app.add_middleware(BrotliMiddleware)

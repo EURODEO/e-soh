@@ -55,13 +55,21 @@ for example:
 
 `BROWSER=firefox go tool pprof -http=:8081 ~/pprof/pprof.dsserver.samples.cpu.001.pb.gz`
 
-## Compiling datastore.proto to prevent IDEs from complaining
+## Compiling datastore.proto and update go.sum to prevent IDEs from complaining
 
 Whenever `datastore.proto` changes, it should be complied locally in order for
 IDEs to recognize the current types and symbols.
 
 ```text
-protoc --go_out=. --go-grpc_out=. protobuf/datastore.proto
+protoc --go_out=. --go-grpc_out=. datastore/protobuf/datastore.proto
+```
+
+Likewise, keeping `go.sum` up-to-date like this may also prevent certain
+warnings/errors in IDEs:
+
+```text
+cd datastore
+go mod tidy
 ```
 
 ## Environment variables
