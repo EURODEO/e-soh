@@ -32,15 +32,22 @@ The code has been tested in the following environment:
 
 ## Using docker compose to manage the service
 
-Example commands:
+A typical command sequence that restarts the service from scratch and loads a test dataset:
 
-`docker compose up --build`
+```text
+docker compose down --volumes
+docker compose --profile test build
+docker compose up -d
+docker compose run --rm loader
+```
 
-`docker compose ps -a`
+Check current status:
 
-`docker compose down --volumes`
+```text
+docker compose ps -a
+```
 
-MORE DETAILS HERE!
+MORE DETAILS/EXAMPLES HERE!
 
 ## Collecting profiling stats from a running datastore service
 
