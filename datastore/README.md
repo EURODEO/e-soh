@@ -83,9 +83,6 @@ go mod tidy
 
 ## Environment variables
 
-TO BE OBSOLETED BY A SECTION ABOUT ENVIRONMENT VARIABLES RELEVANT TO
-DOCKER COMPOSE ONLY (to override fields in docker-compose.yml)
-
 The following environment variables are supported:
 
 Variable | Mandatory | Default value | Description
@@ -96,6 +93,9 @@ Variable | Mandatory | Default value | Description
 `PGBUSER`        | No  | `postgres`         | PostgreSQL user name
 `PGPASSWORD`     | No  | `mysecretpassword` | PostgreSQL password
 `PGDBNAME`       | No  | `data`             | PostgreSQL database name
+
+**TODO:** Ensure that these variables are [passed properly](https://docs.docker.com/compose/environment-variables/set-environment-variables/) to the relevant `docker compose`
+commands. Any secrets should be passed using a [special mechanism](https://docs.docker.com/compose/use-secrets/), etc.
 
 ## Testing the datastore service with gRPCurl
 
