@@ -362,12 +362,18 @@ func (sbe *PostgreSQL) PutObservations(request *datastore.PutObsRequest) error {
 	tsIDCache := map[string]int64{}
 	gpIDCache := map[string]int64{}
 
+	loTime, hiTime := common.GetValidTimeRange()
+
 	// populate tsInfos
 	for _, obs := range request.Observations {
 
 		obsTime, err := getObsTime(obs.GetObsMdata())
 		if err != nil {
 			return fmt.Errorf("getObsTime() failed: %v", err)
+		}
+
+		if obsTime.AsTime().Before(loTime) || obsTime.AsTime().After(hiTime) {
+			continue // skip observations outside the valid time range
 		}
 
 		tsID, err := getTimeSeriesID(sbe.Db, obs.GetTsMdata(), tsIDCache)
