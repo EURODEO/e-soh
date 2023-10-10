@@ -87,14 +87,15 @@ The following environment variables are supported:
 
 Variable | Mandatory | Default value | Description
 :--      | :--       | :--           | :--
-`SERVERPORT`     | No  | `50050`            | Server port number
-`PGHOST`         | No  | `localhost`        | PostgreSQL host
-`PGPORT`         | No  | `5433`             | PostgreSQL port number
-`PGBUSER`        | No  | `postgres`         | PostgreSQL user name
-`PGPASSWORD`     | No  | `mysecretpassword` | PostgreSQL password
-`PGDBNAME`       | No  | `data`             | PostgreSQL database name
-`LOTIME`         | No  | `PT24H`            | The _earliest_ valid time defined either _dynamically_ as an ISO-8601 period (like `PT24H`) to be subtracted from the current time, or _statically_ as an ISO-8601 date-time (like `2023-10-02T14:59:00Z`).
-`HITIME`         | No  | `PT0H`             | Ditto for the _latest_ valid time. **NOTE:** `LOTIME` and `HITIME` must either both be dynamic or both be static.
+`SERVERPORT`     | No  | `50050`            | Server port number.
+`PGHOST`         | No  | `localhost`        | PostgreSQL host.
+`PGPORT`         | No  | `5433`             | PostgreSQL port number.
+`PGBUSER`        | No  | `postgres`         | PostgreSQL user name.
+`PGPASSWORD`     | No  | `mysecretpassword` | PostgreSQL password.
+`PGDBNAME`       | No  | `data`             | PostgreSQL database name.
+`DYNAMICTIME`    | No  | `true`             | Whether the valid time range is _dynamic_ or _static_ (defined below).
+`LOTIME`         | No  | `86400`            | The _earliest_ valid time as seconds to be either [1] subtracted from the current time (if the valid time range is _dynamic_) or [2] added to UNIX epoch (1970-01-01T00:00:00Z) (if the valid time range is _static_). In the case of a _static_ valid time range, the `LOTIME` can optionally be specified as an ISO-8601 datetime, like `2023-10-10T00:00:00Z`.
+`HITIME`         | No  | `0`                | Same as `LOTIME`, but for the _latest_ valid time.
 
 **TODO:** Ensure that these variables are [passed properly](https://docs.docker.com/compose/environment-variables/set-environment-variables/) to the relevant `docker compose`
 commands. Any secrets should be passed using a [special mechanism](https://docs.docker.com/compose/use-secrets/), etc.
