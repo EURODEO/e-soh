@@ -136,6 +136,11 @@ func getTimeFilter(ti *datastore.TimeInterval) string {
 		}
 	}
 
+	// restrict to current valid time range
+	loTime, hiTime := common.GetValidTimeRange()
+	timeExpr += fmt.Sprintf(" AND (obstime_instant >= to_timestamp(%d))", loTime.Unix())
+	timeExpr += fmt.Sprintf(" AND (obstime_instant <= to_timestamp(%d))", hiTime.Unix())
+
 	return timeExpr
 }
 
