@@ -94,7 +94,7 @@ Variable | Mandatory | Default value | Description
 `PGPASSWORD`     | No  | `mysecretpassword` | PostgreSQL password.
 `PGDBNAME`       | No  | `data`             | PostgreSQL database name.
 `DYNAMICTIME`    | No  | `true`             | Whether the valid time range is _dynamic_ or _static_ (defined below).
-`LOTIME`         | No  | `86400`            | The _earliest_ valid time as seconds to be either [1] subtracted from the current time (if the valid time range is _dynamic_) or [2] added to UNIX epoch (1970-01-01T00:00:00Z) (if the valid time range is _static_). In the case of a _static_ valid time range, the `LOTIME` can optionally be specified as an ISO-8601 datetime, like `2023-10-10T00:00:00Z`.
+`LOTIME`         | No  | `86400`            | The _earliest_ valid time as seconds to be either [1] subtracted from the current time (if the valid time range is _dynamic_) or [2] added to UNIX epoch (1970-01-01T00:00:00Z) (if the valid time range is _static_). In the case of a _static_ valid time range, the `LOTIME` can optionally be specified as an ISO-8601 datetime of the exact form `2023-10-10T00:00:00Z`.
 `HITIME`         | No  | `0`                | Same as `LOTIME`, but for the _latest_ valid time.
 
 **TODO:** Ensure that these variables are [passed properly](https://docs.docker.com/compose/environment-variables/set-environment-variables/) to the relevant `docker compose`
