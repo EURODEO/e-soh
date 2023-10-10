@@ -2,7 +2,7 @@
 
 # Re-Create BUFR dumps files(.txt) and E-SOH (.json)
 
-BUFR_DIR="../../../test/test_data/*buf*"
+BUFR_DIR="../../../../../test/test_data/*buf*"
 
 
 

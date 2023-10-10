@@ -1,5 +1,5 @@
 {
-    "id": "65507960-197b-4de4-ba96-3311922a9165",
+    "id": "31969862-441d-433d-b834-64d61785224b",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -12,7 +12,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T00:00:00.000000",
+        "datetime": "2023-08-23T00:00:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "air_pressure",
@@ -20,11 +20,12 @@
             "size": 6,
             "value": "101460"
         },
-        "pubtime": "2023-09-28T15:39:39.000000",
+        "pubtime": "2023-10-10T12:49:15+0000",
         "platform_name": "BOUEE_COTE D'AZUR"
     }
-}{
-    "id": "2909654f-25f1-4cb2-81de-c6de21405462",
+}
+{
+    "id": "cd61074f-b413-44bd-9167-1bd185208bf8",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -37,7 +38,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T00:00:00.000000",
+        "datetime": "2023-08-23T00:00:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "air_pressure_at_mean_sea_level",
@@ -45,11 +46,12 @@
             "size": 6,
             "value": "101480"
         },
-        "pubtime": "2023-09-28T15:39:39.000000",
+        "pubtime": "2023-10-10T12:49:15+0000",
         "platform_name": "BOUEE_COTE D'AZUR"
     }
-}{
-    "id": "422aa5c7-ad3c-4590-9bf2-7fb8f3625859",
+}
+{
+    "id": "3d778b1f-643e-477c-98f7-f5c7a38ed27a",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -62,7 +64,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T00:00:00.000000",
+        "datetime": "2023-08-23T00:00:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "air_temperature",
@@ -70,11 +72,12 @@
             "size": 6,
             "value": "300.95"
         },
-        "pubtime": "2023-09-28T15:39:39.000000",
+        "pubtime": "2023-10-10T12:49:15+0000",
         "platform_name": "BOUEE_COTE D'AZUR"
     }
-}{
-    "id": "43395301-35c3-4f9b-b7f7-21cb7cce47f0",
+}
+{
+    "id": "54cf6e57-b123-4cd5-8cbb-f45909273814",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -87,7 +90,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T00:00:00.000000",
+        "datetime": "2023-08-23T00:00:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "dew_point_temperature",
@@ -95,11 +98,12 @@
             "size": 6,
             "value": "298.55"
         },
-        "pubtime": "2023-09-28T15:39:39.000000",
+        "pubtime": "2023-10-10T12:49:15+0000",
         "platform_name": "BOUEE_COTE D'AZUR"
     }
-}{
-    "id": "aff5241f-2a0b-4cda-acac-955bd42a7b30",
+}
+{
+    "id": "ed8d39f5-4551-4401-8779-e856e1ad2463",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -112,7 +116,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T00:00:00.000000",
+        "datetime": "2023-08-23T00:00:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "relative_humidity",
@@ -120,11 +124,12 @@
             "size": 2,
             "value": "87"
         },
-        "pubtime": "2023-09-28T15:39:39.000000",
+        "pubtime": "2023-10-10T12:49:15+0000",
         "platform_name": "BOUEE_COTE D'AZUR"
     }
-}{
-    "id": "5b375393-0787-4cf1-9657-36270d3cc4b8",
+}
+{
+    "id": "087daf34-e139-4e9e-8860-068b8e1ada04",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -137,7 +142,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T00:00:00.000000",
+        "datetime": "2023-08-23T00:00:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -145,11 +150,12 @@
             "size": 3,
             "value": "250"
         },
-        "pubtime": "2023-09-28T15:39:39.000000",
+        "pubtime": "2023-10-10T12:49:15+0000",
         "platform_name": "BOUEE_COTE D'AZUR"
     }
-}{
-    "id": "0fa15062-d478-4a56-ad0c-dbe712c85c04",
+}
+{
+    "id": "ad93734f-41b3-494c-ad0b-66a4e4145ace",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -162,7 +168,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T00:00:00.000000",
+        "datetime": "2023-08-23T00:00:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -170,11 +176,12 @@
             "size": 3,
             "value": "1.6"
         },
-        "pubtime": "2023-09-28T15:39:39.000000",
+        "pubtime": "2023-10-10T12:49:15+0000",
         "platform_name": "BOUEE_COTE D'AZUR"
     }
-}{
-    "id": "18eb6f18-2642-4216-9a8a-3eeeab3b7f02",
+}
+{
+    "id": "85c3c3c6-4e15-4c02-ab86-b280fcfa9f16",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -187,7 +194,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T00:00:00.000000",
+        "datetime": "2023-08-23T00:00:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "air_pressure",
@@ -195,11 +202,12 @@
             "size": 6,
             "value": "101530"
         },
-        "pubtime": "2023-09-28T15:39:39.000000",
+        "pubtime": "2023-10-10T12:49:15+0000",
         "platform_name": "BOUEE_AJACCIO"
     }
-}{
-    "id": "c15a0847-a63d-475b-9b1e-bb5af624662e",
+}
+{
+    "id": "af78e551-e40d-4b79-96d7-558cb8163c40",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -212,7 +220,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T00:00:00.000000",
+        "datetime": "2023-08-23T00:00:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "air_pressure_at_mean_sea_level",
@@ -220,11 +228,12 @@
             "size": 6,
             "value": "101550"
         },
-        "pubtime": "2023-09-28T15:39:39.000000",
+        "pubtime": "2023-10-10T12:49:15+0000",
         "platform_name": "BOUEE_AJACCIO"
     }
-}{
-    "id": "7541cd9b-beeb-4584-aa80-eecc1c6e673a",
+}
+{
+    "id": "ef3214cf-8df3-449e-a4f7-868fecdfbb4d",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -237,7 +246,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T00:00:00.000000",
+        "datetime": "2023-08-23T00:00:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "air_temperature",
@@ -245,11 +254,12 @@
             "size": 6,
             "value": "299.85"
         },
-        "pubtime": "2023-09-28T15:39:39.000000",
+        "pubtime": "2023-10-10T12:49:15+0000",
         "platform_name": "BOUEE_AJACCIO"
     }
-}{
-    "id": "021f08c3-78f6-4576-8f9c-464b5122671b",
+}
+{
+    "id": "94c6d87f-5270-4bdf-a5c2-acb6e9e6b6a0",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -262,7 +272,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T00:00:00.000000",
+        "datetime": "2023-08-23T00:00:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "dew_point_temperature",
@@ -270,11 +280,12 @@
             "size": 6,
             "value": "298.05"
         },
-        "pubtime": "2023-09-28T15:39:39.000000",
+        "pubtime": "2023-10-10T12:49:15+0000",
         "platform_name": "BOUEE_AJACCIO"
     }
-}{
-    "id": "aebfaf2c-ebcc-47fc-8ede-036a4bf75a16",
+}
+{
+    "id": "b9cfbfc2-5f7e-405a-8b87-cd15a90111b1",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -287,7 +298,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T00:00:00.000000",
+        "datetime": "2023-08-23T00:00:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "relative_humidity",
@@ -295,11 +306,12 @@
             "size": 2,
             "value": "90"
         },
-        "pubtime": "2023-09-28T15:39:39.000000",
+        "pubtime": "2023-10-10T12:49:15+0000",
         "platform_name": "BOUEE_AJACCIO"
     }
-}{
-    "id": "42ec8b68-d8f6-4bcb-834f-c121b14d6b28",
+}
+{
+    "id": "107afcaf-1d9c-4756-8611-2e90431a9943",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -312,7 +324,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T00:00:00.000000",
+        "datetime": "2023-08-23T00:00:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -320,11 +332,12 @@
             "size": 3,
             "value": "330"
         },
-        "pubtime": "2023-09-28T15:39:39.000000",
+        "pubtime": "2023-10-10T12:49:15+0000",
         "platform_name": "BOUEE_AJACCIO"
     }
-}{
-    "id": "b6e9557e-8d40-4164-8f3f-60d3a60eff4d",
+}
+{
+    "id": "4a80d7b2-ccfb-44bf-946b-a12cb59d3b82",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -337,7 +350,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T00:00:00.000000",
+        "datetime": "2023-08-23T00:00:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -345,7 +358,7 @@
             "size": 3,
             "value": "1.6"
         },
-        "pubtime": "2023-09-28T15:39:39.000000",
+        "pubtime": "2023-10-10T12:49:15+0000",
         "platform_name": "BOUEE_AJACCIO"
     }
 }
