@@ -129,7 +129,7 @@
         },
         "metadata_id": {
           "type": "string",
-          "description": "Identifier for associated discovery metadata record to which the notification applies to. This id should make it possible to discover the data in the datastore.""description": "Identifier for associated discovery metadata record to which the notification applies to. This id should make it possible to discover the data in the datastore."
+          "description": "Identifier for associated discovery metadata record to which the notification applies to. This id should make it possible to discover the data in the datastore."
         },
         "datetime": {
           "type": "string",
