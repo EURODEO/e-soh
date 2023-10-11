@@ -96,7 +96,7 @@ func initValidTimeRange() {
 	}
 }
 
-func init() { // automatically called once on program startup
+func init() { // automatically called once on program startup (on first import of this package)
 	initValidTimeRange()
 }
 

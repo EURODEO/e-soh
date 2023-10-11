@@ -5,6 +5,7 @@ import (
 	"datastore/common"
 	"datastore/datastore"
 	"fmt"
+	"log"
 	"strings"
 
 	"github.com/lib/pq"
@@ -414,6 +415,10 @@ func (sbe *PostgreSQL) PutObservations(request *datastore.PutObsRequest) error {
 			sbe.Db, tsID, tsInfo.obsTimes, tsInfo.gpIDs, tsInfo.omds); err != nil {
 			return fmt.Errorf("upsertObsForTS()) failed: %v", err)
 		}
+	}
+
+	if err := considerCleanup(sbe.Db); err != nil {
+		log.Printf("WARNING: considerCleanup() failed: %v", err)
 	}
 
 	return nil
