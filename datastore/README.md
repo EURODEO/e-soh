@@ -58,7 +58,7 @@ HITIME=-60 docker compose up -d
 
 (note how we _subtract_ a _negative_ value to current time to get a value into the future)
 
-### Start service in "infinite" mode (accommodating "all" possible obs times), and run a test
+### Start service in "infinite" mode (accommodating "all" possible obs times) and run a test
 
 ```text
 docker compose down --volumes
