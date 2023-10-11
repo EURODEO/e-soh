@@ -22,16 +22,16 @@ jobs:
         run: docker compose --profile test build
 
       - name: Start docker stack
-        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose up -d
+        run: docker compose up -d
 
       - name: Test loader runs without errors
-        run: docker compose run --rm loader
+        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm loader
 
       - name: Integration test
-        run: docker compose run --rm integration
+        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm integration
 
       - name: Test client runs without errors
-        run: docker compose run --rm client
+        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm client
 
       - name: Run load test
         run: |
