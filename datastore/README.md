@@ -30,7 +30,9 @@ The code has been tested in the following environment:
 | [Python](https://www.python.org/) | 3.11 |
 | [grpcio-tools](https://grpc.io/docs/languages/python/quickstart/) | 1.56.2 |
 
-## Using docker compose to manage the service
+## Some examples of using docker compose to manage the service
+
+(**NOTE:** Any environment variables used on these examples are defined in a separate section below)
 
 ### Check current status
 
@@ -46,14 +48,33 @@ docker compose --profile build
 docker compose up -d
 ```
 
+### Same as above, but with a safety margin of one minute in case 'current time' isn't 100% synchronized everywhere
+
+```text
+docker compose down --volumes
+docker compose --profile build
+HITIME=-60 docker compose up -d
+```
+
+(note how we _subtract_ a _negative_ value to current time to get a value into the future)
+
 ### Start service in "infinite" mode (accommodating "all" possible obs times), and run a test
 
 ```text
 docker compose down --volumes
 docker compose --profile test build
-DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose up -d
-docker compose run --rm loader
+DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm loader
 ```
+
+### Same as above, but specifying LOTIME and HITIME directly as seconds
+
+```text
+docker compose down --volumes
+docker compose --profile test build
+DYNAMICTIME=false LOTIME=-30610227208 HITIME=253402297199 docker compose run --rm loader
+```
+
+-------------
 
 MORE DETAILS/EXAMPLES HERE!
 
