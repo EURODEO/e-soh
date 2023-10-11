@@ -32,6 +32,10 @@ services:
     environment:
       - PGHOST=db
       - PGPORT=5432
+      - DYNAMICTIME=$DYNAMICTIME
+      - LOTIME=$LOTIME
+      - HITIME=$HITIME
+      - CLEANUPINTERVAL=$CLEANUPINTERVAL
     restart: on-failure
     healthcheck:
       test: [ "CMD-SHELL", "exit $(/bin/grpc_health_probe -addr=localhost:50050)" ]

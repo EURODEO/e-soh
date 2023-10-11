@@ -32,19 +32,27 @@ The code has been tested in the following environment:
 
 ## Using docker compose to manage the service
 
-A typical command sequence that restarts the service from scratch and loads a test dataset:
+### Check current status
+
+```text
+docker compose ps -a
+```
+
+### Start service in normal mode (rolling buffer of observations within latest 24H)
+
+```text
+docker compose down --volumes
+docker compose --profile build
+docker compose up -d
+```
+
+### Start service in "infinite" mode (accommodating "all" possible obs times), and run a test
 
 ```text
 docker compose down --volumes
 docker compose --profile test build
-docker compose up -d
+DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose up -d
 docker compose run --rm loader
-```
-
-Check current status:
-
-```text
-docker compose ps -a
 ```
 
 MORE DETAILS/EXAMPLES HERE!
