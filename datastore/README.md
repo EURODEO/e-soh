@@ -9,8 +9,8 @@ be implemented as a [gRPC](https://grpc.io/) service written in
 Currently the datastore server is using a PostgreSQL server as its only
 storage backend (for both metadata and observations).
 
-**Note:** Unless otherwise noted, all commands described below should be from the same directory as
-this README file.
+**Note:** Unless otherwise noted, all commands described below should be run from the same
+directory as this README file.
 
 The code has been tested in the following environment:
 
