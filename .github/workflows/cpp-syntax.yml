@@ -17,4 +17,3 @@ jobs:
         with:
           clang-format-version: "13"
           check-path: "src/esoh/ingest/bufr"
-          fallback-style: "llvm"
