@@ -428,7 +428,9 @@ std::list<std::string> ESOHBufr::msg() const {
             double precip = 0.0;
             if (*ci == DescriptorId(13023, true)) {
               precip = getValue(*ci, precip);
-              if (precip != std::numeric_limits<uint64_t>::max()) {
+              if (precip - static_cast<double>(
+                               std::numeric_limits<uint64_t>::max()) <
+                  1) {
                 time_t start_datetime = 0;
                 start_datetime = mktime(&meas_datetime);
                 start_datetime -= 60 * 60 * 24;
@@ -464,7 +466,9 @@ std::list<std::string> ESOHBufr::msg() const {
               ++ci;
               if (*ci == DescriptorId(13011, true)) {
                 precip = getValue(*ci, precip);
-                if (precip != std::numeric_limits<uint64_t>::max()) {
+                if (precip - static_cast<double>(
+                                 std::numeric_limits<uint64_t>::max()) <
+                    1) {
                   ret.push_back(
                       addMessage(ci, subset_message, &start_datetime));
                 }
@@ -492,7 +496,9 @@ std::list<std::string> ESOHBufr::msg() const {
                                            // INTEGRATED OVER PERIOD SPECIFIED
             {
               long_wave = getValue(*ci, long_wave);
-              if (long_wave != std::numeric_limits<uint64_t>::max()) {
+              if (long_wave - static_cast<double>(
+                                  std::numeric_limits<uint64_t>::max()) <
+                  1) {
                 ret.push_back(addMessage(ci, subset_message, &start_datetime));
               }
             }
@@ -504,7 +510,9 @@ std::list<std::string> ESOHBufr::msg() const {
                                            // INTEGRATED OVER PERIOD SPECIFIED
             {
               short_wave = getValue(*ci, short_wave);
-              if (short_wave != std::numeric_limits<uint64_t>::max()) {
+              if (short_wave - static_cast<double>(
+                                   std::numeric_limits<uint64_t>::max()) <
+                  1) {
                 ret.push_back(addMessage(ci, subset_message, &start_datetime));
               }
             }
