@@ -1,5 +1,5 @@
 {
-    "id": "141a3160-3623-451a-952a-d7234c5a7aa5",
+    "id": "12bb67d8-a796-4b91-8cc4-b471b8205a68",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -13,7 +13,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T00:00:00.000000",
+        "datetime": "2023-08-23T00:00:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "air_pressure",
@@ -21,12 +21,13 @@
             "size": 5,
             "value": "96460"
         },
-        "pubtime": "2023-09-28T15:39:34.000000",
+        "pubtime": "2023-10-10T12:49:10+0000",
         "platform": "0-578-0-96890",
         "platform_name": "KORGAASEN"
     }
-}{
-    "id": "562d65a0-80de-4dca-8dd3-9f3bcbc72a7e",
+}
+{
+    "id": "3fbc861c-c7d9-4a9b-9988-b88d7f8352bb",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -40,7 +41,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T00:00:00.000000",
+        "datetime": "2023-08-23T00:00:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "air_pressure_at_mean_sea_level",
@@ -48,12 +49,13 @@
             "size": 6,
             "value": "101480"
         },
-        "pubtime": "2023-09-28T15:39:34.000000",
+        "pubtime": "2023-10-10T12:49:10+0000",
         "platform": "0-578-0-96890",
         "platform_name": "KORGAASEN"
     }
-}{
-    "id": "d98ad384-143d-4f46-a1d0-d5eea7e8f492",
+}
+{
+    "id": "d7b91d0d-8237-46a5-bea4-98e60274f44b",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -67,7 +69,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T00:00:00.000000",
+        "datetime": "2023-08-23T00:00:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "air_temperature",
@@ -75,12 +77,13 @@
             "size": 6,
             "value": "279.15"
         },
-        "pubtime": "2023-09-28T15:39:34.000000",
+        "pubtime": "2023-10-10T12:49:10+0000",
         "platform": "0-578-0-96890",
         "platform_name": "KORGAASEN"
     }
-}{
-    "id": "55145ad3-2735-41cf-b8bb-53674ae3a3b7",
+}
+{
+    "id": "7820253a-72bd-48a5-9ced-22a5c5c0643a",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -94,7 +97,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T00:00:00.000000",
+        "datetime": "2023-08-23T00:00:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "dew_point_temperature",
@@ -102,12 +105,13 @@
             "size": 6,
             "value": "277.48"
         },
-        "pubtime": "2023-09-28T15:39:34.000000",
+        "pubtime": "2023-10-10T12:49:10+0000",
         "platform": "0-578-0-96890",
         "platform_name": "KORGAASEN"
     }
-}{
-    "id": "3c553375-b890-4656-a687-225f28286377",
+}
+{
+    "id": "47aa0d79-144b-4b91-aaca-6fb13fe3a195",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -121,7 +125,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T00:00:00.000000",
+        "datetime": "2023-08-23T00:00:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "relative_humidity",
@@ -129,12 +133,13 @@
             "size": 2,
             "value": "89"
         },
-        "pubtime": "2023-09-28T15:39:34.000000",
+        "pubtime": "2023-10-10T12:49:10+0000",
         "platform": "0-578-0-96890",
         "platform_name": "KORGAASEN"
     }
-}{
-    "id": "b8ed50e6-9f4c-435d-8858-d96b4bdab85d",
+}
+{
+    "id": "9e7fa69f-6c7c-4a61-a55c-4c9e24af7b79",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -148,7 +153,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T00:00:00.000000",
+        "datetime": "2023-08-23T00:00:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -156,12 +161,13 @@
             "size": 3,
             "value": "116"
         },
-        "pubtime": "2023-09-28T15:39:34.000000",
+        "pubtime": "2023-10-10T12:49:10+0000",
         "platform": "0-578-0-96890",
         "platform_name": "KORGAASEN"
     }
-}{
-    "id": "62d4221c-f076-4def-8ad4-47002ca661d0",
+}
+{
+    "id": "90488307-c957-4475-a4fa-f474ce668499",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -175,7 +181,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T00:00:00.000000",
+        "datetime": "2023-08-23T00:00:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -183,12 +189,13 @@
             "size": 3,
             "value": "3.3"
         },
-        "pubtime": "2023-09-28T15:39:34.000000",
+        "pubtime": "2023-10-10T12:49:10+0000",
         "platform": "0-578-0-96890",
         "platform_name": "KORGAASEN"
     }
-}{
-    "id": "086251b1-609b-4ab3-b000-456c8eea6d1b",
+}
+{
+    "id": "983cad9e-4783-490d-93c9-dc95feaa5419",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -202,7 +209,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "start_datetime": "2023-08-22T23:00:00.000000",
+        "start_datetime": "2023-08-22T23:00:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "integral_wrt_time_of_surface_downwelling_longwave_flux_in_air",
@@ -210,9 +217,9 @@
             "size": 9,
             "value": "1.234e+06"
         },
-        "pubtime": "2023-09-28T15:39:34.000000",
+        "pubtime": "2023-10-10T12:49:10+0000",
         "platform": "0-578-0-96890",
         "platform_name": "KORGAASEN",
-        "end_datetime": "2023-08-23T00:00:00.000000"
+        "end_datetime": "2023-08-23T00:00:00+0000"
     }
 }

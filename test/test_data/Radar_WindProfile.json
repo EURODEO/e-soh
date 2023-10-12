@@ -1,5 +1,5 @@
 {
-    "id": "b7c08b02-1523-48db-8fa5-e70b08d9c072",
+    "id": "ef098f34-dce3-4792-9c55-da0e07f806e0",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -13,7 +13,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -21,12 +21,13 @@
             "size": 3,
             "value": "301"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "c340c327-fe31-43b8-a93d-bb5b278c1cbf",
+}
+{
+    "id": "8da6abcc-b2e2-4829-adbb-7866ee256ccd",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -40,7 +41,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -48,12 +49,13 @@
             "size": 3,
             "value": "5.3"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "3094bcdb-0cfb-49f3-9ba6-920ba42ab91e",
+}
+{
+    "id": "cd4e436b-0fa4-4612-b411-29b6283efd4e",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -67,7 +69,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -75,12 +77,13 @@
             "size": 3,
             "value": "308"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "433e4e10-4a5d-4795-a37f-8e840b2f1f5b",
+}
+{
+    "id": "cf7913fc-83b3-49a9-a90e-91d970c1d6df",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -94,7 +97,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -102,12 +105,13 @@
             "size": 3,
             "value": "6.2"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "bc869363-9cb8-4104-924e-65b822a8746a",
+}
+{
+    "id": "087f3314-58c0-4267-8c10-faabce53cdb0",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -121,7 +125,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -129,12 +133,13 @@
             "size": 3,
             "value": "300"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "0afe2fda-2468-41cd-836a-29c62f8c7494",
+}
+{
+    "id": "89227bea-3f9c-4242-81be-52657b5857ff",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -148,7 +153,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -156,12 +161,13 @@
             "size": 3,
             "value": "6.4"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "885b752d-32db-4f99-9097-995ecd258486",
+}
+{
+    "id": "eaa7c417-ea81-4e85-8808-2d13aa752ac9",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -175,7 +181,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -183,12 +189,13 @@
             "size": 3,
             "value": "296"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "8602785c-8d61-4270-a38a-41ab79a6eb04",
+}
+{
+    "id": "8471ddd6-5fda-40d7-9148-626a3cc43d09",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -202,7 +209,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -210,12 +217,13 @@
             "size": 3,
             "value": "6.3"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "7fe96f3b-664a-42a1-b867-6c5bfc89da58",
+}
+{
+    "id": "7c6aa92b-cf18-4067-b38f-6ae08da1a1fa",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -229,7 +237,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -237,12 +245,13 @@
             "size": 3,
             "value": "298"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "2e2d7daa-1d76-4ead-906d-e2f62db1fa87",
+}
+{
+    "id": "bd7c96d7-eaae-441e-85c2-81d3cdc16793",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -256,7 +265,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -264,12 +273,13 @@
             "size": 3,
             "value": "6.3"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "505f35aa-2e3d-43ef-b737-dd185e4d2119",
+}
+{
+    "id": "e1b776ca-e33c-46f1-b73f-1994bc10658a",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -283,7 +293,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -291,12 +301,13 @@
             "size": 3,
             "value": "294"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "2154a1b3-3fe8-4793-a8a8-fde3fbc9ddbc",
+}
+{
+    "id": "76ef691d-6f5b-43b9-a4bc-febeb787a1a3",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -310,7 +321,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -318,12 +329,13 @@
             "size": 3,
             "value": "6.7"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "651dc449-1143-4adc-a201-d08deacd511c",
+}
+{
+    "id": "32e5fc63-b651-40b5-a624-9d4ccffa4ddf",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -337,7 +349,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -345,12 +357,13 @@
             "size": 3,
             "value": "300"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "c8e01d98-516c-43da-9249-50838dbd4b3e",
+}
+{
+    "id": "a68e088f-6814-430f-be2e-a7d77115f656",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -364,7 +377,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -372,12 +385,13 @@
             "size": 3,
             "value": "7.2"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "e8752d6f-2d71-47b5-9f6b-5e989f92d861",
+}
+{
+    "id": "f8c7bf67-e03c-4acf-a39c-e91ce5ebf512",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -391,7 +405,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -399,12 +413,13 @@
             "size": 3,
             "value": "301"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "b8895918-661b-466b-b020-5501af5b0464",
+}
+{
+    "id": "953338a0-8d1b-4af5-83bc-3136efe6cd5f",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -418,7 +433,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -426,12 +441,13 @@
             "size": 3,
             "value": "7.3"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "6f4b363a-bfb9-46e9-b50d-ad8b9453c5e4",
+}
+{
+    "id": "9cd5a664-478d-40b5-b1e5-06e1de7e8da7",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -445,7 +461,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -453,12 +469,13 @@
             "size": 3,
             "value": "302"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "78f5f0c9-8326-4630-b1e6-421b3a3cbc52",
+}
+{
+    "id": "1941f5f7-de2f-4d76-9826-d89f85fd9d87",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -472,7 +489,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -480,12 +497,13 @@
             "size": 1,
             "value": "8"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "1428ec79-ae6c-44d1-ae7a-385b43c57dd8",
+}
+{
+    "id": "1bf29fb9-b9c9-48f7-85be-0c8d2db0233d",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -499,7 +517,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -507,12 +525,13 @@
             "size": 3,
             "value": "298"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "00c3a46d-9dae-431a-8fda-e21d2a86c576",
+}
+{
+    "id": "a6552fce-87d3-48a7-a266-718bd38ff43e",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -526,7 +545,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -534,12 +553,13 @@
             "size": 3,
             "value": "8.4"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "b3da7006-ec52-4ceb-bae7-4c16d73698d8",
+}
+{
+    "id": "1568df72-bef3-48f4-8a9d-337c5d8ba4f4",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -553,7 +573,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -561,12 +581,13 @@
             "size": 3,
             "value": "297"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "a0675114-1258-4698-9837-214846bbc65c",
+}
+{
+    "id": "489c7e62-8f34-48d3-b1b9-af49660b3416",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -580,7 +601,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -588,12 +609,13 @@
             "size": 1,
             "value": "9"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "2f0121f8-f08f-4c36-8bc6-8afc38b7223b",
+}
+{
+    "id": "52986431-1f64-4b74-9e79-452aa8204bc5",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -607,7 +629,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -615,12 +637,13 @@
             "size": 3,
             "value": "300"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "5a492284-6472-4b0b-a2bc-24809ad0b932",
+}
+{
+    "id": "e26bd533-3f3f-4af8-a7a0-27ba579533e5",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -634,7 +657,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -642,12 +665,13 @@
             "size": 3,
             "value": "9.3"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "90b0a700-6884-494f-8bf6-3eca703d08fd",
+}
+{
+    "id": "ada20535-34f4-41b4-9a3e-2f7eea8c65f7",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -661,7 +685,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -669,12 +693,13 @@
             "size": 3,
             "value": "299"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "d9ed5eff-d1bf-4efd-b7a1-ee98a390f9da",
+}
+{
+    "id": "54704ab9-a173-4458-979d-db44a414c6be",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -688,7 +713,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -696,12 +721,13 @@
             "size": 3,
             "value": "9.8"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "61825ac0-f7df-49c5-aba1-401b685c7464",
+}
+{
+    "id": "6a22d559-aa49-441e-8fe9-ac45fb9afc2c",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -715,7 +741,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -723,12 +749,13 @@
             "size": 3,
             "value": "301"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "a22de981-e4f4-4f59-bf87-da5bac315d41",
+}
+{
+    "id": "91cec34d-82e2-4558-bf60-42617e26cf60",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -742,7 +769,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -750,12 +777,13 @@
             "size": 4,
             "value": "10.6"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "924ca894-a15d-49b8-9f31-7ff0e1a7d2a2",
+}
+{
+    "id": "9fb1e5fa-2ad3-4273-8f1d-6c753e46f88f",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -769,7 +797,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -777,12 +805,13 @@
             "size": 3,
             "value": "300"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "d7699c92-72f2-439c-b9d2-5d9db002db19",
+}
+{
+    "id": "f45601c7-6d37-4c02-a0db-c72906e8736e",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -796,7 +825,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -804,12 +833,13 @@
             "size": 4,
             "value": "11.3"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "c4d7d564-3e8b-4031-9261-5ca7ce1f5f89",
+}
+{
+    "id": "776dc9ae-3c9c-442f-95d0-604cad289cf6",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -823,7 +853,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -831,12 +861,13 @@
             "size": 3,
             "value": "302"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "328e8db8-3c5f-491d-ad26-421279d887c8",
+}
+{
+    "id": "e94ae1f2-efb3-4108-bdd8-0774ac0afc9f",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -850,7 +881,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -858,12 +889,13 @@
             "size": 4,
             "value": "11.8"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "b8903228-9d58-4782-bbf8-bb8bdc83eba1",
+}
+{
+    "id": "e40fc0ea-a064-4664-9609-5803dd59156f",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -877,7 +909,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -885,12 +917,13 @@
             "size": 3,
             "value": "300"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "d7423c03-e456-4738-be2f-46d217ce3719",
+}
+{
+    "id": "f91aa9a4-d214-43d6-b650-a341e1e02504",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -904,7 +937,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -912,12 +945,13 @@
             "size": 4,
             "value": "12.7"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "ac7a2651-f840-403b-b3b9-4499c29f7378",
+}
+{
+    "id": "346baacb-4217-4f9b-81eb-a192cc9b70c8",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -931,7 +965,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -939,12 +973,13 @@
             "size": 3,
             "value": "294"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "8037f4d4-fe6d-4327-941f-d0b99bc28b97",
+}
+{
+    "id": "637d44ac-5cc3-479f-ab32-88a5daf5ae00",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -958,7 +993,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -966,12 +1001,13 @@
             "size": 4,
             "value": "12.4"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "572f80bb-1097-4741-99ed-fe5a89529fe4",
+}
+{
+    "id": "a81a4159-b3e9-49c1-810f-837dc8fede4f",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -985,7 +1021,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -993,12 +1029,13 @@
             "size": 3,
             "value": "290"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
-}{
-    "id": "7786b968-76a4-484c-9681-303ecbf51231",
+}
+{
+    "id": "63e9faa0-f953-48ec-b5e2-70670fad8260",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1012,7 +1049,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-22T23:59:00.000000",
+        "datetime": "2023-08-22T23:59:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -1020,7 +1057,7 @@
             "size": 4,
             "value": "12.3"
         },
-        "pubtime": "2023-09-28T15:39:33.000000",
+        "pubtime": "2023-10-10T12:49:09+0000",
         "platform": "0-20000-0-11718",
         "platform_name": "RADAR Skalky"
     }
