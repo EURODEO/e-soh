@@ -61,8 +61,8 @@ std::list<std::string> ESOHBufr::msg() const {
     time_t pubtime_value = time(0);
     const int date_len = 50;
     char date_str[date_len];
-    size_t dl = strftime(date_str, date_len, "%FT%H:%M:%S%z",
-                         gmtime(&pubtime_value));
+    size_t dl =
+        strftime(date_str, date_len, "%FT%H:%M:%S%z", gmtime(&pubtime_value));
     pubtime.SetString(date_str, static_cast<rapidjson::SizeType>(dl),
                       message_allocator);
   }
