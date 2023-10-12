@@ -10,34 +10,31 @@
 #ifndef _OSCAR_
 #define _OSCAR_
 
-#include <string>
 #include <map>
+#include <string>
 
 #include "rapidjson/document.h"
 
-#include "WSI.h"
 #include "CountryCodes.h"
+#include "WSI.h"
 
 static const rapidjson::Value oscar_not_found;
 
-class Oscar
-{
+class Oscar {
 public:
-    Oscar();
-    Oscar(const char * filename);
-    bool addStation(const char * filename);
-    bool addStation(rapidjson::Value&);
-    std::string findWigosId(WSI) const;
-    const rapidjson::Value & findStation(WSI) const;
-    const rapidjson::Value & operator[](WSI) const;
-    std::string to_string(WSI) const;
-    int size() const;
+  Oscar();
+  Oscar(const char *filename);
+  bool addStation(const char *filename);
+  bool addStation(rapidjson::Value &);
+  std::string findWigosId(WSI) const;
+  const rapidjson::Value &findStation(WSI) const;
+  const rapidjson::Value &operator[](WSI) const;
+  std::string to_string(WSI) const;
+  int size() const;
 
 private:
-    rapidjson::Document d;
-    std::map<WSI,rapidjson::Value> stations;
-
+  rapidjson::Document d;
+  std::map<WSI, rapidjson::Value> stations;
 };
 
 #endif
-

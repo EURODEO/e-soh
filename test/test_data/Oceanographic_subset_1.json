@@ -1,5 +1,5 @@
 {
-    "id": "b5806960-d59d-4e93-b7e5-73c0de9d4442",
+    "id": "4a7e644a-859c-47cc-917d-c72f7a6530d4",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -13,7 +13,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -21,10 +21,11 @@
             "size": 6,
             "value": "284.78"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "591b5edb-9f91-4de1-8fae-03ccf7a501f3",
+}
+{
+    "id": "d73c3068-cb9b-4b7b-9685-7b7186770e95",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -38,7 +39,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -46,10 +47,11 @@
             "size": 6,
             "value": "284.68"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "bc52177c-b142-45d2-852e-02af484e77f1",
+}
+{
+    "id": "c5465357-1352-4c49-945c-07a5b860a9b6",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -63,7 +65,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -71,10 +73,11 @@
             "size": 6,
             "value": "284.39"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "38ab3e9a-e092-4e38-b8ba-3bfb39730c7e",
+}
+{
+    "id": "0f586ca5-39cf-4ec4-926e-60488c41b699",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -88,7 +91,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -96,10 +99,11 @@
             "size": 6,
             "value": "284.09"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "9fc9d3fe-ee73-45be-aee5-2ca26755dccc",
+}
+{
+    "id": "e8948c6b-7ebd-447a-ab9e-4ba940648c0f",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -113,7 +117,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -121,10 +125,11 @@
             "size": 6,
             "value": "283.88"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "94465c8d-b116-418a-ad13-232661e67a99",
+}
+{
+    "id": "1da0bd98-8961-4144-ae4a-a043f7189e7a",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -138,7 +143,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -146,10 +151,11 @@
             "size": 6,
             "value": "283.83"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "c7985a65-0928-46d7-b640-d275e220d6b0",
+}
+{
+    "id": "9ac94083-6af0-4be5-ae1d-77a5eb74b629",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -163,7 +169,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -171,10 +177,11 @@
             "size": 6,
             "value": "283.75"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "db0b3840-1d94-4e2b-8881-9b193473f203",
+}
+{
+    "id": "24fbba7f-e1cd-451b-ad92-3ffa2645fc0d",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -188,7 +195,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -196,10 +203,11 @@
             "size": 6,
             "value": "283.68"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "94d972af-9119-4a33-9230-2ae83e586183",
+}
+{
+    "id": "056d223d-943d-4272-a6b2-934ae64a216e",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -213,7 +221,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -221,10 +229,11 @@
             "size": 6,
             "value": "283.63"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "dfed7e02-849f-4745-8571-08e6bdf393af",
+}
+{
+    "id": "f40cc657-1911-49dc-8171-6806dc3a17ef",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -238,7 +247,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -246,10 +255,11 @@
             "size": 6,
             "value": "283.61"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "cbf71425-d21d-4f0d-8b54-25c8cf8c1cea",
+}
+{
+    "id": "1f010ee9-e48c-4519-8ca4-27a9feb503a7",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -263,7 +273,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -271,10 +281,11 @@
             "size": 6,
             "value": "283.59"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "9c2cf48d-f04b-447f-b4b5-dde28375763b",
+}
+{
+    "id": "6d492a40-26db-4e94-b82f-ba0c99f900b8",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -288,7 +299,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -296,10 +307,11 @@
             "size": 6,
             "value": "283.58"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "f6c15a5e-8e3b-4496-a7fb-c83f615e7811",
+}
+{
+    "id": "fc617c9e-1874-4d5f-994b-1a6c4f850259",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -313,7 +325,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -321,10 +333,11 @@
             "size": 6,
             "value": "283.55"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "8740bee6-3b9b-453d-a7c3-a37838f3aee2",
+}
+{
+    "id": "93a3b9a7-eac9-4ea2-89fc-f2412a875125",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -338,7 +351,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -346,10 +359,11 @@
             "size": 6,
             "value": "283.56"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "485b1180-1239-49da-9e4f-65974b8575cd",
+}
+{
+    "id": "0ad31cb8-b3f8-4f07-b02e-1051e20f1207",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -363,7 +377,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -371,10 +385,11 @@
             "size": 6,
             "value": "283.57"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "3e2938df-3729-4a7b-a3d0-b05d5cab5286",
+}
+{
+    "id": "81aadb3c-f2c9-4589-91ad-752406932bb7",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -388,7 +403,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -396,10 +411,11 @@
             "size": 6,
             "value": "283.55"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "f75ef8b3-dd49-4d47-9f2f-783e288627ab",
+}
+{
+    "id": "6d101357-47e5-4303-8c53-67aeacc32a90",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -413,7 +429,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -421,10 +437,11 @@
             "size": 6,
             "value": "283.54"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "572eabfc-e070-42f3-aa8b-70dcaa2467ce",
+}
+{
+    "id": "5d4fa6e6-2ed3-437a-8623-6527dd5f663d",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -438,7 +455,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -446,10 +463,11 @@
             "size": 6,
             "value": "283.52"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "605d9042-af5d-4776-ad9d-3618833831ad",
+}
+{
+    "id": "23bb6030-5922-4b47-82ff-00ef1ecf09ce",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -463,7 +481,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -471,10 +489,11 @@
             "size": 6,
             "value": "283.51"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "1412f4b6-0dbe-42c7-95ff-745e98d81519",
+}
+{
+    "id": "dbafcf7f-61bf-44e0-ad25-914e7c20833d",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -488,7 +507,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -496,10 +515,11 @@
             "size": 6,
             "value": "283.51"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "0862440e-4fe5-4d8d-b755-b9bd275c7807",
+}
+{
+    "id": "0b86e22c-f576-467e-a2b7-706b286fc4b4",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -513,7 +533,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -521,10 +541,11 @@
             "size": 5,
             "value": "283.5"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "6633d373-174e-45f3-affe-24ad2f244925",
+}
+{
+    "id": "a463afc1-8253-44e4-afbd-d03b197e0c23",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -538,7 +559,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -546,10 +567,11 @@
             "size": 5,
             "value": "283.5"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "499d0da1-6561-45b4-a731-08b5034c8eb2",
+}
+{
+    "id": "61bd8a14-8257-465f-8ef3-fd0b5709f66f",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -563,7 +585,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -571,10 +593,11 @@
             "size": 6,
             "value": "283.48"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "5befc9ad-48e6-402c-9799-3e2127c63b43",
+}
+{
+    "id": "229e440e-2468-47e5-bd07-f0e9e992e691",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -588,7 +611,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -596,10 +619,11 @@
             "size": 6,
             "value": "283.47"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "2e480868-389a-49b7-ac8b-24c73b4cd545",
+}
+{
+    "id": "77004888-168b-442c-b8b4-b850a95f8217",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -613,7 +637,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -621,10 +645,11 @@
             "size": 6,
             "value": "283.45"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "a55be2c5-00b7-4636-aeb0-85281aaeaa60",
+}
+{
+    "id": "3127533e-3db8-4c6a-8f1e-e47ac9cbba4f",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -638,7 +663,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -646,10 +671,11 @@
             "size": 6,
             "value": "283.43"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "bf15e27e-43f6-436e-a804-a70782c24082",
+}
+{
+    "id": "a3dc0b1d-4bd2-4803-ba05-4b0d1b9865d1",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -663,7 +689,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -671,10 +697,11 @@
             "size": 6,
             "value": "283.42"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "ffe2ee89-55e8-4f60-ac3c-064e08087363",
+}
+{
+    "id": "6f0d4b41-532e-4776-b394-69c34e28b712",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -688,7 +715,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -696,10 +723,11 @@
             "size": 6,
             "value": "283.41"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "c87a6a64-fcc4-45f4-8a13-89b2c100046c",
+}
+{
+    "id": "6891b1d4-3935-4281-9f58-1f8611e18f19",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -713,7 +741,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -721,10 +749,11 @@
             "size": 6,
             "value": "283.39"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "6ba3211d-807c-4071-8b74-e35434684f3e",
+}
+{
+    "id": "db9c056d-ebb2-4e1b-9b57-9e8db37a1264",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -738,7 +767,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -746,10 +775,11 @@
             "size": 6,
             "value": "283.36"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "7f40a01d-aeff-4535-98f5-b3d35f70af22",
+}
+{
+    "id": "195e24aa-357f-4990-b67c-e7cf3971d3d6",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -763,7 +793,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -771,10 +801,11 @@
             "size": 6,
             "value": "283.35"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "89d62a6e-0266-49d4-b13a-3ea5f66fd8f5",
+}
+{
+    "id": "e6268c9b-bc9a-425c-9d88-9e33899645b5",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -788,7 +819,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -796,10 +827,11 @@
             "size": 6,
             "value": "283.33"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "80e03711-e17a-4eeb-8290-d0a8dc5daf4c",
+}
+{
+    "id": "72dd2250-d118-4dc4-9e27-270bff6403da",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -813,7 +845,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -821,10 +853,11 @@
             "size": 6,
             "value": "283.32"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "5cc6b279-1276-4d3c-a999-93c98a41472b",
+}
+{
+    "id": "3be5a0a0-8980-419c-a66a-b37e715eab6c",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -838,7 +871,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -846,10 +879,11 @@
             "size": 6,
             "value": "283.31"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "94f9fc10-37ea-4cf0-8254-19fd6cdd75c8",
+}
+{
+    "id": "850effa7-b4ac-4a47-931d-deb75bb3309b",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -863,7 +897,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -871,10 +905,11 @@
             "size": 5,
             "value": "283.3"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "ac3b613e-55d9-4c0f-bfe1-784109e33089",
+}
+{
+    "id": "468ce25a-54eb-4f3f-9e65-da546ec51ed5",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -888,7 +923,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -896,10 +931,11 @@
             "size": 6,
             "value": "283.29"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "f2009b7b-6c8c-47bd-81fc-70bc36286a50",
+}
+{
+    "id": "cce0e335-3748-4585-924a-9b8a5e925258",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -913,7 +949,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -921,10 +957,11 @@
             "size": 6,
             "value": "283.27"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "9a65cbe0-ddfc-4ee6-8d0c-5c1dd6278da0",
+}
+{
+    "id": "4c68d57f-931e-4d9e-82b1-4cde70cb17f9",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -938,7 +975,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -946,10 +983,11 @@
             "size": 6,
             "value": "283.26"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "1ebdb3c6-1388-47df-b837-3dfb93002809",
+}
+{
+    "id": "d6a8daf5-2fee-45a4-8d98-fd3122f362be",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -963,7 +1001,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -971,10 +1009,11 @@
             "size": 6,
             "value": "283.23"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "cbc58441-fe80-49b0-8937-ed09137b448f",
+}
+{
+    "id": "1e6b4d13-61b6-4fe0-89c1-99ee06a412f5",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -988,7 +1027,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -996,10 +1035,11 @@
             "size": 6,
             "value": "283.23"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "fee5cf31-3d0a-4df2-92f9-1643e9dc827d",
+}
+{
+    "id": "60f00018-2afd-43a8-a29f-fffc86da74e8",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1013,7 +1053,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1021,10 +1061,11 @@
             "size": 6,
             "value": "283.21"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "db4087b2-1f3e-4388-8331-26efe07ec85c",
+}
+{
+    "id": "5c08b0b3-ce38-4cc2-956b-a467999d7daa",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1038,7 +1079,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1046,10 +1087,11 @@
             "size": 6,
             "value": "283.17"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "ba25aacf-3166-4ae6-8b6c-885eb5b0bfad",
+}
+{
+    "id": "2997a9ba-030f-4238-8883-a37077c1209c",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1063,7 +1105,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1071,10 +1113,11 @@
             "size": 6,
             "value": "283.15"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "95d76deb-d8e3-49ff-ae19-89cf0cb69a98",
+}
+{
+    "id": "8cca01d7-7cdd-44ef-a053-b691f264f99a",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1088,7 +1131,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1096,10 +1139,11 @@
             "size": 6,
             "value": "283.13"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "c6561f5a-d582-464e-8eca-fd55fa73173f",
+}
+{
+    "id": "f2ef2e1b-fe17-42d8-86cd-273afd5da8fd",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1113,7 +1157,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1121,10 +1165,11 @@
             "size": 6,
             "value": "283.13"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "25e57fa3-7f66-43a7-9c18-bce0504edafa",
+}
+{
+    "id": "88c6880f-b1e7-4f3c-80ec-9a823572a7b2",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1138,7 +1183,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1146,10 +1191,11 @@
             "size": 6,
             "value": "283.12"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "12d50e88-37fa-445d-8d12-f725089d1f96",
+}
+{
+    "id": "927fd363-dfd7-4fdc-af0a-430aa8ffa2e6",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1163,7 +1209,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1171,10 +1217,11 @@
             "size": 5,
             "value": "283.1"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "5106e57c-61a5-4f8c-bb6f-8bf3ddd773c7",
+}
+{
+    "id": "49db086c-f8ad-4667-80e2-743ccb27d2c0",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1188,7 +1235,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1196,10 +1243,11 @@
             "size": 6,
             "value": "283.05"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "761655e3-6860-4da1-926e-36e0ce42e225",
+}
+{
+    "id": "ecfade2b-48a2-413c-b440-21d303969713",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1213,7 +1261,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1221,10 +1269,11 @@
             "size": 3,
             "value": "283"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "f20c93a5-a4fd-43e6-8229-e6a05ee0f681",
+}
+{
+    "id": "b0687dd5-2df7-4cec-8d81-e5445881f391",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1238,7 +1287,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1246,10 +1295,11 @@
             "size": 6,
             "value": "282.98"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "53065786-6af5-4328-a14c-b2d7a47c552a",
+}
+{
+    "id": "593b39fa-c165-450a-b23f-d24aae1712b2",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1263,7 +1313,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1271,10 +1321,11 @@
             "size": 6,
             "value": "282.96"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "e6e70d7a-cca3-4607-baf7-8759aa11145e",
+}
+{
+    "id": "62e073c4-439c-4cc7-8659-94219d722cf5",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1288,7 +1339,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1296,10 +1347,11 @@
             "size": 6,
             "value": "282.94"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "355837de-e9a9-41d4-aa5b-08f19652f23b",
+}
+{
+    "id": "b45ff68b-bf0f-4c36-96b1-91d3480031f1",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1313,7 +1365,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1321,10 +1373,11 @@
             "size": 6,
             "value": "282.92"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "6d4ef299-08fd-4b97-b44d-d33709aaf5c4",
+}
+{
+    "id": "1f7cb9cf-b1ea-4361-acae-fa00fcc181bf",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1338,7 +1391,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1346,10 +1399,11 @@
             "size": 6,
             "value": "282.88"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "e4ab8476-31c2-4829-80a4-f1f5b28c09b7",
+}
+{
+    "id": "808b4db2-2bb1-4046-a84b-0b4bbec9ac1a",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1363,7 +1417,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1371,10 +1425,11 @@
             "size": 6,
             "value": "282.83"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "deef5c85-fa84-4ed0-989f-3e4b22833c73",
+}
+{
+    "id": "24eac506-ba59-49c4-92d4-2074ea51ea50",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1388,7 +1443,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1396,10 +1451,11 @@
             "size": 6,
             "value": "282.75"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "dacdedd6-1ff4-4b3a-8756-c782a019c965",
+}
+{
+    "id": "ebfefca8-dd84-42fd-a5c3-97210b807981",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1413,7 +1469,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1421,10 +1477,11 @@
             "size": 6,
             "value": "282.72"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "b31069ef-b2eb-4508-b53f-d2261d0168d8",
+}
+{
+    "id": "db526ef2-67bc-4293-8fa0-cc0eab8ba693",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1438,7 +1495,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1446,10 +1503,11 @@
             "size": 6,
             "value": "282.69"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "25503e41-4b76-453a-b10f-0c12ed0d87be",
+}
+{
+    "id": "805dda98-6811-4531-b1f3-a41a60e7f79e",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1463,7 +1521,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1471,10 +1529,11 @@
             "size": 6,
             "value": "282.65"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "565a5062-bf7d-4a81-8a21-76fec0dab953",
+}
+{
+    "id": "7789fb83-c19f-48ea-87ee-364838ee46f3",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1488,7 +1547,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1496,10 +1555,11 @@
             "size": 6,
             "value": "282.61"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "fc045f02-dc51-4727-8c23-db0a437ae5d8",
+}
+{
+    "id": "2f2b1a4c-97c2-4220-abe2-a9b21a579d7d",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1513,7 +1573,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1521,10 +1581,11 @@
             "size": 6,
             "value": "282.58"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "90675702-e3e9-4036-925b-ca06f4617808",
+}
+{
+    "id": "cbc55e35-3a05-428d-99a4-1134b00c6514",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1538,7 +1599,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1546,10 +1607,11 @@
             "size": 6,
             "value": "282.56"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "78881653-bc56-4e6c-9e8d-fd0d85ae7d4e",
+}
+{
+    "id": "459488e8-0b27-47fd-a3c2-0a987ce66e17",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1563,7 +1625,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1571,10 +1633,11 @@
             "size": 6,
             "value": "282.55"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "59f35243-4fd1-48d3-a567-38734aaf40e9",
+}
+{
+    "id": "4fc61842-eea9-4f22-bc9a-27599d6ece2b",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1588,7 +1651,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1596,10 +1659,11 @@
             "size": 6,
             "value": "282.52"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "ef1530d2-9a20-4fd9-8406-00f6c9c2da66",
+}
+{
+    "id": "d91bfda6-f11b-427a-8a85-52fc015af452",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1613,7 +1677,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1621,10 +1685,11 @@
             "size": 6,
             "value": "282.49"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "12ce59b6-4b3e-4673-91a4-7726be17fdbf",
+}
+{
+    "id": "607e531b-2711-46cb-b47b-c1ef3284c524",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1638,7 +1703,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1646,10 +1711,11 @@
             "size": 6,
             "value": "282.45"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "8c992fdd-b752-4259-83db-a193d033d79c",
+}
+{
+    "id": "09f04d9c-3dad-423f-954e-d50da4687b4a",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1663,7 +1729,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1671,10 +1737,11 @@
             "size": 6,
             "value": "282.41"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "7194e5e8-9132-4914-9f81-2839b09cab6c",
+}
+{
+    "id": "a458182f-5b0f-44fd-b957-6c08eb5ea80e",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1688,7 +1755,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1696,10 +1763,11 @@
             "size": 6,
             "value": "282.38"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "06884f12-472f-4e49-bd24-f62a66124f8b",
+}
+{
+    "id": "fc34fd85-4738-4560-b1ce-1e3b0bdafb90",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1713,7 +1781,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1721,10 +1789,11 @@
             "size": 6,
             "value": "282.34"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "4c0b4090-4959-401d-af04-4482801dec60",
+}
+{
+    "id": "51ddfc8b-0caf-49f8-ad33-66fe4bd4f73f",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1738,7 +1807,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1746,10 +1815,11 @@
             "size": 6,
             "value": "282.29"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "984788cf-f94c-4fd3-b4dc-491d1c960305",
+}
+{
+    "id": "78355b48-4119-45c0-b28a-03061c86ed80",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1763,7 +1833,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1771,10 +1841,11 @@
             "size": 6,
             "value": "282.25"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "4159ac82-5d4a-4214-91de-00941bdf3286",
+}
+{
+    "id": "d36a273e-fcff-4086-b364-e4b039321b46",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1788,7 +1859,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1796,10 +1867,11 @@
             "size": 5,
             "value": "282.2"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "0f137ebd-60fc-42a3-95a8-d1e380dc065c",
+}
+{
+    "id": "c9730e53-5461-474e-abeb-8b97c5f4ba08",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1813,7 +1885,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1821,10 +1893,11 @@
             "size": 6,
             "value": "282.18"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "ccc3dc4f-6ec2-4ce5-b769-324d06e1415a",
+}
+{
+    "id": "e3ec3cad-735e-43bf-9462-19e01144d36e",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1838,7 +1911,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1846,10 +1919,11 @@
             "size": 6,
             "value": "282.16"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "2c03710a-4280-4092-9059-4469642b8a25",
+}
+{
+    "id": "fbed6cd8-b051-46f3-b313-ea9eaaee715f",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1863,7 +1937,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1871,10 +1945,11 @@
             "size": 6,
             "value": "282.11"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "b4822660-1b7d-4ace-aa7c-fb2b696a0ab0",
+}
+{
+    "id": "c8596e14-962c-4f02-8a2a-41e59a93b4ba",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1888,7 +1963,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1896,10 +1971,11 @@
             "size": 6,
             "value": "282.04"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "6a771651-1fcb-4e55-a188-30b9ac440cd0",
+}
+{
+    "id": "43632bfc-90c5-4f64-83c4-01f59dcab738",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1913,7 +1989,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1921,10 +1997,11 @@
             "size": 6,
             "value": "282.01"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "ff74d232-f3be-4bc8-8810-7820f57ffd11",
+}
+{
+    "id": "884f8710-3f59-457e-a6cb-bbaac1497c00",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1938,7 +2015,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1946,10 +2023,11 @@
             "size": 6,
             "value": "281.99"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "9f523d73-a7ca-446b-9487-6b2de92800e0",
+}
+{
+    "id": "cac49073-0327-45bb-8cdc-5706adf32a16",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1963,7 +2041,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1971,10 +2049,11 @@
             "size": 6,
             "value": "281.94"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "349f68d4-850f-44d0-9d5d-60d3d11808e8",
+}
+{
+    "id": "7f51a0d1-de38-4e04-9ec1-a90cef8fff5e",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1988,7 +2067,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -1996,10 +2075,11 @@
             "size": 6,
             "value": "281.89"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "1b758b62-5fa1-4d32-a4dd-74161716621b",
+}
+{
+    "id": "173a7425-1374-41b7-90ff-b44eb17f9cb7",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -2013,7 +2093,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -2021,10 +2101,11 @@
             "size": 6,
             "value": "281.85"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "2e86aae2-cf76-4ee7-b700-d48b1f80250d",
+}
+{
+    "id": "03975379-f33f-4d26-ac98-f92859b2574c",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -2038,7 +2119,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -2046,10 +2127,11 @@
             "size": 5,
             "value": "281.8"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "866d78f0-6b21-47be-8a8e-74d7d7eff09a",
+}
+{
+    "id": "d6906a6e-41db-4c71-921d-20f57885f88a",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -2063,7 +2145,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -2071,10 +2153,11 @@
             "size": 6,
             "value": "281.74"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "30910d96-b31c-4530-9dd5-94766ccd1c47",
+}
+{
+    "id": "9341d1a1-35a4-4cc6-9b71-0d11762d9fd9",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -2088,7 +2171,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -2096,10 +2179,11 @@
             "size": 6,
             "value": "281.71"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "cd0e65dc-70cd-44e9-badd-14e558cd0e4e",
+}
+{
+    "id": "ac19f17b-d19a-4797-b67f-5eaee64ee86f",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -2113,7 +2197,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -2121,10 +2205,11 @@
             "size": 6,
             "value": "281.64"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "8801d014-c6f0-46a9-b585-1a8111e532e8",
+}
+{
+    "id": "e8201cac-ebec-44bf-acf4-4e8833259677",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -2138,7 +2223,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -2146,10 +2231,11 @@
             "size": 6,
             "value": "281.57"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "bada8ff3-4ea8-4d69-917f-cc58b0bc4ba9",
+}
+{
+    "id": "549148b1-14a9-49aa-bcea-e79e24937e60",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -2163,7 +2249,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -2171,10 +2257,11 @@
             "size": 6,
             "value": "281.54"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "c943b23c-a7bb-4b13-8863-bf7ecf51e226",
+}
+{
+    "id": "9200f83e-20a8-4013-bc9d-ba58c28679e0",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -2188,7 +2275,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -2196,10 +2283,11 @@
             "size": 6,
             "value": "281.47"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "e5cffa16-ace2-4359-b9e6-30bf2617f65e",
+}
+{
+    "id": "0f118e96-080c-41fa-9d55-76ebadf83850",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -2213,7 +2301,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -2221,10 +2309,11 @@
             "size": 6,
             "value": "281.41"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "bda6387c-2c55-47cf-9730-f82da96325a4",
+}
+{
+    "id": "173656a8-c5bb-46ee-bea9-89cec66d5e01",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -2238,7 +2327,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -2246,10 +2335,11 @@
             "size": 6,
             "value": "281.35"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "7d3ef198-e7ac-4818-adf1-4eeaf36c4d09",
+}
+{
+    "id": "63e50437-23f9-4f38-9bee-5001d076a835",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -2263,7 +2353,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -2271,10 +2361,11 @@
             "size": 6,
             "value": "281.26"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "1cbcdc03-911a-4841-97e1-cd727b7e0468",
+}
+{
+    "id": "a33b4f89-1d6a-4a33-9306-e52544ab0ac3",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -2288,7 +2379,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -2296,10 +2387,11 @@
             "size": 6,
             "value": "281.18"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "a916d58d-3a41-4b99-8e9f-4c91f143d273",
+}
+{
+    "id": "3e627df3-7b01-438c-9eb6-37cf822b9833",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -2313,7 +2405,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -2321,10 +2413,11 @@
             "size": 6,
             "value": "281.06"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "f43dc42f-ed90-48fb-a67c-b2e411e53b2c",
+}
+{
+    "id": "603d03b3-b1eb-4b06-9a69-9b2209d0f616",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -2338,7 +2431,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -2346,10 +2439,11 @@
             "size": 6,
             "value": "281.01"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "41c5b3f4-9fe8-4fae-9165-3ede79298887",
+}
+{
+    "id": "8e36b3d9-3f58-40d7-bdc8-719fbcefdf8a",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -2363,7 +2457,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -2371,10 +2465,11 @@
             "size": 6,
             "value": "280.91"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "01099be5-1bb5-45f5-9073-bcfce0b47ac1",
+}
+{
+    "id": "ef05c6f7-58f9-400f-b7a5-aa1aa8dc07d5",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -2388,7 +2483,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -2396,10 +2491,11 @@
             "size": 6,
             "value": "280.85"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "65d69fce-0fc7-41c9-9ecf-f91b7be09bbb",
+}
+{
+    "id": "57bd6ab8-ea44-4db1-bc60-900c0f5edf2e",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -2413,7 +2509,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -2421,10 +2517,11 @@
             "size": 5,
             "value": "280.8"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
-}{
-    "id": "59a44185-0385-4bf6-95a8-968a38731d36",
+}
+{
+    "id": "31affe61-d454-40dd-b090-dcd8a372a949",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -2438,7 +2535,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-05-22T18:47:00.000000",
+        "datetime": "2023-05-22T18:47:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "sea_water_temperature",
@@ -2446,6 +2543,6 @@
             "size": 6,
             "value": "280.73"
         },
-        "pubtime": "2023-09-28T15:39:32.000000"
+        "pubtime": "2023-10-10T12:49:08+0000"
     }
 }

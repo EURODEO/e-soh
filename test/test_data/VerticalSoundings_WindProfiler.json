@@ -1,5 +1,5 @@
 {
-    "id": "4ff27f08-50b8-4d8e-a084-ff7eaaf8cc24",
+    "id": "edf4d37f-7302-4ebb-8138-297c7a8ba744",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -13,7 +13,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -21,12 +21,13 @@
             "size": 3,
             "value": "223"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "87d429eb-0f75-472c-a247-be570900d7da",
+}
+{
+    "id": "c1db36bf-1bf2-4e3b-8d9b-9e2567ced02f",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -40,7 +41,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -48,12 +49,13 @@
             "size": 1,
             "value": "8"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "51b7792b-0831-4714-ad3f-35052c71a42b",
+}
+{
+    "id": "c03f2fa0-ca93-45d2-ab5a-6e13b7ba2f5d",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -67,7 +69,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -75,12 +77,13 @@
             "size": 3,
             "value": "225"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "3bec8766-860a-4ad0-912b-732a01a09eec",
+}
+{
+    "id": "15add30e-68f6-4d2e-90b0-a15d8bef536f",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -94,7 +97,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -102,12 +105,13 @@
             "size": 3,
             "value": "8.4"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "6e2b3a4a-eabe-4288-abca-07d0f708b032",
+}
+{
+    "id": "b892b956-dd29-478b-ac8c-6db573d8681c",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -121,7 +125,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -129,12 +133,13 @@
             "size": 3,
             "value": "229"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "d8991306-4074-4d04-9c23-00188dbe1f6b",
+}
+{
+    "id": "d1cbee8a-cc5b-4ef5-8ddf-ff40bcc6b3fa",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -148,7 +153,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -156,12 +161,13 @@
             "size": 3,
             "value": "9.2"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "2bcc8512-4e84-4856-8e6b-fcb195dc5ef6",
+}
+{
+    "id": "95b190ea-e525-4862-ad63-7863e59f5569",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -175,7 +181,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -183,12 +189,13 @@
             "size": 3,
             "value": "233"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "36d74607-7f09-4953-a3d9-0f28b775817b",
+}
+{
+    "id": "4596c5a1-a13c-4721-9f79-a058918a4c66",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -202,7 +209,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -210,12 +217,13 @@
             "size": 3,
             "value": "9.9"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "2450534b-e434-4395-aee8-850ec37c337e",
+}
+{
+    "id": "1ba2f724-82b4-4935-9358-c661b75f502e",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -229,7 +237,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -237,12 +245,13 @@
             "size": 3,
             "value": "237"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "8eaa3794-8f4a-4055-a962-9a178b73e7b4",
+}
+{
+    "id": "154df4e7-0018-40cf-943d-a2747d062bba",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -256,7 +265,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -264,12 +273,13 @@
             "size": 4,
             "value": "10.3"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "6aee0399-50c9-4893-ae49-c643fb9654a6",
+}
+{
+    "id": "51c02188-b43a-4771-9ec8-6528a73f7409",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -283,7 +293,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -291,12 +301,13 @@
             "size": 3,
             "value": "239"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "24be3dc4-1c57-46b4-b053-1ba4e220a77c",
+}
+{
+    "id": "0dc9edae-92a4-4c54-9056-31f889eced62",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -310,7 +321,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -318,12 +329,13 @@
             "size": 4,
             "value": "10.8"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "1d74034a-071a-4d0e-b6b7-67e54a1f13a3",
+}
+{
+    "id": "a6cc8b66-5759-4090-9a44-e56e0e8ab78d",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -337,7 +349,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -345,12 +357,13 @@
             "size": 3,
             "value": "239"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "30c5a11d-7854-4b86-8672-34d069ced591",
+}
+{
+    "id": "3f31cfaf-743e-479a-acd9-545d03bffbc3",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -364,7 +377,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -372,12 +385,13 @@
             "size": 4,
             "value": "11.6"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "af434a5a-4dd0-4b89-98ae-4c2fd4bc53e0",
+}
+{
+    "id": "523c2574-2bd1-4e4b-9c0b-7bb9bec799a8",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -391,7 +405,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -399,12 +413,13 @@
             "size": 3,
             "value": "235"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "61588080-1a8f-4461-a281-1bac8f9ff152",
+}
+{
+    "id": "32096aa7-8258-4a72-859d-b99553b90270",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -418,7 +433,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -426,12 +441,13 @@
             "size": 4,
             "value": "11.8"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "1ef9b499-5cf0-4bbf-90f4-5ef6a9d27faf",
+}
+{
+    "id": "ffec6a1f-a9a0-41bb-8d55-2ab82eec3937",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -445,7 +461,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -453,12 +469,13 @@
             "size": 3,
             "value": "227"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "caf5a971-058c-40ab-af69-55f8c2eed7c8",
+}
+{
+    "id": "9ab9b51c-6080-40f5-9500-19fc84eb0d5e",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -472,7 +489,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -480,12 +497,13 @@
             "size": 2,
             "value": "11"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "f0751653-3979-4ce2-a428-e57e1a15c73d",
+}
+{
+    "id": "2aa2b23a-435d-4395-8c94-e52eeaeb3c3a",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -499,7 +517,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -507,12 +525,13 @@
             "size": 3,
             "value": "220"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "a0747451-5e9e-41bd-a9ed-e0ee8fb66365",
+}
+{
+    "id": "0c8aa04b-1f43-4aaf-9a80-2e73c46cb9e2",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -526,7 +545,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -534,12 +553,13 @@
             "size": 4,
             "value": "10.3"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "e5147807-954c-4411-bb76-c2cc997dc4d5",
+}
+{
+    "id": "aede1da6-2994-4b44-9d1a-584b0f7373f1",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -553,7 +573,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -561,12 +581,13 @@
             "size": 3,
             "value": "217"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "84001155-cca7-4bf1-aa41-10a69ed56f09",
+}
+{
+    "id": "25231465-564a-4eab-9d31-e66522b12720",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -580,7 +601,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -588,12 +609,13 @@
             "size": 4,
             "value": "10.1"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "1772b0e0-6e08-433e-8ba3-dc3c5af8bd66",
+}
+{
+    "id": "b241f9b8-f7a1-4273-8132-536022272a45",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -607,7 +629,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -615,12 +637,13 @@
             "size": 3,
             "value": "220"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "99f469c7-b2d3-4aa9-b80b-298531d93593",
+}
+{
+    "id": "16bbfff1-c118-4318-9771-67ed48344542",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -634,7 +657,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -642,12 +665,13 @@
             "size": 4,
             "value": "10.6"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "e28232db-7326-40d6-8580-b0dfc340082c",
+}
+{
+    "id": "bcfa6236-2d20-4a00-9e6d-13fb76db58e7",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -661,7 +685,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -669,12 +693,13 @@
             "size": 3,
             "value": "225"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "c3681eb5-8bc9-4ff3-9f63-5ffa3100441a",
+}
+{
+    "id": "7ec5f7a1-51eb-47e6-9bb1-947a9eb07fc5",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -688,7 +713,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -696,12 +721,13 @@
             "size": 4,
             "value": "11.8"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "41d1df0b-ae7a-4ae4-9c4e-d6d3d34aeb04",
+}
+{
+    "id": "5861fb17-2a7e-4cd8-bec4-15a7a75590a3",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -715,7 +741,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -723,12 +749,13 @@
             "size": 3,
             "value": "225"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "757e7e78-e705-4f64-b5b5-86e81700d97b",
+}
+{
+    "id": "8d5d8acf-c8e7-4616-94aa-dec1df9f6569",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -742,7 +769,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -750,12 +777,13 @@
             "size": 4,
             "value": "12.4"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "12ce6ea1-989c-40c3-9dd2-25990fb23873",
+}
+{
+    "id": "0d3dabbd-cb38-4cfc-a2b8-2b411fef9972",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -769,7 +797,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -777,12 +805,13 @@
             "size": 3,
             "value": "223"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "58f0b1fa-aad3-462d-8cf1-0c299c724467",
+}
+{
+    "id": "3f633ef9-c8a5-4b9e-9c47-9151466e7603",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -796,7 +825,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -804,12 +833,13 @@
             "size": 4,
             "value": "12.6"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "7754d6f7-b195-43cf-b2c4-ace5635f8da3",
+}
+{
+    "id": "77eec97c-b66d-42a8-99ea-2dd9fe92d829",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -823,7 +853,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -831,12 +861,13 @@
             "size": 3,
             "value": "223"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "cb3dcacd-9731-4d55-9648-1dfa5b41a38b",
+}
+{
+    "id": "536da8e5-642c-4a4b-bbec-cb95d358a586",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -850,7 +881,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -858,12 +889,13 @@
             "size": 4,
             "value": "12.8"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "f8a76787-a7cc-4006-910d-cffaab9baac7",
+}
+{
+    "id": "4a842124-a1f5-46b7-a3c7-d0e6d4d01f1e",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -877,7 +909,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -885,12 +917,13 @@
             "size": 3,
             "value": "227"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "55a50bfb-bb18-4ab7-8484-6d6ed494d0fe",
+}
+{
+    "id": "45927519-66fb-4709-be79-3cbabe5ee170",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -904,7 +937,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -912,12 +945,13 @@
             "size": 4,
             "value": "14.2"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "62038494-d2d9-4805-a5c8-21d1de2652b9",
+}
+{
+    "id": "68a020c0-2784-4631-b1e4-dd356d286f0f",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -931,7 +965,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -939,12 +973,13 @@
             "size": 3,
             "value": "233"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "b22a9f08-e03d-46ce-a57c-b3d69986fb85",
+}
+{
+    "id": "b5e47508-5cc9-42da-8e21-fe5a2aaa8f1f",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -958,7 +993,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -966,12 +1001,13 @@
             "size": 4,
             "value": "16.6"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "091c8299-cea9-43d6-8c03-f6d721bb3c2c",
+}
+{
+    "id": "9084b164-be26-40b0-b28c-59d1124c2f18",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -985,7 +1021,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -993,12 +1029,13 @@
             "size": 3,
             "value": "236"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "db500ce6-2e9c-4d1d-90f9-adfcae76c062",
+}
+{
+    "id": "e08d4fe3-a608-4eb2-aed2-52f732ea9d49",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1012,7 +1049,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -1020,12 +1057,13 @@
             "size": 4,
             "value": "19.1"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "3b4c4ab8-c918-4223-804e-39e5be698fb7",
+}
+{
+    "id": "dbd113ec-bd92-4721-b414-037ace0e083f",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1039,7 +1077,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -1047,12 +1085,13 @@
             "size": 3,
             "value": "238"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "26b1dfea-cd5d-48ed-91fa-b7ecf8e23046",
+}
+{
+    "id": "da87e89a-4f1f-47aa-bdb2-cdd9910df9ad",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1066,7 +1105,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -1074,12 +1113,13 @@
             "size": 4,
             "value": "20.9"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "77dbf72f-524a-4c66-967f-330be7c35ad7",
+}
+{
+    "id": "45bc8674-fb11-42c0-8d12-4c0a2fc89709",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1093,7 +1133,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -1101,12 +1141,13 @@
             "size": 3,
             "value": "240"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "07de68e6-0f82-4740-af8d-bbe8f2d97c4e",
+}
+{
+    "id": "c8fddc3e-ddd1-492c-8377-4f64c6512fbd",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1120,7 +1161,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -1128,12 +1169,13 @@
             "size": 4,
             "value": "20.9"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "e4dc859e-b416-4311-b50d-82e085da41e0",
+}
+{
+    "id": "d69647e6-ef74-48c2-9b5f-a21fbe5bab75",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1147,7 +1189,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -1155,12 +1197,13 @@
             "size": 3,
             "value": "239"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "22dbcaac-81b7-4f8e-be60-2a51ff3d849c",
+}
+{
+    "id": "6fe90834-0a16-454b-9793-1f517542084e",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1174,7 +1217,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -1182,12 +1225,13 @@
             "size": 4,
             "value": "19.8"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "a2314055-9a21-4bc5-839d-e1e6b6381efe",
+}
+{
+    "id": "1e2648bc-858a-4dec-b325-f71662636a90",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1201,7 +1245,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -1209,12 +1253,13 @@
             "size": 3,
             "value": "237"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "ff5e5339-3979-48e8-a303-8c2bbc56144f",
+}
+{
+    "id": "18c61e9a-f7bb-4030-a3e0-415c76131a7b",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1228,7 +1273,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -1236,12 +1281,13 @@
             "size": 4,
             "value": "18.9"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "96749ebf-b1b0-4159-9826-efbe8ac37ecb",
+}
+{
+    "id": "655e1555-bf7c-4e36-a081-57b378657b66",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1255,7 +1301,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -1263,12 +1309,13 @@
             "size": 3,
             "value": "237"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "e238f09f-f915-4770-bdee-ac0aef0cc766",
+}
+{
+    "id": "c43b2adf-34b6-4b0e-8025-580ec7715088",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1282,7 +1329,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -1290,12 +1337,13 @@
             "size": 4,
             "value": "17.2"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "57ea085d-242b-45d3-abd3-f4350f56ec8a",
+}
+{
+    "id": "3d09d2f3-e44f-4746-a194-a121f88ca96f",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1309,7 +1357,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -1317,12 +1365,13 @@
             "size": 3,
             "value": "240"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "153ff672-fece-431a-87ff-1f981a3fc388",
+}
+{
+    "id": "1048d7d1-e198-44bf-a848-8185c4f09c1a",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1336,7 +1385,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -1344,12 +1393,13 @@
             "size": 4,
             "value": "15.7"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "7ef01bec-24fd-489b-8751-2427e28fc712",
+}
+{
+    "id": "6fce3d58-b310-45ba-aecc-5499a700ba20",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1363,7 +1413,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -1371,12 +1421,13 @@
             "size": 3,
             "value": "242"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }
-}{
-    "id": "529a8532-8dec-4707-8136-ea34d9b09c83",
+}
+{
+    "id": "8d799762-f309-4fa1-a7cc-eeb1aa04de4e",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -1390,7 +1441,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T04:45:00.000000",
+        "datetime": "2023-08-23T04:45:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -1398,7 +1449,7 @@
             "size": 4,
             "value": "14.7"
         },
-        "pubtime": "2023-09-28T15:39:44.000000",
+        "pubtime": "2023-10-10T12:49:21+0000",
         "platform": "0-20000-0-03021",
         "platform_name": "LOCHBOISDALE"
     }

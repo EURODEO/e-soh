@@ -1,5 +1,5 @@
 {
-    "id": "ba3a4c3d-4ced-470e-921d-648ec488f37c",
+    "id": "f7ba2f67-8ae9-4e4d-a608-d30833a6ce54",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -12,7 +12,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T00:02:00.000000",
+        "datetime": "2023-08-23T00:02:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "air_pressure",
@@ -20,11 +20,12 @@
             "size": 6,
             "value": "102100"
         },
-        "pubtime": "2023-09-28T15:39:38.000000",
+        "pubtime": "2023-10-10T12:49:14+0000",
         "platform_name": "Channel"
     }
-}{
-    "id": "4e3a5380-6402-4ed8-a81b-061134ec0ae7",
+}
+{
+    "id": "de32fef2-943a-4569-a8ee-df9481b399b6",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -37,7 +38,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T00:02:00.000000",
+        "datetime": "2023-08-23T00:02:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "air_pressure_at_mean_sea_level",
@@ -45,11 +46,12 @@
             "size": 6,
             "value": "102120"
         },
-        "pubtime": "2023-09-28T15:39:38.000000",
+        "pubtime": "2023-10-10T12:49:14+0000",
         "platform_name": "Channel"
     }
-}{
-    "id": "e506ccd8-2fbc-4fad-a9c0-cd0e30466ffd",
+}
+{
+    "id": "f2e1aeaf-90e9-47af-9667-e48a361e7043",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -62,7 +64,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T00:02:00.000000",
+        "datetime": "2023-08-23T00:02:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "air_temperature",
@@ -70,11 +72,12 @@
             "size": 6,
             "value": "290.15"
         },
-        "pubtime": "2023-09-28T15:39:38.000000",
+        "pubtime": "2023-10-10T12:49:14+0000",
         "platform_name": "Channel"
     }
-}{
-    "id": "aa8bd0d4-f2ef-4ab4-9ac0-1681f1681ad4",
+}
+{
+    "id": "ef3e34a9-dd34-409c-a63a-89cb6a6bf0d6",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -87,7 +90,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T00:02:00.000000",
+        "datetime": "2023-08-23T00:02:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "dew_point_temperature",
@@ -95,11 +98,12 @@
             "size": 6,
             "value": "289.28"
         },
-        "pubtime": "2023-09-28T15:39:38.000000",
+        "pubtime": "2023-10-10T12:49:14+0000",
         "platform_name": "Channel"
     }
-}{
-    "id": "d45fbf9e-78cb-4031-9b7e-6c2098119fcd",
+}
+{
+    "id": "e2e0ae55-5312-4bc5-bd82-1e48b7a37c9a",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -112,7 +116,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T00:02:00.000000",
+        "datetime": "2023-08-23T00:02:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "relative_humidity",
@@ -120,11 +124,12 @@
             "size": 2,
             "value": "95"
         },
-        "pubtime": "2023-09-28T15:39:38.000000",
+        "pubtime": "2023-10-10T12:49:14+0000",
         "platform_name": "Channel"
     }
-}{
-    "id": "b88b576c-1a37-4f92-b0ee-18c578798bed",
+}
+{
+    "id": "b79d1689-725d-48cc-a62c-237e4830a275",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -137,7 +142,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T00:02:00.000000",
+        "datetime": "2023-08-23T00:02:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_from_direction",
@@ -145,11 +150,12 @@
             "size": 3,
             "value": "286"
         },
-        "pubtime": "2023-09-28T15:39:38.000000",
+        "pubtime": "2023-10-10T12:49:14+0000",
         "platform_name": "Channel"
     }
-}{
-    "id": "98529361-6db1-45d1-818c-36da9acaeb5d",
+}
+{
+    "id": "9ac8f156-c420-4171-bd9a-0afa3d91b913",
     "version": "v04",
     "type": "Feature",
     "geometry": {
@@ -162,7 +168,7 @@
     "properties": {
         "data_id": "data_id",
         "metadata_id": "metatata_id",
-        "datetime": "2023-08-23T00:02:00.000000",
+        "datetime": "2023-08-23T00:02:00+0000",
         "content": {
             "encoding": "utf-8",
             "standard_name": "wind_speed",
@@ -170,7 +176,7 @@
             "size": 3,
             "value": "2.4"
         },
-        "pubtime": "2023-09-28T15:39:38.000000",
+        "pubtime": "2023-10-10T12:49:14+0000",
         "platform_name": "Channel"
     }
 }
