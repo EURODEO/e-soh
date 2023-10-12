@@ -44,7 +44,7 @@ docker compose ps -a
 
 ```text
 docker compose down --volumes
-docker compose --profile build
+docker compose build
 docker compose up -d
 ```
 
@@ -52,7 +52,7 @@ docker compose up -d
 
 ```text
 docker compose down --volumes
-docker compose --profile build
+docker compose build
 HITIME=-60 docker compose up -d
 ```
 
