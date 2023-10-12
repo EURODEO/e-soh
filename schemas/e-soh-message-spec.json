@@ -199,6 +199,14 @@
           "type": "string",
           "description": "Controlled vocabulary for the names used in the 'platform' attribute."
         },
+        "platform": {
+          "type": "string",
+          "description": "Name of the platform(s) that supported the sensor data used to create this data set or product. Platforms can be of any type, including satellite, ship, station, aircraft or other. Indicate controlled vocabulary used in platform_vocabulary."
+        },
+        "platform_vocabulary": {
+          "type": "string",
+          "description": "Controlled vocabulary for the names used in the 'platform' attribute."
+        },
         "processing_level": {
           "type": "string",
           "description": "A textual description of the processing (or quality control) level of the data."
