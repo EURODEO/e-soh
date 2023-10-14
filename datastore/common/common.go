@@ -43,11 +43,10 @@ func initValidTimeRange() {
 	// expressing the value as an ISO-8601 datetime as a fallback.
 	getSecs := func(name string, defaultVal int64, allowIso8601 bool) int64 {
 		val0 := strings.ToLower(Getenv(name, fmt.Sprintf("%d", defaultVal)))
-		var val int64
-		var err error
 
 		// first attempt to extract directly from int64
-		if val, err = strconv.ParseInt(val0, 10, 64); err != nil {
+		val, err := strconv.ParseInt(val0, 10, 64)
+		if err != nil {
 			if allowIso8601 {
 				// then attempt to extract from ISO-8601 form
 				var t time.Time
