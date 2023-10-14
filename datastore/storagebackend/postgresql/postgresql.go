@@ -23,10 +23,8 @@ func initCleanupInterval() {
 	defaultVal := int64(86400)
 	val0 := strings.ToLower(common.Getenv(name, fmt.Sprintf("%d", defaultVal)))
 
-	var val int64
-	var err error
-
-	if val, err = strconv.ParseInt(val0, 10, 64); err != nil {
+	val, err := strconv.ParseInt(val0, 10, 64)
+	if err != nil {
 		log.Printf(
 			"WARNING: failed to parse %s as an int64: %s; falling back to default secs: %d",
 			name, val0, defaultVal)
