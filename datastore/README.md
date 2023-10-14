@@ -63,16 +63,30 @@ HITIME=-60 docker compose up -d
 ```text
 docker compose down --volumes
 docker compose --profile test build
+DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose up -d
 DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm loader
+DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm integration
+```
+
+**NOTE:** as an alternative to specifying environment variables explicitly on the command line (which can be quite verbose), they could instead be kept in a file called `.env`:
+
+```text
+DYNAMICTIME=false
+LOTIME=1000-01-01T00:00:00Z
+HITIME=9999-12-31T23:59:59Z
 ```
 
 ### Same as above, but specifying LOTIME and HITIME directly as seconds
 
+First ensure `.env` has the following contents:
+
 ```text
-docker compose down --volumes
-docker compose --profile test build
-DYNAMICTIME=false LOTIME=-30610227208 HITIME=253402297199 docker compose run --rm loader
+DYNAMICTIME=false
+LOTIME=1000-01-01T00:00:00Z
+HITIME=9999-12-31T23:59:59Z
 ```
+
+Then run the same five docker compose commands as in the previous example (without specifying environment variables).
 
 -------------
 
