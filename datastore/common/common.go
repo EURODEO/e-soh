@@ -100,12 +100,12 @@ func init() { // automatically called once on program startup (on first import o
 }
 
 // See https://www.pauladamsmith.com/blog/2011/05/go_time.html
-var iso8601layout = "2006-01-02t15:04:05z" // note lower case!
+var iso8601layout = "2006-01-02T15:04:05Z" // note upper case!
 
 // iso8601ToTime converts time string ts of the form YYYY-MM-DDThh:mm:ssZ to time.Time.
 // Returns (val, nil) upon success, otherwise (time.Time{}, error).
 func iso8601ToTime(ts string) (time.Time, error) {
-        tm, err := time.Parse(iso8601layout, strings.ToLower(ts))
+        tm, err := time.Parse(iso8601layout, strings.ToUpper(ts))
         if err != nil {
                 return time.Time{}, fmt.Errorf("time.Parse() failed for %s: %v", ts, err)
         }
