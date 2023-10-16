@@ -5,14 +5,21 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_run:
+    workflows: ["flake8"]
+    branches: ["main"]
+    types:
+      - completed
 
 jobs:
   pyTestCov:
     strategy:
       matrix:
-        python-version: ["3.10", "3.11"]
+        python-version: ["3.10"] # Add 3.11 back pybind11 bug is fixed
     runs-on: ubuntu-latest
     steps:
+      - name: Ubuntu setup
+        run: sudo apt update && sudo apt install libeccodes-data	rapidjson-dev	pybind11-dev libssl-dev
       - name: Python Setup
         uses: actions/setup-python@v4
         with:

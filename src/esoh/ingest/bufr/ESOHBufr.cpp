@@ -7,7 +7,6 @@
  *
  */
 
-#include <openssl/sha.h>
 #include <time.h>
 
 #include <algorithm>

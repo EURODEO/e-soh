@@ -181,6 +181,9 @@ src/esoh/ingest/bufr/bufrprint
 src/esoh/ingest/bufr/descriptor_info
 src/esoh/ingest/bufr/oscar_test
 
+#Compiled binaries
+*.o
+
 
 
 

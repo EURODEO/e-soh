@@ -68,7 +68,7 @@ class datastore_connection():
                 msg["properties"]["pubtime"], "%Y-%m-%dT%H:%M:%S.%f%z")),
             obstime_instant=dtime2tstamp(
                 datetime.strptime(nstime2stime(msg["properties"]["datetime"]),
-                                  "%Y-%m-%dT%H:%M:%S")),
+                                  "%Y-%m-%dT%H:%M:%S%z")),
             geo_point=dstore.Point(lat=int(msg["geometry"]["coordinates"][0]),
                                    lon=int(msg["geometry"]["coordinates"][1]))
         )
