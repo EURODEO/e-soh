@@ -139,6 +139,7 @@ def create_json_from_netcdf_metdata(ds: xr.Dataset, map_netcdf: dict) -> str:
 
 
 def build_all_json_payloads_from_netCDF(ds: xr.Dataset,
+                                        schema_path: str,
                                         timediff: np.timedelta64 = np.timedelta64(1, "D"))\
         -> list[str]:
     """
@@ -205,7 +206,7 @@ def build_all_json_payloads_from_netCDF(ds: xr.Dataset,
     ```
     """
 
-    mapping_json = mapper()(ds.attrs["institution"])
+    mapping_json = mapper(schema_path)(ds.attrs["institution"])
 
     json_msg = create_json_from_netcdf_metdata(ds, mapping_json)
 
@@ -238,7 +239,7 @@ def build_all_json_payloads_from_netCDF(ds: xr.Dataset,
                 "value": content_str
             }
 
-            json_msg["content"] = content
+            json_msg["properties"]["content"] = content
 
             messages.append(copy.deepcopy(json_msg))
 

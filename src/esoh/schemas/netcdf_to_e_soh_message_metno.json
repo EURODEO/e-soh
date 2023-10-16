@@ -41,7 +41,6 @@
 				"creator_url",
 				"creator_email",
 				"license",
-				"access_constraint",
 				"platform",
 				"platform_vocabulary",
 				"naming_authority"
