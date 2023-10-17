@@ -23,15 +23,20 @@ class ingest_to_pipeline():
                  dstore_conn: dict,
                  uuid_prefix: str,
                  testing: bool = False,
-                 schema_path=None):
+                 schema_path=None,
+                 schema_file=None):
         self.uuid_prefix = uuid_prefix
 
         if not schema_path:
             self.schema_path = pkg_resources.resource_filename("esoh", "schemas")
         else:
             self.schema_path = schema_path
+        if not schema_file:
+            self.schema_file = "e-soh-message-spec.json"
+        else:
+            self.schema_file = schema_file
 
-        esoh_mqtt_schema = os.path.join(self.schema_path, "e-soh-message-spec.json")
+        esoh_mqtt_schema = os.path.join(self.schema_path, self.schema_file)
         with open(esoh_mqtt_schema, "r") as file:
             self.esoh_mqtt_schema = json.load(file)
         self.schema_validator = Draft202012Validator(self.esoh_mqtt_schema)
