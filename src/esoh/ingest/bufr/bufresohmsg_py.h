@@ -13,14 +13,15 @@
 #include <list>
 #include <string>
 
+#include "Oscar.h"
+#include "Tables.h"
+
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
-#include "Oscar.h"
-
-static std::map<int, TableB *> *tb = new std::map<int, TableB *>;
-static std::map<int, TableC *> *tc = new std::map<int, TableC *>;
-static std::map<int, TableD *> *td = new std::map<int, TableD *>;
+static std::map<int, TableB *> tb;
+static std::map<int, TableC *> tc;
+static std::map<int, TableD *> td;
 
 static Oscar oscar;
 

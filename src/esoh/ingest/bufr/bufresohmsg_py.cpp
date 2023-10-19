@@ -36,15 +36,15 @@ bool norbufr_init_bufrtables(std::string tables_dir) {
   for (const auto &entry : std::filesystem::directory_iterator(eccBtable_dir)) {
     auto vers = std::stoi(entry.path().filename().string());
     TableB *tb_e = new TableB(entry.path().string() + "/element.table");
-    (*tb)[vers] = tb_e;
+    tb[vers] = tb_e;
     TableC *tc_e = new TableC(entry.path().string() + "/codetables");
-    (*tc)[vers] = tc_e;
+    tc[vers] = tc_e;
   }
 
   for (const auto &entry : std::filesystem::directory_iterator(eccDtable_dir)) {
     auto vers = std::stoi(entry.path().filename().string());
     TableD *tb_d = new TableD(entry.path().string() + "/sequence.def");
-    (*td)[vers] = tb_d;
+    td[vers] = tb_d;
   }
 
   return true;
@@ -70,20 +70,20 @@ std::list<std::string> norbufr_bufresohmsg(std::string fname) {
     if (bufrFile >> *bufr) {
 
       bufr->setTableB(
-          tb->at(bufr->getVersionMaster() &&
-                         tb->find(bufr->getVersionMaster()) != tb->end()
+          tb.at(bufr->getVersionMaster() &&
+                         tb.find(bufr->getVersionMaster()) != tb.end()
                      ? bufr->getVersionMaster()
-                     : tb->rbegin()->first));
+                     : tb.rbegin()->first));
       bufr->setTableC(
-          tc->at(bufr->getVersionMaster() &&
-                         tc->find(bufr->getVersionMaster()) != tc->end()
+          tc.at(bufr->getVersionMaster() &&
+                         tc.find(bufr->getVersionMaster()) != tc.end()
                      ? bufr->getVersionMaster()
-                     : tc->rbegin()->first));
+                     : tc.rbegin()->first));
       bufr->setTableD(
-          td->at(bufr->getVersionMaster() &&
-                         td->find(bufr->getVersionMaster()) != td->end()
+          td.at(bufr->getVersionMaster() &&
+                         td.find(bufr->getVersionMaster()) != td.end()
                      ? bufr->getVersionMaster()
-                     : td->rbegin()->first));
+                     : td.rbegin()->first));
 
       bufr->extractDescriptors();
 
@@ -109,20 +109,20 @@ std::string norbufr_bufrprint(std::string fname) {
     if (bufrFile >> *bufr) {
 
       bufr->setTableB(
-          tb->at(bufr->getVersionMaster() &&
-                         tb->find(bufr->getVersionMaster()) != tb->end()
+          tb.at(bufr->getVersionMaster() &&
+                         tb.find(bufr->getVersionMaster()) != tb.end()
                      ? bufr->getVersionMaster()
-                     : tb->rbegin()->first));
+                     : tb.rbegin()->first));
       bufr->setTableC(
-          tc->at(bufr->getVersionMaster() &&
-                         tc->find(bufr->getVersionMaster()) != tc->end()
+          tc.at(bufr->getVersionMaster() &&
+                         tc.find(bufr->getVersionMaster()) != tc.end()
                      ? bufr->getVersionMaster()
-                     : tc->rbegin()->first));
+                     : tc.rbegin()->first));
       bufr->setTableD(
-          td->at(bufr->getVersionMaster() &&
-                         td->find(bufr->getVersionMaster()) != td->end()
+          td.at(bufr->getVersionMaster() &&
+                         td.find(bufr->getVersionMaster()) != td.end()
                      ? bufr->getVersionMaster()
-                     : td->rbegin()->first));
+                     : td.rbegin()->first));
 
       bufr->extractDescriptors();
 
@@ -135,15 +135,15 @@ std::string norbufr_bufrprint(std::string fname) {
 
 bool norbufr_destroy_bufrtables() {
 
-  for (auto i : *tb)
+  for (auto i : tb)
     delete i.second;
-  delete tb;
-  for (auto i : *tc)
+  tb.clear();
+  for (auto i : tc)
     delete i.second;
-  delete tc;
-  for (auto i : *td)
+  tc.clear();
+  for (auto i : td)
     delete i.second;
-  delete td;
+  td.clear();
 
   return true;
 }

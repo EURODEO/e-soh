@@ -31,10 +31,7 @@ def build_message(file: [object],
             unfinished_messages = build_all_json_payloads_from_netCDF(file,
                                                                       schema_path=schema_path)
         case "bufr":
-            init_bufrtables_py("")
-            init_oscar_py("./src/esoh/ingest/bufr/oscar/oscar_stations_all.json")
             unfinished_messages = build_all_json_payloads_from_bufr(file)
-            destroy_bufrtables_py()
 
     # Set message publication time in RFC3339 format
     # Create UUID for the message, and state message format version
