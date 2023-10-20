@@ -71,19 +71,19 @@ std::list<std::string> norbufr_bufresohmsg(std::string fname) {
 
       bufr->setTableB(
           tb.at(bufr->getVersionMaster() &&
-                         tb.find(bufr->getVersionMaster()) != tb.end()
-                     ? bufr->getVersionMaster()
-                     : tb.rbegin()->first));
+                        tb.find(bufr->getVersionMaster()) != tb.end()
+                    ? bufr->getVersionMaster()
+                    : tb.rbegin()->first));
       bufr->setTableC(
           tc.at(bufr->getVersionMaster() &&
-                         tc.find(bufr->getVersionMaster()) != tc.end()
-                     ? bufr->getVersionMaster()
-                     : tc.rbegin()->first));
+                        tc.find(bufr->getVersionMaster()) != tc.end()
+                    ? bufr->getVersionMaster()
+                    : tc.rbegin()->first));
       bufr->setTableD(
           td.at(bufr->getVersionMaster() &&
-                         td.find(bufr->getVersionMaster()) != td.end()
-                     ? bufr->getVersionMaster()
-                     : td.rbegin()->first));
+                        td.find(bufr->getVersionMaster()) != td.end()
+                    ? bufr->getVersionMaster()
+                    : td.rbegin()->first));
 
       bufr->extractDescriptors();
 
@@ -110,19 +110,19 @@ std::string norbufr_bufrprint(std::string fname) {
 
       bufr->setTableB(
           tb.at(bufr->getVersionMaster() &&
-                         tb.find(bufr->getVersionMaster()) != tb.end()
-                     ? bufr->getVersionMaster()
-                     : tb.rbegin()->first));
+                        tb.find(bufr->getVersionMaster()) != tb.end()
+                    ? bufr->getVersionMaster()
+                    : tb.rbegin()->first));
       bufr->setTableC(
           tc.at(bufr->getVersionMaster() &&
-                         tc.find(bufr->getVersionMaster()) != tc.end()
-                     ? bufr->getVersionMaster()
-                     : tc.rbegin()->first));
+                        tc.find(bufr->getVersionMaster()) != tc.end()
+                    ? bufr->getVersionMaster()
+                    : tc.rbegin()->first));
       bufr->setTableD(
           td.at(bufr->getVersionMaster() &&
-                         td.find(bufr->getVersionMaster()) != td.end()
-                     ? bufr->getVersionMaster()
-                     : td.rbegin()->first));
+                        td.find(bufr->getVersionMaster()) != td.end()
+                    ? bufr->getVersionMaster()
+                    : td.rbegin()->first));
 
       bufr->extractDescriptors();
 
