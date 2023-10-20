@@ -180,7 +180,7 @@ func getMdataFilter(filterInfos []filterInfo, phVals *[]interface{}) string {
 // Returns expression.
 func getGeoFilter(inside *datastore.Polygon, phVals *[]interface{}) (string, error) {
 	whereExpr := "TRUE" // by default, don't filter
-	if inside != nil { // get all points
+	if inside != nil {  // get all points
 		points := inside.Points
 
 		equal := func(p1, p2 *datastore.Point) bool {
