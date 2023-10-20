@@ -23,6 +23,24 @@ jobs:
           ignore: DL3008
           recursive: true
 
+  go-fmt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run gofmt
+        run: ./ci/go/go-fmt.sh
+        shell: bash
+
+  go-vet:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run gofmt
+        run: ./ci/go/go-vet.sh
+        shell: bash
+
   python-lint-black:
     runs-on: ubuntu-latest
     steps:
