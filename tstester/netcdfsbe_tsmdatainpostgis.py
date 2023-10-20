@@ -1,12 +1,13 @@
-from storagebackend import StorageBackend
-from postgissbe import PostGISSBE
 import shutil
-from pathlib import Path
-from netcdf import NetCDF
 import sys
+from pathlib import Path
+
+from netcdf import NetCDF
+from postgissbe import PostGISSBE
+from storagebackend import StorageBackend
 
 
-class NetCDFSBE_TSMDataInPostGIS(StorageBackend):
+class NetCDFSBE_TSMDataInPostGIS(StorageBackend):  # noqa: N801
     """A storage backend that uses netCDF files on the local file system for storage
     of observations and per observation metadata, and a PostGIS database for keeping per time
     series metadata.
@@ -30,19 +31,20 @@ class NetCDFSBE_TSMDataInPostGIS(StorageBackend):
     """
 
     def __init__(self, verbose, pg_conn_info, nc_dir):
-        super().__init__(verbose, 'netCDF (time series metadata in PostGIS)')
+        super().__init__(verbose, "netCDF (time series metadata in PostGIS)")
         self._pgsbe = PostGISSBE(verbose, pg_conn_info)  # for keeping per time series metadata
         self._nc_dir = nc_dir  # directory under which to keep the netCDF files
         self._netcdf = NetCDF(verbose)
-        self._nc_fname = 'data.nc'
+        self._nc_fname = "data.nc"
 
     def reset(self, tss):
         """See documentation in base class."""
 
         if self._verbose:
             print(
-                'resetting NetCDFSBE_TSMDataInPostGIS with {} time series'.format(len(tss)),
-                file=sys.stderr)
+                "resetting NetCDFSBE_TSMDataInPostGIS with {} time series".format(len(tss)),
+                file=sys.stderr,
+            )
 
         self._pgsbe.reset(tss)
 
@@ -52,22 +54,22 @@ class NetCDFSBE_TSMDataInPostGIS(StorageBackend):
         # create files with all per time series metadata, but with no observations
         for ts in tss:
             # create directory
-            target_dir = '{}/{}/{}'.format(self._nc_dir, ts.station_id(), ts.param_id())
+            target_dir = "{}/{}/{}".format(self._nc_dir, ts.station_id(), ts.param_id())
             Path(target_dir).mkdir(parents=True, exist_ok=True)
 
             # create initial file
-            self._netcdf.create_initial_file('{}/{}'.format(target_dir, self._nc_fname), ts)
+            self._netcdf.create_initial_file("{}/{}".format(target_dir, self._nc_fname), ts)
 
     def set_obs(self, ts, times, values):
         """See documentation in base class."""
 
-        path = '{}/{}/{}/{}'.format(self._nc_dir, ts.station_id(), ts.param_id(), self._nc_fname)
+        path = "{}/{}/{}/{}".format(self._nc_dir, ts.station_id(), ts.param_id(), self._nc_fname)
         self._netcdf.replace_times_and_values(path, times, values)
 
     def add_obs(self, ts, times, values, oldest_time=None):
         """See documentation in base class."""
 
-        path = '{}/{}/{}/{}'.format(self._nc_dir, ts.station_id(), ts.param_id(), self._nc_fname)
+        path = "{}/{}/{}/{}".format(self._nc_dir, ts.station_id(), ts.param_id(), self._nc_fname)
         self._netcdf.add_times_and_values(path, times, values, oldest_time)
 
     def get_obs(self, ts_ids, from_time, to_time):
@@ -82,7 +84,7 @@ class NetCDFSBE_TSMDataInPostGIS(StorageBackend):
         res = []
         for ts_id in ts_ids:
             station_id, param_id = self._pgsbe.get_station_and_param(ts_id)
-            path = '{}/{}/{}/{}'.format(self._nc_dir, station_id, param_id, self._nc_fname)
+            path = "{}/{}/{}/{}".format(self._nc_dir, station_id, param_id, self._nc_fname)
             times, values = self._netcdf.get_times_and_values(path, from_time, to_time)
             res.append((ts_id, times[:], values[:]))
 

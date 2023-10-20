@@ -21,8 +21,8 @@ class PGConnectionInfo:
         return self._password
 
     def set_dbname(self, dbname):
-        if dbname.strip().lower() == 'postgres':
-            raise Exception('database name must be different from \'postgres\'')
+        if dbname.strip().lower() == "postgres":
+            raise Exception("database name must be different from 'postgres'")
         self._dbname = dbname
 
     def dbname(self):

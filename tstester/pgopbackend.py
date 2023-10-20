@@ -1,12 +1,14 @@
-from abc import ABC, abstractmethod
+import sys
+from abc import ABC
+from abc import abstractmethod
+
 import common
 import psycopg2
-import sys
 
 
 class PGOpBackend(ABC):
     """The base class / interface for an executor backend for a Postgres database operation
-       (query or command).
+    (query or command).
     """
 
     def __init__(self, verbose, descr):
@@ -34,29 +36,36 @@ class Psycopg2BE(PGOpBackend):
 
     def __init__(self, verbose, conn_info):
         if verbose:
-            print('using psycopg2 adapter for PostGIS operations', file=sys.stderr)
-        super().__init__(verbose, 'psycopg2 adapter')
+            print("using psycopg2 adapter for PostGIS operations", file=sys.stderr)
+        super().__init__(verbose, "psycopg2 adapter")
         self._conn = self.__connect(conn_info)
         self._cur = self._conn.cursor()
 
     def __connect(self, conn_info):
-        """"Connect to the database server.
+        """ "Connect to the database server.
         Returns connection.
         """
 
         if self._verbose:
             start = common.now_secs()
-            print('connecting to PostGIS ... ', file=sys.stderr, end='', flush=True)
+            print("connecting to PostGIS ... ", file=sys.stderr, end="", flush=True)
 
         # WARNING: the call to connect() may take very long; up to 15-20 secs!
-        conn = psycopg2.connect('host={} port={} user={} password={} dbname={}'.format(
-            conn_info.host(), conn_info.port(), conn_info.user(), conn_info.password(),
-            conn_info.dbname()
-        ))
+        conn = psycopg2.connect(
+            "host={} port={} user={} password={} dbname={}".format(
+                conn_info.host(),
+                conn_info.port(),
+                conn_info.user(),
+                conn_info.password(),
+                conn_info.dbname(),
+            )
+        )
         if self._verbose:
             print(
-                'done (after {0:.4f} secs)'.format(common.now_secs() - start), file=sys.stderr,
-                flush=True)
+                "done (after {0:.4f} secs)".format(common.now_secs() - start),
+                file=sys.stderr,
+                flush=True,
+            )
         return conn
 
     def execute(self, op, commit=True):
@@ -68,7 +77,7 @@ class Psycopg2BE(PGOpBackend):
 
         try:
             return self._cur.fetchall()
-        except:
+        except Exception:
             return []  # nothing to fetch
 
     def commit(self):
@@ -82,20 +91,33 @@ class PsqlBE(PGOpBackend):
 
     def __init__(self, verbose, conn_info):
         if verbose:
-            print('using psql command for PostGIS operations', file=sys.stderr)
-        super().__init__(verbose, 'psql command')
+            print("using psql command for PostGIS operations", file=sys.stderr)
+        super().__init__(verbose, "psql command")
         self._conn_info = conn_info
 
     def execute(self, op, commit=False):
         """See documentation in base class."""
 
         _ = commit  # n/a
-        res = common.exec_command([
-            'psql', '-t', '-h', self._conn_info.host(), '-p', self._conn_info.port(),
-            '-U', self._conn_info.user(), '-d', self._conn_info.dbname(), '-c', op])
+        res = common.exec_command(
+            [
+                "psql",
+                "-t",
+                "-h",
+                self._conn_info.host(),
+                "-p",
+                self._conn_info.port(),
+                "-U",
+                self._conn_info.user(),
+                "-d",
+                self._conn_info.dbname(),
+                "-c",
+                op,
+            ]
+        )
 
-        res = [x for x in res.decode('utf-8').split('\n') if len(x) > 0]
-        return list(map(lambda x: tuple([z.strip() for z in x.split('|')]), res))
+        res = [x for x in res.decode("utf-8").split("\n") if len(x) > 0]
+        return list(map(lambda x: tuple([z.strip() for z in x.split("|")]), res))
 
     def commit(self):
         """See documentation in base class."""

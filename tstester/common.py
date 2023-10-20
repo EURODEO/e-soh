@@ -1,23 +1,24 @@
-import random
-import time
 import os
+import random
 import subprocess
+import time
 
 
 def select_weighted_value(x):
     """Select a random value based on probability weights.
 
-       x is of the form [(v_1, w_1), (v_2, w_2), ..., (v_n, w_n)].
-       Returns v_i with a probability of w_i / (w_1 + w_2 + ... + w_n).
+    x is of the form [(v_1, w_1), (v_2, w_2), ..., (v_n, w_n)].
+    Returns v_i with a probability of w_i / (w_1 + w_2 + ... + w_n).
     """
 
     # check preconditions
     if len(x) == 0:
-        raise Exception('can\'t select from empty list')
+        raise Exception("can't select from empty list")
     for item in x:
         if item[1] <= 0:
-            raise Exception('non-positive weight not allowed (value: {}, weight: {})'.format(
-                item[0], item[1]))
+            raise Exception(
+                "non-positive weight not allowed (value: {}, weight: {})".format(item[0], item[1])
+            )
 
     w_sum_n = sum([z[1] for z in x])  # get total weight sum
     r = random.random() * w_sum_n  # get random value within total weight sum
@@ -43,22 +44,23 @@ def elapsed_secs(start_secs):
     return now_secs() - start_secs
 
 
-def get_env_var(name, default_value='', fail_on_empty=True):
+def get_env_var(name, default_value="", fail_on_empty=True):
     """Get environment variable."""
     v = os.getenv(name, default_value)
-    if (v == '') and fail_on_empty:
-        raise Exception('environment variable {} empty or undefined'.format(name))
+    if (v == "") and fail_on_empty:
+        raise Exception("environment variable {} empty or undefined".format(name))
     return v
 
 
 def exec_command(cmd):
-    """Execute a command, returning stdout on success, raising an error on failure.
-    """
+    """Execute a command, returning stdout on success, raising an error on failure."""
     p = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if p.returncode != 0:
         raise Exception(
-            '\n\'{}\' failed:\n  EXIT CODE: {}\n  STDOUT: \'{}\'\n  STDERR: \'{}\'\n'.format(
-                cmd, p.returncode, p.stdout.strip(), p.stderr.strip()))
+            "\n'{}' failed:\n  EXIT CODE: {}\n  STDOUT: '{}'\n  STDERR: '{}'\n".format(
+                cmd, p.returncode, p.stdout.strip(), p.stderr.strip()
+            )
+        )
     return p.stdout
 
 
@@ -91,18 +93,24 @@ def ts_merge(t1, v1, t2, v2, oldest_time=None):
         v = (v1, v2)
         for j in [0, 1]:
             if len(t[j]) != len(v[j]):
-                raise Exception('precondition failed: len(t[{}]) ({}) != len(v[{}]) ({})'.format(
-                    j, len(t[j]), j, len(v[j])))
+                raise Exception(
+                    "precondition failed: len(t[{}]) ({}) != len(v[{}]) ({})".format(
+                        j, len(t[j]), j, len(v[j])
+                    )
+                )
             if len(t[j]) > 0:
                 if t[j][-1] >= sentinel_obs_time:
-                    raise Exception('precondition failed: t[{}][-1] >= {}'.format(
-                        j, sentinel_obs_time))
+                    raise Exception(
+                        "precondition failed: t[{}][-1] >= {}".format(j, sentinel_obs_time)
+                    )
             if len(t[j]) > 1:
                 for i in range(1, len(t[j])):
                     if t[j][i - 1] >= t[j][i]:
                         raise Exception(
-                            'precondition failed: t[{}][{}] ({}) >= t[{}][{}] ({})'.format(
-                                j, i - 1, t[j][i - 1], j, i, t[j][i]))
+                            "precondition failed: t[{}][{}] ({}) >= t[{}][{}] ({})".format(
+                                j, i - 1, t[j][i - 1], j, i, t[j][i]
+                            )
+                        )
 
     validate_precondition()
 
