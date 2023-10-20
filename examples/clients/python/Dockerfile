@@ -6,7 +6,6 @@ ENV PROJECT_DATASTORE_PATH="datastore"
 ENV PROJECT_PYTHON_PATH="examples/clients/python"
 ENV DOCKER_PATH="/clients/python"
 
-# hadolint ignore=DL3013
 RUN apt-get update \
     && apt-get -y upgrade \
     # Cleanup
@@ -18,6 +17,7 @@ RUN apt-get update \
 COPY "${PROJECT_DATASTORE_PATH}/protobuf/datastore.proto" "/protobuf/datastore.proto"
 COPY "${PROJECT_PYTHON_PATH}/requirements.txt" "${DOCKER_PATH}/requirements.txt"
 
+# hadolint ignore=DL3013
 RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir --upgrade -r "${DOCKER_PATH}/requirements.txt"
 
