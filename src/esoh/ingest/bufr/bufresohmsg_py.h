@@ -26,7 +26,7 @@ static std::map<int, TableD *> td;
 static Oscar oscar;
 
 long init_bufrtables_py(std::string tables_dir);
-std::list<std::string> bufresohmsg_py(long tableB_ptr, std::string fname);
+std::list<std::string> bufresohmsg_py(std::string fname);
 long destroy_bufrtables_py(std::string s);
 
 bool norbufr_init_oscar(std::string oscardb_dir);
