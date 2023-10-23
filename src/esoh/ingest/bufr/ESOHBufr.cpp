@@ -29,20 +29,30 @@ std::list<std::string> ESOHBufr::msg() const {
 
   const char *message_template = " { \
         \"id\" : \"\", \
-        \"version\" : \"v04\", \
+        \"version\" : \"v4.0\", \
         \"type\" : \"Feature\", \
         \"geometry\" : \"null\", \
         \"properties\" : { \
             \"data_id\": \"data_id\", \
             \"metadata_id\": \"metatata_id\", \
             \"datetime\" : \"null\", \
+            \"Conventions\" : \"Default BUFR Conventions\", \
+            \"summary\" : \"Default Summary\", \
+            \"license\" : \"http//spdx.org/licenses/CC-BY-4.0(CC-BY-4.0)\", \
+            \"naming_authority\" : \"no.met\", \
             \"content\" : { \
                 \"encoding\": \"utf-8\", \
                 \"standard_name\": \"\", \
                 \"unit\": \"\", \
                 \"size\": 0, \
                 \"value\": \"\"} \
-             } \
+             }, \
+        \"links\" : [ \
+            { \
+                \"href\" : \"Default BUFR links\", \
+                \"rel\" : \"canonical\" \
+            } \
+          ] \
         }";
 
   if (message.Parse(message_template).HasParseError()) {

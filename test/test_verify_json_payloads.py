@@ -17,12 +17,12 @@ from esoh.ingest.bufr.bufresohmsg_py import bufresohmsg_py, \
 @pytest.mark.parametrize("bufr_file_path", glob.glob("test/test_data/bufr/*[!9].buf[r]"))
 def test_verify_json_payload_bufr(bufr_file_path):
     # Load the schema
-    with open("src/esoh/schemas/e-soh-message-spec-bufr.json", "r") as file:
+    with open("src/esoh/schemas/e-soh-message-spec.json", "r") as file:
         e_soh_mqtt_message_schema = json.load(file)
 
     init_bufrtables_py("")
     init_oscar_py("./src/esoh/ingest/bufr/oscar/oscar_stations_all.json")
-    msg_build = ingest_to_pipeline(None, None, "testing", testing=True, schema_file="e-soh-message-spec-bufr.json")
+    msg_build = ingest_to_pipeline(None, None, "testing", testing=True, schema_file="e-soh-message-spec.json")
 
     json_payloads = msg_build._build_messages(bufr_file_path, input_type="bufr")
     destroy_bufrtables_py()
