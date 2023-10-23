@@ -55,6 +55,23 @@ bool norbufr_init_oscar(std::string oscardb_dir) {
   return ret;
 }
 
+bool norbufr_init_schema_template(std::string schema_path) {
+
+  std::cerr << "SCHEMA load: " << schema_path << "\n";
+  if (schema_path.size()) {
+    std::cerr << "SCHEMA load: "
+              << "\n";
+    std::string def_msg;
+    std::ifstream msgTemplate(schema_path.c_str(), std::ios_base::in);
+    char c;
+    while (msgTemplate.get(c)) {
+      def_msg += c;
+    }
+    bufr_input_schema = def_msg;
+  }
+  return true;
+}
+
 std::list<std::string> norbufr_bufresohmsg(std::string fname) {
 
   std::list<std::string> ret;
@@ -66,6 +83,7 @@ std::list<std::string> norbufr_bufresohmsg(std::string fname) {
 
     ESOHBufr *bufr = new ESOHBufr;
     bufr->setOscar(&oscar);
+    bufr->setMsgTemplate(bufr_input_schema);
 
     if (bufrFile >> *bufr) {
 
@@ -160,4 +178,6 @@ PYBIND11_MODULE(bufresohmsg_py, m) {
   m.def("bufrprint_py", &norbufr_bufrprint, "Print bufr message");
 
   m.def("init_oscar_py", &norbufr_init_oscar, "Init OSCAR db");
+  m.def("init_bufr_schema_py", &norbufr_init_schema_template,
+        "Init BUFR schema");
 }

@@ -17,16 +17,8 @@
 #include "ESOHBufr.h"
 #include "WSI.h"
 
-ESOHBufr::ESOHBufr() { oscar = 0; }
-
-void ESOHBufr::setOscar(Oscar *o) { oscar = o; }
-
-std::list<std::string> ESOHBufr::msg() const {
-
-  std::list<std::string> ret;
-
-  rapidjson::Document message;
-
+ESOHBufr::ESOHBufr() {
+  oscar = 0;
   const char *message_template = " { \
         \"id\" : \"\", \
         \"version\" : \"v4.0\", \
@@ -54,8 +46,24 @@ std::list<std::string> ESOHBufr::msg() const {
             } \
           ] \
         }";
+  setMsgTemplate(message_template);
+}
 
-  if (message.Parse(message_template).HasParseError()) {
+void ESOHBufr::setOscar(Oscar *o) { oscar = o; }
+
+void ESOHBufr::setMsgTemplate(std::string s) {
+  if (s.size()) {
+    msg_template = s;
+  }
+}
+
+std::list<std::string> ESOHBufr::msg() const {
+
+  std::list<std::string> ret;
+
+  rapidjson::Document message;
+
+  if (message.Parse(msg_template.c_str()).HasParseError()) {
     std::cerr << "ESOH message parsing Error!!!\n";
   }
 

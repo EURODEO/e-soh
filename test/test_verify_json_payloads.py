@@ -11,7 +11,8 @@ import json
 from esoh.ingest.bufr.bufresohmsg_py import bufresohmsg_py, \
     init_bufrtables_py, \
     init_oscar_py, \
-    destroy_bufrtables_py
+    destroy_bufrtables_py, \
+    init_bufr_schema_py
 
 # SurfaceLand_subset_29.bufr: 48987 missing geolocation and Oscar info
 @pytest.mark.parametrize("bufr_file_path", glob.glob("test/test_data/bufr/*[!9].buf[r]"))
@@ -22,7 +23,8 @@ def test_verify_json_payload_bufr(bufr_file_path):
 
     init_bufrtables_py("")
     init_oscar_py("./src/esoh/ingest/bufr/oscar/oscar_stations_all.json")
-    msg_build = ingest_to_pipeline(None, None, "testing", testing=True, schema_file="e-soh-message-spec.json")
+    init_bufr_schema_py("./src/esoh/schemas/bufr_to_e_soh_message.json");
+    msg_build = ingest_to_pipeline(None, None, "testing", testing=True)
 
     json_payloads = msg_build._build_messages(bufr_file_path, input_type="bufr")
     destroy_bufrtables_py()

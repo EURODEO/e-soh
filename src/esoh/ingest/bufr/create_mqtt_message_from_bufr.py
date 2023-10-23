@@ -5,7 +5,8 @@ import copy
 from esoh.ingest.bufr.bufresohmsg_py import bufresohmsg_py, \
     init_bufrtables_py, \
     init_oscar_py, \
-    destroy_bufrtables_py
+    destroy_bufrtables_py, \
+    init_bufr_schema_py
 
 
 def build_all_json_payloads_from_bufr(bufr_file_path: str) -> list[str]:
@@ -30,18 +31,20 @@ def build_all_json_payloads_from_bufr(bufr_file_path: str) -> list[str]:
     return ret_str
 
 
-def bufr2mqtt(bufr_file_path: str) -> list[str]:
+def bufr2mqtt(bufr_file_path: str = "") -> list[str]:
     ret_str = bufresohmsg_py(bufr_file_path)
     return ret_str
 
 if __name__ == "__main__":
 
-    test_path = "../../../../test/test_data/SYNOP_BUFR_2718.bufr"
+    test_path = "./test/test_data/bufr/SYNOP_BUFR_2718.bufr"
+    test_schema_path = "./src/esoh/schemas/bufr_to_e_soh_message.json";
     msg = ""
 
     # init_bufrtables_py("/usr/share/eccodes/definitions/bufr/tables/0/wmo/")
     init_bufrtables_py("")
-    init_oscar_py("./oscar/oscar_stations_all.json")
+    init_oscar_py("./src/esoh/ingest/bufr/oscar/oscar_stations_all.json")
+    init_bufr_schema_py("./src/esoh/schemas/bufr_to_e_soh_message.json");
 
     if len(sys.argv) > 1:
         for i, file_name in enumerate(sys.argv):
