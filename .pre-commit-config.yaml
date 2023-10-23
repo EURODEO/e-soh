@@ -65,3 +65,9 @@ repos:
         args: [
             "--ignore=DL3008", # Pin versions in apt get install.
           ]
+
+  # ShellCheck ~ Gives warnings and suggestions for bash/sh shell scripts
+  - repo: https://github.com/koalaman/shellcheck-precommit
+    rev: v0.9.0
+    hooks:
+      - id: shellcheck
