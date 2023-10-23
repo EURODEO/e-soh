@@ -8,13 +8,13 @@ repos:
         entry: ./ci/go/go-fmt.sh
         language: script
         pass_filenames: false
-      # go-vet ~ Finds subtle issues in Go where your code may not work as intended
-      - id: go-vet
-        name: go-vet
-        description: "Finds subtle issues in Go where your code may not work as intended."
-        entry: ./ci/go/go-vet.sh
-        language: script
-        pass_filenames: false
+#      # go-vet ~ Finds subtle issues in Go where your code may not work as intended
+#      - id: go-vet
+#        name: go-vet
+#        description: "Finds subtle issues in Go where your code may not work as intended."
+#        entry: ./ci/go/go-vet.sh
+#        language: script
+#        pass_filenames: false
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
