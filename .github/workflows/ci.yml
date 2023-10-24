@@ -10,83 +10,25 @@ on:
 permissions:
   contents: read
 
-env:
-  LINE_LENGTH: 120
-
 jobs:
-  docker-lint-hadolint:
+  pre-commit-hook:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: hadolint/hadolint-action@v3.1.0
-        with:
-          ignore: DL3008
-          recursive: true
-
-  go-fmt:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Run gofmt
-        run: ./ci/go/go-fmt.sh
-        shell: bash
-
-#  go-vet:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v3
-#
-#      - name: Run gofmt
-#        run: ./ci/go/go-vet.sh
-#        shell: bash
-
-  python-lint-black:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Source
-        uses: actions/checkout@v3
-
-      - name: Python Setup
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-          architecture: x64
-
-      - name: Install Black
-        run: pip install black
-
-      - name: Lint Python with Black
-        run: black . --check --line-length=${LINE_LENGTH}
-
-  python-lint-flake8:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Python Setup
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-          architecture: x64
-
-      - name: Checkout Source
-        uses: actions/checkout@v3
-
-      - name: Install flake8
-        run: pip install flake8
-
-      - name: Syntax Error Check
-        run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-
-      - name: Code Style Check
-        run: flake8 . --count --max-line-length=$LINE_LENGTH --ignore=W503 --show-source --statistics
-
-  shellcheck:
-    name: Shellcheck
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Run ShellCheck
-        uses: ludeeus/action-shellcheck@master
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v3
+    - name: Install pre-commit
+      run: python -m pip install pre-commit
+      shell: bash
+    - name: Show pre-commit requirements
+      run: python -m pip freeze --local
+      shell: bash
+    - uses: actions/cache@v3
+      with:
+        path: ~/.cache/pre-commit
+        key: pre-commit-3|${{ env.pythonLocation }}|${{ hashFiles('.pre-commit-config.yaml') }}
+    - name: Run pre-commit for all files
+      run: pre-commit run --config './.pre-commit-config.yaml' --all-files --color=always --show-diff-on-failure
+      shell: bash
 
   test:
     runs-on: ubuntu-latest
