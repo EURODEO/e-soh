@@ -82,8 +82,8 @@ First ensure `.env` has the following contents:
 
 ```text
 DYNAMICTIME=false
-LOTIME=1000-01-01T00:00:00Z
-HITIME=9999-12-31T23:59:59Z
+LOTIME=-30610227208
+HITIME=253402297199
 ```
 
 Then run the same five docker compose commands as in the previous example (without specifying environment variables).
