@@ -69,8 +69,8 @@ class datastore_connection():
             obstime_instant=dtime2tstamp(
                 datetime.strptime(nstime2stime(msg["properties"]["datetime"]),
                                   "%Y-%m-%dT%H:%M:%S%z")),
-            geo_point=dstore.Point(lat=int(msg["geometry"]["coordinates"][0]),
-                                   lon=int(msg["geometry"]["coordinates"][1]))
+            geo_point=dstore.Point(lat=float(msg["geometry"]["coordinates"][0]),
+                                   lon=float(msg["geometry"]["coordinates"][1]))
         )
 
         for i in ['id',
