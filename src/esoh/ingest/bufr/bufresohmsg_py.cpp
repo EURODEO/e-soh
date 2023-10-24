@@ -57,10 +57,7 @@ bool norbufr_init_oscar(std::string oscardb_dir) {
 
 bool norbufr_init_schema_template(std::string schema_path) {
 
-  std::cerr << "SCHEMA load: " << schema_path << "\n";
   if (schema_path.size()) {
-    std::cerr << "SCHEMA load: "
-              << "\n";
     std::string def_msg;
     std::ifstream msgTemplate(schema_path.c_str(), std::ios_base::in);
     char c;
@@ -108,6 +105,7 @@ std::list<std::string> norbufr_bufresohmsg(std::string fname) {
       std::list<std::string> msg = bufr->msg();
       ret.insert(ret.end(), msg.begin(), msg.end());
     }
+    delete bufr;
   }
 
   return ret;
