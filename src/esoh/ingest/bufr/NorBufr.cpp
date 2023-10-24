@@ -485,9 +485,9 @@ double NorBufr::getValue(const Descriptor &d, double) const {
     uint64_t value = NorBufrIO::getBitValue(
         d.startBit(), dm->datawidth(), !(d.f() == 0 && d.x() == 31), bitref);
 
+    dvalue = static_cast<double>(value);
     if (value == std::numeric_limits<uint64_t>::max())
-      return (value);
-    dvalue = value;
+      return (dvalue);
 
     if (dm->reference())
       dvalue += dm->reference();
@@ -524,7 +524,7 @@ int NorBufr::getValue(const Descriptor &d, int) const {
     value = NorBufrIO::getBitValue(d.startBit(), dm->datawidth(),
                                    !(d.f() == 0 && d.x() == 31), bitref);
 
-    if (value == std::numeric_limits<int64_t>::max())
+    if (value == std::numeric_limits<int>::max())
       return (value);
 
     if (dm->reference())
