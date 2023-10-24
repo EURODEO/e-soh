@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 env:
-  LINE_LENGTH: 99  # TODO: would we like to increase this to 120?
+  LINE_LENGTH: 120
 
 jobs:
   docker-lint-hadolint:
