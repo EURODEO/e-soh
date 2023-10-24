@@ -50,9 +50,7 @@ def collect_data(ts_mdata, obs_mdata):
 
 
 def get_data_for_time_series(get_obs_request):
-    with grpc.insecure_channel(
-        f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}"
-    ) as channel:
+    with grpc.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") as channel:
         grpc_stub = dstore_grpc.DatastoreStub(channel)
         response = grpc_stub.GetObservations(get_obs_request)
 
@@ -68,9 +66,7 @@ def get_data_for_time_series(get_obs_request):
             referencing = [
                 ReferenceSystemConnectionObject(
                     coordinates=["y", "x"],
-                    system=ReferenceSystem(
-                        type="GeographicCRS", id="http://www.opengis.net/def/crs/EPSG/0/4326"
-                    ),
+                    system=ReferenceSystem(type="GeographicCRS", id="http://www.opengis.net/def/crs/EPSG/0/4326"),
                 ),
                 ReferenceSystemConnectionObject(
                     coordinates=["z"],
@@ -92,9 +88,7 @@ def get_data_for_time_series(get_obs_request):
                 for ((_, _, _), param_id, values) in group1
             }
             ranges = {
-                param_id: NdArray(
-                    values=values, axisNames=["t", "y", "x"], shape=[len(values), 1, 1]
-                )
+                param_id: NdArray(values=values, axisNames=["t", "y", "x"], shape=[len(values), 1, 1])
                 for ((_, _, _), param_id, values) in group2
             }
 
@@ -113,20 +107,14 @@ def get_data_for_time_series(get_obs_request):
     response_model=FeatureCollection,
     response_model_exclude_none=True,
 )
-def get_locations(
-    bbox: str = Query(..., example="5.0,52.0,6.0,52.1")
-) -> FeatureCollection:  # Hack to use string
+def get_locations(bbox: str = Query(..., example="5.0,52.0,6.0,52.1")) -> FeatureCollection:  # Hack to use string
     left, bottom, right, top = map(str.strip, bbox.split(","))
     poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
-    with grpc.insecure_channel(
-        f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}"
-    ) as channel:
+    with grpc.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") as channel:
         grpc_stub = dstore_grpc.DatastoreStub(channel)
         ts_request = dstore.GetObsRequest(
             instruments=["tn"],  # Hack
-            inside=dstore.Polygon(
-                points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
-            ),
+            inside=dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]),
         )
         ts_response = grpc_stub.GetObservations(ts_request)
 
@@ -194,8 +182,6 @@ def get_data_area(
     assert poly.geom_type == "Polygon"
     get_obs_request = dstore.GetObsRequest(
         instruments=list(map(str.strip, parameter_name.split(","))),
-        inside=dstore.Polygon(
-            points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
-        ),
+        inside=dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]),
     )
     return get_data_for_time_series(get_obs_request)

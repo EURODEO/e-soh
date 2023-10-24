@@ -13,9 +13,7 @@ NUMBER_OF_STATIONS = 55
 
 @pytest.fixture(scope="session")
 def grpc_stub():
-    with grpc.insecure_channel(
-        f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}"
-    ) as channel:
+    with grpc.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") as channel:
         yield dstore_grpc.DatastoreStub(channel)
 
 

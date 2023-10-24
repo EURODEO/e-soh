@@ -19,9 +19,7 @@ def parse_args(args):
         exit_on_error=False,
     )
     parser.add_argument("-v", "--verbose", action="store_true", help="Enable logging to stdout.")
-    parser.add_argument(
-        "-c", "--cfg_file", default="config.json", type=pathlib.Path, help="Config file."
-    )
+    parser.add_argument("-c", "--cfg_file", default="config.json", type=pathlib.Path, help="Config file.")
     parser.add_argument("-s", "--random_seed", type=int, default=-1, help="Random seed.")
 
     pres = parser.parse_args(args)

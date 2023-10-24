@@ -16,9 +16,7 @@ def select_weighted_value(x):
         raise Exception("can't select from empty list")
     for item in x:
         if item[1] <= 0:
-            raise Exception(
-                "non-positive weight not allowed (value: {}, weight: {})".format(item[0], item[1])
-            )
+            raise Exception("non-positive weight not allowed (value: {}, weight: {})".format(item[0], item[1]))
 
     w_sum_n = sum([z[1] for z in x])  # get total weight sum
     r = random.random() * w_sum_n  # get random value within total weight sum
@@ -94,15 +92,11 @@ def ts_merge(t1, v1, t2, v2, oldest_time=None):
         for j in [0, 1]:
             if len(t[j]) != len(v[j]):
                 raise Exception(
-                    "precondition failed: len(t[{}]) ({}) != len(v[{}]) ({})".format(
-                        j, len(t[j]), j, len(v[j])
-                    )
+                    "precondition failed: len(t[{}]) ({}) != len(v[{}]) ({})".format(j, len(t[j]), j, len(v[j]))
                 )
             if len(t[j]) > 0:
                 if t[j][-1] >= sentinel_obs_time:
-                    raise Exception(
-                        "precondition failed: t[{}][-1] >= {}".format(j, sentinel_obs_time)
-                    )
+                    raise Exception("precondition failed: t[{}][-1] >= {}".format(j, sentinel_obs_time))
             if len(t[j]) > 1:
                 for i in range(1, len(t[j])):
                     if t[j][i - 1] >= t[j][i]:

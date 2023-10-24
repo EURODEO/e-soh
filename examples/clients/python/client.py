@@ -84,9 +84,7 @@ def call_get_obs_in_polygon(stub):
 
 
 if __name__ == "__main__":
-    with grpc.insecure_channel(
-        f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}"
-    ) as channel:
+    with grpc.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") as channel:
         stub = dstore_grpc.DatastoreStub(channel)
 
         version = "version_dummy"

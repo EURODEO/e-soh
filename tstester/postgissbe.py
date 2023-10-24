@@ -182,9 +182,7 @@ class PostGISSBE(StorageBackend):
         if self._verbose:
             print("setting observations in PostGIS SBE for time series >>>", file=sys.stderr)
             print(
-                "    ts: {}\n    times: (size: {}), values: (size: {})".format(
-                    ts.__dict__, len(times), len(values)
-                ),
+                "    ts: {}\n    times: (size: {}), values: (size: {})".format(ts.__dict__, len(times), len(values)),
                 file=sys.stderr,
             )
 

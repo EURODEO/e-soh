@@ -61,9 +61,7 @@ def csv_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
 def insert_data(observation_request_messages: List):
     workers = int(cpu_count())
 
-    with grpc.insecure_channel(
-        f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}"
-    ) as channel:
+    with grpc.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") as channel:
         client = dstore_grpc.DatastoreStub(channel=channel)
         print(f"Inserting {len(observation_request_messages)} bulk observations requests.")
         obs_insert_start = perf_counter()
@@ -81,10 +79,7 @@ if __name__ == "__main__":
     file_path = Path(Path(__file__).parents[2] / "test-data" / "FMI" / "20221231.csv")
     print(file_path)
     observation_request_messages = csv_file_to_requests(file_path=file_path)
-    print(
-        "Finished creating the time series and observation requests "
-        f"{perf_counter() - create_requests_start}."
-    )
+    print("Finished creating the time series and observation requests " f"{perf_counter() - create_requests_start}.")
 
     insert_data(
         observation_request_messages=observation_request_messages,

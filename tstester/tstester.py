@@ -228,21 +228,13 @@ class TsTester:
 
         curr_time = int(common.now_secs())
 
-        FillStorage(self._verbose, self._config, self._storage_backends, tss, curr_time).execute(
-            test_stats
-        )
+        FillStorage(self._verbose, self._config, self._storage_backends, tss, curr_time).execute(test_stats)
 
-        AddNewObs(self._verbose, self._config, self._storage_backends, tss, curr_time).execute(
-            test_stats
-        )
+        AddNewObs(self._verbose, self._config, self._storage_backends, tss, curr_time).execute(test_stats)
 
-        GetObsAll(self._verbose, self._config, self._storage_backends, curr_time).execute(
-            test_stats
-        )
+        GetObsAll(self._verbose, self._config, self._storage_backends, curr_time).execute(test_stats)
 
-        GetObsInCircle(self._verbose, self._config, self._storage_backends, curr_time).execute(
-            test_stats
-        )
+        GetObsInCircle(self._verbose, self._config, self._storage_backends, curr_time).execute(test_stats)
 
         # TODO: more tests (subclasses of TestBase):
         # - GetObsInPolygon
@@ -287,16 +279,12 @@ def create_time_series(verbose, config):
     min_lat = config["bbox"]["min_lat"]
     max_lat = config["bbox"]["max_lat"]
     if (min_lat < -90) or (min_lat >= max_lat) or (max_lat > 90):
-        raise Exception(
-            "invalid latitude range in bounding box: [{}, {}]".format(min_lat, max_lat)
-        )
+        raise Exception("invalid latitude range in bounding box: [{}, {}]".format(min_lat, max_lat))
 
     min_lon = config["bbox"]["min_lon"]
     max_lon = config["bbox"]["max_lon"]
     if (min_lon < -180) or (min_lon >= max_lon) or (max_lon > 180):
-        raise Exception(
-            "invalid longitude range in bounding box: [{}, {}]".format(min_lon, max_lon)
-        )
+        raise Exception("invalid longitude range in bounding box: [{}, {}]".format(min_lon, max_lon))
 
     tss = []
     used_locs = set([])  # lat,lon locations used so far

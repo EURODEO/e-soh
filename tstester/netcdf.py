@@ -81,9 +81,7 @@ class NetCDF:
             fvalues = dset["value"][:]
 
             # merge
-            mtimes, mvalues = common.ts_merge(
-                ftimes.tolist(), fvalues.tolist(), times, values, oldest_time
-            )
+            mtimes, mvalues = common.ts_merge(ftimes.tolist(), fvalues.tolist(), times, values, oldest_time)
 
             # replace file variables with merged arrays
             dset["time"][:] = mtimes

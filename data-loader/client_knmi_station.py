@@ -21,9 +21,7 @@ from parameters import knmi_parameter_names
 def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
     observation_request_messages = []
 
-    with xr.open_dataset(
-        file_path, engine="netcdf4", chunks=None
-    ) as file:  # chunks=None to disable dask
+    with xr.open_dataset(file_path, engine="netcdf4", chunks=None) as file:  # chunks=None to disable dask
         for station_id, latitude, longitude, height in zip(
             file["station"].values,
             file["lat"].values[0],
@@ -40,15 +38,11 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                     platform=station_id,
                     instrument=param_id,
                     title=param_file.long_name,
-                    standard_name=param_file.standard_name
-                    if "standard_name" in param_file.attrs
-                    else None,
+                    standard_name=param_file.standard_name if "standard_name" in param_file.attrs else None,
                     unit=param_file.units if "units" in param_file.attrs else None,
                 )
 
-                for time, obs_value in zip(
-                    pd.to_datetime(param_file["time"].data).to_pydatetime(), param_file.data
-                ):
+                for time, obs_value in zip(pd.to_datetime(param_file["time"].data).to_pydatetime(), param_file.data):
                     ts = Timestamp()
                     ts.FromDatetime(time)
                     obs_mdata = dstore.ObsMetadata(
@@ -68,9 +62,7 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
 def insert_data(observation_request_messages: List):
     workers = int(cpu_count())
 
-    with grpc.insecure_channel(
-        f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}"
-    ) as channel:
+    with grpc.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") as channel:
         client = dstore_grpc.DatastoreStub(channel=channel)
 
         print(f"Inserting {len(observation_request_messages)} bulk observations requests.")
@@ -88,10 +80,7 @@ if __name__ == "__main__":
     create_requests_start = perf_counter()
     file_path = Path(Path(__file__).parents[2] / "test-data" / "KNMI" / "20221231.nc")
     observation_request_messages = netcdf_file_to_requests(file_path=file_path)
-    print(
-        "Finished creating the time series and observation requests "
-        f"{perf_counter() - create_requests_start}."
-    )
+    print("Finished creating the time series and observation requests " f"{perf_counter() - create_requests_start}.")
 
     insert_data(
         observation_request_messages=observation_request_messages,
