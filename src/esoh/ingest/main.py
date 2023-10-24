@@ -73,10 +73,10 @@ class ingest_to_pipeline():
         """
         Internal method for deciding what type of input is being provided.
         """
-        match message.split(".")[-1]:
+        match message.split(".")[-1].lower():
             case "nc":
                 return "netCDF"
-            case "bufr":
+            case ["bufr"]|["buf"]|["data[0-9][0-9][0-9][0-9]"]:
                 return "bufr"
             case _:
                 logger.critical(f"Unknown filetype provided. Got {message.split('.')[-1]}")
