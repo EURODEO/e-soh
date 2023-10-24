@@ -373,8 +373,12 @@ func (sbe *PostgreSQL) PutObservations(request *datastore.PutObsRequest) error {
 			return fmt.Errorf("getObsTime() failed: %v", err)
 		}
 
-		if obsTime.AsTime().Before(loTime) || obsTime.AsTime().After(hiTime) {
-			continue // skip observations outside the valid time range
+		if obsTime.AsTime().Before(loTime) {
+			return fmt.Errorf("obs time too old: %v < %v", obsTime.AsTime(), loTime)
+		}
+
+		if obsTime.AsTime().Before(loTime) {
+			return fmt.Errorf("obs time too new: %v > %v", obsTime.AsTime(), hiTime)
 		}
 
 		tsID, err := getTimeSeriesID(sbe.Db, obs.GetTsMdata(), tsIDCache)
