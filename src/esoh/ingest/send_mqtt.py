@@ -13,6 +13,7 @@ class mqtt_connection():
 
         # Initiate MQTT Client
         self.pub_client = mqtt.Client(client_id="")
+        self.pub_client.enable_logger(logger=logger)
 
         # Connect with MQTT Broker
         self.pub_client.connect(self.mqtt_host)

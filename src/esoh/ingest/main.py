@@ -6,9 +6,9 @@ from jsonschema import Draft202012Validator
 import json
 
 import pkg_resources
-
 import logging
 import os
+import grpc
 
 logger = logging.getLogger(__name__)
 
@@ -61,8 +61,14 @@ class ingest_to_pipeline():
         """
         for msg in messages:
             if msg:
-                self.dstore.ingest(msg)
-                self.mqtt.send_message(msg)
+                try:
+                    self.dstore.ingest(msg)
+                    self.mqtt.send_message(msg)
+                except grpc.RpcError:
+                    self.dstore.is_channel_ready()
+                    pass
+                except Exception:
+                    pass
 
     def _decide_input_type(self, message) -> str:
         """
