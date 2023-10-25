@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	dynamicTime bool // whether the valid time range is considered dynamic or static
+	dynamicTime            bool // whether the valid time range is considered dynamic or static
 	loTimeSecs, hiTimeSecs int64
 )
 
@@ -21,13 +21,13 @@ var (
 //
 // The valid time range is defined like this if dynamicTime is true:
 //
-//     [now - loTimeSecs, now - hiTimeSecs]
+//	[now - loTimeSecs, now - hiTimeSecs]
 //
 // where {lo|hi}TimeSecs is converted directly as integer seconds from {LO|HI}TIME.
 //
 // If dynamicTime is false, the valid time range is defined like this:
 //
-//     [loTimeSecs, hiTimeSecs]
+//	[loTimeSecs, hiTimeSecs]
 //
 // where {lo|hi}TimeSecs is either converted directly as integer seconds from {LO|HI}TIME, or
 // converted indirectly from {LO|HI}TIME represented as an ISO-8601 datetime of the exact form
@@ -53,7 +53,7 @@ func initValidTimeRange() {
 				if t, err = iso8601ToTime(val0); err != nil {
 					log.Printf(
 						"WARNING: failed to parse %s as an ISO-8601 datetime of the form "+
-						"2023-10-10T00:00:00Z: %s; falling back to default secs: %d",
+							"2023-10-10T00:00:00Z: %s; falling back to default secs: %d",
 						name, val0, defaultVal)
 					val = defaultVal
 				} else {
@@ -105,11 +105,11 @@ var iso8601layout = "2006-01-02T15:04:05Z" // note upper case!
 // iso8601ToTime converts time string ts of the form YYYY-MM-DDThh:mm:ssZ to time.Time.
 // Returns (val, nil) upon success, otherwise (time.Time{}, error).
 func iso8601ToTime(ts string) (time.Time, error) {
-        tm, err := time.Parse(iso8601layout, strings.ToUpper(ts))
-        if err != nil {
-                return time.Time{}, fmt.Errorf("time.Parse() failed for %s: %v", ts, err)
-        }
-        return tm, nil
+	tm, err := time.Parse(iso8601layout, strings.ToUpper(ts))
+	if err != nil {
+		return time.Time{}, fmt.Errorf("time.Parse() failed for %s: %v", ts, err)
+	}
+	return tm, nil
 }
 
 // Getenv returns the value of an environment variable or a default value if
@@ -132,7 +132,7 @@ func Tstamp2float64Secs(tstamp *timestamppb.Timestamp) float64 {
 func GetValidTimeRange() (time.Time, time.Time) {
 	if dynamicTime { // Case 1: dynamic time, i.e. relative to current time
 		now := time.Now().Unix()
-		return time.Unix(now - loTimeSecs, 0), time.Unix(now - hiTimeSecs, 0)
+		return time.Unix(now-loTimeSecs, 0), time.Unix(now-hiTimeSecs, 0)
 	}
 
 	// Case 2: static time, i.e. based on fixed time (useful e.g. for certain testing!)
