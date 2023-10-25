@@ -20,6 +20,7 @@ from covjson_pydantic.observed_property import ObservedProperty
 from covjson_pydantic.parameter import Parameter
 from covjson_pydantic.reference_system import ReferenceSystem
 from covjson_pydantic.reference_system import ReferenceSystemConnectionObject
+from covjson_pydantic.unit import Unit
 from fastapi import FastAPI
 from fastapi import Path
 from fastapi import Query
@@ -43,8 +44,9 @@ def collect_data(ts_mdata, obs_mdata):
     )  # HACK: str -> float
     (times, values) = zip(*tuples)
     param_id = ts_mdata.instrument
+    unit = ts_mdata.unit
 
-    return (lat, lon, times), param_id, values
+    return (lat, lon, times), param_id, unit, values
 
 
 def get_data_for_time_series(get_obs_request):
@@ -83,12 +85,14 @@ def get_data_for_time_series(get_obs_request):
 
             parameters = {}
             ranges = {}
-            for (_, _, _), param_id, values in group:
+            for (_, _, _), param_id, unit, values in group:
                 if all(math.isnan(v) for v in values):
                     continue  # Drop ranges if completely nan.
                     # TODO: Drop the whole coverage if it becomes empty?
                 values_no_nan = [v if not math.isnan(v) else None for v in values]
-                parameters[param_id] = Parameter(observedProperty=ObservedProperty(label={"en": param_id}))
+                parameters[param_id] = Parameter(
+                    observedProperty=ObservedProperty(label={"en": param_id}), unit=Unit(label={"en": unit})
+                )  # TODO: Also fill symbol?
                 ranges[param_id] = NdArray(
                     values=values_no_nan, axisNames=["t", "y", "x"], shape=[len(values_no_nan), 1, 1]
                 )
