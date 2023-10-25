@@ -13,6 +13,7 @@ from esoh.ingest.bufr.bufresohmsg_py import init_bufrtables_py, \
     destroy_bufrtables_py, \
     init_bufr_schema_py
 
+
 @pytest.mark.timeout(300)
 @pytest.mark.parametrize("bufr_file_path",
                          glob.glob("test/test_data/bufr/*.buf*")
