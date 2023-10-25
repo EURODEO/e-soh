@@ -111,7 +111,7 @@ input_params_polygon = [
         ["06260", "06310", "06323", "06340", "06348", "06350", "06356"],
     ),
     (
-        # All stations in the Netherlands with have RH
+        # All stations in the Netherlands which have RH
         ((56.00, 2.85), (56.00, 7.22), (50.75, 7.22), (50.75, 2.85)),
         ["rh"],
         # fmt: off
