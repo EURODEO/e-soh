@@ -8,13 +8,15 @@ import xarray as xr
 from jsonschema import Draft202012Validator, ValidationError
 import json
 
-from esoh.ingest.bufr.bufresohmsg_py import bufresohmsg_py, \
-    init_bufrtables_py, \
+from esoh.ingest.bufr.bufresohmsg_py import init_bufrtables_py, \
     init_oscar_py, \
     destroy_bufrtables_py, \
     init_bufr_schema_py
 
-@pytest.mark.parametrize("bufr_file_path", glob.glob("test/test_data/bufr/*.buf*")+glob.glob("test/test_data/bufr/data????"))
+
+@pytest.mark.parametrize("bufr_file_path",
+                         glob.glob("test/test_data/bufr/*.buf*")
+                         + glob.glob("test/test_data/bufr/data????"))
 def test_verify_json_payload_bufr(bufr_file_path):
     # Load the schema
     with open("src/esoh/schemas/e-soh-message-spec.json", "r") as file:
@@ -22,7 +24,7 @@ def test_verify_json_payload_bufr(bufr_file_path):
 
     init_bufrtables_py("")
     init_oscar_py("./src/esoh/ingest/bufr/oscar/oscar_stations_all.json")
-    init_bufr_schema_py("./src/esoh/schemas/bufr_to_e_soh_message.json");
+    init_bufr_schema_py("./src/esoh/schemas/bufr_to_e_soh_message.json")
     msg_build = ingest_to_pipeline(None, None, "testing", testing=True)
 
     json_payloads = msg_build._build_messages(bufr_file_path, input_type="bufr")

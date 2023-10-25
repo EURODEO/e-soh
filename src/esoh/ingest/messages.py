@@ -5,16 +5,8 @@ import xarray as xr
 import uuid
 import logging
 
-import json
-import copy
-
 from esoh.ingest.netCDF.extract_metadata_netcdf import build_all_json_payloads_from_netCDF
 from esoh.ingest.bufr.create_mqtt_message_from_bufr import build_all_json_payloads_from_bufr
-
-from esoh.ingest.bufr.bufresohmsg_py import bufresohmsg_py, \
-    init_bufrtables_py, \
-    init_oscar_py, \
-    destroy_bufrtables_py
 
 from jsonschema import ValidationError
 
