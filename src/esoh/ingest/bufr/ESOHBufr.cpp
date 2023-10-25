@@ -116,7 +116,7 @@ std::list<std::string> ESOHBufr::msg() const {
         if (value_str == "MISSING")
           break;
 
-        if (v.x() > 10 && !platform_check) {
+        if (v.x() >= 10 && !platform_check) {
           // Check station_id at OSCAR
           platform_check = true;
           if (wigos_id.getWigosLocalId().size()) {
@@ -130,7 +130,27 @@ std::list<std::string> ESOHBufr::msg() const {
                 setPlatformName(std::string(st_value["name"].GetString()),
                                 subset_message, true);
               }
+              if (lat < -9999) {
+                if (st_value.HasMember("latitude")) {
+                  if (st_value["latitude"].IsDouble()) {
+                    lat = st_value["latitude"].GetDouble();
+                    setLocation(lat, lon, hei, subset_message);
+                  }
+                }
+              }
+              if (lon < -9999) {
+                if (st_value.HasMember("longitude")) {
+                  if (st_value["longitude"].IsDouble()) {
+                    lon = st_value["longitude"].GetDouble();
+                    setLocation(lat, lon, hei, subset_message);
+                  }
+                }
+              }
             }
+          }
+          // Missing mandatory geolocation values. Skip this subset
+          if (lat < -9999 || lon < -9999) {
+            goto subset_end;
           }
         }
 
@@ -547,6 +567,7 @@ std::list<std::string> ESOHBufr::msg() const {
       }
       }
     }
+  subset_end:
     subsetnum++;
   }
 
