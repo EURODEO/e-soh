@@ -14,8 +14,7 @@ from esoh.ingest.bufr.bufresohmsg_py import bufresohmsg_py, \
     destroy_bufrtables_py, \
     init_bufr_schema_py
 
-# SurfaceLand_subset_29.bufr: 48987 missing geolocation and Oscar info
-@pytest.mark.parametrize("bufr_file_path", glob.glob("test/test_data/bufr/*[!9].buf[r]"))
+@pytest.mark.parametrize("bufr_file_path", glob.glob("test/test_data/bufr/*.buf*")+glob.glob("test/test_data/bufr/data????"))
 def test_verify_json_payload_bufr(bufr_file_path):
     # Load the schema
     with open("src/esoh/schemas/e-soh-message-spec.json", "r") as file:
