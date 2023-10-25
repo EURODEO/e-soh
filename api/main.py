@@ -1,6 +1,6 @@
 # Run with:
 # For developing:    uvicorn main:app --reload
-import itertools
+import math
 import os
 from datetime import timezone
 from itertools import groupby
@@ -80,15 +80,18 @@ def get_data_for_time_series(get_obs_request):
                 ),
                 referencing=referencing,
             )
-            group1, group2 = itertools.tee(group, 2)  # Want to use generator twice
-            parameters = {
-                param_id: Parameter(observedProperty=ObservedProperty(label={"en": param_id}))
-                for ((_, _, _), param_id, _) in group1
-            }
-            ranges = {
-                param_id: NdArray(values=values, axisNames=["t", "y", "x"], shape=[len(values), 1, 1])
-                for ((_, _, _), param_id, values) in group2
-            }
+
+            parameters = {}
+            ranges = {}
+            for (_, _, _), param_id, values in group:
+                if all(math.isnan(v) for v in values):
+                    continue  # Drop ranges if completely nan.
+                    # TODO: Drop the whole coverage if it becomes empty?
+                values_no_nan = [v if not math.isnan(v) else None for v in values]
+                parameters[param_id] = Parameter(observedProperty=ObservedProperty(label={"en": param_id}))
+                ranges[param_id] = NdArray(
+                    values=values_no_nan, axisNames=["t", "y", "x"], shape=[len(values_no_nan), 1, 1]
+                )
 
             coverages.append(Coverage(domain=domain, parameters=parameters, ranges=ranges))
 
@@ -144,7 +147,6 @@ def get_data_location_id(
 ):
     # TODO: There is no error handling of any kind at the moment!
     #  This is just a quick and dirty demo
-    # TODO: Code does not handle nan when serialising to JSON
     # TODO: Get time interval from request (example to create protobuf timestamp:
     # from_time = Timestamp()
     # from_time.FromDatetime(datetime(2022, 12, 31))
