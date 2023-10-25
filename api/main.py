@@ -31,8 +31,6 @@ from shapely import buffer
 from shapely import geometry
 from shapely import wkt
 
-# TODO: Order in CoverageJSON dictionaries (parameters, ranges) is not fixed!
-
 app = FastAPI()
 app.add_middleware(BrotliMiddleware)
 
@@ -58,8 +56,8 @@ def get_data_for_time_series(get_obs_request):
         coverages = []
         data = [collect_data(md.ts_mdata, md.obs_mdata) for md in response.observations]
 
-        # Need to sort before using groupBy
-        data.sort(key=lambda x: x[0])
+        # Need to sort before using groupBy. Also sort on param_id to get consistently sorted output
+        data.sort(key=lambda x: (x[0], x[1]))
         # The multiple coverage logic is not needed for this endpoint,
         # but we want to share this code between endpoints
         for (lat, lon, times), group in groupby(data, lambda x: x[0]):
@@ -85,7 +83,7 @@ def get_data_for_time_series(get_obs_request):
             group1, group2 = itertools.tee(group, 2)  # Want to use generator twice
             parameters = {
                 param_id: Parameter(observedProperty=ObservedProperty(label={"en": param_id}))
-                for ((_, _, _), param_id, values) in group1
+                for ((_, _, _), param_id, _) in group1
             }
             ranges = {
                 param_id: NdArray(values=values, axisNames=["t", "y", "x"], shape=[len(values), 1, 1])
@@ -107,6 +105,8 @@ def get_data_for_time_series(get_obs_request):
     response_model=FeatureCollection,
     response_model_exclude_none=True,
 )
+# We can currently only query data, even if we only need metadata like for this endpoint
+# Maybe it would be better to only query a limited set of data instead of everything (meaning 24 hours)
 def get_locations(bbox: str = Query(..., example="5.0,52.0,6.0,52.1")) -> FeatureCollection:  # Hack to use string
     left, bottom, right, top = map(str.strip, bbox.split(","))
     poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
@@ -128,7 +128,7 @@ def get_locations(bbox: str = Query(..., example="5.0,52.0,6.0,52.1")) -> Featur
                     coordinates=(ts.obs_mdata[0].geo_point.lon, ts.obs_mdata[0].geo_point.lat),
                 ),
             )  # HACK: Assume loc the same
-            for ts in ts_response.observations
+            for ts in sorted(ts_response.observations, key=lambda ts: ts.ts_mdata.platform)
         ]
         return FeatureCollection(features=features, type="FeatureCollection")
 
