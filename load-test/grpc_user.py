@@ -1,5 +1,7 @@
 import time
-from typing import Any, Callable
+from typing import Any
+from typing import Callable
+
 import grpc
 import grpc.experimental.gevent as grpc_gevent
 from grpc_interceptor import ClientInterceptor
@@ -59,4 +61,3 @@ class GrpcUser(User):
         self._channel = grpc.intercept_channel(self._channel, interceptor)
 
         self.stub = self.stub_class(self._channel)
-

@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 # tested with Python 3.11
 # Generate protobuf code with following command from top level directory:
-# python -m grpc_tools.protoc --proto_path=datastore/protobuf datastore.proto --python_out=examples/clients/python --grpc_python_out=examples/clients/python
-
+# python -m grpc_tools.protoc --proto_path=datastore/protobuf datastore.proto --python_out=examples/clients/python --grpc_python_out=examples/clients/python  # noqa: E501
 import os
-from datetime import datetime, timezone
-
-from google.protobuf.timestamp_pb2 import Timestamp
+from datetime import datetime
+from datetime import timezone
 
 import datastore_pb2 as dstore
 import datastore_pb2_grpc as dstore_grpc
 import grpc
+from google.protobuf.timestamp_pb2 import Timestamp
 
 
 def dtime2tstamp(dtime):
@@ -20,33 +19,33 @@ def dtime2tstamp(dtime):
 
 
 # callPutObs demonstrates how to insert observations in the datastore.
-def callPutObs(stub, version, type, standard_name, unit, value):
+def call_put_obs(stub, version, type, standard_name, unit, value):
     ts_mdata = dstore.TSMetadata(
-        version = version,
-        type = type,
-        standard_name = standard_name,
-        unit = unit,
+        version=version,
+        type=type,
+        standard_name=standard_name,
+        unit=unit,
         # add more attributes as required ...
     )
 
     obs_mdata = dstore.ObsMetadata(
-        id = 'id_dummy',
-        geo_point = dstore.Point(
-            lat = 59.91,
-            lon = 10.75,
+        id="id_dummy",
+        geo_point=dstore.Point(
+            lat=59.91,
+            lon=10.75,
         ),
-        pubtime = dtime2tstamp(datetime(2023, 1, 1, 0, 0, 10, 0, tzinfo = timezone.utc)),
-        data_id = 'data_id_dummy',
-        obstime_instant = dtime2tstamp(datetime(2023, 1, 1, 0, 0, 0, 0, tzinfo = timezone.utc)),
-        value = value,
+        pubtime=dtime2tstamp(datetime(2023, 1, 1, 0, 0, 10, 0, tzinfo=timezone.utc)),
+        data_id="data_id_dummy",
+        obstime_instant=dtime2tstamp(datetime(2023, 1, 1, 0, 0, 0, 0, tzinfo=timezone.utc)),
+        value=value,
         # add more attributes as required ...
     )
 
     request = dstore.PutObsRequest(
-        observations = [  # insert only a single observation for now
+        observations=[  # insert only a single observation for now
             dstore.Metadata1(
-                ts_mdata = ts_mdata,
-                obs_mdata = obs_mdata,
+                ts_mdata=ts_mdata,
+                obs_mdata=obs_mdata,
             )
         ],
     )
@@ -57,11 +56,11 @@ def callPutObs(stub, version, type, standard_name, unit, value):
 
 # callGetObsInTimeRange demonstrates how to retrieve from the datastore all observations in an
 # obs time range.
-def callGetObsInTimeRange(stub):
+def call_get_obs_in_time_range(stub):
     request = dstore.GetObsRequest(
-        interval = dstore.TimeInterval(
-            start = dtime2tstamp(datetime(2023, 1, 1, 0, 0, 0, 0, tzinfo = timezone.utc)),
-            end = dtime2tstamp(datetime(2023, 1, 2, 0, 0, 0, 0, tzinfo = timezone.utc)),
+        interval=dstore.TimeInterval(
+            start=dtime2tstamp(datetime(2023, 1, 1, 0, 0, 0, 0, tzinfo=timezone.utc)),
+            end=dtime2tstamp(datetime(2023, 1, 2, 0, 0, 0, 0, tzinfo=timezone.utc)),
         )
     )
     response = stub.GetObservations(request)
@@ -71,37 +70,37 @@ def callGetObsInTimeRange(stub):
 
 # callGetObsInPolygon demonstrates how to retrieve from the datastore all observations in a
 # polygon.
-def callGetObsInPolygon(stub):
+def call_get_obs_in_polygon(stub):
     points = []
-    points.append(dstore.Point(lat = 59.90, lon = 10.70))
-    points.append(dstore.Point(lat = 59.90, lon = 10.80))
-    points.append(dstore.Point(lat = 60, lon = 10.80))
-    points.append(dstore.Point(lat = 60, lon = 10.70))
+    points.append(dstore.Point(lat=59.90, lon=10.70))
+    points.append(dstore.Point(lat=59.90, lon=10.80))
+    points.append(dstore.Point(lat=60, lon=10.80))
+    points.append(dstore.Point(lat=60, lon=10.70))
 
-    request = dstore.GetObsRequest(inside  =dstore.Polygon(points = points))
+    request = dstore.GetObsRequest(inside=dstore.Polygon(points=points))
     response = stub.GetObservations(request)
 
     return response
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     with grpc.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") as channel:
         stub = dstore_grpc.DatastoreStub(channel)
 
-        version = 'version_dummy'
-        type = 'type_dummy'
-        standard_name = 'air_temperature'
-        unit = 'celsius'
-        value = '12.7'
+        version = "version_dummy"
+        type = "type_dummy"
+        standard_name = "air_temperature"
+        unit = "celsius"
+        value = "12.7"
 
-        response = callPutObs(stub, version, type, standard_name, unit, value)
-        print('response from callPutObs: {}'.format(response))
+        response = call_put_obs(stub, version, type, standard_name, unit, value)
+        print("response from callPutObs: {}".format(response))
 
-        response = callGetObsInTimeRange(stub)
-        print('response from callGetObsInTimeRange: {}'.format(response))
+        response = call_get_obs_in_time_range(stub)
+        print("response from callGetObsInTimeRange: {}".format(response))
 
-        response = callGetObsInPolygon(stub)
-        print('response from callGetObsInPolygon: {}'.format(response))
+        response = call_get_obs_in_polygon(stub)
+        print("response from callGetObsInPolygon: {}".format(response))
 
         assert len(response.observations) == 1
         obs0 = response.observations[0]
@@ -115,4 +114,4 @@ if __name__ == '__main__':
         obs_mdata = obs0.obs_mdata
         assert len(obs_mdata) == 1
         obs_mdata0 = obs_mdata[0]
-        assert obs_mdata0.value  == value
+        assert obs_mdata0.value == value

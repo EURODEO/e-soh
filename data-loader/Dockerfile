@@ -8,10 +8,9 @@ ENV DOCKER_PATH="/clients/python"
 
 COPY "test-data/KNMI/20221231.nc" "/test-data/KNMI/20221231.nc"
 
-# hadolint ignore=DL3013
 RUN apt-get update \
     && apt-get -y upgrade \
-    && apt-get -y install build-essential \
+    && apt-get -y install --no-install-recommends build-essential \
     # Cleanup
     && rm -rf /usr/tmp  \
     && apt-get autoremove -y \
@@ -21,6 +20,7 @@ RUN apt-get update \
 COPY "${PROJECT_DATASTORE_PATH}/protobuf/datastore.proto" "/protobuf/datastore.proto"
 COPY "${PROJECT_PYTHON_PATH}/requirements.txt" "${DOCKER_PATH}/requirements.txt"
 
+# hadolint ignore=DL3013
 RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir --upgrade -r "${DOCKER_PATH}/requirements.txt"
 

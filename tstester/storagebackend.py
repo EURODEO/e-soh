@@ -1,4 +1,5 @@
-from abc import ABC, abstractmethod
+from abc import ABC
+from abc import abstractmethod
 
 
 class StorageBackend(ABC):
@@ -23,8 +24,9 @@ class StorageBackend(ABC):
     def set_obs(self, ts, times, values):
         """Replace any existing observations in time series ts with times/values.
 
-        - times are assumed to be a list of unique UNIX timestamps (secs since 1970-01-01T00:00:00Z)
-          in strictly increasing order, but not necessesarily uniformly distributed
+        - times are assumed to be a list of
+          unique UNIX timestamps (secs since 1970-01-01T00:00:00Z)
+          in strictly increasing order, but not necessarily uniformly distributed
         - values are assumed to be a list of floats
         - len(times) and len(values) are assumed to be equal
         """
@@ -34,7 +36,8 @@ class StorageBackend(ABC):
         """Adds observations to time series ts.
 
         - times/values: same as in set_obs()
-        - if oldest_time is not None, observations older than this time are removed from the storage
+        - if oldest_time is not None, observations older than this time are removed
+          from the storage
 
         Observations at already existing times will be replaced.
         """

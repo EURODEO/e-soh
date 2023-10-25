@@ -7,8 +7,7 @@ class TimeSeries:
     The time series is uniquely identified by the (station_id, param_id) combo.
     """
 
-    def __init__(
-            self, verbose, station_id, lat, lon, param_id, time_res, other_mdata, obs_mdata):
+    def __init__(self, verbose, station_id, lat, lon, param_id, time_res, other_mdata, obs_mdata):
         self._verbose = verbose
         self._station_id = station_id
 
@@ -17,7 +16,7 @@ class TimeSeries:
 
         self._param_id = param_id
         if time_res < 1:
-            raise Exception('non-positive time resolution not allowed: {}'.format(time_res))
+            raise Exception("non-positive time resolution not allowed: {}".format(time_res))
         self._time_res = time_res  # time resolution, i.e. seconds between observations
         self._other_mdata = other_mdata  # other metadata (e.g. quality of sensor)
 
@@ -57,7 +56,7 @@ class TimeSeries:
         """
 
         if t0 >= t1:
-            raise Exception('invalid obs time range: [{}, {}]'.format(t0, t1))
+            raise Exception("invalid obs time range: [{}, {}]".format(t0, t1))
 
         times = []
         values = []

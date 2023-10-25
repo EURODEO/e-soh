@@ -5,7 +5,7 @@
 # docker image rm -f main
 # ...
 
-FROM golang:latest
+FROM golang:1.21-bookworm
 
 ARG VERSION_GRPC_HEALTH_PROBE=v0.4.19
 

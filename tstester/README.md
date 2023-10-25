@@ -120,4 +120,3 @@ CONTAINER ID   IMAGE             COMMAND                  CREATED       STATUS  
 ## Running TimescaleDB in docker container on local machine
 
 TODO!
-

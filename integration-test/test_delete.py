@@ -16,7 +16,9 @@
 #
 # @pytest.fixture(scope="session")
 # def grpc_stub():
-#     with grpc.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") as channel:
+#     with grpc.insecure_channel(
+#         f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}"
+#     ) as channel:
 #         yield dstore_grpc.DatastoreStub(channel)
 #
 #
@@ -46,11 +48,17 @@
 #
 #     obs_metadata = dstore.ObsMetadata(field1="test_value1", field2="test_value2")
 #     time_1 = Timestamp()
-#     time_1.FromDatetime(datetime(year=1999, month=9, day=9, hour=9, minute=9, tzinfo=timezone.utc))
+#     time_1.FromDatetime(
+#         datetime(year=1999, month=9, day=9, hour=9, minute=9, tzinfo=timezone.utc)
+#     )
 #     time_2 = Timestamp()
-#     time_2.FromDatetime(datetime(year=1999, month=9, day=9, hour=9, minute=10, tzinfo=timezone.utc))
+#     time_2.FromDatetime(
+#         datetime(year=1999, month=9, day=9, hour=9, minute=10, tzinfo=timezone.utc)
+#     )
 #     time_3 = Timestamp()
-#     time_3.FromDatetime(datetime(year=1999, month=9, day=9, hour=9, minute=11, tzinfo=timezone.utc))
+#     time_3.FromDatetime(
+#         datetime(year=1999, month=9, day=9, hour=9, minute=11, tzinfo=timezone.utc)
+#     )
 #     obs = [
 #         dstore.Observation(time=time_1, value=1111.1111, metadata=obs_metadata),
 #         dstore.Observation(time=time_2, value=2222.2222, metadata=obs_metadata),
@@ -62,7 +70,9 @@
 #     return obs_put_request
 #
 #
-# def test_delete_timeseries(grpc_stub, dummy_timeseries_for_delete, dummy_observations_for_delete):
+# def test_delete_timeseries(
+#         grpc_stub, dummy_timeseries_for_delete, dummy_observations_for_delete
+# ):
 #     grpc_stub.AddTimeSeries(dummy_timeseries_for_delete)
 #
 #     grpc_stub.PutObservations(dummy_observations_for_delete)
@@ -76,7 +86,9 @@
 #     assert ts_find_response.tseries[0].id == dummy_timeseries_for_delete.id
 #
 #     to_time = Timestamp()
-#     to_time.FromDatetime(datetime(year=1999, month=9, day=9, hour=9, minute=11, second=1, tzinfo=timezone.utc))
+#     to_time.FromDatetime(
+#         datetime(year=1999, month=9, day=9, hour=9, minute=11, second=1, tzinfo=timezone.utc)
+#     )
 #     obs_get_request = dstore.GetObsRequest(
 #         tsids=[dummy_timeseries_for_delete.id],
 #         fromtime=dummy_observations_for_delete.tsobs[0].obs[0].time,
