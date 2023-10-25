@@ -377,7 +377,7 @@ func (sbe *PostgreSQL) PutObservations(request *datastore.PutObsRequest) error {
 			return fmt.Errorf("obs time too old: %v < %v", obsTime.AsTime(), loTime)
 		}
 
-		if obsTime.AsTime().Before(loTime) {
+		if obsTime.AsTime().After(hiTime) {
 			return fmt.Errorf("obs time too new: %v > %v", obsTime.AsTime(), hiTime)
 		}
 
