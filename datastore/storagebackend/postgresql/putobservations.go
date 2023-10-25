@@ -5,6 +5,7 @@ import (
 	"datastore/common"
 	"datastore/datastore"
 	"fmt"
+	"log"
 	"strings"
 
 	"github.com/lib/pq"
@@ -362,12 +363,22 @@ func (sbe *PostgreSQL) PutObservations(request *datastore.PutObsRequest) error {
 	tsIDCache := map[string]int64{}
 	gpIDCache := map[string]int64{}
 
+	loTime, hiTime := common.GetValidTimeRange()
+
 	// populate tsInfos
 	for _, obs := range request.Observations {
 
 		obsTime, err := getObsTime(obs.GetObsMdata())
 		if err != nil {
 			return fmt.Errorf("getObsTime() failed: %v", err)
+		}
+
+		if obsTime.AsTime().Before(loTime) {
+			return fmt.Errorf("obs time too old: %v < %v", obsTime.AsTime(), loTime)
+		}
+
+		if obsTime.AsTime().After(hiTime) {
+			return fmt.Errorf("obs time too new: %v > %v", obsTime.AsTime(), hiTime)
 		}
 
 		tsID, err := getTimeSeriesID(sbe.Db, obs.GetTsMdata(), tsIDCache)
@@ -408,6 +419,10 @@ func (sbe *PostgreSQL) PutObservations(request *datastore.PutObsRequest) error {
 			sbe.Db, tsID, tsInfo.obsTimes, tsInfo.gpIDs, tsInfo.omds); err != nil {
 			return fmt.Errorf("upsertObsForTS()) failed: %v", err)
 		}
+	}
+
+	if err := considerCleanup(sbe.Db); err != nil {
+		log.Printf("WARNING: considerCleanup() failed: %v", err)
 	}
 
 	return nil

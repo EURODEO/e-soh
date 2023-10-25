@@ -4,10 +4,40 @@ import (
 	"database/sql"
 	"datastore/common"
 	"fmt"
+	"log"
+	"strconv"
 	"strings"
+	"time"
 
 	_ "github.com/lib/pq"
 )
+
+var (
+	cleanupInterval time.Duration
+	lastCleanupTime time.Time
+)
+
+// initCleanupInterval initializes cleanupInterval.
+func initCleanupInterval() {
+	name := "CLEANUPINTERVAL"
+	defaultVal := int64(86400)
+	val0 := strings.ToLower(common.Getenv(name, fmt.Sprintf("%d", defaultVal)))
+
+	val, err := strconv.ParseInt(val0, 10, 64)
+	if err != nil {
+		log.Printf(
+			"WARNING: failed to parse %s as an int64: %s; falling back to default secs: %d",
+			name, val0, defaultVal)
+		val = defaultVal
+	}
+
+	cleanupInterval = time.Duration(val)
+}
+
+func init() { // automatically called once on program startup (on first import of this package)
+	initCleanupInterval()
+	lastCleanupTime = time.Time{}
+}
 
 // PostgreSQL is an implementation of the StorageBackend interface that
 // keeps data in a PostgreSQL database.
@@ -119,4 +149,51 @@ func createSetFilter(colName string, vals []string) string {
 		return "FALSE" // set requested, but nothing will match
 	}
 	return fmt.Sprintf("(%s IN (%s))", colName, strings.Join(vals, ","))
+}
+
+// cleanup performs various cleanup tasks, like removing old observations from the database.
+func cleanup(db *sql.DB) error {
+
+	// start transaction
+	tx, err := db.Begin()
+	if err != nil {
+		return fmt.Errorf("db.Begin() failed: %v", err)
+	}
+	defer tx.Rollback()
+
+	// remove observations outside valid range
+	loTime, hiTime := common.GetValidTimeRange()
+	cmd := fmt.Sprintf(`
+		DELETE FROM observation
+		WHERE (obstime_instant < to_timestamp(%d))
+		   OR (obstime_instant > to_timestamp(%d))
+	`, loTime.Unix(), hiTime.Unix())
+	_, err = tx.Exec(cmd)
+	if err != nil {
+		return fmt.Errorf("tx.Exec() failed: %v", err)
+	}
+
+	// DELETE FROM time_series WHERE <no FK refs from observation anymore> ... TODO!
+	// DELETE FROM geo_points WHERE <no FK refs from observation anymore> ... TODO!
+
+	// commit transaction
+	if err = tx.Commit(); err != nil {
+		return fmt.Errorf("tx.Commit() failed: %v", err)
+	}
+
+	lastCleanupTime = time.Now()
+
+	return nil
+}
+
+// considerCleanup considers if cleanup() should be called.
+func considerCleanup(db *sql.DB) error {
+	// call cleanup() if at least cleanupInterval has passed since the last time it was called
+	if time.Duration(time.Now().Sub(lastCleanupTime)) > cleanupInterval {
+		if err := cleanup(db); err != nil {
+			return fmt.Errorf("cleanup() failed: %v", err)
+		}
+	}
+
+	return nil
 }
