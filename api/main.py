@@ -21,12 +21,15 @@ from covjson_pydantic.parameter import Parameter
 from covjson_pydantic.reference_system import ReferenceSystem
 from covjson_pydantic.reference_system import ReferenceSystemConnectionObject
 from covjson_pydantic.unit import Unit
+from edr_pydantic.capabilities import LandingPageModel
 from fastapi import FastAPI
 from fastapi import Path
 from fastapi import Query
+from fastapi.requests import Request
 from geojson_pydantic import Feature
 from geojson_pydantic import FeatureCollection
 from geojson_pydantic import Point
+from metadata_endpoints import get_landing_page
 from pydantic import AwareDatetime
 from shapely import buffer
 from shapely import geometry
@@ -108,7 +111,18 @@ def get_data_for_time_series(get_obs_request):
 
 
 @app.get(
+    "/",
+    tags=["Capabilities"],
+    response_model=LandingPageModel,
+    response_model_exclude_none=True,
+)
+async def landing_page(request: Request):
+    return get_landing_page(request)
+
+
+@app.get(
     "/collections/observations/locations",
+    tags=["Collection data queries"],
     response_model=FeatureCollection,
     response_model_exclude_none=True,
 )
@@ -142,6 +156,7 @@ def get_locations(bbox: str = Query(..., example="5.0,52.0,6.0,52.1")) -> Featur
 
 @app.get(
     "/collections/observations/locations/{location_id}",
+    tags=["Collection data queries"],
     response_model=Coverage,
     response_model_exclude_none=True,
 )
@@ -162,6 +177,7 @@ def get_data_location_id(
 
 @app.get(
     "/collections/observations/position",
+    tags=["Collection data queries"],
     response_model=Coverage | CoverageCollection,
     response_model_exclude_none=True,
 )
@@ -177,6 +193,7 @@ def get_data_position(
 
 @app.get(
     "/collections/observations/area",
+    tags=["Collection data queries"],
     response_model=Coverage | CoverageCollection,
     response_model_exclude_none=True,
 )

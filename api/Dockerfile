@@ -29,6 +29,7 @@ RUN python -m grpc_tools.protoc  \
     --grpc_python_out="${DOCKER_PATH}"
 
 COPY "${PROJECT_PYTHON_PATH}/main.py" "${DOCKER_PATH}/main.py"
+COPY "${PROJECT_PYTHON_PATH}/metadata_endpoints.py" "${DOCKER_PATH}/metadata_endpoints.py"
 
 WORKDIR "${DOCKER_PATH}"
 CMD ["gunicorn", "main:app", "--workers=4", "--worker-class=uvicorn.workers.UvicornWorker", "--bind=0.0.0.0:8000"]
