@@ -33,27 +33,27 @@ def get_collections_metadata(request):
     collection = Collection(
         id="observations",
         links=[
-            Link(href=f"{request.url}/collections/observations", rel="self"),
+            Link(href=f"{request.url}/observations", rel="self"),
         ],
         extent=Extent(spatial=Spatial(bbox=[[3.0, 50.0, 8.0, 55.0]], crs="WGS84")),  # TODO: Get this from database
         data_queries=DataQueries(
             position=EDRQuery(
                 link=EDRQueryLink(
-                    href=f"{request.url}/collections/observations/position",
+                    href=f"{request.url}/observations/position",
                     rel="data",
                     variables=Variables(query_type="position", output_format=["CoverageJSON"]),
                 )
             ),
             locations=EDRQuery(
                 link=EDRQueryLink(
-                    href=f"{request.url}/collections/observations/locations",
+                    href=f"{request.url}/observations/locations",
                     rel="data",
                     variables=Variables(query_type="locations", output_format=["CoverageJSON"]),
                 )
             ),
             area=EDRQuery(
                 link=EDRQueryLink(
-                    href=f"{request.url}/collections/observations/area",
+                    href=f"{request.url}/observations/area",
                     rel="data",
                     variables=Variables(query_type="area", output_format=["CoverageJSON"]),
                 )
@@ -66,7 +66,7 @@ def get_collections_metadata(request):
 
     return Collections(
         links=[
-            Link(href=f"{request.url}/collections", rel="self"),
+            Link(href=f"{request.url}", rel="self"),
         ],
         collections=[collection],
     )
