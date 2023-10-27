@@ -22,6 +22,7 @@ from covjson_pydantic.reference_system import ReferenceSystem
 from covjson_pydantic.reference_system import ReferenceSystemConnectionObject
 from covjson_pydantic.unit import Unit
 from edr_pydantic.capabilities import LandingPageModel
+from edr_pydantic.collections import Collections
 from fastapi import FastAPI
 from fastapi import Path
 from fastapi import Query
@@ -29,6 +30,7 @@ from fastapi.requests import Request
 from geojson_pydantic import Feature
 from geojson_pydantic import FeatureCollection
 from geojson_pydantic import Point
+from metadata_endpoints import get_collections_metadata
 from metadata_endpoints import get_landing_page
 from pydantic import AwareDatetime
 from shapely import buffer
@@ -116,8 +118,18 @@ def get_data_for_time_series(get_obs_request):
     response_model=LandingPageModel,
     response_model_exclude_none=True,
 )
-async def landing_page(request: Request):
+async def landing_page(request: Request) -> LandingPageModel:
     return get_landing_page(request)
+
+
+@app.get(
+    "/collections",
+    tags=["Capabilities"],
+    response_model=Collections,
+    response_model_exclude_none=True,
+)
+async def get_collections(request: Request) -> Collections:
+    return get_collections_metadata(request)
 
 
 @app.get(
