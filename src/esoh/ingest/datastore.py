@@ -62,7 +62,8 @@ class datastore_connection():
                                                      "and was not available at application start."))
             raise grpc.FutureTimeoutError("Connection to the grpc service timed out, "
                                           "and was not available at application start.")
-        except Exception:
+        except Exception as e:
+            logger.exception(f"Unhandled exepction {e}")
             raise
 
     def ingest(self, msg: str) -> None:
@@ -102,7 +103,7 @@ class datastore_connection():
                 msg["properties"]["pubtime"], "%Y-%m-%dT%H:%M:%S.%f%z")),
             obstime_instant=dtime2tstamp(
                 datetime.strptime(nstime2stime(msg["properties"]["datetime"]),
-                                  "%Y-%m-%dT%H:%M:%S%z")),
+                                  "%Y-%m-%dT%H:%M:%S")),
             geo_point=dstore.Point(lat=float(msg["geometry"]["coordinates"][0]),
                                    lon=float(msg["geometry"]["coordinates"][1]))
         )
@@ -143,6 +144,7 @@ class datastore_connection():
             self._stub.PutObservations(request)
         except grpc.RpcError as e:
             logger.critical(str(e))
+            pass
             raise
 
     def ingest_list(self, msg_list: list) -> None:
