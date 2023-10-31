@@ -5,7 +5,6 @@ import copy
 from esoh.ingest.bufr.bufresohmsg_py import bufresohmsg_py, \
     init_bufrtables_py, \
     init_oscar_py, \
-    destroy_bufrtables_py, \
     init_bufr_schema_py
 
 
@@ -63,6 +62,5 @@ if __name__ == "__main__":
         for m in msg:
             print(m)
 
-    destroy_bufrtables_py()
 
     exit(0)

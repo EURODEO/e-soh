@@ -10,7 +10,6 @@ import json
 
 from esoh.ingest.bufr.bufresohmsg_py import init_bufrtables_py, \
     init_oscar_py, \
-    destroy_bufrtables_py, \
     init_bufr_schema_py
 
 
@@ -29,7 +28,6 @@ def test_verify_json_payload_bufr(bufr_file_path):
     msg_build = ingest_to_pipeline(None, None, "testing", testing=True)
 
     json_payloads = msg_build._build_messages(bufr_file_path, input_type="bufr")
-    destroy_bufrtables_py()
 
     for payload in json_payloads:
         try:
