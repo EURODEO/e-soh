@@ -13,6 +13,7 @@
 #include <stdint.h>
 
 #include <iostream>
+#include <string>
 #include <vector>
 
 #include "NorBufrIO.h"
@@ -35,6 +36,7 @@ public:
   void setName(std::string n);
   void setUnit(std::string n);
   void setAssocwidth(uint8_t);
+  std::string toString(bool extmeta = false) const;
 
 private:
   std::string name_value;
@@ -46,8 +48,9 @@ private:
 
   friend bool operator==(const DescriptorMeta &lhs, const DescriptorMeta &rhs);
   friend bool operator!=(const DescriptorMeta &lhs, const DescriptorMeta &rhs);
-  friend std::ostream &operator<<(std::ostream &os, const DescriptorMeta &d);
 };
+
+std::ostream &operator<<(std::ostream &os, const DescriptorMeta &d);
 
 class DescriptorId {
 public:
@@ -64,7 +67,6 @@ public:
   int toInt() const;
   std::string toString() const;
 
-  friend std::ostream &operator<<(std::ostream &os, const DescriptorId &d);
   friend bool operator<(const DescriptorId &lhs, const DescriptorId &rhs);
   friend bool operator==(const DescriptorId &lhs, const DescriptorId &rhs);
 
@@ -77,6 +79,8 @@ protected:
   uint8_t Y;
 };
 
+std::ostream &operator<<(std::ostream &os, const DescriptorId &d);
+
 class Descriptor : public DescriptorId {
 public:
   Descriptor();
@@ -88,12 +92,13 @@ public:
   ssize_t startBit() const;
   void setStartBit(ssize_t sb);
   std::ostream &printDetail(std::ostream &os = std::cout) const;
+  std::string toString(bool detail = false) const;
 
 protected:
   ssize_t startbit;
   DescriptorMeta *Dm;
-
-  friend std::ostream &operator<<(std::ostream &os, const Descriptor &d);
 };
+
+std::ostream &operator<<(std::ostream &os, const Descriptor &d);
 
 #endif

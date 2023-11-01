@@ -96,12 +96,12 @@ bool DescriptorId::fromString(std::string s) {
   std::string xs(s, 1, 2);
   std::string ys(s, 3, 3);
 
-  F = stoi(fs) & 0x03;
-  X = stoi(xs) & 0x3f;
-  Y = stoi(ys) & 0xff;
+  F = std::stoi(fs) & 0x03;
+  X = std::stoi(xs) & 0x3f;
+  Y = std::stoi(ys) & 0xff;
 
 #ifdef DESCDEBUG
-  if (stoi(fs) != F || stoi(xs) != X || stoi(ys) != Y) {
+  if (std::stoi(fs) != F || std::stoi(xs) != X || std::stoi(ys) != Y) {
     std::cerr << "Warinig, truncated descriptor: " << s << " => "
               << std::setfill('0') << static_cast<int>(F) << std::setw(2)
               << static_cast<int>(X) << std::setw(3) << static_cast<int>(Y)
@@ -126,14 +126,15 @@ int DescriptorId::toInt() const {
 
 std::string DescriptorId::toString() const {
   std::stringstream ss;
-  ss << toInt();
+  ss << std::setw(1) << "[ " << std::setfill('0') << static_cast<int>(F) << " "
+     << std::setw(2) << std::setfill('0') << static_cast<int>(X) << " "
+     << std::setw(3) << std::setfill('0') << static_cast<int>(Y) << " ]";
+
   return ss.str();
 }
 
 std::ostream &operator<<(std::ostream &os, const DescriptorId &d) {
-  os << std::setw(1) << "[ " << std::setfill('0') << static_cast<int>(d.F)
-     << " " << std::setw(2) << std::setfill('0') << static_cast<int>(d.X) << " "
-     << std::setw(3) << std::setfill('0') << static_cast<int>(d.Y) << " ]";
+  os << d.toString();
 
   return os;
 }
@@ -255,30 +256,46 @@ ssize_t Descriptor::startBit() const { return startbit; }
 
 void Descriptor::setStartBit(ssize_t sb) { startbit = sb; }
 
-std::ostream &Descriptor::printDetail(std::ostream &os) const {
-  os << DescriptorId(*this);
-
-  if (Dm) {
-    os << " [";
-    os << " dw: " << Dm->datawidth();
-    os << " sc: " << Dm->scale();
-    os << " ref: " << Dm->reference();
-    //  os << " " << d.Dm->name();
-    os << "]";
+std::string Descriptor::toString(bool detail) const {
+  std::stringstream ss;
+  ss << DescriptorId::toString();
+  if (detail) {
+    if (Dm) {
+      Dm->toString(true);
+    }
   }
+  return ss.str();
+}
 
+std::ostream &Descriptor::printDetail(std::ostream &os) const {
+  os << toString(true);
   return os;
 }
 
 std::ostream &operator<<(std::ostream &os, const Descriptor &d) {
-  os << DescriptorId(d);
-
+  os << d.toString();
   return os;
 }
 
+std::string DescriptorMeta::toString(bool extmeta) const {
+  std::stringstream ss;
+  if (extmeta) {
+    ss << " [";
+    ss << " dw: " << datawidth();
+    ss << " sc: " << scale();
+    ss << " ref: " << reference();
+    //  ss << " " << name();
+    ss << "]";
+  } else {
+    ss << "datawidth=" << datawidth_value << " scale=" << scale_value
+       << " reference=" << reference_value
+       << " assoc_value:" << assocwidth_value;
+  }
+
+  return ss.str();
+}
+
 std::ostream &operator<<(std::ostream &os, const DescriptorMeta &dm) {
-  os << "datawidth=" << dm.datawidth_value << " scale=" << dm.scale_value
-     << " reference=" << dm.reference_value
-     << " assoc_value:" << dm.assocwidth_value;
+  os << dm.toString();
   return os;
 }
