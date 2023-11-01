@@ -13,13 +13,17 @@
 #include <list>
 
 #include "Descriptor.h"
+#include "LogBuffer.h"
 #include "Sections.h"
 #include "Tables.h"
+
+const LogLevel norbufr_default_loglevel = LogLevel::TRACE;
 
 class NorBufr : public Section1,
                 public Section2,
                 public Section3,
-                public Section4 {
+                public Section4,
+                public LogBuffer {
 
 public:
   NorBufr();
