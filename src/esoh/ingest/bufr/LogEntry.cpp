@@ -17,8 +17,8 @@ LogEntry::LogEntry(std::string msg, LogLevel l, std::string mid,
 
 std::string LogEntry::toCsv(char delimiter) const {
   std::stringstream ss;
-  ss << entryTime() << delimiter << LogLevelStr[log_level] << delimiter << module_id
-     << delimiter << bufr_id << delimiter << log_msg << delimiter ;
+  ss << entryTime() << delimiter << LogLevelStr[log_level] << delimiter
+     << module_id << delimiter << bufr_id << delimiter << log_msg << delimiter;
 
   return ss.str();
 }
@@ -27,7 +27,8 @@ std::string LogEntry::toJson() const {
   std::string ret;
 
   rapidjson::Document message;
-  rapidjson::Document::AllocatorType &message_allocator = message.GetAllocator();
+  rapidjson::Document::AllocatorType &message_allocator =
+      message.GetAllocator();
   message.Parse(log_message_template);
 
   rapidjson::Value datetime;
@@ -67,9 +68,10 @@ std::string LogEntry::entryTime() const {
   const int date_len = 50;
   char date_str[date_len];
   size_t dl = strftime(date_str, date_len, "%FT%H:%M:%S", &entry_tm);
-  int us_len=snprintf(date_str+dl,date_len-dl,".%06ld",tv.tv_usec);
-  size_t tz_len = strftime(date_str+dl+us_len, date_len-dl-us_len,"%z", &entry_tm);
-  std::string ret(date_str, dl+us_len+tz_len);
+  int us_len = snprintf(date_str + dl, date_len - dl, ".%06ld", tv.tv_usec);
+  size_t tz_len =
+      strftime(date_str + dl + us_len, date_len - dl - us_len, "%z", &entry_tm);
+  std::string ret(date_str, dl + us_len + tz_len);
 
   return ret;
 }

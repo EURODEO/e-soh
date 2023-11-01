@@ -7,8 +7,8 @@
  *
  */
 
-#include <sstream>
 #include <iostream>
+#include <sstream>
 
 #include "LogBuffer.h"
 
@@ -43,14 +43,13 @@ bool LogBuffer::addLogEntry(LogEntry e) {
   return true;
 }
 
-void LogBuffer::clear() { 
-  buffer.clear(); 
-}
+void LogBuffer::clear() { buffer.clear(); }
 
 std::string LogBuffer::toCsv(char delimiter, LogLevel l) const {
   std::string ret;
   for (auto e : buffer) {
-    if (e.getLogLevel() >= l) ret += e.toCsv(delimiter) + "\n";
+    if (e.getLogLevel() >= l)
+      ret += e.toCsv(delimiter) + "\n";
   }
   return ret;
 }
@@ -58,7 +57,8 @@ std::string LogBuffer::toCsv(char delimiter, LogLevel l) const {
 std::string LogBuffer::toJson(LogLevel l) const {
   std::string ret;
   for (auto e : buffer) {
-    if (e.getLogLevel() >= l) ret += e.toJson() + "\n";
+    if (e.getLogLevel() >= l)
+      ret += e.toJson() + "\n";
   }
   return ret;
 }
@@ -66,9 +66,7 @@ std::string LogBuffer::toJson(LogLevel l) const {
 void LogBuffer::setLogLevel(LogLevel l, bool clean) {
   log_level = l;
   if (clean) {
-    auto predicate = [l](LogEntry _le) {
-      return l >= _le.getLogLevel();
-    };
+    auto predicate = [l](LogEntry _le) { return l >= _le.getLogLevel(); };
     buffer.remove_if(predicate);
   }
 }

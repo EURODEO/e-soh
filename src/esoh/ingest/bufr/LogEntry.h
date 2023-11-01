@@ -6,8 +6,8 @@
 #include <vector>
 
 enum LogLevel { UNKNOWN = 0, TRACE, DEBUG, INFO, WARN, ERROR, FATAL };
-static const std::vector<std::string> LogLevelStr = {"Off",     "Trace", "Debug", "Info",
-                                        "Warning", "Error", "Fatal"};
+static const std::vector<std::string> LogLevelStr = {
+    "Off", "Trace", "Debug", "Info", "Warning", "Error", "Fatal"};
 
 class LogEntry {
 
@@ -29,12 +29,11 @@ private:
   std::string bufr_id;
 };
 
-static const char * const log_message_template = " { \
+static const char *const log_message_template = " { \
       \"datetime\" : null, \
       \"loglevel\" : null, \
       \"moduleid\" : null, \
       \"bufrid\" : null, \
       \"logmsg\" : null }";
-
 
 #endif

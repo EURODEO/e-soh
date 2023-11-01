@@ -28,7 +28,6 @@ public:
   std::string toJson(LogLevel l = LogLevel::UNKNOWN) const;
   void setLogLevel(LogLevel l, bool clean = true);
 
-
 private:
   std::list<LogEntry> buffer;
   uint32_t max_size;
