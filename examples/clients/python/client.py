@@ -94,13 +94,13 @@ if __name__ == "__main__":
         value = "12.7"
 
         response = call_put_obs(stub, version, type, standard_name, unit, value)
-        print("response from callPutObs: {}".format(response))
+        print("response from call_put_obs: {}".format(response))
 
         response = call_get_obs_in_time_range(stub)
-        print("response from callGetObsInTimeRange: {}".format(response))
+        print("response from call_get_obs_in_time_range: {}".format(response))
 
         response = call_get_obs_in_polygon(stub)
-        print("response from callGetObsInPolygon: {}".format(response))
+        print("response from call_get_obs_in_polygon: {}".format(response))
 
         assert len(response.observations) == 1
         obs0 = response.observations[0]
