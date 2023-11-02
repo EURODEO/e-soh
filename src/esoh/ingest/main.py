@@ -75,7 +75,7 @@ class ingest_to_pipeline():
         Internal method for deciding what type of input is being provided.
         """
         file_name = os.path.basename(message)
-        if re.match(r"data[0-9][0-9][0-9][0-9]$", file_name):
+        if re.match(r"data[0-9][0-9][0-9][05]$", file_name):
             return "bufr"
         match message.split(".")[-1].lower():
             case "nc":
