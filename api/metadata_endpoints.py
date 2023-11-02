@@ -29,7 +29,7 @@ def get_landing_page(request):
     )
 
 
-def get_collections_metadata(request):
+def get_collection_metadata(request) -> Collection:
     collection = Collection(
         id="observations",
         links=[
@@ -63,10 +63,13 @@ def get_collections_metadata(request):
         output_formats=["CoverageJSON"],
         parameter_names={},  # TODO: Get these from database
     )
+    return collection
 
+
+def get_collections(request) -> Collections:
     return Collections(
         links=[
             Link(href=f"{request.url}", rel="self"),
         ],
-        collections=[collection],
+        collections=[get_collection_metadata(request)],
     )

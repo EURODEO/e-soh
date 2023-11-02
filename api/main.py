@@ -8,6 +8,7 @@ from itertools import groupby
 import datastore_pb2 as dstore
 import datastore_pb2_grpc as dstore_grpc
 import grpc
+import metadata_endpoints
 from brotli_asgi import BrotliMiddleware
 from covjson_pydantic.coverage import Coverage
 from covjson_pydantic.coverage import CoverageCollection
@@ -22,6 +23,7 @@ from covjson_pydantic.reference_system import ReferenceSystem
 from covjson_pydantic.reference_system import ReferenceSystemConnectionObject
 from covjson_pydantic.unit import Unit
 from edr_pydantic.capabilities import LandingPageModel
+from edr_pydantic.collections import Collection
 from edr_pydantic.collections import Collections
 from fastapi import FastAPI
 from fastapi import Path
@@ -30,8 +32,6 @@ from fastapi.requests import Request
 from geojson_pydantic import Feature
 from geojson_pydantic import FeatureCollection
 from geojson_pydantic import Point
-from metadata_endpoints import get_collections_metadata
-from metadata_endpoints import get_landing_page
 from pydantic import AwareDatetime
 from shapely import buffer
 from shapely import geometry
@@ -119,7 +119,7 @@ def get_data_for_time_series(get_obs_request):
     response_model_exclude_none=True,
 )
 async def landing_page(request: Request) -> LandingPageModel:
-    return get_landing_page(request)
+    return metadata_endpoints.get_landing_page(request)
 
 
 @app.get(
@@ -129,7 +129,17 @@ async def landing_page(request: Request) -> LandingPageModel:
     response_model_exclude_none=True,
 )
 async def get_collections(request: Request) -> Collections:
-    return get_collections_metadata(request)
+    return metadata_endpoints.get_collections(request)
+
+
+@app.get(
+    "/collections/observations",
+    tags=["Collection metadata"],
+    response_model=Collection,
+    response_model_exclude_none=True,
+)
+async def get_collection_metadata(request: Request) -> Collection:
+    return metadata_endpoints.get_collection_metadata(request)
 
 
 @app.get(
