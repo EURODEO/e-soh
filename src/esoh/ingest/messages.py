@@ -6,6 +6,7 @@ import uuid
 import logging
 
 from esoh.ingest.netCDF.extract_metadata_netcdf import build_all_json_payloads_from_netCDF
+from esoh.ingest.bufr.create_mqtt_message_from_bufr import build_all_json_payloads_from_bufr
 
 from jsonschema import ValidationError
 
@@ -21,6 +22,8 @@ def build_message(file: [object],
         case "netCDF":
             unfinished_messages = build_all_json_payloads_from_netCDF(file,
                                                                       schema_path=schema_path)
+        case "bufr":
+            unfinished_messages = build_all_json_payloads_from_bufr(file)
 
     # Set message publication time in RFC3339 format
     # Create UUID for the message, and state message format version
@@ -47,9 +50,17 @@ def load_files(file: str, input_type: str, uuid_prefix: str):
         case "netCDF":
             ds = xr.load_dataset(file)
             return build_message(ds, input_type, uuid_prefix)
+        case "bufr":
+            return build_message(file, input_type, uuid_prefix)
 
 
 def messages(message, input_type, uuid_prefix, schema_path, validator):
+    if input_type == "bufr":
+        return build_message(message,
+                             input_type=input_type,
+                             uuid_prefix=uuid_prefix,
+                             schema_path=schema_path,
+                             validator=validator)
     if isinstance(message, str):
         return load_files(message, input_type=input_type, uuid_prefix=uuid_prefix)
     elif isinstance(message, xr.Dataset):

@@ -1,0 +1,180 @@
+
+***************************************************************************************
+********************************** B U F R ********************************************
+***************************************************************************************
+
+=============== Section 0  ===============
+length: 216 Edition: 3
+=============== Section 1  ===============
+length: 18
+Master Table: 0
+Centre: 89
+Subcentre: 0
+Update Sequence Number: 0
+Optional Section: 0
+Data Category: 6
+International Data Subcategory: 0
+Local Data Subcategory: 0
+VersionMaster: 14
+VersionLocal: 0
+Time: Sun Aug 22 23:59:00 2023
+
+Local data[0]:
+
+=============== Section 2  ===============
+length: 0 zero: 0
+Local data:
+
+
+=============== Section 3  ===============
+length: 34 zero: 0
+Subsets: 1
+Observed: 1
+Compressed:0 
+Descriptors:
+[ 3 01 001 ] [ 3 01 011 ] [ 3 01 012 ] [ 3 01 022 ] [ 0 02 003 ] [ 1 06 000 ] [ 0 31 001 ] [ 0 07 007 ] [ 0 11 001 ] [ 0 11 002 ] [ 0 33 002 ] [ 0 11 006 ] [ 0 33 002 ] 
+=============== Section 4  ===============
+length: 152 zero: 0
+
+***************************************************************************************
+************************ EXPANDED DESCRIPTORS AND DATA  *******************************
+***************************************************************************************
+
+=============== S U B S E T 0 ===============
+
+[ 3 01 001 ]
+[ 0 01 001 ]	11 Numeric		WMO BLOCK NUMBER
+[ 0 01 002 ]	718 Numeric		WMO STATION NUMBER
+[ 3 01 011 ]
+[ 0 04 001 ]	2023 a		YEAR
+[ 0 04 002 ]	8 mon		MONTH
+[ 0 04 003 ]	22 d		DAY
+[ 3 01 012 ]
+[ 0 04 004 ]	23 h		HOUR
+[ 0 04 005 ]	59 min		MINUTE
+[ 3 01 022 ]
+[ 0 05 001 ]	49.5011 deg		LATITUDE (HIGH ACCURACY)
+[ 0 06 001 ]	16.7885 deg		LONGITUDE (HIGH ACCURACY)
+[ 0 07 001 ]	767 m		HEIGHT OF STATION (SEE NOTE 1)
+[ 0 02 003 ]	 RADAR [code:3]		TYPE OF MEASURING EQUIPMENT USED
+[ 1 06 000 ]
+[ 0 31 001 ]	19 Numeric		DELAYED DESCRIPTOR REPLICATION FACTOR
+[ 0 07 007 ]	1640 m		HEIGHT
+[ 0 11 001 ]	301 deg		WIND DIRECTION
+[ 0 11 002 ]	5.3 m/s		WIND SPEED
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 11 006 ]	1.26 m/s		W-COMPONENT
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 07 007 ]	1690 m		HEIGHT
+[ 0 11 001 ]	308 deg		WIND DIRECTION
+[ 0 11 002 ]	6.2 m/s		WIND SPEED
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 11 006 ]	1.64 m/s		W-COMPONENT
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 07 007 ]	1740 m		HEIGHT
+[ 0 11 001 ]	300 deg		WIND DIRECTION
+[ 0 11 002 ]	6.4 m/s		WIND SPEED
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 11 006 ]	1.17 m/s		W-COMPONENT
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 07 007 ]	1790 m		HEIGHT
+[ 0 11 001 ]	296 deg		WIND DIRECTION
+[ 0 11 002 ]	6.3 m/s		WIND SPEED
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 11 006 ]	0.68 m/s		W-COMPONENT
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 07 007 ]	1830 m		HEIGHT
+[ 0 11 001 ]	298 deg		WIND DIRECTION
+[ 0 11 002 ]	6.3 m/s		WIND SPEED
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 11 006 ]	1.01 m/s		W-COMPONENT
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 07 007 ]	1880 m		HEIGHT
+[ 0 11 001 ]	294 deg		WIND DIRECTION
+[ 0 11 002 ]	6.7 m/s		WIND SPEED
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 11 006 ]	0.44 m/s		W-COMPONENT
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 07 007 ]	1930 m		HEIGHT
+[ 0 11 001 ]	300 deg		WIND DIRECTION
+[ 0 11 002 ]	7.2 m/s		WIND SPEED
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 11 006 ]	0.02 m/s		W-COMPONENT
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 07 007 ]	1980 m		HEIGHT
+[ 0 11 001 ]	301 deg		WIND DIRECTION
+[ 0 11 002 ]	7.3 m/s		WIND SPEED
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 11 006 ]	-0.05 m/s		W-COMPONENT
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 07 007 ]	2020 m		HEIGHT
+[ 0 11 001 ]	302 deg		WIND DIRECTION
+[ 0 11 002 ]	8 m/s		WIND SPEED
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 11 006 ]	-0.19 m/s		W-COMPONENT
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 07 007 ]	2070 m		HEIGHT
+[ 0 11 001 ]	298 deg		WIND DIRECTION
+[ 0 11 002 ]	8.4 m/s		WIND SPEED
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 11 006 ]	-0.42 m/s		W-COMPONENT
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 07 007 ]	2120 m		HEIGHT
+[ 0 11 001 ]	297 deg		WIND DIRECTION
+[ 0 11 002 ]	9 m/s		WIND SPEED
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 11 006 ]	-0.62 m/s		W-COMPONENT
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 07 007 ]	2170 m		HEIGHT
+[ 0 11 001 ]	300 deg		WIND DIRECTION
+[ 0 11 002 ]	9.3 m/s		WIND SPEED
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 11 006 ]	0.1 m/s		W-COMPONENT
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 07 007 ]	2210 m		HEIGHT
+[ 0 11 001 ]	299 deg		WIND DIRECTION
+[ 0 11 002 ]	9.8 m/s		WIND SPEED
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 11 006 ]	-0.23 m/s		W-COMPONENT
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 07 007 ]	2260 m		HEIGHT
+[ 0 11 001 ]	301 deg		WIND DIRECTION
+[ 0 11 002 ]	10.6 m/s		WIND SPEED
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 11 006 ]	-0.25 m/s		W-COMPONENT
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 07 007 ]	2310 m		HEIGHT
+[ 0 11 001 ]	300 deg		WIND DIRECTION
+[ 0 11 002 ]	11.3 m/s		WIND SPEED
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 11 006 ]	-1.47 m/s		W-COMPONENT
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 07 007 ]	2360 m		HEIGHT
+[ 0 11 001 ]	302 deg		WIND DIRECTION
+[ 0 11 002 ]	11.8 m/s		WIND SPEED
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 11 006 ]	-0.34 m/s		W-COMPONENT
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 07 007 ]	2400 m		HEIGHT
+[ 0 11 001 ]	300 deg		WIND DIRECTION
+[ 0 11 002 ]	12.7 m/s		WIND SPEED
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 11 006 ]	-2.11 m/s		W-COMPONENT
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 07 007 ]	2450 m		HEIGHT
+[ 0 11 001 ]	294 deg		WIND DIRECTION
+[ 0 11 002 ]	12.4 m/s		WIND SPEED
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 11 006 ]	-1.99 m/s		W-COMPONENT
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 07 007 ]	2500 m		HEIGHT
+[ 0 11 001 ]	290 deg		WIND DIRECTION
+[ 0 11 002 ]	12.3 m/s		WIND SPEED
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+[ 0 11 006 ]	-2.58 m/s		W-COMPONENT
+[ 0 33 002 ]	 DATA NOT SUSPECT [code:0]		QUALITY INFORMATION
+
+***************************************************************************************
+******************************* E N D B U F R *****************************************
+***************************************************************************************
+

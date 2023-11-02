@@ -23,6 +23,8 @@
 
 bool norbufr_init_bufrtables(std::string tables_dir) {
 
+  if (tb.size() || tc.size() || td.size())
+    return false;
   std::string tbl_dir;
   if (tables_dir.size()) {
     tbl_dir = tables_dir;
@@ -35,24 +37,45 @@ bool norbufr_init_bufrtables(std::string tables_dir) {
 
   for (const auto &entry : std::filesystem::directory_iterator(eccBtable_dir)) {
     auto vers = std::stoi(entry.path().filename().string());
-    TableB *tb_e = new TableB(entry.path().string() + "/element.table");
-    (*tb)[vers] = tb_e;
-    TableC *tc_e = new TableC(entry.path().string() + "/codetables");
-    (*tc)[vers] = tc_e;
+    TableB tb_e(entry.path().string() + "/element.table");
+    tb[vers] = tb_e;
+    TableC tc_e(entry.path().string() + "/codetables");
+    tc[vers] = tc_e;
   }
 
   for (const auto &entry : std::filesystem::directory_iterator(eccDtable_dir)) {
     auto vers = std::stoi(entry.path().filename().string());
-    TableD *tb_d = new TableD(entry.path().string() + "/sequence.def");
-    (*td)[vers] = tb_d;
+    TableD tb_d(entry.path().string() + "/sequence.def");
+    td[vers] = tb_d;
   }
 
   return true;
 }
 
+bool norbufr_update_bufrtables(std::string tables_dir) {
+  tb.clear();
+  tc.clear();
+  td.clear();
+  return norbufr_init_bufrtables(tables_dir);
+}
+
 bool norbufr_init_oscar(std::string oscardb_dir) {
   bool ret = oscar.addStation(oscardb_dir.c_str());
   return ret;
+}
+
+bool norbufr_init_schema_template(std::string schema_path) {
+
+  if (schema_path.size()) {
+    std::string def_msg;
+    std::ifstream msgTemplate(schema_path.c_str(), std::ios_base::in);
+    char c;
+    while (msgTemplate.get(c)) {
+      def_msg += c;
+    }
+    bufr_input_schema = def_msg;
+  }
+  return true;
 }
 
 std::list<std::string> norbufr_bufresohmsg(std::string fname) {
@@ -66,30 +89,32 @@ std::list<std::string> norbufr_bufresohmsg(std::string fname) {
 
     ESOHBufr *bufr = new ESOHBufr;
     bufr->setOscar(&oscar);
+    bufr->setMsgTemplate(bufr_input_schema);
 
     if (bufrFile >> *bufr) {
 
       bufr->setTableB(
-          tb->at(bufr->getVersionMaster() &&
-                         tb->find(bufr->getVersionMaster()) != tb->end()
+          &tb.at(bufr->getVersionMaster() &&
+                         tb.find(bufr->getVersionMaster()) != tb.end()
                      ? bufr->getVersionMaster()
-                     : tb->rbegin()->first));
+                     : tb.rbegin()->first));
       bufr->setTableC(
-          tc->at(bufr->getVersionMaster() &&
-                         tc->find(bufr->getVersionMaster()) != tc->end()
+          &tc.at(bufr->getVersionMaster() &&
+                         tc.find(bufr->getVersionMaster()) != tc.end()
                      ? bufr->getVersionMaster()
-                     : tc->rbegin()->first));
+                     : tc.rbegin()->first));
       bufr->setTableD(
-          td->at(bufr->getVersionMaster() &&
-                         td->find(bufr->getVersionMaster()) != td->end()
+          &td.at(bufr->getVersionMaster() &&
+                         td.find(bufr->getVersionMaster()) != td.end()
                      ? bufr->getVersionMaster()
-                     : td->rbegin()->first));
+                     : td.rbegin()->first));
 
       bufr->extractDescriptors();
 
       std::list<std::string> msg = bufr->msg();
       ret.insert(ret.end(), msg.begin(), msg.end());
     }
+    delete bufr;
   }
 
   return ret;
@@ -109,20 +134,20 @@ std::string norbufr_bufrprint(std::string fname) {
     if (bufrFile >> *bufr) {
 
       bufr->setTableB(
-          tb->at(bufr->getVersionMaster() &&
-                         tb->find(bufr->getVersionMaster()) != tb->end()
+          &tb.at(bufr->getVersionMaster() &&
+                         tb.find(bufr->getVersionMaster()) != tb.end()
                      ? bufr->getVersionMaster()
-                     : tb->rbegin()->first));
+                     : tb.rbegin()->first));
       bufr->setTableC(
-          tc->at(bufr->getVersionMaster() &&
-                         tc->find(bufr->getVersionMaster()) != tc->end()
+          &tc.at(bufr->getVersionMaster() &&
+                         tc.find(bufr->getVersionMaster()) != tc.end()
                      ? bufr->getVersionMaster()
-                     : tc->rbegin()->first));
+                     : tc.rbegin()->first));
       bufr->setTableD(
-          td->at(bufr->getVersionMaster() &&
-                         td->find(bufr->getVersionMaster()) != td->end()
+          &td.at(bufr->getVersionMaster() &&
+                         td.find(bufr->getVersionMaster()) != td.end()
                      ? bufr->getVersionMaster()
-                     : td->rbegin()->first));
+                     : td.rbegin()->first));
 
       bufr->extractDescriptors();
 
@@ -133,31 +158,17 @@ std::string norbufr_bufrprint(std::string fname) {
   return ret.str();
 }
 
-bool norbufr_destroy_bufrtables() {
-
-  for (auto i : *tb)
-    delete i.second;
-  delete tb;
-  for (auto i : *tc)
-    delete i.second;
-  delete tc;
-  for (auto i : *td)
-    delete i.second;
-  delete td;
-
-  return true;
-}
-
 PYBIND11_MODULE(bufresohmsg_py, m) {
   m.doc() = "bufresoh E-SOH MQTT message generator plugin";
 
   m.def("init_bufrtables_py", &norbufr_init_bufrtables, "Init BUFR Tables");
-  m.def("destroy_bufrtables_py", &norbufr_destroy_bufrtables,
-        "Destroy BUFR Tables");
+  m.def("update_bufrtables_py", &norbufr_update_bufrtables, "Init BUFR Tables");
 
   m.def("bufresohmsg_py", &norbufr_bufresohmsg,
         "bufresoh MQTT message generator");
   m.def("bufrprint_py", &norbufr_bufrprint, "Print bufr message");
 
   m.def("init_oscar_py", &norbufr_init_oscar, "Init OSCAR db");
+  m.def("init_bufr_schema_py", &norbufr_init_schema_template,
+        "Init BUFR schema");
 }
