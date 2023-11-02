@@ -2,8 +2,11 @@
 # For developing:    uvicorn main:app --reload
 import math
 import os
+from datetime import datetime
+from datetime import timedelta
 from datetime import timezone
 from itertools import groupby
+from typing import Tuple
 
 import datastore_pb2 as dstore
 import datastore_pb2_grpc as dstore_grpc
@@ -26,16 +29,20 @@ from edr_pydantic.capabilities import LandingPageModel
 from edr_pydantic.collections import Collection
 from edr_pydantic.collections import Collections
 from fastapi import FastAPI
+from fastapi import HTTPException
 from fastapi import Path
 from fastapi import Query
 from fastapi.requests import Request
 from geojson_pydantic import Feature
 from geojson_pydantic import FeatureCollection
 from geojson_pydantic import Point
+from google.protobuf.timestamp_pb2 import Timestamp
 from pydantic import AwareDatetime
+from pydantic import TypeAdapter
 from shapely import buffer
 from shapely import geometry
 from shapely import wkt
+
 
 app = FastAPI()
 app.add_middleware(BrotliMiddleware)
@@ -104,12 +111,39 @@ def get_data_for_time_series(get_obs_request):
 
             coverages.append(Coverage(domain=domain, parameters=parameters, ranges=ranges))
 
-        if len(coverages) == 1:
+        if len(coverages) == 0:
+            raise HTTPException(status_code=404, detail="No data found")
+        elif len(coverages) == 1:
             return coverages[0]
         else:
             return CoverageCollection(
                 coverages=coverages, parameters=coverages[0].parameters
             )  # HACK to take parameters from first one
+
+
+def get_datetime_range(datetime_string: str | None) -> Tuple[Timestamp, Timestamp] | None:
+    if not datetime_string:
+        return None
+
+    start_datetime, end_datetime = Timestamp(), Timestamp()
+    aware_datetime_type_adapter = TypeAdapter(AwareDatetime)
+    datetimes = tuple(value.strip() for value in datetime_string.split("/"))
+    if len(datetimes) == 1:
+        start_datetime.FromDatetime(aware_datetime_type_adapter.validate_python(datetimes[0]))
+        end_datetime.FromDatetime(
+            aware_datetime_type_adapter.validate_python(datetimes[0]) + timedelta(seconds=1)
+        )  # HACK: Add one second so we get some data, as the store returns [start, end)
+    else:
+        if datetimes[0] != "..":
+            start_datetime.FromDatetime(aware_datetime_type_adapter.validate_python(datetimes[0]))
+        else:
+            start_datetime.FromDatetime(datetime.min)
+        if datetimes[1] != "..":
+            end_datetime.FromDatetime(aware_datetime_type_adapter.validate_python(datetimes[1]))
+        else:
+            end_datetime.FromDatetime(datetime.max)
+
+    return start_datetime, end_datetime
 
 
 @app.get(
@@ -185,14 +219,15 @@ def get_locations(bbox: str = Query(..., example="5.0,52.0,6.0,52.1")) -> Featur
 def get_data_location_id(
     location_id: str = Path(..., example="06260"),
     parameter_name: str = Query(..., alias="parameter-name", example="dd,ff,rh,pp,tn"),
+    datetime: str | None = None,
 ):
     # TODO: There is no error handling of any kind at the moment!
     #  This is just a quick and dirty demo
-    # TODO: Get time interval from request (example to create protobuf timestamp:
-    # from_time = Timestamp()
-    # from_time.FromDatetime(datetime(2022, 12, 31))
+    range = get_datetime_range(datetime)
     get_obs_request = dstore.GetObsRequest(
-        platforms=[location_id], instruments=list(map(str.strip, parameter_name.split(",")))
+        platforms=[location_id],
+        instruments=list(map(str.strip, parameter_name.split(","))),
+        interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
     return get_data_for_time_series(get_obs_request)
 
@@ -206,11 +241,12 @@ def get_data_location_id(
 def get_data_position(
     coords: str = Query(..., example="POINT(5.179705 52.0988218)"),
     parameter_name: str = Query(..., alias="parameter-name", example="dd,ff,rh,pp,tn"),
+    datetime: str | None = None,
 ):
     point = wkt.loads(coords)
     assert point.geom_type == "Point"
     poly = buffer(point, 0.0001, quad_segs=1)  # Roughly 10 meters around the point
-    return get_data_area(poly.wkt, parameter_name)
+    return get_data_area(poly.wkt, parameter_name, datetime)
 
 
 @app.get(
@@ -222,11 +258,14 @@ def get_data_position(
 def get_data_area(
     coords: str = Query(..., example="POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))"),
     parameter_name: str = Query(..., alias="parameter-name", example="dd,ff,rh,pp,tn"),
+    datetime: str | None = None,
 ):
     poly = wkt.loads(coords)
     assert poly.geom_type == "Polygon"
+    range = get_datetime_range(datetime)
     get_obs_request = dstore.GetObsRequest(
         instruments=list(map(str.strip, parameter_name.split(","))),
         inside=dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]),
+        interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
     return get_data_for_time_series(get_obs_request)
