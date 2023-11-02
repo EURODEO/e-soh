@@ -374,11 +374,15 @@ func (sbe *PostgreSQL) PutObservations(request *datastore.PutObsRequest) error {
 		}
 
 		if obsTime.AsTime().Before(loTime) {
-			return fmt.Errorf("obs time too old: %v < %v", obsTime.AsTime(), loTime)
+			return fmt.Errorf(
+				"obs time too old: %v < %v (hiTime: %v; settings: %s)",
+				obsTime.AsTime(), loTime, hiTime, common.GetValidTimeRangeSettings())
 		}
 
 		if obsTime.AsTime().After(hiTime) {
-			return fmt.Errorf("obs time too new: %v > %v", obsTime.AsTime(), hiTime)
+			return fmt.Errorf(
+				"obs time too new: %v > %v (loTime: %v; settings: %s)",
+				obsTime.AsTime(), hiTime, loTime, common.GetValidTimeRangeSettings())
 		}
 
 		tsID, err := getTimeSeriesID(sbe.Db, obs.GetTsMdata(), tsIDCache)
