@@ -116,7 +116,7 @@ func iso8601ToTime(ts string) (time.Time, error) {
 // no such environment variable has been set.
 func Getenv(key string, defaultValue string) string {
 	value, ok := os.LookupEnv(key)
-	if !ok {
+	if (!ok) || (strings.TrimSpace(value) == "") {
 		value = defaultValue
 	}
 	return value
