@@ -102,6 +102,7 @@ def get_data_for_time_series(get_obs_request):
                     continue  # Drop ranges if completely nan.
                     # TODO: Drop the whole coverage if it becomes empty?
                 values_no_nan = [v if not math.isnan(v) else None for v in values]
+                # TODO: Improve this based on "standard name", etc.
                 parameters[param_id] = Parameter(
                     observedProperty=ObservedProperty(label={"en": param_id}), unit=Unit(label={"en": unit})
                 )  # TODO: Also fill symbol?
