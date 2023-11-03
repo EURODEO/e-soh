@@ -112,14 +112,6 @@ func iso8601ToTime(ts string) (time.Time, error) {
 	return tm, nil
 }
 
-// unixEpochToIso8601 converts secs, assumed to be (possibly negative) number of seconds since
-// January 1st 1970 UTC, to a time string of the form YYYY-MM-DDThh:mm:ssZ.
-// Returns the ISO 8601 value.
-func unixEpochToIso8601(secs int64) (ts string) {
-	tm := time.Unix(secs, 0).UTC()
-	return strings.ToUpper(tm.Format(iso8601layout))
-}
-
 // Getenv returns the value of an environment variable or a default value if
 // no such environment variable has been set.
 func Getenv(key string, defaultValue string) string {
@@ -153,8 +145,8 @@ func GetValidTimeRange() (time.Time, time.Time) {
 func GetValidTimeRangeSettings() string {
 	s := ""
 	s += fmt.Sprintf("dynamicTime: %v", dynamicTime)
-	s += fmt.Sprintf("; loTimeSecs: %v (%v)", loTimeSecs, unixEpochToIso8601(loTimeSecs))
-	s += fmt.Sprintf("; hiTimeSecs: %v (%v)", hiTimeSecs, unixEpochToIso8601(hiTimeSecs))
+	s += fmt.Sprintf("; loTimeSecs: %v", loTimeSecs)
+	s += fmt.Sprintf("; hiTimeSecs: %v", hiTimeSecs)
 	s += "; env: ("
 	s += fmt.Sprintf("DYNAMICTIME: %v", Getenv("DYNAMICTIME", "unset"))
 	s += fmt.Sprintf("; LOTIME: %v", Getenv("LOTIME", "unset"))
