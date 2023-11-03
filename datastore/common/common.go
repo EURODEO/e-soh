@@ -85,13 +85,13 @@ func initValidTimeRange() {
 		// specify the valid time range explicitly to match your test setup).
 		loTimeSecs = getSecs(loTimeName, defaultLoTimeSecs, true)
 		hiTimeSecs = getSecs(hiTimeName, defaultHiTimeSecs, true)
-	}
 
-	if hiTimeSecs <= loTimeSecs {
-		log.Printf(
-			"WARNING: hiTimeSecs (%d) <= loTimeSecs (%d); setting hiTimeSecs to loTimeSecs + 1",
-			hiTimeSecs, loTimeSecs)
-		hiTimeSecs = loTimeSecs + 1
+		if hiTimeSecs <= loTimeSecs {
+			log.Printf(
+				"WARNING: hiTimeSecs (%d) <= loTimeSecs (%d); setting hiTimeSecs to loTimeSecs + 1",
+				hiTimeSecs, loTimeSecs)
+			hiTimeSecs = loTimeSecs + 1
+		}
 	}
 }
 
