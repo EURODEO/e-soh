@@ -1,10 +1,12 @@
 # Note that this assumes that the KNMI test data is loader (using loader container)
 import os
+from datetime import datetime
 
 import datastore_pb2 as dstore
 import datastore_pb2_grpc as dstore_grpc
 import grpc
 import pytest
+from google.protobuf.timestamp_pb2 import Timestamp
 
 
 NUMBER_OF_PARAMETERS = 44
@@ -41,7 +43,7 @@ def test_find_series_single_station_all_parameters(grpc_stub):
     assert len(response.observations) == 42  # Station 06260 doesn't have all parameters
 
 
-def test_get_values_single_station_single_parameters(grpc_stub):
+def test_get_values_single_station_single_parameter(grpc_stub):
     ts_request = dstore.GetObsRequest(platforms=["06260"], instruments=["rh"])
     response = grpc_stub.GetObservations(ts_request)
 
@@ -50,6 +52,21 @@ def test_get_values_single_station_single_parameters(grpc_stub):
     assert len(observations) == 144
     assert float(observations[0].value) == 95.0
     assert float(observations[-1].value) == 59.0
+
+
+def test_get_values_single_station_single_parameter_one_hour(grpc_stub):
+    start_datetime, end_datetime = Timestamp(), Timestamp()
+    start_datetime.FromDatetime(datetime(2022, 12, 31, 11))
+    end_datetime.FromDatetime(datetime(2022, 12, 31, 12))
+
+    ts_request = dstore.GetObsRequest(
+        platforms=["06260"], instruments=["rh"], interval=dstore.TimeInterval(start=start_datetime, end=end_datetime)
+    )
+    response = grpc_stub.GetObservations(ts_request)
+
+    assert len(response.observations) == 1
+    observations = response.observations[0].obs_mdata
+    assert len(observations) == 6
 
 
 input_params_polygon = [
