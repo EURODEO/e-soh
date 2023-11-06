@@ -1,4 +1,9 @@
-"""Client that demonstrates how to work around gRPC message size limit."""
+"""This client demonstrates how to work around gRPC message size limit by
+   calling PutObservations multiple times.
+   The overall set of observations is gradually split into smaller and
+   smaller parts until each one is successfully accommodated in a single
+   request message to PutObservations.
+"""
 
 # tested with Python 3.11
 #
