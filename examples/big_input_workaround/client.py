@@ -46,8 +46,7 @@ def create_observations(obs_count, summary_size):
         # more attributes ...
     )
 
-    pubtime = dtime2tstamp(
-        datetime(2023, 1, 1, 0, 0, 10, 0, tzinfo=timezone.utc))
+    pubtime = dtime2tstamp(datetime(2023, 1, 1, 0, 0, 10, 0, tzinfo=timezone.utc))
 
     obs = []
 
@@ -112,9 +111,7 @@ def call_put_obs(stub, obs_count, summary_size):
                 if len(obs0) == 1:  # give up, since even a single observation
                     # (that may not be split further!) is too big for a
                     # single message
-                    print(
-                        "error: even a single obs is too big for a single " +
-                        "message")
+                    print("error: even a single obs is too big for a single message")
                     break
 
                 # split obs0 into two subsets, push both on stack,
@@ -140,17 +137,23 @@ def call_put_obs(stub, obs_count, summary_size):
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument(
-        "-n", dest="obs_count", default=10000, type=int, metavar="<obs count>",
-        help="total number of observations to insert in the data store " +
-        "(effectively defines an upper bound of the number of calls to " +
-        "PutObservations)")
+        "-n",
+        dest="obs_count",
+        default=10000,
+        type=int,
+        metavar="<obs count>",
+        help="total number of observations to insert in the data store "
+        + "(effectively defines an upper bound of the number of calls to "
+        + "PutObservations)")
     parser.add_argument(
-        "-s", dest="summary_size", default=1000, type=int,
-        metavar="<summary size>", help="size of summary attribute " +
-        "(controls the total size of a single message)")
+        "-s",
+        dest="summary_size",
+        default=1000,
+        type=int,
+        metavar="<summary size>",
+        help="size of summary attribute (controls the total size of a single message)")
     parse_res = parser.parse_args(sys.argv[1:])
     return parse_res.obs_count, parse_res.summary_size
 
@@ -158,8 +161,7 @@ def parse_args():
 if __name__ == "__main__":
 
     with grpc.insecure_channel(
-        f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") \
-            as channel:
+        f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") as channel:
         stub = dstore_grpc.DatastoreStub(channel)
 
         obs_count, summary_size = parse_args()
@@ -167,9 +169,9 @@ if __name__ == "__main__":
         tot_obs, tot_ins, tot_calls = \
             call_put_obs(stub, obs_count, summary_size)
 
-        ps = f'{(tot_ins / tot_obs) * 100:.2f}' if tot_obs > 0 else '0.0'
+        ps = f"{(tot_ins / tot_obs) * 100:.2f}" if tot_obs > 0 else "0.0"
 
         print(
-            f"total observations: {tot_obs}; successfully inserted: " +
-            f"{tot_ins} ({ps}%); " +
-            f"calls to PutObservations: {tot_calls}")
+            f"total observations: {tot_obs}; successfully inserted: "
+            + f"{tot_ins} ({ps}%); "
+            + f"calls to PutObservations: {tot_calls}")
