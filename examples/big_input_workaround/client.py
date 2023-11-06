@@ -119,7 +119,7 @@ def call_put_obs(stub, obs_count, summary_size):
                 continue
 
             # give up
-            print(f"unexpected error (code: {err.code()}; details: {err.details()}")
+            print(f"unexpected error (code: {err.code()}; details: {err.details()})")
             break
 
     # NOTE: at this point, the overall set of observations has been completely
