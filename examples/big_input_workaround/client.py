@@ -14,16 +14,17 @@
 #       --python_out=../examples/big_input_workaround \
 #       --grpc_python_out=../examples/big_input_workaround
 
+import argparse
 import os
 import sys
-import argparse
-from datetime import datetime, timezone
 from collections import deque
+from datetime import datetime
+from datetime import timezone
 
-import grpc
-from google.protobuf.timestamp_pb2 import Timestamp
 import datastore_pb2 as dstore
 import datastore_pb2_grpc as dstore_grpc
+import grpc
+from google.protobuf.timestamp_pb2 import Timestamp
 
 
 def dtime2tstamp(dtime):
