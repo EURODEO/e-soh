@@ -146,32 +146,33 @@ def parse_args():
         metavar="<obs count>",
         help="total number of observations to insert in the data store "
         + "(effectively defines an upper bound of the number of calls to "
-        + "PutObservations)")
+        + "PutObservations)",
+    )
     parser.add_argument(
         "-s",
         dest="summary_size",
         default=1000,
         type=int,
         metavar="<summary size>",
-        help="size of summary attribute (controls the total size of a single message)")
+        help="size of summary attribute (controls the total size of a single message)",
+    )
     parse_res = parser.parse_args(sys.argv[1:])
     return parse_res.obs_count, parse_res.summary_size
 
 
 if __name__ == "__main__":
 
-    with grpc.insecure_channel(
-        f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") as channel:
+    with grpc.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") as channel:
         stub = dstore_grpc.DatastoreStub(channel)
 
         obs_count, summary_size = parse_args()
 
-        tot_obs, tot_ins, tot_calls = \
-            call_put_obs(stub, obs_count, summary_size)
+        tot_obs, tot_ins, tot_calls = call_put_obs(stub, obs_count, summary_size)
 
         ps = f"{(tot_ins / tot_obs) * 100:.2f}" if tot_obs > 0 else "0.0"
 
         print(
             f"total observations: {tot_obs}; successfully inserted: "
             + f"{tot_ins} ({ps}%); "
-            + f"calls to PutObservations: {tot_calls}")
+            + f"calls to PutObservations: {tot_calls}"
+        )
