@@ -38,11 +38,11 @@ def create_observations(obs_count, summary_size):
 
     # create time series metadata common to all observations
     ts_mdata = dstore.TSMetadata(
-        version='dummy_version',
-        type='dummy_type',
-        summary=('x' * summary_size),
-        standard_name='air_temperature',
-        unit='celsius',
+        version="dummy_version",
+        type="dummy_type",
+        summary=("x" * summary_size),
+        standard_name="air_temperature",
+        unit="celsius",
         # more attributes ...
     )
 
@@ -54,15 +54,15 @@ def create_observations(obs_count, summary_size):
     # create a set of observations where only the obs time varies
     for i in range(obs_count):
         obs_mdata = dstore.ObsMetadata(
-            id='dummy_id',
+            id="dummy_id",
             geo_point=dstore.Point(
                 lat=59.91,
                 lon=10.75,
             ),
             pubtime=pubtime,
-            data_id='dummy_data_id',
+            data_id="dummy_data_id",
             obstime_instant=Timestamp(seconds=i),
-            value='12.7',
+            value="12.7",
             # more attributes ...
         )
 
@@ -113,8 +113,8 @@ def call_put_obs(stub, obs_count, summary_size):
                     # (that may not be split further!) is too big for a
                     # single message
                     print(
-                        'error: even a single obs is too big for a single ' +
-                        'message')
+                        "error: even a single obs is too big for a single " +
+                        "message")
                     break
 
                 # split obs0 into two subsets, push both on stack,
@@ -128,9 +128,9 @@ def call_put_obs(stub, obs_count, summary_size):
                 continue
 
             # give up
-            print('unexpected error:')
-            print(f'code: {err.code()}')
-            print(f'details: {err.details()}')
+            print("unexpected error:")
+            print(f"code: {err.code()}")
+            print(f"details: {err.details()}")
             break
 
     # NOTE: at this point, the overall set of observations has been completely
@@ -143,14 +143,14 @@ def parse_args():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument(
-        '-n', dest='obs_count', default=10000, type=int, metavar='<obs count>',
-        help='total number of observations to insert in the data store ' +
-        '(effectively defines an upper bound of the number of calls to ' +
-        'PutObservations)')
+        "-n", dest="obs_count", default=10000, type=int, metavar="<obs count>",
+        help="total number of observations to insert in the data store " +
+        "(effectively defines an upper bound of the number of calls to " +
+        "PutObservations)")
     parser.add_argument(
-        '-s', dest='summary_size', default=1000, type=int,
-        metavar='<summary size>', help='size of summary attribute ' +
-        '(controls the total size of a single message)')
+        "-s", dest="summary_size", default=1000, type=int,
+        metavar="<summary size>", help="size of summary attribute " +
+        "(controls the total size of a single message)")
     parse_res = parser.parse_args(sys.argv[1:])
     return parse_res.obs_count, parse_res.summary_size
 
@@ -170,6 +170,6 @@ if __name__ == "__main__":
         ps = f'{(tot_ins / tot_obs) * 100:.2f}' if tot_obs > 0 else '0.0'
 
         print(
-            f'total observations: {tot_obs}; successfully inserted: ' +
-            f'{tot_ins} ({ps}%); ' +
-            f'calls to PutObservations(): {tot_calls}')
+            f"total observations: {tot_obs}; successfully inserted: " +
+            f"{tot_ins} ({ps}%); " +
+            f"calls to PutObservations: {tot_calls}")
