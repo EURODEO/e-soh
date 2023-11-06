@@ -14,7 +14,9 @@
 #       --python_out=../examples/big_input_workaround \
 #       --grpc_python_out=../examples/big_input_workaround
 
-import os, sys, argparse
+import os
+import sys
+import argparse
 from datetime import datetime, timezone
 from collections import deque
 
@@ -110,7 +112,7 @@ def call_put_obs(stub, obs_count, summary_size):
                     # (that may not be split further!) is too big for a
                     # single message
                     print(
-                        'error: even a single obs is too big for a single '+
+                        'error: even a single obs is too big for a single ' +
                         'message')
                     break
 
@@ -124,11 +126,11 @@ def call_put_obs(stub, obs_count, summary_size):
                     stack.append(obs2)
                 continue
 
-            else: # give up
-                print('unexpected error:')
-                print(f'code: {err.code()}')
-                print(f'details: {err.details()}')
-                break
+            # give up
+            print('unexpected error:')
+            print(f'code: {err.code()}')
+            print(f'details: {err.details()}')
+            break
 
     # NOTE: at this point, the overall set of observations has been completely
     # inserted in the store only if no errors occurred in the above loop
@@ -141,12 +143,12 @@ def parse_args():
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument(
         '-n', dest='obs_count', default=10000, type=int, metavar='<obs count>',
-        help='total number of observations to insert in the data store '+
-        '(effectively defines an upper bound of the number of calls to '+
+        help='total number of observations to insert in the data store ' +
+        '(effectively defines an upper bound of the number of calls to ' +
         'PutObservations)')
     parser.add_argument(
         '-s', dest='summary_size', default=1000, type=int,
-        metavar='<summary size>', help='size of summary attribute '+
+        metavar='<summary size>', help='size of summary attribute ' +
         '(controls the total size of a single message)')
     parse_res = parser.parse_args(sys.argv[1:])
     return parse_res.obs_count, parse_res.summary_size
@@ -167,6 +169,6 @@ if __name__ == "__main__":
         ps = f'{(tot_ins / tot_obs) * 100:.2f}' if tot_obs > 0 else '0.0'
 
         print(
-            f'total observations: {tot_obs}; successfully inserted: '+
-            f'{tot_ins} ({ps}%); '+
+            f'total observations: {tot_obs}; successfully inserted: ' +
+            f'{tot_ins} ({ps}%); ' +
             f'calls to PutObservations(): {tot_calls}')
