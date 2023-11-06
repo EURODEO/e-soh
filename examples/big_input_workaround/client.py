@@ -3,17 +3,16 @@
    The overall set of observations is gradually split into smaller and
    smaller parts until each one is successfully accommodated in a single
    request message to PutObservations.
+
+   Tested with Python 3.11
+
+   If necessary, generate protobuf code by running the following command from
+   the directory that contains the 'protobuf' subdirectory:
+
+     python -m grpc_tools.protoc --proto_path=protobuf datastore.proto \
+         --python_out=../examples/big_input_workaround \
+         --grpc_python_out=../examples/big_input_workaround
 """
-
-# tested with Python 3.11
-#
-# If necessary, generate protobuf code by running the following command from
-# the directory that contains the 'protobuf' subdirectory:
-#
-#   python -m grpc_tools.protoc --proto_path=protobuf datastore.proto \
-#       --python_out=../examples/big_input_workaround \
-#       --grpc_python_out=../examples/big_input_workaround
-
 import argparse
 import os
 import sys
@@ -35,7 +34,6 @@ def dtime2tstamp(dtime):
 
 # create_observations creates a set of observations.
 def create_observations(obs_count, summary_size):
-
     # create time series metadata common to all observations
     ts_mdata = dstore.TSMetadata(
         version="dummy_version",
@@ -83,7 +81,6 @@ def create_observations(obs_count, summary_size):
 #   - number of observations successfully inserted,
 #   - total calls to PutObservations.
 def call_put_obs(stub, obs_count, summary_size):
-
     # create overall set of observations to be inserted in the store
     obs = create_observations(obs_count, summary_size)
 
@@ -96,7 +93,6 @@ def call_put_obs(stub, obs_count, summary_size):
     tot_calls = 0  # total calls to PutObservations
 
     while len(stack) > 0:  # while more (sub)sets remain
-
         # try to insert next (sub)set in the store
         obs0 = stack.pop()
         request = dstore.PutObsRequest(observations=obs0)
@@ -107,7 +103,6 @@ def call_put_obs(stub, obs_count, summary_size):
             tot_calls += 1
         except grpc.RpcError as err:
             if err.code() == grpc.StatusCode.RESOURCE_EXHAUSTED:
-
                 if len(obs0) == 1:  # give up, since even a single observation
                     # (that may not be split further!) is too big for a
                     # single message
@@ -161,7 +156,6 @@ def parse_args():
 
 
 if __name__ == "__main__":
-
     with grpc.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") as channel:
         stub = dstore_grpc.DatastoreStub(channel)
 
