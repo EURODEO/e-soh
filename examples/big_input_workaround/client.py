@@ -104,8 +104,7 @@ def call_put_obs(stub, obs_count, summary_size):
         except grpc.RpcError as err:
             if err.code() == grpc.StatusCode.RESOURCE_EXHAUSTED:
                 if len(obs0) == 1:  # give up, since even a single observation
-                    # (that may not be split further!) is too big for a
-                    # single message
+                    # (that may not be split further!) is too big for a single message
                     print("error: even a single obs is too big for a single message")
                     break
 
@@ -120,9 +119,7 @@ def call_put_obs(stub, obs_count, summary_size):
                 continue
 
             # give up
-            print("unexpected error:")
-            print(f"code: {err.code()}")
-            print(f"details: {err.details()}")
+            print(f"unexpected error (code: {err.code()}; details: {err.details()}")
             break
 
     # NOTE: at this point, the overall set of observations has been completely
