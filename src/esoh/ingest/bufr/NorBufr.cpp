@@ -462,7 +462,6 @@ void NorBufr::clear() {
   ucbits.clear();
   edition = 0;
   LogBuffer::clear();
-  setLogLevel(norbufr_default_loglevel);
 }
 
 void NorBufr::freeBuffer() {

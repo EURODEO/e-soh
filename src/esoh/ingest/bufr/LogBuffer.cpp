@@ -54,6 +54,14 @@ std::string LogBuffer::toCsv(char delimiter, LogLevel l) const {
   return ret;
 }
 
+void LogBuffer::toCsvList(std::list<std::string> &list, char delimiter,
+                          LogLevel l) const {
+  for (auto e : buffer) {
+    if (e.getLogLevel() >= l)
+      list.push_back(e.LogEntry::toCsv(delimiter));
+  }
+}
+
 std::string LogBuffer::toJson(LogLevel l) const {
   std::string ret;
   for (auto e : buffer) {
@@ -61,6 +69,13 @@ std::string LogBuffer::toJson(LogLevel l) const {
       ret += e.toJson() + "\n";
   }
   return ret;
+}
+
+void LogBuffer::toJsonList(std::list<std::string> &list, LogLevel l) const {
+  for (auto e : buffer) {
+    if (e.getLogLevel() >= l)
+      list.push_back(e.LogEntry::toJson());
+  }
 }
 
 void LogBuffer::setLogLevel(LogLevel l, bool clean) {

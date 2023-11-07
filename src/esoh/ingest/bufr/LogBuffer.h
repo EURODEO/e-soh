@@ -26,6 +26,10 @@ public:
   void clear();
   std::string toCsv(char delimiter = ';', LogLevel l = LogLevel::UNKNOWN) const;
   std::string toJson(LogLevel l = LogLevel::UNKNOWN) const;
+  void toCsvList(std::list<std::string> &list, char delimiter = ';',
+                 LogLevel l = LogLevel::UNKNOWN) const;
+  void toJsonList(std::list<std::string> &list,
+                  LogLevel l = LogLevel::UNKNOWN) const;
   void setLogLevel(LogLevel l, bool clean = true);
 
 private:

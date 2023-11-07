@@ -19,6 +19,7 @@
 
 ESOHBufr::ESOHBufr() {
   oscar = 0;
+  NorBufr::setLogLevel(LogLevel::WARN);
   const char *message_template = " { \
         \"id\" : \"\", \
         \"version\" : \"v4.0\", \

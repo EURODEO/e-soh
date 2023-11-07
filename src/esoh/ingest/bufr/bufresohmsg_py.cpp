@@ -111,6 +111,8 @@ std::list<std::string> norbufr_bufresohmsg(std::string fname) {
 
       bufr->extractDescriptors();
 
+      bufr->toCsvList(esoh_bufr_log);
+
       std::list<std::string> msg = bufr->msg();
       ret.insert(ret.end(), msg.begin(), msg.end());
     }
@@ -158,6 +160,10 @@ std::string norbufr_bufrprint(std::string fname) {
   return ret.str();
 }
 
+std::list<std::string> norbufr_log() { return esoh_bufr_log; }
+
+void norbufr_log_clear() { esoh_bufr_log.clear(); }
+
 PYBIND11_MODULE(bufresohmsg_py, m) {
   m.doc() = "bufresoh E-SOH MQTT message generator plugin";
 
@@ -167,6 +173,8 @@ PYBIND11_MODULE(bufresohmsg_py, m) {
   m.def("bufresohmsg_py", &norbufr_bufresohmsg,
         "bufresoh MQTT message generator");
   m.def("bufrprint_py", &norbufr_bufrprint, "Print bufr message");
+  m.def("bufrlog_py", &norbufr_log, "Get bufr log messages list");
+  m.def("bufrlog_clear_py", &norbufr_log_clear, "Clear log messages list");
 
   m.def("init_oscar_py", &norbufr_init_oscar, "Init OSCAR db");
   m.def("init_bufr_schema_py", &norbufr_init_schema_template,

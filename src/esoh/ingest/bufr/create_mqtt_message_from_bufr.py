@@ -5,7 +5,9 @@ import copy
 from esoh.ingest.bufr.bufresohmsg_py import bufresohmsg_py, \
     init_bufrtables_py, \
     init_oscar_py, \
-    init_bufr_schema_py
+    init_bufr_schema_py, \
+    bufrlog_py, \
+    bufrlog_clear_py
 
 
 def build_all_json_payloads_from_bufr(bufr_file_path: str) -> list[str]:
@@ -53,6 +55,10 @@ if __name__ == "__main__":
                     msg = bufr2mqtt(file_name)
                     for m in msg:
                         print(m)
+                    print("Print log messages")
+                    for l_msg in bufrlog_py():
+                        print(l_msg)
+                    bufrlog_clear_py()
                 else:
                     print("File not exists: {0}".format(file_name))
                     exit(1)
