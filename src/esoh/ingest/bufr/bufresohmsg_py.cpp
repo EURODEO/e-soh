@@ -111,9 +111,8 @@ std::list<std::string> norbufr_bufresohmsg(std::string fname) {
 
       bufr->extractDescriptors();
 
-      bufr->toCsvList(esoh_bufr_log);
-
       std::list<std::string> msg = bufr->msg();
+      bufr->logToCsvList(esoh_bufr_log);
       ret.insert(ret.end(), msg.begin(), msg.end());
     }
     delete bufr;

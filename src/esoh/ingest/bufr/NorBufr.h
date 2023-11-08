@@ -22,8 +22,7 @@ const LogLevel norbufr_default_loglevel = LogLevel::TRACE;
 class NorBufr : public Section1,
                 public Section2,
                 public Section3,
-                public Section4,
-                public LogBuffer {
+                public Section4 {
 
 public:
   NorBufr();
@@ -49,6 +48,11 @@ public:
   // TODO: add local/external tables
 
   void freeBuffer();
+
+  void logToCsvList(std::list<std::string> &list, char delimiter = ';',
+                    LogLevel l = LogLevel::UNKNOWN) const;
+  void logToJsonList(std::list<std::string> &list,
+                     LogLevel l = LogLevel::UNKNOWN) const;
 
 private:
   void clearTable();
@@ -80,6 +84,8 @@ protected:
 
   // Section4 uncompressed bits
   std::vector<bool> ucbits;
+
+  mutable LogBuffer lb;
 
   friend std::ifstream &operator>>(std::ifstream &is, NorBufr &bufr);
   friend std::ostream &operator<<(std::ostream &is, NorBufr &bufr);
