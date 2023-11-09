@@ -54,6 +54,8 @@ public:
   void logToJsonList(std::list<std::string> &list,
                      LogLevel l = LogLevel::UNKNOWN) const;
 
+  void setBufrId(std::string);
+
 private:
   void clearTable();
   void clear();
@@ -75,6 +77,8 @@ protected:
   TableD *tabD;
 
   uint8_t *buffer;
+
+  std::string bufr_id;
 
   std::vector<std::list<Descriptor>> desc;
   std::vector<DescriptorMeta *> extraMeta;

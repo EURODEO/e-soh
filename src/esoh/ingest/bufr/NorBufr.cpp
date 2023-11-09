@@ -58,8 +58,8 @@ uint64_t NorBufr::uncompressDescriptor(std::list<DescriptorId>::iterator &it,
                                        ssize_t &sb, ssize_t &subsetsb,
                                        uint16_t *repeatnum) {
 
-  lb.addLogEntry(
-      LogEntry("Starting Descriptor uncompressing", LogLevel::DEBUG, __func__));
+  lb.addLogEntry(LogEntry("Starting Descriptor uncompressing", LogLevel::DEBUG,
+                          __func__, bufr_id));
   uint64_t repeat0 = 0;
   DescriptorMeta dm = tabB->at(*it);
   ssize_t referenceNull =
@@ -111,7 +111,7 @@ uint64_t NorBufr::uncompressDescriptor(std::list<DescriptorId>::iterator &it,
             lb.addLogEntry(LogEntry("Compressed delayed descriptor error!" +
                                         std::to_string(repeat0) + " [" +
                                         std::to_string(val) + "]",
-                                    LogLevel::FATAL, __func__));
+                                    LogLevel::FATAL, __func__, bufr_id));
             // TODO: clean
           }
         }
@@ -137,7 +137,7 @@ ssize_t NorBufr::extractDescriptors(int ss, ssize_t subsb) {
 
   lb.addLogEntry(
       LogEntry("Starting extract Descriptors, subset: " + std::to_string(ss),
-               LogLevel::DEBUG, __func__));
+               LogLevel::DEBUG, __func__, bufr_id));
 
   if (!subsetNum())
     return 0;
@@ -164,13 +164,13 @@ ssize_t NorBufr::extractDescriptors(int ss, ssize_t subsb) {
         ss << "Compressed: " << isCompressed() << " ";
         ss << "IT: " << std::dec << *it << " ";
         ss << "Subset: " << subsetNum();
-        lb.addLogEntry(LogEntry(ss.str(), LogLevel::ERROR, __func__));
+        lb.addLogEntry(LogEntry(ss.str(), LogLevel::ERROR, __func__, bufr_id));
         return sb;
       }
     }
 
     lb.addLogEntry(LogEntry("Descriptor extract:" + it->toString(),
-                            LogLevel::TRACE, __func__));
+                            LogLevel::TRACE, __func__, bufr_id));
     switch (it->f()) {
     case 0: // Element Descriptor
     {
@@ -234,7 +234,8 @@ ssize_t NorBufr::extractDescriptors(int ss, ssize_t subsb) {
               ss << "Compressed: " << isCompressed() << " ";
               ss << "IT: " << std::dec << *it << " ";
               ss << "Subset: " << subsetNum();
-              lb.addLogEntry(LogEntry(ss.str(), LogLevel::ERROR, __func__));
+              lb.addLogEntry(
+                  LogEntry(ss.str(), LogLevel::ERROR, __func__, bufr_id));
               return sb;
             }
 
@@ -281,7 +282,7 @@ ssize_t NorBufr::extractDescriptors(int ss, ssize_t subsb) {
         ++it;
         if (it == DL.end()) {
           lb.addLogEntry(LogEntry("Delayed descriptor missing!",
-                                  LogLevel::ERROR, __func__));
+                                  LogLevel::ERROR, __func__, bufr_id));
         }
         desc[ss].push_back(Descriptor(*it, sb));
         if (it->f() == 0 && it->x() == 31) {
@@ -295,7 +296,7 @@ ssize_t NorBufr::extractDescriptors(int ss, ssize_t subsb) {
               cd.setMeta(const_cast<DescriptorMeta *>(&(tabB->at(*it))));
             } else {
               lb.addLogEntry(LogEntry("REPEAT 0      2 ---->> ",
-                                      LogLevel::ERROR, __func__));
+                                      LogLevel::ERROR, __func__, bufr_id));
               repeatnum = 0;
             }
           } else {
@@ -304,7 +305,7 @@ ssize_t NorBufr::extractDescriptors(int ss, ssize_t subsb) {
         } else {
           lb.addLogEntry(
               LogEntry("Delayed Descriprtor error: " + it->toString(),
-                       LogLevel::ERROR, __func__));
+                       LogLevel::ERROR, __func__, bufr_id));
         }
       }
 
@@ -322,7 +323,7 @@ ssize_t NorBufr::extractDescriptors(int ss, ssize_t subsb) {
           if (repeatnum)
             lb.addLogEntry(LogEntry("Missing descriptors: " +
                                         std::to_string(descnum - 1 - i),
-                                    LogLevel::ERROR, __func__));
+                                    LogLevel::ERROR, __func__, bufr_id));
           break;
         }
       }
@@ -399,7 +400,7 @@ ssize_t NorBufr::extractDescriptors(int ss, ssize_t subsb) {
 
       default:
         lb.addLogEntry(LogEntry("Not yet implemented: " + it->toString(),
-                                LogLevel::ERROR, __func__));
+                                LogLevel::ERROR, __func__, bufr_id));
       }
 
       break;
@@ -421,7 +422,7 @@ ssize_t NorBufr::extractDescriptors(int ss, ssize_t subsb) {
   }
 
   lb.addLogEntry(LogEntry("End Descriptors, endbit: " + std::to_string(sb),
-                          LogLevel::DEBUG, __func__));
+                          LogLevel::DEBUG, __func__, bufr_id));
 
   // Create SUBSETS
   ssize_t endbit = sb;
@@ -630,19 +631,19 @@ std::ifstream &operator>>(std::ifstream &is, NorBufr &bufr) {
 
   bufr.lb.addLogEntry(
       LogEntry("Reading >> BUFR at position: " + std::to_string(is.tellg()),
-               LogLevel::DEBUG, __func__));
+               LogLevel::DEBUG, __func__, bufr.bufr_id));
 
   // Search "BUFR" string
   unsigned long n = NorBufrIO::findBytes(is, "BUFR", 4);
   if (n == ULONG_MAX) {
-    bufr.lb.addLogEntry(
-        LogEntry("No more BUFR messages", LogLevel::WARN, __func__));
+    bufr.lb.addLogEntry(LogEntry("No more BUFR messages", LogLevel::WARN,
+                                 __func__, bufr.bufr_id));
     return is;
   }
 
   bufr.lb.addLogEntry(
       LogEntry("BUFR Section found at: " + std::to_string(is.tellg()),
-               LogLevel::DEBUG, __func__));
+               LogLevel::DEBUG, __func__, bufr.bufr_id));
   is.seekg(static_cast<std::streampos>(n), std::ios_base::beg);
 
   // Section0 length
@@ -655,7 +656,7 @@ std::ifstream &operator>>(std::ifstream &is, NorBufr &bufr) {
 
   bufr.lb.addLogEntry(LogEntry("BUFR Size: " + std::to_string(bufr.len) +
                                    " Edition: " + std::to_string(bufr.edition),
-                               LogLevel::DEBUG, __func__));
+                               LogLevel::DEBUG, __func__, bufr.bufr_id));
 
   bufr.buffer = new uint8_t[bufr.len];
   memcpy(bufr.buffer, sec0, slen);
@@ -664,7 +665,8 @@ std::ifstream &operator>>(std::ifstream &is, NorBufr &bufr) {
   std::streamsize rchar = is.gcount();
 
   if (rchar != bufr.len - slen) {
-    bufr.lb.addLogEntry(LogEntry("Reading Error", LogLevel::ERROR, __func__));
+    bufr.lb.addLogEntry(
+        LogEntry("Reading Error", LogLevel::ERROR, __func__, bufr.bufr_id));
     bufr.len = rchar + slen - 1;
   }
 
@@ -674,7 +676,7 @@ std::ifstream &operator>>(std::ifstream &is, NorBufr &bufr) {
   if (offset && is.good()) {
     bufr.lb.addLogEntry(
         LogEntry("Seek stream to next:" + std::to_string(offset),
-                 LogLevel::WARN, __func__));
+                 LogLevel::WARN, __func__, bufr.bufr_id));
     is.seekg(offset, std::ios_base::cur);
   }
 
@@ -698,7 +700,8 @@ std::ifstream &operator>>(std::ifstream &is, NorBufr &bufr) {
   // Section 4 load
   bufr.Section4::fromBuffer(bufr.buffer + slen, bufr.len - slen);
 
-  bufr.lb.addLogEntry(LogEntry("BUFR loaded", LogLevel::DEBUG, __func__));
+  bufr.lb.addLogEntry(
+      LogEntry("BUFR loaded", LogLevel::DEBUG, __func__, bufr.bufr_id));
 
   return is;
 }
@@ -717,7 +720,7 @@ long NorBufr::checkBuffer() {
         if (si == 4) {
           lb.addLogEntry(
               LogEntry("Found new BUFR sequence at:" + std::to_string(i - 4),
-                       LogLevel::ERROR, __func__));
+                       LogLevel::ERROR, __func__, bufr_id));
           offset = i - len - 4;
           len = i - 4;
           break;
@@ -732,7 +735,7 @@ long NorBufr::checkBuffer() {
         ei++;
         if (ei == 4 && i != len - 1) {
           lb.addLogEntry(LogEntry("Found end sequence at:" + std::to_string(i),
-                                  LogLevel::ERROR, __func__));
+                                  LogLevel::ERROR, __func__, bufr_id));
           offset = i - len;
         }
       } else
@@ -777,6 +780,8 @@ void NorBufr::printValue(DescriptorId df) const {
     }
   }
 }
+
+void NorBufr::setBufrId(std::string s) { bufr_id = s; }
 
 void NorBufr::logToCsvList(std::list<std::string> &list, char delimiter,
                            LogLevel l) const {

@@ -60,8 +60,8 @@ void ESOHBufr::setMsgTemplate(std::string s) {
 
 std::list<std::string> ESOHBufr::msg() const {
 
-  lb.addLogEntry(
-      LogEntry("Starting ESOH message generation", LogLevel::TRACE, __func__));
+  lb.addLogEntry(LogEntry("Starting ESOH message generation", LogLevel::TRACE,
+                          __func__, bufr_id));
 
   std::list<std::string> ret;
 
@@ -69,7 +69,7 @@ std::list<std::string> ESOHBufr::msg() const {
 
   if (message.Parse(msg_template.c_str()).HasParseError()) {
     lb.addLogEntry(LogEntry("ESOH message tempate parsing Error!!!",
-                            LogLevel::ERROR, __func__));
+                            LogLevel::ERROR, __func__, bufr_id));
     return ret;
   }
 
@@ -95,7 +95,7 @@ std::list<std::string> ESOHBufr::msg() const {
   int subsetnum = 0;
   for (auto s : desc) {
     lb.addLogEntry(LogEntry("Starting ESOH message generation", LogLevel::DEBUG,
-                            __func__));
+                            __func__, bufr_id));
     double lat = -99999;
     double lon = -99999;
     double hei = -99999;
@@ -118,14 +118,14 @@ std::list<std::string> ESOHBufr::msg() const {
          ++ci) {
       auto v = *ci;
       lb.addLogEntry(LogEntry("ESOH Descriptor: " + v.toString(),
-                              LogLevel::TRACE, __func__));
+                              LogLevel::TRACE, __func__, bufr_id));
 
       switch (v.f()) {
       case 0: // Element Descriptors
       {
         std::string value_str = getValue(v, std::string(), false);
         lb.addLogEntry(LogEntry("Element Descriotor value: " + value_str,
-                                LogLevel::TRACE, __func__));
+                                LogLevel::TRACE, __func__, bufr_id));
 
         if (value_str == "MISSING")
           break;
@@ -168,7 +168,7 @@ std::list<std::string> ESOHBufr::msg() const {
                 LogEntry("Missing geolocation information, skip this subset: " +
                              std::to_string(subsetnum) +
                              " Wigos: " + wigos_id.to_string(),
-                         LogLevel::WARN, __func__));
+                         LogLevel::WARN, __func__, bufr_id));
             goto subset_end;
           }
         }
@@ -184,7 +184,7 @@ std::list<std::string> ESOHBufr::msg() const {
             wmo_block = getValue(v, wmo_block);
             lb.addLogEntry(
                 LogEntry("Found WMO Block number" + std::to_string(wmo_block),
-                         LogLevel::DEBUG, __func__));
+                         LogLevel::DEBUG, __func__, bufr_id));
             auto nexti = ci;
             ++nexti;
             int wmo_station = 0;
@@ -193,12 +193,12 @@ std::list<std::string> ESOHBufr::msg() const {
               wmo_station = getValue(*nexti, wmo_block);
               lb.addLogEntry(LogEntry("Found WMO Station number" +
                                           std::to_string(wmo_station),
-                                      LogLevel::DEBUG, __func__));
+                                      LogLevel::DEBUG, __func__, bufr_id));
               ++ci;
             } else {
               lb.addLogEntry(
                   LogEntry("Missing WMO Station number after WMO block",
-                           LogLevel::WARN, __func__));
+                           LogLevel::WARN, __func__, bufr_id));
             }
             wigos_id.setWmoId(wmo_block * 1000 + wmo_station);
             skip_platform = false;
@@ -214,7 +214,7 @@ std::list<std::string> ESOHBufr::msg() const {
           case 19: // Long station or site name
           {
             lb.addLogEntry(LogEntry("Set Platform name:" + value_str,
-                                    LogLevel::DEBUG, __func__));
+                                    LogLevel::DEBUG, __func__, bufr_id));
             setPlatformName(value_str, subset_message, false);
             break;
           }
@@ -223,20 +223,20 @@ std::list<std::string> ESOHBufr::msg() const {
             int bufr_state_id = 0;
             bufr_state_id = getValue(v, bufr_state_id);
             lb.addLogEntry(LogEntry("Found state Id:" + bufr_state_id,
-                                    LogLevel::DEBUG, __func__));
+                                    LogLevel::DEBUG, __func__, bufr_id));
             int wigos_state_id = 0;
             for (auto cc : country_codes) {
               if (cc.bufr_code == bufr_state_id) {
                 wigos_state_id = cc.iso_code;
                 lb.addLogEntry(LogEntry("State Id in OSCAR OK", LogLevel::DEBUG,
-                                        __func__));
+                                        __func__, bufr_id));
                 break;
               }
             }
             if (!wigos_state_id)
               lb.addLogEntry(
                   LogEntry("State Id Unknown: " + std::to_string(bufr_state_id),
-                           LogLevel::WARN, __func__));
+                           LogLevel::WARN, __func__, bufr_id));
             wigos_id.setWigosIssuerId(wigos_state_id);
             skip_platform = false;
             break;
@@ -287,7 +287,7 @@ std::list<std::string> ESOHBufr::msg() const {
             }
             if (skip_platform) {
               lb.addLogEntry(LogEntry("Skip wigos local identifier",
-                                      LogLevel::DEBUG, __func__));
+                                      LogLevel::DEBUG, __func__, bufr_id));
               break;
             }
             wigos_id.setWigosLocalId(value_str);

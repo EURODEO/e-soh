@@ -85,9 +85,12 @@ std::list<std::string> norbufr_bufresohmsg(std::string fname) {
   std::ifstream bufrFile(fname.c_str(),
                          std::ios_base::in | std::ios_base::binary);
 
+  std::filesystem::path file_path(fname);
+
   while (bufrFile.good()) {
 
     ESOHBufr *bufr = new ESOHBufr;
+    bufr->setBufrId(file_path.filename());
     bufr->setOscar(&oscar);
     bufr->setMsgTemplate(bufr_input_schema);
 
