@@ -19,7 +19,7 @@
 
 ESOHBufr::ESOHBufr() {
   oscar = 0;
-  lb.setLogLevel(LogLevel::WARN);
+  lb.setLogLevel(LogLevel::DEBUG);
   const char *message_template = " { \
         \"id\" : \"\", \
         \"version\" : \"v4.0\", \
@@ -124,6 +124,7 @@ std::list<std::string> ESOHBufr::msg() const {
       case 0: // Element Descriptors
       {
         std::string value_str = getValue(v, std::string(), false);
+        NorBufrIO::strPrintable(value_str);
         lb.addLogEntry(LogEntry("Element Descriotor value: " + value_str,
                                 LogLevel::TRACE, __func__, bufr_id));
 
@@ -224,8 +225,9 @@ std::list<std::string> ESOHBufr::msg() const {
           {
             int bufr_state_id = 0;
             bufr_state_id = getValue(v, bufr_state_id);
-            lb.addLogEntry(LogEntry("Found state Id:" + bufr_state_id,
-                                    LogLevel::DEBUG, __func__, bufr_id));
+            lb.addLogEntry(
+                LogEntry("Found state Id:" + std::to_string(bufr_state_id),
+                         LogLevel::DEBUG, __func__, bufr_id));
             int wigos_state_id = 0;
             for (auto cc : country_codes) {
               if (cc.bufr_code == bufr_state_id) {
@@ -273,26 +275,8 @@ std::list<std::string> ESOHBufr::msg() const {
             break;
           }
           case 128: {
-            // Workaroung USA wigos local identifier
-            std::string missing_wigos =
-                "01101010000110101000011010100001101010000110101000011010100001"
-                "10101000011010100001101010000110101000011010100001101010000110"
-                "1010";
-            for (int i = 0; i < 16; i++) {
-              std::bitset<8> bs(value_str[i]);
-              if (bs.to_string<char, std::string::traits_type,
-                               std::string::allocator_type>() !=
-                  missing_wigos.substr(i * 8, 8)) {
-                skip_platform = false;
-                break;
-              }
-            }
-            if (skip_platform) {
-              lb.addLogEntry(LogEntry("Skip wigos local identifier",
-                                      LogLevel::DEBUG, __func__, bufr_id));
-              break;
-            }
-            wigos_id.setWigosLocalId(value_str);
+            if (value_str.size())
+              wigos_id.setWigosLocalId(value_str);
           }
           }
 
