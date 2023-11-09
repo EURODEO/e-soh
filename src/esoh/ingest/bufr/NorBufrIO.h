@@ -37,7 +37,7 @@ std::vector<bool> getBitVec(const uint64_t startbit, const int datawidth,
                             const std::vector<bool> &bits);
 
 std::string strTrim(std::string s);
-void strPrintable(std::string& s);
+void strPrintable(std::string &s);
 } // namespace NorBufrIO
 
 #endif
