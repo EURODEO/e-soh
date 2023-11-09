@@ -19,7 +19,7 @@
 
 ESOHBufr::ESOHBufr() {
   oscar = 0;
-  lb.setLogLevel(LogLevel::DEBUG);
+  lb.setLogLevel(LogLevel::WARN);
   const char *message_template = " { \
         \"id\" : \"\", \
         \"version\" : \"v4.0\", \
@@ -132,7 +132,7 @@ std::list<std::string> ESOHBufr::msg() const {
           break;
 
         if (v.x() >= 10 &&
-            (v.x() == 22 && (v.y() != 55 && v.y() != 56 && v.y() != 67)) &&
+            !(v.x() == 22 && (v.y() == 55 || v.y() == 56 || v.y() == 67)) &&
             v.x() != 25 && v.x() != 31 && v.x() != 35 && !platform_check) {
           // Check station_id at OSCAR
           platform_check = true;
@@ -357,6 +357,8 @@ std::list<std::string> ESOHBufr::msg() const {
         {
           if (v.y() <= 2) {
             lat = getValue(v, lat);
+            LogEntry("Set latitude: " + std::to_string(lat), LogLevel::DEBUG,
+                     __func__, bufr_id);
             setLocation(lat, lon, hei, subset_message);
           }
           if (v.y() == 12 || v.y() == 15 || v.y() == 16) {
@@ -370,6 +372,8 @@ std::list<std::string> ESOHBufr::msg() const {
         {
           if (v.y() <= 2) {
             lon = getValue(v, lon);
+            LogEntry("Set longitude: " + std::to_string(lon), LogLevel::DEBUG,
+                     __func__, bufr_id);
             setLocation(lat, lon, hei, subset_message);
           }
           if (v.y() == 12 || v.y() == 15 || v.y() == 16) {
