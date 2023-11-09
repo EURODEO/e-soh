@@ -1,7 +1,7 @@
 import esoh.datastore_pb2 as dstore
 import esoh.datastore_pb2_grpc as dstore_grpc
 
-
+import os
 import grpc
 import logging
 
@@ -47,7 +47,8 @@ def dtime2str(dtime):
 
 class datastore_connection():
     def __init__(self, DSHOST: str, DSPORT: str) -> None:
-        self._channel = grpc.insecure_channel(DSHOST + ":" + DSPORT)
+        self._channel = grpc.secure_channel(
+            DSHOST + ":" + DSPORT, grpc.ssl_channel_credentials())
         self._stub = dstore_grpc.DatastoreStub(self._channel)
 
         self.is_channel_ready()
