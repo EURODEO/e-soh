@@ -166,11 +166,11 @@ std::list<std::string> ESOHBufr::msg() const {
           }
           // Missing mandatory geolocation values. Skip this subset
           if (lat < -9999 || lon < -9999) {
-            lb.addLogEntry(
-                LogEntry("Missing geolocation information, skip this subset: " +
-                             std::to_string(subsetnum) +
-                             " Wigos: " + wigos_id.to_string(),
-                         LogLevel::WARN, __func__, bufr_id));
+            lb.addLogEntry(LogEntry(
+                "Missing geolocation information, skip this subset: " +
+                    std::to_string(subsetnum) + " Wigos: " +
+                    wigos_id.to_string() + std::string(" ") + v.toString(),
+                LogLevel::WARN, __func__, bufr_id));
             goto subset_end;
           }
         }
@@ -185,7 +185,7 @@ std::list<std::string> ESOHBufr::msg() const {
             int wmo_block = 0;
             wmo_block = getValue(v, wmo_block);
             lb.addLogEntry(
-                LogEntry("Found WMO Block number" + std::to_string(wmo_block),
+                LogEntry("Found WMO Block number: " + std::to_string(wmo_block),
                          LogLevel::DEBUG, __func__, bufr_id));
             auto nexti = ci;
             ++nexti;
@@ -193,7 +193,7 @@ std::list<std::string> ESOHBufr::msg() const {
             // Is next the WMO station number?
             if (*nexti == DescriptorId(1002, true)) {
               wmo_station = getValue(*nexti, wmo_block);
-              lb.addLogEntry(LogEntry("Found WMO Station number" +
+              lb.addLogEntry(LogEntry("Found WMO Station number: " +
                                           std::to_string(wmo_station),
                                       LogLevel::DEBUG, __func__, bufr_id));
               ++ci;
