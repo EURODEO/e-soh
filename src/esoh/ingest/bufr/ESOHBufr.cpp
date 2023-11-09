@@ -130,7 +130,9 @@ std::list<std::string> ESOHBufr::msg() const {
         if (value_str == "MISSING")
           break;
 
-        if (v.x() >= 10 && !platform_check) {
+        if (v.x() >= 10 &&
+            (v.x() == 22 && (v.y() != 55 && v.y() != 56 && v.y() != 67)) &&
+            v.x() != 25 && v.x() != 31 && v.x() != 35 && !platform_check) {
           // Check station_id at OSCAR
           platform_check = true;
           if (wigos_id.getWigosLocalId().size()) {
