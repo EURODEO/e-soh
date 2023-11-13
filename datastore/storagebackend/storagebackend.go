@@ -17,4 +17,8 @@ type StorageBackend interface {
 	// GetObservations retrieves observations from the storage.
 	// Returns nil upon success, otherwise error.
 	GetObservations(*datastore.GetObsRequest) (*datastore.GetObsResponse, error)
+
+	// GetTSAttrCombos retrieves, for the non-default attributes in the input, the unique
+	// combinations of attribute values currently represented in the storage.
+	GetTSAttrCombos(*datastore.GetTSACRequest) (*datastore.GetTSACResponse, error)
 }

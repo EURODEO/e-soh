@@ -230,6 +230,38 @@ $ grpcurl -d '{"standard_names": ["wind_speed", "air_temperature"], "interval": 
 ...
 ```
 
+### List unique occurrences of time series metadata attribute 'standard_name'
+
+```text
+$ grpcurl -d '{"attrs": ["standard_name"]}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetTSAttrCombos
+{
+  "matches": [
+    {
+      "standardName": "air_pressure_at_sea_level"
+    },
+    {
+      "standardName": "air_temperature"
+    },
+...
+```
+
+### List unique combinations of time series metadata attributes 'standard_name' and 'platform'
+
+```text
+$ grpcurl -d '{"attrs": ["standard_name", "platform"]}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetTSAttrCombos
+{
+  "matches": [
+    {
+      "platform": "06201",
+      "standardName": "air_pressure_at_sea_level"
+    },
+    {
+      "platform": "06201",
+      "standardName": "air_temperature"
+    },
+...
+```
+
 ## Testing the datastore service with a Python client
 
 ### Compiling the protobuf file

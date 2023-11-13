@@ -22,6 +22,7 @@ option go_package = "./datastore";
 service Datastore {
   rpc PutObservations(PutObsRequest) returns (PutObsResponse);
   rpc GetObservations(GetObsRequest) returns (GetObsResponse);
+  rpc GetTSAttrCombos(GetTSACRequest) returns (GetTSACResponse);
 }
 
 //---------------------------------------------------------------------------
@@ -127,9 +128,18 @@ message GetObsRequest {
   // TODO: add search filters for other metadata
 }
 
-
 message GetObsResponse {
   int32 status = 1;
   string error = 2; // any error description (empty on success)
   repeated Metadata2 observations = 3;
+}
+
+//---------------------------------------------------------------------------
+
+message GetTSACRequest {
+  repeated string attrs = 1; // one or more TSMetadata field names
+}
+
+message GetTSACResponse {
+  repeated TSMetadata matches = 1; // zero or more unique instances matching GetTSACRequest.attrs
 }
