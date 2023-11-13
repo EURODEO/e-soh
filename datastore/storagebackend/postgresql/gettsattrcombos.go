@@ -159,7 +159,7 @@ func (sbe *PostgreSQL) GetTSAttrCombos(request *datastore.GetTSACRequest) (
 		}
 
 		// retrieve the value for each column from the pointers slice
-	    m := make(map[string]interface{})
+		m := map[string]interface{}{}
 		for i, colName := range cols {
 			val := colPtrs[i].(*interface{})
 			m[colName] = *val
