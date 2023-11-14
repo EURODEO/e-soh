@@ -78,7 +78,16 @@ HITIME=9999-12-31T23:59:59Z
 
 Using a `.env` file also makes it more practical to have all supported environment variables
 explicitly defined and thus avoiding warnings from `docker compose` due to undefined defaults
-(defaults are defined in the Go code only).
+(defaults are defined in the Go code only). So for example, to get of the following warnings:
+
+```text
+$ docker compose up -d
+WARN[0000] The "CLEANUPINTERVAL" variable is not set. Defaulting to a blank string.
+WARN[0000] The "PUTOBSLIMIT" variable is not set. Defaulting to a blank string.
+...
+```
+
+, simply ensure that `CLEANUPINTERVAL` and `PUTOBSLIMIT` are both defined in `.env`.
 
 ### Same as above, but specifying LOTIME and HITIME directly as seconds
 
