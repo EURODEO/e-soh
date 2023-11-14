@@ -13,8 +13,8 @@ import (
 )
 
 var (
-	dynamicTime            bool // whether the valid time range is considered dynamic or static
-	loTimeSecs, hiTimeSecs int64
+	dynamicTime                bool // whether the valid time range is considered dynamic or static
+	loTimeSecs, hiTimeSecs     int64
 	matchFirstCap, matchAllCap *regexp.Regexp
 )
 
