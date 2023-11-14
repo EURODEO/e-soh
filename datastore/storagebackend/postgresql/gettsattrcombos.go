@@ -143,7 +143,7 @@ func (sbe *PostgreSQL) GetTSAttrCombos(request *datastore.GetTSACRequest) (
 	}
 	defer rows.Close()
 
-	matches := []*datastore.TSMetadata{}
+	combos := []*datastore.TSMetadata{}
 	for rows.Next() {
 		// create a slice of interface{}'s to represent each column, and a second slice to contain
 		// pointers to each item in the columns slice
@@ -170,8 +170,8 @@ func (sbe *PostgreSQL) GetTSAttrCombos(request *datastore.GetTSACRequest) (
 		if err != nil {
 			return nil, fmt.Errorf("getTSMData failed(): %v", err)
 		}
-		matches = append(matches, tsMData)
+		combos = append(combos, tsMData)
 	}
 
-	return &datastore.GetTSACResponse{Matches: matches}, nil
+	return &datastore.GetTSACResponse{Combos: combos}, nil
 }

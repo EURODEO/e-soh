@@ -141,5 +141,5 @@ message GetTSACRequest {
 }
 
 message GetTSACResponse {
-  repeated TSMetadata matches = 1; // zero or more unique instances matching GetTSACRequest.attrs
+  repeated TSMetadata combos = 1; // zero or more unique instances matching GetTSACRequest.attrs
 }
