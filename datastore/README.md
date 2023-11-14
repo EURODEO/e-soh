@@ -78,7 +78,16 @@ HITIME=9999-12-31T23:59:59Z
 
 Using a `.env` file also makes it more practical to have all supported environment variables
 explicitly defined and thus avoiding warnings from `docker compose` due to undefined defaults
-(defaults are defined in the Go code only).
+(defaults are defined in the Go code only). So for example, to get of the following warnings:
+
+```text
+$ docker compose up -d
+WARN[0000] The "CLEANUPINTERVAL" variable is not set. Defaulting to a blank string.
+WARN[0000] The "PUTOBSLIMIT" variable is not set. Defaulting to a blank string.
+...
+```
+
+, simply ensure that `CLEANUPINTERVAL` and `PUTOBSLIMIT` are both defined in `.env`.
 
 ### Same as above, but specifying LOTIME and HITIME directly as seconds
 
@@ -144,6 +153,7 @@ Variable | Mandatory | Default value | Description
 `LOTIME`          | No  | `86400`            | The _earliest_ valid time as seconds to be either [1] subtracted from the current time (if the valid time range is _dynamic_) or [2] added to UNIX epoch (1970-01-01T00:00:00Z) (if the valid time range is _static_). In the case of a _static_ valid time range, the `LOTIME` can optionally be specified as an ISO-8601 datetime of the exact form `2023-10-10T00:00:00Z`.
 `HITIME`          | No  | `-2`               | Same as `LOTIME`, but for the _latest_ valid time. Note a default leeway of 2 seconds into the future to reduce risk of missing the newest observations.
 `CLEANUPINTERVAL` | No  | `86400`            | The minimum time duration in seconds between automatic cleanups (like removing obsolete observations from the physical store).
+`PUTOBSLIMIT`     | No  | `100000`           | Maximum number of observations allowed in a single call to `PutObservations`.
 
 **TODO:** Ensure that these variables are [passed properly](https://docs.docker.com/compose/environment-variables/set-environment-variables/) to the relevant `docker compose`
 commands. Any secrets should be passed using a [special mechanism](https://docs.docker.com/compose/use-secrets/), etc.
