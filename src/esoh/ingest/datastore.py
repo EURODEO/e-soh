@@ -1,7 +1,6 @@
 import esoh.datastore_pb2 as dstore
 import esoh.datastore_pb2_grpc as dstore_grpc
 
-import os
 import grpc
 import logging
 
@@ -60,7 +59,8 @@ class datastore_connection():
             grpc.channel_ready_future(self._channel).result(timeout=10)
         except grpc.FutureTimeoutError:
             logger.exception(grpc.FutureTimeoutError("Connection to the grpc service timed out, "
-                                                     "and was not available at application start."))
+                                                     "and was not available at application"
+                                                     "start."))
             raise grpc.FutureTimeoutError("Connection to the grpc service timed out, "
                                           "and was not available at application start.")
         except Exception as e:

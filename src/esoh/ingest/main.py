@@ -47,8 +47,10 @@ class ingest_to_pipeline():
 
         self.dstore = datastore_connection(dstore_conn["dshost"], dstore_conn["dsport"])
         if "username" in mqtt_conf:
-            self.mqtt = mqtt_connection(
-                mqtt_conf["host"], mqtt_conf["topic"], mqtt_conf["username"], mqtt_conf["password"])
+            self.mqtt = mqtt_connection(mqtt_conf["host"],
+                                        mqtt_conf["topic"],
+                                        mqtt_conf["username"],
+                                        mqtt_conf["password"])
         else:
             self.mqtt = mqtt_connection(mqtt_conf["host"], mqtt_conf["topic"])
 
