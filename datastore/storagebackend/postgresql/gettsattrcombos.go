@@ -1,125 +1,97 @@
 package postgresql
 
 import (
+	"datastore/common"
 	"datastore/datastore"
 	"fmt"
+	"reflect"
 	"strings"
 
 	_ "github.com/lib/pq"
 )
 
 var (
-	supAttrs map[string]struct{} // supported attributes
+	attr2col map[string]string // attribute to database column
+	col2attr map[string]string // database column to attribute
 )
 
 func init() {
-
-	supAttrs = map[string]struct{}{}
-
-	for _, sa := range []string{
-		"version",
-		"type",
-		"title",
-		"summary",
-		"keywords",
-		"keywords_vocabulary",
-		"license",
-		"conventions",
-		"naming_authority",
-		"creator_type",
-		"creator_name",
-		"creator_email",
-		"creator_url",
-		"institution",
-		"project",
-		"source",
-		"platform",
-		"platform_vocabulary",
-		"standard_name",
-		"unit",
-		"instrument",
-		"instrument_vocabulary",
-		// TODO: support links
-	} {
-		supAttrs[sa] = struct{}{}
+	attr2col = map[string]string{}
+	col2attr = map[string]string{}
+	for _, f := range reflect.VisibleFields(reflect.TypeOf(datastore.TSMetadata{})) {
+		if f.IsExported() {
+			attr := f.Name
+			col := common.ToSnakeCase(attr)
+			attr2col[attr] = col
+			col2attr[col] = attr
+		}
 	}
 }
 
-// getTSAttrCols ... (TODO: add documentation)
+// getTSAttrCols returns database columns corresponding to attrs.
 func getTSAttrCols(attrs []string) ([]string, error) {
 	seen := map[string]struct{}{}
-
 	cols := []string{}
 
+	supAttrs := func() []string {
+		attrs := []string{}
+		for a := range attr2col {
+			attrs = append(attrs, a)
+		}
+		return attrs
+	}
+
 	for _, attr := range attrs {
-		attr0 := strings.ToLower(strings.TrimSpace(attr))
-		if _, found := seen[attr0]; found {
-			return nil, fmt.Errorf("attribute >%s< specified more than once", attr0)
+		col, found := attr2col[attr]
+		if !found {
+			return nil, fmt.Errorf(
+				"attribute not found: %s; supported attributes: %s",
+				attr, strings.Join(supAttrs(), ", "))
 		}
 
-		if _, found := supAttrs[attr0]; found {
-			cols = append(cols, attr0)
-			seen[attr0] = struct{}{}
-		} else {
-			return nil, fmt.Errorf("unsupported attribute: >%s<", attr0)
+		if _, found = seen[col]; found {
+			return nil, fmt.Errorf("attribute %s specified more than once", attr)
 		}
+
+		cols = append(cols, col)
 	}
 
 	return cols, nil
 }
 
-// getTSMdata ... (TODO: add documentation)
+// getTSMdata returns a TSMetadata object initialized from m.
 func getTSMData(m map[string]interface{}) (*datastore.TSMetadata, error) {
 
 	tsMData := datastore.TSMetadata{}
+	tp := reflect.ValueOf(&tsMData)
 
-	for k, v := range m {
-		switch k {
-		case "version":
-			tsMData.Version = v.(string)
-		case "type":
-			tsMData.Type = v.(string)
-		case "title":
-			tsMData.Title = v.(string)
-		case "summary":
-			tsMData.Summary = v.(string)
-		case "keywords":
-			tsMData.Keywords = v.(string)
-		case "keywords_vocabulary":
-			tsMData.KeywordsVocabulary = v.(string)
-		case "license":
-			tsMData.License = v.(string)
-		case "conventions":
-			tsMData.Conventions = v.(string)
-		case "naming_authority":
-			tsMData.NamingAuthority = v.(string)
-		case "creator_type":
-			tsMData.CreatorType = v.(string)
-		case "creator_name":
-			tsMData.CreatorName = v.(string)
-		case "creator_email":
-			tsMData.CreatorEmail = v.(string)
-		case "creator_url":
-			tsMData.CreatorUrl = v.(string)
-		case "institution":
-			tsMData.Institution = v.(string)
-		case "project":
-			tsMData.Project = v.(string)
-		case "source":
-			tsMData.Source = v.(string)
-		case "platform":
-			tsMData.Platform = v.(string)
-		case "platform_vocabulary":
-			tsMData.PlatformVocabulary = v.(string)
-		case "standard_name":
-			tsMData.StandardName = v.(string)
-		case "unit":
-			tsMData.Unit = v.(string)
-		case "instrument":
-			tsMData.Instrument = v.(string)
-		// TODO: support links
+	for col, val := range m {
+		attr, found := col2attr[col]
+		if !found {
+			return nil, fmt.Errorf(
+				"key not found in col2attr: %s (existing contents: %v)", col, col2attr)
+		}
+
+		field := tp.Elem().FieldByName(attr)
+		if !field.IsValid() {
+			return nil, fmt.Errorf("invalid field (attr: %s, col: %s)", attr, col)
+		}
+		if !field.CanSet() {
+			return nil, fmt.Errorf("unassignable field (attr: %s, col: %s)", attr, col)
+		}
+
+		switch field.Kind() {
+		case reflect.String:
+			val0, ok := val.(string)
+			if !ok {
+				return nil, fmt.Errorf(
+					"value not string: %v (type: %T; attr: %s, col: %s", val, val, attr, col)
+			}
+			field.SetString(val0)
 		default:
-			return nil, fmt.Errorf("unsupported attribute: >%s<", k)
+			return nil, fmt.Errorf(
+				"unsupported type: %v (val: %v; type: %T; attr: %s; col: %s)",
+				field.Kind(), val, val, attr, col)
 		}
 	}
 
