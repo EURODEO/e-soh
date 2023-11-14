@@ -43,10 +43,14 @@ func getTSAttrCols(attrs []string) ([]string, error) {
 
 	for _, attr := range attrs {
 		col, found := attr2col[attr]
-		if !found {
-			return nil, fmt.Errorf(
-				"attribute not found: %s; supported attributes: %s",
-				attr, strings.Join(supAttrs(), ", "))
+		if !found { // not an attribute name
+			_, found0 := col2attr[attr]
+			if !found0 { // not a column name either
+				return nil, fmt.Errorf(
+					"attribute not found: %s; supported attributes: %s",
+					attr, strings.Join(supAttrs(), ", "))
+			}
+			col = attr // attr is already a column name
 		}
 
 		if _, found = seen[col]; found {
