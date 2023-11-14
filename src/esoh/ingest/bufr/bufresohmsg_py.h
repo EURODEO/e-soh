@@ -13,21 +13,25 @@
 #include <list>
 #include <string>
 
+#include "Oscar.h"
+#include "Tables.h"
+
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
-#include "Oscar.h"
-
-static std::map<int, TableB *> *tb = new std::map<int, TableB *>;
-static std::map<int, TableC *> *tc = new std::map<int, TableC *>;
-static std::map<int, TableD *> *td = new std::map<int, TableD *>;
+static std::map<int, TableB> tb;
+static std::map<int, TableC> tc;
+static std::map<int, TableD> td;
 
 static Oscar oscar;
 
-long init_bufrtables_py(std::string tables_dir);
-std::list<std::string> bufresohmsg_py(long tableB_ptr, std::string fname);
-long destroy_bufrtables_py(std::string s);
+static std::string bufr_input_schema;
+
+bool norbufr_init_bufrtables(std::string tables_dir);
+bool norbufr_update_bufrtables(std::string tables_dir);
+std::list<std::string> bufresohmsg_py(std::string fname);
 
 bool norbufr_init_oscar(std::string oscardb_dir);
+bool norbufr_init_schema_template(std::string schema_path);
 
 #endif

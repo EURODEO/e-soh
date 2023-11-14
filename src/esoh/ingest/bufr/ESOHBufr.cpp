@@ -17,9 +17,45 @@
 #include "ESOHBufr.h"
 #include "WSI.h"
 
-ESOHBufr::ESOHBufr() { oscar = 0; }
+ESOHBufr::ESOHBufr() {
+  oscar = 0;
+  const char *message_template = " { \
+        \"id\" : \"\", \
+        \"version\" : \"v4.0\", \
+        \"type\" : \"Feature\", \
+        \"geometry\" : \"null\", \
+        \"properties\" : { \
+            \"data_id\": \"data_id\", \
+            \"metadata_id\": \"metatata_id\", \
+            \"datetime\" : \"null\", \
+            \"Conventions\" : \"Default BUFR Conventions\", \
+            \"summary\" : \"Default Summary\", \
+            \"license\" : \"http//spdx.org/licenses/CC-BY-4.0(CC-BY-4.0)\", \
+            \"naming_authority\" : \"no.met\", \
+            \"content\" : { \
+                \"encoding\": \"utf-8\", \
+                \"standard_name\": \"\", \
+                \"unit\": \"\", \
+                \"size\": 0, \
+                \"value\": \"\"} \
+             }, \
+        \"links\" : [ \
+            { \
+                \"href\" : \"Default BUFR links\", \
+                \"rel\" : \"canonical\" \
+            } \
+          ] \
+        }";
+  setMsgTemplate(message_template);
+}
 
 void ESOHBufr::setOscar(Oscar *o) { oscar = o; }
+
+void ESOHBufr::setMsgTemplate(std::string s) {
+  if (s.size()) {
+    msg_template = s;
+  }
+}
 
 std::list<std::string> ESOHBufr::msg() const {
 
@@ -27,25 +63,7 @@ std::list<std::string> ESOHBufr::msg() const {
 
   rapidjson::Document message;
 
-  const char *message_template = " { \
-        \"id\" : \"\", \
-        \"version\" : \"v04\", \
-        \"type\" : \"Feature\", \
-        \"geometry\" : \"null\", \
-        \"properties\" : { \
-            \"data_id\": \"data_id\", \
-            \"metadata_id\": \"metatata_id\", \
-            \"datetime\" : \"null\", \
-            \"content\" : { \
-                \"encoding\": \"utf-8\", \
-                \"standard_name\": \"\", \
-                \"unit\": \"\", \
-                \"size\": 0, \
-                \"value\": \"\"} \
-             } \
-        }";
-
-  if (message.Parse(message_template).HasParseError()) {
+  if (message.Parse(msg_template.c_str()).HasParseError()) {
     std::cerr << "ESOH message parsing Error!!!\n";
   }
 
@@ -98,7 +116,7 @@ std::list<std::string> ESOHBufr::msg() const {
         if (value_str == "MISSING")
           break;
 
-        if (v.x() > 10 && !platform_check) {
+        if (v.x() >= 10 && !platform_check) {
           // Check station_id at OSCAR
           platform_check = true;
           if (wigos_id.getWigosLocalId().size()) {
@@ -112,7 +130,27 @@ std::list<std::string> ESOHBufr::msg() const {
                 setPlatformName(std::string(st_value["name"].GetString()),
                                 subset_message, true);
               }
+              if (lat < -9999) {
+                if (st_value.HasMember("latitude")) {
+                  if (st_value["latitude"].IsDouble()) {
+                    lat = st_value["latitude"].GetDouble();
+                    setLocation(lat, lon, hei, subset_message);
+                  }
+                }
+              }
+              if (lon < -9999) {
+                if (st_value.HasMember("longitude")) {
+                  if (st_value["longitude"].IsDouble()) {
+                    lon = st_value["longitude"].GetDouble();
+                    setLocation(lat, lon, hei, subset_message);
+                  }
+                }
+              }
             }
+          }
+          // Missing mandatory geolocation values. Skip this subset
+          if (lat < -9999 || lon < -9999) {
+            goto subset_end;
           }
         }
 
@@ -529,6 +567,7 @@ std::list<std::string> ESOHBufr::msg() const {
       }
       }
     }
+  subset_end:
     subsetnum++;
   }
 

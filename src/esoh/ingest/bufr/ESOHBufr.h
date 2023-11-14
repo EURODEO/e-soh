@@ -67,6 +67,7 @@ public:
   ESOHBufr();
   std::list<std::string> msg() const;
   void setOscar(Oscar *);
+  void setMsgTemplate(std::string);
 
 private:
   std::string addMessage(std::list<Descriptor>::const_iterator ci,
@@ -86,6 +87,7 @@ private:
   bool setDateTime(struct tm *, rapidjson::Document &) const;
   bool setStartDateTime(struct tm *, rapidjson::Document &) const;
   Oscar *oscar;
+  std::string msg_template;
 };
 
 #endif
