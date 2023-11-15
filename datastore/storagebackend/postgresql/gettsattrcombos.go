@@ -11,8 +11,8 @@ import (
 )
 
 var (
-	attr2col map[string]string // attribute to database column
-	col2attr map[string]string // database column to attribute
+	attr2col map[string]string // attribute name to database column name
+	col2attr map[string]string // database column name to attribute name
 )
 
 func init() {
@@ -28,7 +28,7 @@ func init() {
 	}
 }
 
-// getTSAttrCols returns database columns corresponding to attrs.
+// getTSAttrCols returns names of database columns corresponding to attrs.
 func getTSAttrCols(attrs []string) ([]string, error) {
 	seen := map[string]struct{}{}
 	cols := []string{}
@@ -63,13 +63,13 @@ func getTSAttrCols(attrs []string) ([]string, error) {
 	return cols, nil
 }
 
-// getTSMdata returns a TSMetadata object initialized from m.
-func getTSMData(m map[string]interface{}) (*datastore.TSMetadata, error) {
+// getTSMdata returns a TSMetadata object initialized from colVals.
+func getTSMData(colVals map[string]interface{}) (*datastore.TSMetadata, error) {
 
 	tsMData := datastore.TSMetadata{}
 	tp := reflect.ValueOf(&tsMData)
 
-	for col, val := range m {
+	for col, val := range colVals {
 		attr, found := col2attr[col]
 		if !found {
 			return nil, fmt.Errorf(
@@ -106,11 +106,12 @@ func getTSMData(m map[string]interface{}) (*datastore.TSMetadata, error) {
 func (sbe *PostgreSQL) GetTSAttrCombos(request *datastore.GetTSACRequest) (
 	*datastore.GetTSACResponse, error) {
 
-	cols, err := getTSAttrCols(request.Attrs)
+	cols, err := getTSAttrCols(request.Attrs) // get database column names
 	if err != nil {
 		return nil, fmt.Errorf("getTSAttrCols() failed: %v", err)
 	}
 
+	// query database for unique combinations of these columns
 	colsS := strings.Join(cols, ",")
 	query := fmt.Sprintf("SELECT DISTINCT %s FROM time_series ORDER BY %s", colsS, colsS)
 	rows, err := sbe.Db.Query(query)
@@ -119,30 +120,29 @@ func (sbe *PostgreSQL) GetTSAttrCombos(request *datastore.GetTSACRequest) (
 	}
 	defer rows.Close()
 
+	// aggregate rows into overall result
 	combos := []*datastore.TSMetadata{}
 	for rows.Next() {
-		// create a slice of interface{}'s to represent each column, and a second slice to contain
-		// pointers to each item in the columns slice
-		cols0 := make([]interface{}, len(cols))
-		colPtrs := make([]interface{}, len(cols))
-		for i := range cols0 {
-			colPtrs[i] = &cols0[i]
+		colVals0 := make([]interface{}, len(cols)) // column values
+
+		colValPtrs := make([]interface{}, len(cols)) // pointers to column values
+		for i := range colVals0 {
+			colValPtrs[i] = &colVals0[i]
 		}
 
-		// scan the result into the columns pointers
-		if err := rows.Scan(colPtrs...); err != nil {
+		// scan row into column value pointers
+		if err := rows.Scan(colValPtrs...); err != nil {
 			return nil, fmt.Errorf("rows.Scan() failed: %v", err)
 		}
 
-		// retrieve the value for each column from the pointers slice
-		m := map[string]interface{}{}
-		for i, colName := range cols {
-			val := colPtrs[i].(*interface{})
-			m[colName] = *val
+		// combine column names and -values into a map
+		colVals := map[string]interface{}{}
+		for i, col := range cols {
+			colVals[col] = colVals0[i]
 		}
 
-		// convert to a TSMetadata object and add to final result
-		tsMData, err := getTSMData(m)
+		// convert to a TSMetadata object and add to overall result
+		tsMData, err := getTSMData(colVals)
 		if err != nil {
 			return nil, fmt.Errorf("getTSMData failed(): %v", err)
 		}
