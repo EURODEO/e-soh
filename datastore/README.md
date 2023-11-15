@@ -240,6 +240,24 @@ $ grpcurl -d '{"standard_names": ["wind_speed", "air_temperature"], "interval": 
 ...
 ```
 
+### Getting the time- and geo extent of all observations currently in the storage
+
+```text
+$ grpcurl -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetExtents
+{
+  "timeExtent": {
+    "start": "2022-12-31T00:00:00Z",
+    "end": "2022-12-31T23:50:00Z"
+  },
+  "geoExtent": {
+    "xMin": -68.2758333,
+    "yMin": 12.13,
+    "xMax": 7.1493220605216,
+    "yMax": 55.399166666667
+  }
+}
+```
+
 ## Testing the datastore service with a Python client
 
 ### Compiling the protobuf file
