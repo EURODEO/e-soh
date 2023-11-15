@@ -15,4 +15,5 @@ E-SOH datastore PoCs
 
 - To update the pre-commit hooks in `.pre-commit-config.yaml`, run `pre-commit autoupdate`
 - To apply the pre-commit for every file in the repository, run `pre-commit run --config './.pre-commit-config.yaml' --all-files`
+- To see all options to `pre-commit run`, run `pre-commit help run` (in particular, the `--files` option can be used to apply the command to selected files only).
 - To commit without the pre-commit hook, run `git commit -m "Some message" --no-verify`
