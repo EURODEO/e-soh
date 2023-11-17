@@ -20,8 +20,13 @@ option go_package = "./datastore";
 //     exactly one time series.
 
 service Datastore {
+  // insert observations into the storage (or update existing ones)
   rpc PutObservations(PutObsRequest) returns (PutObsResponse);
+
+  // retrieve observations from the storage
   rpc GetObservations(GetObsRequest) returns (GetObsResponse);
+
+  // get unique combinations of a set of time series attributes
   rpc GetTSAttrCombos(GetTSACRequest) returns (GetTSACResponse);
 }
 
@@ -136,10 +141,21 @@ message GetObsResponse {
 
 //---------------------------------------------------------------------------
 
+message TSMdataGroup {
+  repeated TSMetadata combos = 1;
+}
+
 message GetTSACRequest {
   repeated string attrs = 1; // one or more TSMetadata field names
+  bool include_instances = 2; // whether to include all matching time series instances in response
 }
 
 message GetTSACResponse {
-  repeated TSMetadata combos = 1; // zero or more unique instances matching GetTSACRequest.attrs
+  repeated TSMdataGroup groups = 1; // zero or more groups of unique combinations of
+  // GetTSACRequest.attrs currently existing in the storage.
+  // The combos array of each group will contain the following info depending on
+  // GetTSACRequest.include_instances:
+  // Case false (default): a single item that contains the GetTSACRequest.attrs in question, with
+  //    all other attributes set to default values (typically empty strings).
+  // Case true: all time series instances that match GetTSACRequest.attrs.
 }

@@ -235,30 +235,96 @@ $ grpcurl -d '{"standard_names": ["wind_speed", "air_temperature"], "interval": 
 ```text
 $ grpcurl -d '{"attrs": ["standard_name"]}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetTSAttrCombos
 {
-  "matches": [
+  "groups": [
     {
-      "standardName": "air_pressure_at_sea_level"
+      "combos": [
+        {
+          "standardName": "air_pressure_at_sea_level"
+        }
+      ]
     },
     {
-      "standardName": "air_temperature"
+      "combos": [
+        {
+          "standardName": "air_temperature"
+        }
+      ]
     },
 ...
 ```
 
-### List unique combinations of time series metadata attributes 'standard_name' and 'platform'
+### List unique combinations of time series metadata attributes 'platform' and 'standard_name'
 
 ```text
-$ grpcurl -d '{"attrs": ["standard_name", "platform"]}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetTSAttrCombos
+$ grpcurl -d '{"attrs": ["platform", "standard_name"]}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetTSAttrCombos
 {
-  "matches": [
+  "groups": [
     {
-      "platform": "06201",
-      "standardName": "air_pressure_at_sea_level"
+      "combos": [
+        {
+          "platform": "06201",
+          "standardName": "air_pressure_at_sea_level"
+        }
+      ]
     },
     {
-      "platform": "06201",
-      "standardName": "air_temperature"
+      "combos": [
+        {
+          "platform": "06201",
+          "standardName": "air_temperature"
+        }
+      ]
     },
+...
+```
+
+### List unique occurrences of time series metadata attribute 'standard_name', and include associated instances
+
+```text
+$ grpcurl -d '{"attrs": ["standard_name"], "include_instances": true}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetTSAttrCombos
+{
+  "groups": [
+    {
+      "combos": [
+        {
+          "title": "Air Pressure at Sea Level 1 Min Average",
+          "platform": "06208",
+          "standardName": "air_pressure_at_sea_level",
+          "unit": "hPa",
+          "instrument": "pp"
+        },
+        {
+          "title": "Air Pressure at Sea Level 1 Min Average",
+          "platform": "06348",
+          "standardName": "air_pressure_at_sea_level",
+          "unit": "hPa",
+          "instrument": "pp"
+        },
+...
+```
+
+### List unique combinations of time series metadata attributes 'platform' and 'standard_name', and include associated instances
+
+```text
+$ grpcurl -d '{"attrs": ["platform", "standard_name"], "include_instances": true}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetTSAttrCombos
+{
+  "groups": [
+    {
+      "combos": [
+        {
+          "title": "Air Temperature Minimum last 12 Hours",
+          "platform": "06201",
+          "standardName": "air_temperature",
+          "unit": "degrees Celsius",
+          "instrument": "Tn12"
+        },
+        {
+          "title": "Air Temperature Minimum last 14 Hours",
+          "platform": "06201",
+          "standardName": "air_temperature",
+          "unit": "degrees Celsius",
+          "instrument": "Tn14"
+        },
 ...
 ```
 

@@ -17,7 +17,7 @@ func (svcInfo *ServiceInfo) GetTSAttrCombos(
 
 	response, err := svcInfo.Sbe.GetTSAttrCombos(request)
 	if err != nil {
-		return nil, fmt.Errorf("svcInfo.Sbe.GetObservations() failed: %v", err)
+		return nil, fmt.Errorf("svcInfo.Sbe.GetTSAttrCombos() failed: %v", err)
 	}
 
 	return response, nil
