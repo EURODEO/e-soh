@@ -13,9 +13,9 @@ import (
 )
 
 var (
-	dynamicTime                bool // whether the valid time range is considered dynamic or static
-	loTimeSecs, hiTimeSecs     int64
-	matchFirstCap, matchAllCap *regexp.Regexp
+	dynamicTime            bool // whether the valid time range is considered dynamic or static
+	loTimeSecs, hiTimeSecs int64
+	snakeCaseRE            *regexp.Regexp
 )
 
 // initValidTimeRange initializes dynamicTime, loTimeSecs, and hiTimeSecs from environment
@@ -99,8 +99,7 @@ func initValidTimeRange() {
 
 // initSnakeCaseConverter initializes regexps used by ToSnakeCase.
 func initSnakeCaseConverter() {
-	matchFirstCap = regexp.MustCompile("(.)([A-Z][a-z]+)")
-	matchAllCap = regexp.MustCompile("([a-z0-9])([A-Z])")
+	snakeCaseRE = regexp.MustCompile("([a-z0-9])([A-Z])")
 }
 
 func init() { // automatically called once on program startup (on first import of this package)
@@ -166,7 +165,5 @@ func GetValidTimeRangeSettings() string {
 
 // ToSnakeCase returns the snake case version of s.
 func ToSnakeCase(s string) string {
-	snake := matchFirstCap.ReplaceAllString(s, "${1}_${2}")
-	snake = matchAllCap.ReplaceAllString(snake, "${1}_${2}")
-	return strings.ToLower(snake)
+	return strings.ToLower(snakeCaseRE.ReplaceAllString(s, "${1}_${2}"))
 }
