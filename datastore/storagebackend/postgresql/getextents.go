@@ -44,10 +44,10 @@ func getSpatialExtent(db *sql.DB) (*datastore.BoundingBox, error) {
 	}
 
 	return &datastore.BoundingBox{
-		XMin: xmin,
-		YMin: ymin,
-		XMax: xmax,
-		YMax: ymax,
+		Left:   xmin,
+		Bottom: ymin,
+		Right:  xmax,
+		Top:    ymax,
 	}, nil
 }
 

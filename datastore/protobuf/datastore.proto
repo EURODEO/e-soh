@@ -37,10 +37,10 @@ message Polygon { // horizontal area; three or more points
 }
 
 message BoundingBox {
-  double xMin = 1;
-  double yMin = 2;
-  double xMax = 3;
-  double yMax = 4;
+  double left = 1;
+  double bottom = 2;
+  double right = 3;
+  double top = 4;
 }
 
 message TimeInterval {
