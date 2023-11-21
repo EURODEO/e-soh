@@ -240,7 +240,7 @@ $ grpcurl -d '{"standard_names": ["wind_speed", "air_temperature"], "interval": 
 ...
 ```
 
-### Getting the time- and geo extent of all observations currently in the storage
+### Get the temporal- and spatial extent of all observations currently in the storage
 
 ```text
 $ grpcurl -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetExtents

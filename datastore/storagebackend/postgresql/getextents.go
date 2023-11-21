@@ -10,8 +10,8 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-// getTimeExtent gets the current time extent of all observations in the storage.
-func getTimeExtent(db *sql.DB) (*datastore.TimeInterval, error) {
+// getTemporalExtent gets the current temporal extent of all observations in the storage.
+func getTemporalExtent(db *sql.DB) (*datastore.TimeInterval, error) {
 	query := "SELECT min(obstime_instant), max(obstime_instant) FROM observation"
 	row := db.QueryRow(query)
 
@@ -28,8 +28,8 @@ func getTimeExtent(db *sql.DB) (*datastore.TimeInterval, error) {
 	}, nil
 }
 
-// getGeoExtent gets the current geo extent of all observations in the storage.
-func getGeoExtent(db *sql.DB) (*datastore.BoundingBox, error) {
+// getSpatialExtent gets the current horizontally spatial extent of all observations in the storage.
+func getSpatialExtent(db *sql.DB) (*datastore.BoundingBox, error) {
 	query := `
 		SELECT ST_XMin(ext), ST_YMin(ext), ST_XMax(ext), ST_YMax(ext)
 		FROM (SELECT ST_Extent(point::geometry) AS ext FROM geo_point) t
@@ -57,15 +57,18 @@ func (sbe *PostgreSQL) GetExtents(request *datastore.GetExtentsRequest) (
 
 	var err error
 
-	timeExtent, err := getTimeExtent(sbe.Db)
+	temporalExtent, err := getTemporalExtent(sbe.Db)
 	if err != nil {
-		return nil, fmt.Errorf("getTimeExtent() failed: %v", err)
+		return nil, fmt.Errorf("getTemporalExtent() failed: %v", err)
 	}
 
-	geoExtent, err := getGeoExtent(sbe.Db)
+	spatialExtent, err := getSpatialExtent(sbe.Db)
 	if err != nil {
-		return nil, fmt.Errorf("getGeoExtent() failed: %v", err)
+		return nil, fmt.Errorf("getSpatialExtent() failed: %v", err)
 	}
 
-	return &datastore.GetExtentsResponse{TimeExtent: timeExtent, GeoExtent: geoExtent}, nil
+	return &datastore.GetExtentsResponse{
+		TemporalExtent: temporalExtent,
+		SpatialExtent:  spatialExtent,
+	}, nil
 }
