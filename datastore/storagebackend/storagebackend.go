@@ -18,7 +18,11 @@ type StorageBackend interface {
 	// Returns nil upon success, otherwise error.
 	GetObservations(*datastore.GetObsRequest) (*datastore.GetObsResponse, error)
 
-	// GetTSAttrCombos retrieves, for the non-default attributes in the input, the unique
+	// GetTSAttrGroups retrieves, for the non-default attributes in the input, the unique
 	// combinations of attribute values currently represented in the storage.
-	GetTSAttrCombos(*datastore.GetTSACRequest) (*datastore.GetTSACResponse, error)
+	GetTSAttrGroups(*datastore.GetTSAGRequest) (*datastore.GetTSAGResponse, error)
+
+	// GetExtents gets the time- and geo extents of all currently stored observations.
+	// Returns nil upon success, otherwise error.
+	GetExtents(*datastore.GetExtentsRequest) (*datastore.GetExtentsResponse, error)
 }

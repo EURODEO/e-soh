@@ -36,6 +36,7 @@ services:
       - LOTIME=$LOTIME
       - HITIME=$HITIME
       - CLEANUPINTERVAL=$CLEANUPINTERVAL
+      - PUTOBSLIMIT=$PUTOBSLIMIT
     restart: on-failure
     healthcheck:
       test: [ "CMD-SHELL", "exit $(/bin/grpc_health_probe -addr=localhost:50050)" ]

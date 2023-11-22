@@ -181,11 +181,44 @@ func tsMdataEqual(tsmd1, tsmd2 *datastore.TSMetadata, attrs []string) (bool, err
 	return true, nil // no differences found
 }
 
-// getTSACGroupsIncInstances populates groups from cols such that each group contains all
+// getCombo gets a version of tsMdata1 where only the given attrs have been set
+// (all other attrs having the default values).
+// Returns (TSMetadata, nil) upon success, otherwise (..., error).
+func getCombo(tsMdata1 *datastore.TSMetadata, attrs []string) (*datastore.TSMetadata, error) {
+	tsMdata2 := datastore.TSMetadata{}
+	tp1 := reflect.ValueOf(tsMdata1)
+	tp2 := reflect.ValueOf(&tsMdata2)
+
+	for _, attr := range attrs {
+		field1 := tp1.Elem().FieldByName(attr)
+		if !field1.IsValid() {
+			return nil, fmt.Errorf("invalid field (1) (attr: %s)", attr)
+		}
+		field2 := tp2.Elem().FieldByName(attr)
+		if !field2.IsValid() {
+			return nil, fmt.Errorf("invalid field (2) (attr: %s)", attr)
+		}
+		if !field2.CanSet() {
+			return nil, fmt.Errorf("unassignable field (2) (attr: %s)", attr)
+		}
+
+		switch field1.Kind() {
+		case reflect.String:
+			field2.SetString(field1.String())
+		default:
+			return nil, fmt.Errorf("unsupported type: %v (attr: %s)", field1.Kind(), attr)
+		}
+	}
+
+	return &tsMdata2, nil
+}
+
+// getTSAttrGroupsIncInstances populates groups from cols such that each group contains all
 // instances that match a unique combination of database values corresponding to cols.
 // All attributes, including those in cols, are set to the actual values found in the database.
 // Returns nil upon success, otherwise error.
-func getTSACGroupsIncInstances(db *sql.DB, cols []string, groups *[]*datastore.TSMdataGroup) error {
+func getTSAttrGroupsIncInstances(
+	db *sql.DB, cols []string, groups *[]*datastore.TSMdataGroup) error {
 	allCols, err := getTSAllCols() // get all database column names
 	if err != nil {
 		return fmt.Errorf("getTSAllCols() failed: %v", err)
@@ -223,7 +256,14 @@ func getTSACGroupsIncInstances(db *sql.DB, cols []string, groups *[]*datastore.T
 
 			if !equal { // ts metadata changed wrt. cols
 				// add next group with current instance set
-				*groups = append(*groups, &datastore.TSMdataGroup{Combos: currInstances})
+				currCombo, err := getCombo(currInstances[0], attrs)
+				if err != nil {
+					return fmt.Errorf("getCombo() failed (1): %v", err)
+				}
+				*groups = append(*groups, &datastore.TSMdataGroup{
+					Combo:     currCombo,
+					Instances: currInstances,
+				})
 				currInstances = []*datastore.TSMetadata{} // create a new current instance set
 			}
 		}
@@ -233,16 +273,23 @@ func getTSACGroupsIncInstances(db *sql.DB, cols []string, groups *[]*datastore.T
 
 	// assert(len(currInstances) > 0)
 	// add final group with current instance set
-	*groups = append(*groups, &datastore.TSMdataGroup{Combos: currInstances})
+	currCombo, err := getCombo(currInstances[0], attrs)
+	if err != nil {
+		return fmt.Errorf("getCombo() failed (2): %v", err)
+	}
+	*groups = append(*groups, &datastore.TSMdataGroup{
+		Combo:     currCombo,
+		Instances: currInstances,
+	})
 
 	return nil
 }
 
-// getTSACGroupsComboOnly populates groups from cols such that each group contains a single,
+// getTSAttrGroupsComboOnly populates groups from cols such that each group contains a single,
 // unique combination of database values corresponding to cols. Other attributes than those in cols
 // have the default value for the type (i.e. "" for string, etc.).
 // Returns nil upon success, otherwise error.
-func getTSACGroupsComboOnly(db *sql.DB, cols []string, groups *[]*datastore.TSMdataGroup) error {
+func getTSAttrGroupsComboOnly(db *sql.DB, cols []string, groups *[]*datastore.TSMdataGroup) error {
 	// query database for unique combinations of cols in time_series, ordered by cols
 	colsS := strings.Join(cols, ",")
 	query := fmt.Sprintf("SELECT DISTINCT %s FROM time_series ORDER BY %s", colsS, colsS)
@@ -260,18 +307,17 @@ func getTSACGroupsComboOnly(db *sql.DB, cols []string, groups *[]*datastore.TSMd
 			return fmt.Errorf("scanTsMdata() failed: %v", err)
 		}
 
-		// add new group with tsMData as the only item in the Combos array
-		*groups = append(*groups, &datastore.TSMdataGroup{
-			Combos: []*datastore.TSMetadata{tsMdata},
-		})
+		// add new group with tsMData as the combo (and leaving the instances
+		// array unset)
+		*groups = append(*groups, &datastore.TSMdataGroup{Combo: tsMdata})
 	}
 
 	return nil
 }
 
-// GetTSAttrCombos ... (see documentation in StorageBackend interface)
-func (sbe *PostgreSQL) GetTSAttrCombos(request *datastore.GetTSACRequest) (
-	*datastore.GetTSACResponse, error) {
+// GetTSAttrGroups ... (see documentation in StorageBackend interface)
+func (sbe *PostgreSQL) GetTSAttrGroups(request *datastore.GetTSAGRequest) (
+	*datastore.GetTSAGResponse, error) {
 
 	cols, err := getTSAttrCols(request.Attrs) // get database column names for requested attributes
 	if err != nil {
@@ -281,14 +327,14 @@ func (sbe *PostgreSQL) GetTSAttrCombos(request *datastore.GetTSACRequest) (
 	groups := []*datastore.TSMdataGroup{}
 
 	if request.IncludeInstances {
-		if err := getTSACGroupsIncInstances(sbe.Db, cols, &groups); err != nil {
-			return nil, fmt.Errorf("getTSACGroupsIncInstances() failed: %v", err)
+		if err := getTSAttrGroupsIncInstances(sbe.Db, cols, &groups); err != nil {
+			return nil, fmt.Errorf("getTSAGroupsIncInstances() failed: %v", err)
 		}
 	} else {
-		if err := getTSACGroupsComboOnly(sbe.Db, cols, &groups); err != nil {
-			return nil, fmt.Errorf("getTSACGroupsComboOnly() failed: %v", err)
+		if err := getTSAttrGroupsComboOnly(sbe.Db, cols, &groups); err != nil {
+			return nil, fmt.Errorf("getTSAGroupsComboOnly() failed: %v", err)
 		}
 	}
 
-	return &datastore.GetTSACResponse{Groups: groups}, nil
+	return &datastore.GetTSAGResponse{Groups: groups}, nil
 }
