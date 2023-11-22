@@ -17,4 +17,8 @@ type StorageBackend interface {
 	// GetObservations retrieves observations from the storage.
 	// Returns nil upon success, otherwise error.
 	GetObservations(*datastore.GetObsRequest) (*datastore.GetObsResponse, error)
+
+	// GetExtents gets the time- and geo extents of all currently stored observations.
+	// Returns nil upon success, otherwise error.
+	GetExtents(*datastore.GetExtentsRequest) (*datastore.GetExtentsResponse, error)
 }

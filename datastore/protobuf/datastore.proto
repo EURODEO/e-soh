@@ -22,6 +22,7 @@ option go_package = "./datastore";
 service Datastore {
   rpc PutObservations(PutObsRequest) returns (PutObsResponse);
   rpc GetObservations(GetObsRequest) returns (GetObsResponse);
+  rpc GetExtents(GetExtentsRequest) returns (GetExtentsResponse);
 }
 
 //---------------------------------------------------------------------------
@@ -33,6 +34,13 @@ message Point { // horizontal position
 
 message Polygon { // horizontal area; three or more points
   repeated Point points = 1;
+}
+
+message BoundingBox {
+  double left = 1;
+  double bottom = 2;
+  double right = 3;
+  double top = 4;
 }
 
 message TimeInterval {
@@ -127,9 +135,21 @@ message GetObsRequest {
   // TODO: add search filters for other metadata
 }
 
-
 message GetObsResponse {
   int32 status = 1;
   string error = 2; // any error description (empty on success)
   repeated Metadata2 observations = 3;
+}
+
+//---------------------------------------------------------------------------
+
+message GetExtentsRequest {
+  // currently no args
+}
+
+message GetExtentsResponse {
+  int32 status = 1;
+  string error = 2; // any error description (empty on success)
+  TimeInterval temporal_extent = 3;
+  BoundingBox spatial_extent = 4;
 }
