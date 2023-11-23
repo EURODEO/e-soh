@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -14,6 +15,7 @@ import (
 var (
 	dynamicTime            bool // whether the valid time range is considered dynamic or static
 	loTimeSecs, hiTimeSecs int64
+	snakeCaseRE            *regexp.Regexp
 )
 
 // initValidTimeRange initializes dynamicTime, loTimeSecs, and hiTimeSecs from environment
@@ -95,8 +97,14 @@ func initValidTimeRange() {
 	}
 }
 
+// initSnakeCaseConverter initializes regexps used by ToSnakeCase.
+func initSnakeCaseConverter() {
+	snakeCaseRE = regexp.MustCompile("([a-z0-9])([A-Z])")
+}
+
 func init() { // automatically called once on program startup (on first import of this package)
 	initValidTimeRange()
+	initSnakeCaseConverter()
 }
 
 // See https://www.pauladamsmith.com/blog/2011/05/go_time.html
@@ -153,4 +161,9 @@ func GetValidTimeRangeSettings() string {
 	s += fmt.Sprintf("; HITIME: %v", Getenv("HITIME", "unset"))
 	s += ")"
 	return s
+}
+
+// ToSnakeCase returns the snake case version of s.
+func ToSnakeCase(s string) string {
+	return strings.ToLower(snakeCaseRE.ReplaceAllString(s, "${1}_${2}"))
 }

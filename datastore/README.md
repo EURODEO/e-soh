@@ -77,8 +77,8 @@ HITIME=9999-12-31T23:59:59Z
 ```
 
 Using a `.env` file also makes it more practical to have all supported environment variables
-explicitly defined and thus avoiding warnings from `docker compose` due to undefined defaults
-(defaults are defined in the Go code only). So for example, to get of the following warnings:
+explicitly defined and thus avoid warnings from `docker compose` due to undefined defaults
+(defaults are defined in the Go code only). So for example, to get rid of the following warnings:
 
 ```text
 $ docker compose up -d
@@ -237,6 +237,104 @@ $ grpcurl -d '{"interval": {"start": "2023-01-01T00:00:00Z", "end": "2023-01-01T
 
 ```text
 $ grpcurl -d '{"standard_names": ["wind_speed", "air_temperature"], "interval": {"start": "2023-01-01T00:00:00Z", "end": "2023-01-01T00:00:10Z"}, "inside": {"points": [{"lat": 59.90, "lon": 10.70}, {"lat": 59.90, "lon": 10.80}, {"lat": 60, "lon": 10.80}, {"lat": 60, "lon": 10.70}]}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
+...
+```
+
+### List unique occurrences of time series metadata attribute 'standard_name'
+
+```text
+$ grpcurl -d '{"attrs": ["standard_name"]}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetTSAttrGroups
+{
+  "groups": [
+    {
+      "combos": [
+        {
+          "standardName": "air_pressure_at_sea_level"
+        }
+      ]
+    },
+    {
+      "combos": [
+        {
+          "standardName": "air_temperature"
+        }
+      ]
+    },
+...
+```
+
+### List unique combinations of time series metadata attributes 'platform' and 'standard_name'
+
+```text
+$ grpcurl -d '{"attrs": ["platform", "standard_name"]}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetTSAttrGroups
+{
+  "groups": [
+    {
+      "combos": [
+        {
+          "platform": "06201",
+          "standardName": "air_pressure_at_sea_level"
+        }
+      ]
+    },
+    {
+      "combos": [
+        {
+          "platform": "06201",
+          "standardName": "air_temperature"
+        }
+      ]
+    },
+...
+```
+
+### List unique occurrences of time series metadata attribute 'standard_name', and include associated instances
+
+```text
+$ grpcurl -d '{"attrs": ["standard_name"], "include_instances": true}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetTSAttrGroups
+{
+  "groups": [
+    {
+      "combos": [
+        {
+          "title": "Air Pressure at Sea Level 1 Min Average",
+          "platform": "06208",
+          "standardName": "air_pressure_at_sea_level",
+          "unit": "hPa",
+          "instrument": "pp"
+        },
+        {
+          "title": "Air Pressure at Sea Level 1 Min Average",
+          "platform": "06348",
+          "standardName": "air_pressure_at_sea_level",
+          "unit": "hPa",
+          "instrument": "pp"
+        },
+...
+```
+
+### List unique combinations of time series metadata attributes 'platform' and 'standard_name', and include associated instances
+
+```text
+$ grpcurl -d '{"attrs": ["platform", "standard_name"], "include_instances": true}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetTSAttrGroups
+{
+  "groups": [
+    {
+      "combos": [
+        {
+          "title": "Air Temperature Minimum last 12 Hours",
+          "platform": "06201",
+          "standardName": "air_temperature",
+          "unit": "degrees Celsius",
+          "instrument": "Tn12"
+        },
+        {
+          "title": "Air Temperature Minimum last 14 Hours",
+          "platform": "06201",
+          "standardName": "air_temperature",
+          "unit": "degrees Celsius",
+          "instrument": "Tn14"
+        },
 ...
 ```
 
