@@ -9,15 +9,21 @@ option go_package = "./datastore";
 // Notes:
 // - A _time series_ is a context defined by a set of metadata (defined in TSMetadata below) that
 //   usually does not vary with observaion (time).
+//
 // - An _observation_ consists of a set of of metadata (defined in ObsMetadata below) that usually
 //   varies with observation (time). Note that for simplicity the observation value itself (such as
 //   air temperature value 12.7) is also considered a metadata field (although strictly speaking
 //   this is the only field that is just data, not metadata).
+//
 // - There is a 1:N relationship between time series and observations:
 //   * A given time series (= unique combination of time series metadata fields) is associated with
 //     one or more observations.
 //   * A given observation (= unique combination of observation metadata fields) is associated with
 //     exactly one time series.
+//
+// - In the below message definitions, all field names that contain underscores needs to
+//   have [json_name = "..."] specified, otherwise e.g. 'a_b' will be formatted as 'aB' in the
+//   output.
 
 service Datastore {
   // insert observations into the storage (or update existing ones)
@@ -70,54 +76,54 @@ message TSMetadata {
   string title = 3;
   string summary = 4;
   string keywords = 5;
-  string keywords_vocabulary = 6;
+  string keywords_vocabulary = 6 [json_name = "keywords_vocabulary"];
   string license = 7;
   string conventions = 8;
-  string naming_authority = 9;
-  string creator_type = 10;
-  string creator_name = 11;
-  string creator_email = 12;
-  string creator_url = 13;
+  string naming_authority = 9 [json_name = "naming_authority"];
+  string creator_type = 10 [json_name = "creator_type"];
+  string creator_name = 11 [json_name = "creator_name"];
+  string creator_email = 12 [json_name = "creator_email"];
+  string creator_url = 13 [json_name = "creator_url"];
   string institution = 14;
   string project = 15;
   string source = 16;
   string platform = 17;
-  string platform_vocabulary = 18;
-  string standard_name = 19;
+  string platform_vocabulary = 18 [json_name = "platform_vocabulary"];
+  string standard_name = 19 [json_name = "standard_name"];
   string unit = 20;
   string instrument = 21;
-  string instrument_vocabulary = 22;
+  string instrument_vocabulary = 22 [json_name = "instrument_vocabulary"];
   repeated Link links = 23;
 }
 
 message ObsMetadata {
   string id = 1;
   oneof geometry {
-    Point geo_point = 2;
-    Polygon geo_polygon = 3;
+    Point geo_point = 2 [json_name = "geo_point"];
+    Polygon geo_polygon = 3 [json_name = "geo_polygon"];
   }
   google.protobuf.Timestamp pubtime = 4;
-  string data_id = 5;
+  string data_id = 5 [json_name = "data_id"];
   string history = 6;
-  string metadata_id = 7;
+  string metadata_id = 7 [json_name = "metadata_id"];
   oneof obstime {
-    google.protobuf.Timestamp obstime_instant = 8;
-    //TimeInterval obstime_interval = 9; -- unsupported for now
+    google.protobuf.Timestamp obstime_instant = 8 [json_name = "obstime_instant"];
+    //TimeInterval obstime_interval = 9 [json_name = "obstime_interval"]; -- unsupported for now
   }
-  string processing_level = 10;
+  string processing_level = 10 [json_name = "processing_level"];
   string value = 11;
 }
 
 //---------------------------------------------------------------------------
 
 message Metadata1 { // denormalized (more redundancy)
-  TSMetadata ts_mdata = 1;
-  ObsMetadata obs_mdata = 2;
+  TSMetadata ts_mdata = 1 [json_name = "ts_mdata"];
+  ObsMetadata obs_mdata = 2 [json_name = "obs_mdata"];
 }
 
 message Metadata2 { // normalized  (less redundancy)
-  TSMetadata ts_mdata = 1;
-  repeated ObsMetadata obs_mdata = 2;
+  TSMetadata ts_mdata = 1 [json_name = "ts_mdata"];
+  repeated ObsMetadata obs_mdata = 2 [json_name = "obs_mdata"];
 }
 
 //---------------------------------------------------------------------------
@@ -137,9 +143,9 @@ message GetObsRequest {
   TimeInterval interval = 1; // only return observations in this time range
   Polygon inside = 2; // if specified, only return observations in this area
   repeated string platforms = 3; // if specified, only return observations matching any of these platform patterns
-  repeated string standard_names = 4; // if specified, only return observations matching any of these standard names
+  repeated string standard_names = 4 [json_name = "standard_names"]; // if specified, only return observations matching any of these standard names
   repeated string instruments = 5; // if specified, only return observations matching any of these instruments
-  repeated string processing_levels = 6; // if specified, only return observations matching any of these processing levels
+  repeated string processing_levels = 6 [json_name = "processing_levels"]; // if specified, only return observations matching any of these processing levels
   // TODO: add search filters for other metadata
 }
 
@@ -158,7 +164,7 @@ message TSMdataGroup {
 
 message GetTSAGRequest {
   repeated string attrs = 1; // one or more TSMetadata field names
-  bool include_instances = 2; // whether to include all matching time series instances in response
+  bool include_instances = 2 [json_name = ""]; // whether to include all matching time series instances in response
 }
 
 message GetTSAGResponse {
@@ -184,6 +190,6 @@ message GetExtentsRequest {
 message GetExtentsResponse {
   int32 status = 1;
   string error = 2; // any error description (empty on success)
-  TimeInterval temporal_extent = 3;
-  BoundingBox spatial_extent = 4;
+  TimeInterval temporal_extent = 3 [json_name = "temporal_extent"];
+  BoundingBox spatial_extent = 4 [json_name = "spatial_extent"];
 }
