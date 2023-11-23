@@ -23,16 +23,13 @@ var (
 func init() {
 	tspb2go = map[string]string{}
 	for _, f := range reflect.VisibleFields(reflect.TypeOf(datastore.TSMetadata{})) {
-		if f.IsExported() {
+		if f.IsExported() && (f.Type.Kind() == reflect.String) {
+			// TODO: support non-string types, like the 'links' attribute
 			goName := f.Name
 			pbName := common.ToSnakeCase(goName)
 			tspb2go[pbName] = goName
 		}
 	}
-
-	// ### for now don't support the 'links' attribute
-	// TODO: support this!
-	delete(tspb2go, "links")
 }
 
 // getTSGoNamesFromPBNames returns Go names names corresponding to pbNames.
