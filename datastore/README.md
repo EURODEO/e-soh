@@ -249,14 +249,14 @@ $ grpcurl -d '{"attrs": ["standard_name"]}' -plaintext -proto protobuf/datastore
     {
       "combos": [
         {
-          "standardName": "air_pressure_at_sea_level"
+          "standard_name": "air_pressure_at_sea_level"
         }
       ]
     },
     {
       "combos": [
         {
-          "standardName": "air_temperature"
+          "standard_name": "air_temperature"
         }
       ]
     },
@@ -273,7 +273,7 @@ $ grpcurl -d '{"attrs": ["platform", "standard_name"]}' -plaintext -proto protob
       "combos": [
         {
           "platform": "06201",
-          "standardName": "air_pressure_at_sea_level"
+          "standard_name": "air_pressure_at_sea_level"
         }
       ]
     },
@@ -281,7 +281,7 @@ $ grpcurl -d '{"attrs": ["platform", "standard_name"]}' -plaintext -proto protob
       "combos": [
         {
           "platform": "06201",
-          "standardName": "air_temperature"
+          "standard_name": "air_temperature"
         }
       ]
     },
@@ -299,14 +299,14 @@ $ grpcurl -d '{"attrs": ["standard_name"], "include_instances": true}' -plaintex
         {
           "title": "Air Pressure at Sea Level 1 Min Average",
           "platform": "06208",
-          "standardName": "air_pressure_at_sea_level",
+          "standard_name": "air_pressure_at_sea_level",
           "unit": "hPa",
           "instrument": "pp"
         },
         {
           "title": "Air Pressure at Sea Level 1 Min Average",
           "platform": "06348",
-          "standardName": "air_pressure_at_sea_level",
+          "standard_name": "air_pressure_at_sea_level",
           "unit": "hPa",
           "instrument": "pp"
         },
@@ -324,14 +324,14 @@ $ grpcurl -d '{"attrs": ["platform", "standard_name"], "include_instances": true
         {
           "title": "Air Temperature Minimum last 12 Hours",
           "platform": "06201",
-          "standardName": "air_temperature",
+          "standard_name": "air_temperature",
           "unit": "degrees Celsius",
           "instrument": "Tn12"
         },
         {
           "title": "Air Temperature Minimum last 14 Hours",
           "platform": "06201",
-          "standardName": "air_temperature",
+          "standard_name": "air_temperature",
           "unit": "degrees Celsius",
           "instrument": "Tn14"
         },
