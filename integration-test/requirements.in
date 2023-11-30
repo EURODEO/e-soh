@@ -3,5 +3,7 @@
 # Install using:
 # pip-sync
 
+deepdiff~=6.2
 grpcio-tools~=1.56
 pytest~=7.4
+requests~=2.31
