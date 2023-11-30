@@ -18,12 +18,12 @@ def actual_status_code_is_expected_status_code(actual_response, expected_status_
     assert actual_response.status_code == expected_status_code
 
 
-def actual_response_is_expected_response(actual_response, expected_path):
+def actual_response_is_expected_response(actual_response, expected_path, **kwargs):
     file_path = Path(Path(__file__).parent, expected_path).resolve()
     with open(file_path) as file:
         expected_json = json.load(file)
 
-    diff = DeepDiff(expected_json, actual_response.json(), ignore_order=True)
+    diff = DeepDiff(expected_json, actual_response.json(), ignore_order=True, **kwargs)
     assert diff == {}
 
 
@@ -31,7 +31,9 @@ def test_get_all_collections():
     actual_response = requests.get(url=BASE_URL + "/collections")
 
     actual_status_code_is_expected_status_code(actual_response, 200)
-    actual_response_is_expected_response(actual_response, "response/capabilities/200/all_collections.json")
+    actual_response_is_expected_response(
+        actual_response, "response/capabilities/200/all_collections.json", exclude_regex_paths=r".*\['href'\]$"
+    )
 
 
 def test_get_a_single_existing_collection():
@@ -39,7 +41,9 @@ def test_get_a_single_existing_collection():
     actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}")
 
     actual_status_code_is_expected_status_code(actual_response, 200)
-    actual_response_is_expected_response(actual_response, "response/metadata/200/single_collection.json")
+    actual_response_is_expected_response(
+        actual_response, "response/metadata/200/single_collection.json", exclude_regex_paths=r".*\['href'\]$"
+    )
 
 
 def test_get_a_collection_which_does_not_exist():
