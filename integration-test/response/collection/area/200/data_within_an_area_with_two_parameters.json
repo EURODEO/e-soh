@@ -52,19 +52,6 @@
                 ]
             },
             "parameters": {
-                "dd": {
-                    "type": "Parameter",
-                    "observedProperty": {
-                        "label": {
-                            "en": "dd"
-                        }
-                    },
-                    "unit": {
-                        "label": {
-                            "en": "degree"
-                        }
-                    }
-                },
                 "ff": {
                     "type": "Parameter",
                     "observedProperty": {
@@ -93,29 +80,6 @@
                 }
             },
             "ranges": {
-                "dd": {
-                    "type": "NdArray",
-                    "dataType": "float",
-                    "axisNames": [
-                        "t",
-                        "y",
-                        "x"
-                    ],
-                    "shape": [
-                        7,
-                        1,
-                        1
-                    ],
-                    "values": [
-                        214.8,
-                        215,
-                        212.5,
-                        213.9,
-                        216.6,
-                        213.9,
-                        212.3
-                    ]
-                },
                 "ff": {
                     "type": "NdArray",
                     "dataType": "float",
@@ -215,19 +179,6 @@
                 ]
             },
             "parameters": {
-                "dd": {
-                    "type": "Parameter",
-                    "observedProperty": {
-                        "label": {
-                            "en": "dd"
-                        }
-                    },
-                    "unit": {
-                        "label": {
-                            "en": "degree"
-                        }
-                    }
-                },
                 "ff": {
                     "type": "Parameter",
                     "observedProperty": {
@@ -256,29 +207,6 @@
                 }
             },
             "ranges": {
-                "dd": {
-                    "type": "NdArray",
-                    "dataType": "float",
-                    "axisNames": [
-                        "t",
-                        "y",
-                        "x"
-                    ],
-                    "shape": [
-                        7,
-                        1,
-                        1
-                    ],
-                    "values": [
-                        211.5,
-                        211.2,
-                        209.6,
-                        213.9,
-                        216.3,
-                        213.7,
-                        219.1
-                    ]
-                },
                 "ff": {
                     "type": "NdArray",
                     "dataType": "float",
@@ -329,19 +257,6 @@
         }
     ],
     "parameters": {
-        "dd": {
-            "type": "Parameter",
-            "observedProperty": {
-                "label": {
-                    "en": "dd"
-                }
-            },
-            "unit": {
-                "label": {
-                    "en": "degree"
-                }
-            }
-        },
         "ff": {
             "type": "Parameter",
             "observedProperty": {

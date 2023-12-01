@@ -89,10 +89,10 @@ def test_from_a_single_collection_get_a_single_location_which_does_not_exist():
     actual_response_is_expected_response(actual_response, "response/collection/locations/404/no_data_found.json")
 
 
-def test_from_a_single_collection_get_a_single_position_with_multiple_parameters():
+def test_from_a_single_collection_get_a_single_position_with_one_parameter():
     collection_id = "observations"
     coords = "POINT(5.179705 52.0988218)"
-    parameters = "dd,ff,rh"
+    parameters = "tn"
     datetime = "2022-12-31T00:50:00Z/2022-12-31T02:10:00Z"
     actual_response = requests.get(
         url=BASE_URL + f"/collections/{collection_id}/position"
@@ -101,14 +101,14 @@ def test_from_a_single_collection_get_a_single_position_with_multiple_parameters
 
     assert actual_response.status_code == 200
     actual_response_is_expected_response(
-        actual_response, "response/collection/position/200/single_coordinate_with_multiple_parameters.json"
+        actual_response, "response/collection/position/200/single_coordinate_with_one_parameter.json"
     )
 
 
-def test_from_a_single_collection_get_an_area_with_multiple_parameters():
+def test_from_a_single_collection_get_an_area_with_two_parameters():
     collection_id = "observations"
     coords = "POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))"
-    parameters = "dd,ff,rh"
+    parameters = " rh, ff "
     datetime = "2022-12-31T22:50:00Z/.."
     actual_response = requests.get(
         url=BASE_URL + f"/collections/{collection_id}/area"
@@ -117,5 +117,5 @@ def test_from_a_single_collection_get_an_area_with_multiple_parameters():
 
     assert actual_response.status_code == 200
     actual_response_is_expected_response(
-        actual_response, "response/collection/area/200/data_within_an_area_with_multiple_parameters.json"
+        actual_response, "response/collection/area/200/data_within_an_area_with_two_parameters.json"
     )
