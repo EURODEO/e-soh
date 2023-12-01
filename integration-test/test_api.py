@@ -14,10 +14,6 @@ logger.setLevel(os.environ.get("LOG_LEVEL", logging.INFO))
 BASE_URL = os.environ.get("BASE_URL", "http://localhost:8008")
 
 
-def actual_status_code_is_expected_status_code(actual_response, expected_status_code):
-    assert actual_response.status_code == expected_status_code
-
-
 def actual_response_is_expected_response(actual_response, expected_path, **kwargs):
     file_path = Path(Path(__file__).parent, expected_path).resolve()
     with open(file_path) as file:
@@ -30,7 +26,7 @@ def actual_response_is_expected_response(actual_response, expected_path, **kwarg
 def test_get_all_collections():
     actual_response = requests.get(url=BASE_URL + "/collections")
 
-    actual_status_code_is_expected_status_code(actual_response, 200)
+    assert actual_response.status_code == 200
     actual_response_is_expected_response(
         actual_response, "response/capabilities/200/all_collections.json", exclude_regex_paths=r"\['href'\]$"
     )
@@ -40,7 +36,7 @@ def test_get_a_single_existing_collection():
     collection_id = "observations"
     actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}")
 
-    actual_status_code_is_expected_status_code(actual_response, 200)
+    assert actual_response.status_code == 200
     actual_response_is_expected_response(
         actual_response, "response/metadata/200/single_collection.json", exclude_regex_paths=r"\['href'\]$"
     )
@@ -50,7 +46,7 @@ def test_get_a_collection_which_does_not_exist():
     collection_id = "does-not-exist"
     actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}")
 
-    actual_status_code_is_expected_status_code(actual_response, 404)
+    assert actual_response.status_code == 404
     actual_response_is_expected_response(actual_response, "response/metadata/404/not_found.json")
 
 
@@ -59,7 +55,7 @@ def test_from_a_single_collection_get_locations_within_a_bbox():
     bbox = "5.0,52.0,6.0,52.1"
     actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/locations?bbox={bbox}")
 
-    actual_status_code_is_expected_status_code(actual_response, 200)
+    assert actual_response.status_code == 200
     actual_response_is_expected_response(
         actual_response, "response/collection/locations/200/locations_within_a_bbox.json"
     )
@@ -75,7 +71,7 @@ def test_from_a_single_collection_get_a_single_location():
         f"?parameter-name={parameters}&datetime={datetime}"
     )
 
-    actual_status_code_is_expected_status_code(actual_response, 200)
+    assert actual_response.status_code == 200
     actual_response_is_expected_response(
         actual_response, "response/collection/locations/200/single_location_with_multiple_parameters.json"
     )
@@ -89,7 +85,7 @@ def test_from_a_single_collection_get_a_single_location_which_does_not_exist():
         url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}?parameter-name={parameters}"
     )
 
-    actual_status_code_is_expected_status_code(actual_response, 404)
+    assert actual_response.status_code == 404
     actual_response_is_expected_response(actual_response, "response/collection/locations/404/no_data_found.json")
 
 
@@ -103,7 +99,7 @@ def test_from_a_single_collection_get_a_single_position_with_multiple_parameters
         f"?coords={coords}&parameter-name={parameters}&datetime={datetime}"
     )
 
-    actual_status_code_is_expected_status_code(actual_response, 200)
+    assert actual_response.status_code == 200
     actual_response_is_expected_response(
         actual_response, "response/collection/position/200/single_coordinate_with_multiple_parameters.json"
     )
@@ -119,7 +115,7 @@ def test_from_a_single_collection_get_an_area_with_multiple_parameters():
         f"?coords={coords}&parameter-name={parameters}&datetime={datetime}"
     )
 
-    actual_status_code_is_expected_status_code(actual_response, 200)
+    assert actual_response.status_code == 200
     actual_response_is_expected_response(
         actual_response, "response/collection/area/200/data_within_an_area_with_multiple_parameters.json"
     )
