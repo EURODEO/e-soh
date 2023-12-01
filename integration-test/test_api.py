@@ -76,6 +76,20 @@ def test_from_a_single_collection_get_a_single_location():
         actual_response, "response/collection/locations/200/single_location_with_multiple_parameters.json"
     )
 
+    # Test that we do not care about whitespace, by adding whitespace to the parameter string.
+    # Test that we do not care about the parameter order, by changing the order of parameter in the parameter string.
+    # Will return the same response as the first request.
+    parameters_2 = " rh, ff, dd       "
+    actual_response_2 = requests.get(
+        url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}"
+        f"?parameter-name={parameters_2}&datetime={datetime}"
+    )
+
+    assert actual_response_2.status_code == 200
+    actual_response_is_expected_response(
+        actual_response_2, "response/collection/locations/200/single_location_with_multiple_parameters.json"
+    )
+
 
 def test_from_a_single_collection_get_a_single_location_which_does_not_exist():
     collection_id = "observations"
