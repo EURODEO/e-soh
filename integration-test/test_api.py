@@ -23,7 +23,7 @@ def actual_response_is_expected_response(actual_response, expected_path, **kwarg
     with open(file_path) as file:
         expected_json = json.load(file)
 
-    diff = DeepDiff(expected_json, actual_response.json(), ignore_order=True, **kwargs)
+    diff = DeepDiff(expected_json, actual_response.json(), **kwargs)
     assert diff == {}
 
 
