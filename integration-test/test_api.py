@@ -69,7 +69,7 @@ def test_from_a_single_collection_get_a_single_location():
     collection_id = "observations"
     location_id = "06260"
     parameters = "dd,ff,rh"
-    datetime = "2022-12-31T00:50:00Z/2022-12-31T02:10:00Z"
+    datetime = "../2022-12-31T01:10:00Z"
     actual_response = requests.get(
         url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}"
         f"?parameter-name={parameters}&datetime={datetime}"
@@ -113,7 +113,7 @@ def test_from_a_single_collection_get_an_area_with_multiple_parameters():
     collection_id = "observations"
     coords = "POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))"
     parameters = "dd,ff,rh"
-    datetime = "2022-12-31T00:50:00Z/2022-12-31T02:10:00Z"
+    datetime = "2022-12-31T22:50:00Z/.."
     actual_response = requests.get(
         url=BASE_URL + f"/collections/{collection_id}/area"
         f"?coords={coords}&parameter-name={parameters}&datetime={datetime}"
