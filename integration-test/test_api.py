@@ -76,19 +76,28 @@ def test_from_a_single_collection_get_a_single_location():
         actual_response, "response/collection/locations/200/single_location_with_multiple_parameters.json"
     )
 
-    # Test that we do not care about whitespace, by adding whitespace to the parameter string.
-    # Test that we do not care about the parameter order, by changing the order of parameter in the parameter string.
-    # Will return the same response as the first request.
-    parameters_2 = " rh, ff, dd       "
-    actual_response_2 = requests.get(
-        url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}"
-        f"?parameter-name={parameters_2}&datetime={datetime}"
+
+def test_that_the_order_of_the_parameters_in_the_response_is_always_the_same():
+    """Test that we do not care about the order of parameters passed in the query.
+    By comparing two requests with the same parameters but in a different sequence.
+    The first request returns the same response as the second request.
+    """
+    collection_id = "observations"
+    location_id = "06260"
+    parameters = " dd, ff  ,  rh"
+    first_response = requests.get(
+        url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}" f"?parameter-name={parameters}"
     )
 
-    assert actual_response_2.status_code == 200
-    actual_response_is_expected_response(
-        actual_response_2, "response/collection/locations/200/single_location_with_multiple_parameters.json"
+    parameters_2 = " rh, ff, dd       "
+    second_response = requests.get(
+        url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}" f"?parameter-name={parameters_2}"
     )
+
+    assert first_response.status_code == 200
+    assert second_response.status_code == 200
+    diff = DeepDiff(first_response.json(), second_response.json())
+    assert diff == {}
 
 
 def test_from_a_single_collection_get_a_single_location_which_does_not_exist():
