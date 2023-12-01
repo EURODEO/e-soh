@@ -32,7 +32,7 @@ def test_get_all_collections():
 
     actual_status_code_is_expected_status_code(actual_response, 200)
     actual_response_is_expected_response(
-        actual_response, "response/capabilities/200/all_collections.json", exclude_regex_paths=r".*\['href'\]$"
+        actual_response, "response/capabilities/200/all_collections.json", exclude_regex_paths=r"\['href'\]$"
     )
 
 
@@ -42,7 +42,7 @@ def test_get_a_single_existing_collection():
 
     actual_status_code_is_expected_status_code(actual_response, 200)
     actual_response_is_expected_response(
-        actual_response, "response/metadata/200/single_collection.json", exclude_regex_paths=r".*\['href'\]$"
+        actual_response, "response/metadata/200/single_collection.json", exclude_regex_paths=r"\['href'\]$"
     )
 
 
