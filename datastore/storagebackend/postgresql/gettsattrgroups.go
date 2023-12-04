@@ -117,24 +117,29 @@ func getTSMdata(colVals map[string]interface{}) (*datastore.TSMetadata, error) {
 	return &tsMData, nil
 }
 
-// scanTsMdata scans column cols from current result row in rows and converts to a
-// TSMetadata object.
+// scanTsMdata scans the current row in rows and converts the result into a TSMetadata object.
+// It is assumed that cols contains exactly the columns (names, types, order) that were used for
+// the query that resulted in rows.
 // Returns (TSMetadata object, nil) upon success, otherwise (..., error).
 func scanTsMdata(rows *sql.Rows, cols []string) (*datastore.TSMetadata, error) {
+
 	colVals0 := make([]interface{}, len(cols))   // column values
 	colValPtrs := make([]interface{}, len(cols)) // pointers to column values
 	for i := range colVals0 {
 		colValPtrs[i] = &colVals0[i]
 	}
+
 	// scan row into column value pointers
 	if err := rows.Scan(colValPtrs...); err != nil {
 		return nil, fmt.Errorf("rows.Scan() failed: %v", err)
 	}
+
 	// combine column names and -values into a map
 	colVals := map[string]interface{}{}
 	for i, col := range cols {
 		colVals[col] = colVals0[i]
 	}
+
 	// convert to a TSMetadata object
 	tsMdata, err := getTSMdata(colVals)
 	if err != nil {
