@@ -49,6 +49,7 @@ services:
         condition: service_healthy
 
   api:
+    hostname: api
     build:
       context: .  # TODO: Needed to get proto file. Find a better solution
       dockerfile: api/Dockerfile
@@ -93,6 +94,7 @@ services:
     environment:
       - DSHOST=store
       - DSPORT=50050
+      - BASE_URL=http://api:8000
     depends_on:
       store:
         condition: service_healthy

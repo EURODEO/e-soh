@@ -1,0 +1,95 @@
+{
+    "type": "Coverage",
+    "domain": {
+        "type": "Domain",
+        "domainType": "PointSeries",
+        "axes": {
+            "x": {
+                "values": [
+                    5.1797058644882
+                ]
+            },
+            "y": {
+                "values": [
+                    52.098821802977
+                ]
+            },
+            "t": {
+                "values": [
+                    "2022-12-31T00:50:00Z",
+                    "2022-12-31T01:00:00Z",
+                    "2022-12-31T01:10:00Z",
+                    "2022-12-31T01:20:00Z",
+                    "2022-12-31T01:30:00Z",
+                    "2022-12-31T01:40:00Z",
+                    "2022-12-31T01:50:00Z",
+                    "2022-12-31T02:00:00Z",
+                    "2022-12-31T02:10:00Z"
+                ]
+            }
+        },
+        "referencing": [
+            {
+                "coordinates": [
+                    "y",
+                    "x"
+                ],
+                "system": {
+                    "type": "GeographicCRS",
+                    "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                }
+            },
+            {
+                "coordinates": [
+                    "z"
+                ],
+                "system": {
+                    "type": "TemporalRS",
+                    "calendar": "Gregorian"
+                }
+            }
+        ]
+    },
+    "parameters": {
+        "tn": {
+            "type": "Parameter",
+            "observedProperty": {
+                "label": {
+                    "en": "tn"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "degrees Celsius"
+                }
+            }
+        }
+    },
+    "ranges": {
+        "tn": {
+            "type": "NdArray",
+            "dataType": "float",
+            "axisNames": [
+                "t",
+                "y",
+                "x"
+            ],
+            "shape": [
+                9,
+                1,
+                1
+            ],
+            "values": [
+                12.1,
+                12,
+                12,
+                11.9,
+                11.9,
+                11.8,
+                11.8,
+                11.7,
+                11.7
+            ]
+        }
+    }
+}

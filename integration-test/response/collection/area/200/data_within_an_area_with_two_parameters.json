@@ -1,0 +1,287 @@
+{
+    "type": "CoverageCollection",
+    "coverages": [
+        {
+            "type": "Coverage",
+            "domain": {
+                "type": "Domain",
+                "domainType": "PointSeries",
+                "axes": {
+                    "x": {
+                        "values": [
+                            5.8723225499118
+                        ]
+                    },
+                    "y": {
+                        "values": [
+                            52.0548617826
+                        ]
+                    },
+                    "t": {
+                        "values": [
+                            "2022-12-31T22:50:00Z",
+                            "2022-12-31T23:00:00Z",
+                            "2022-12-31T23:10:00Z",
+                            "2022-12-31T23:20:00Z",
+                            "2022-12-31T23:30:00Z",
+                            "2022-12-31T23:40:00Z",
+                            "2022-12-31T23:50:00Z"
+                        ]
+                    }
+                },
+                "referencing": [
+                    {
+                        "coordinates": [
+                            "y",
+                            "x"
+                        ],
+                        "system": {
+                            "type": "GeographicCRS",
+                            "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "TemporalRS",
+                            "calendar": "Gregorian"
+                        }
+                    }
+                ]
+            },
+            "parameters": {
+                "ff": {
+                    "type": "Parameter",
+                    "observedProperty": {
+                        "label": {
+                            "en": "ff"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "m s-1"
+                        }
+                    }
+                },
+                "rh": {
+                    "type": "Parameter",
+                    "observedProperty": {
+                        "label": {
+                            "en": "rh"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "%"
+                        }
+                    }
+                }
+            },
+            "ranges": {
+                "ff": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        7,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        10.68,
+                        8.84,
+                        9.09,
+                        8.64,
+                        8.72,
+                        9.59,
+                        10.7
+                    ]
+                },
+                "rh": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        7,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        56,
+                        56,
+                        55,
+                        58,
+                        56,
+                        56,
+                        57
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Coverage",
+            "domain": {
+                "type": "Domain",
+                "domainType": "PointSeries",
+                "axes": {
+                    "x": {
+                        "values": [
+                            5.1797058644882
+                        ]
+                    },
+                    "y": {
+                        "values": [
+                            52.098821802977
+                        ]
+                    },
+                    "t": {
+                        "values": [
+                            "2022-12-31T22:50:00Z",
+                            "2022-12-31T23:00:00Z",
+                            "2022-12-31T23:10:00Z",
+                            "2022-12-31T23:20:00Z",
+                            "2022-12-31T23:30:00Z",
+                            "2022-12-31T23:40:00Z",
+                            "2022-12-31T23:50:00Z"
+                        ]
+                    }
+                },
+                "referencing": [
+                    {
+                        "coordinates": [
+                            "y",
+                            "x"
+                        ],
+                        "system": {
+                            "type": "GeographicCRS",
+                            "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "TemporalRS",
+                            "calendar": "Gregorian"
+                        }
+                    }
+                ]
+            },
+            "parameters": {
+                "ff": {
+                    "type": "Parameter",
+                    "observedProperty": {
+                        "label": {
+                            "en": "ff"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "m s-1"
+                        }
+                    }
+                },
+                "rh": {
+                    "type": "Parameter",
+                    "observedProperty": {
+                        "label": {
+                            "en": "rh"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "%"
+                        }
+                    }
+                }
+            },
+            "ranges": {
+                "ff": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        7,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        8.37,
+                        7.71,
+                        8.35,
+                        8.45,
+                        8.95,
+                        9.17,
+                        9.4
+                    ]
+                },
+                "rh": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        7,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        58,
+                        58,
+                        58,
+                        58,
+                        58,
+                        58,
+                        59
+                    ]
+                }
+            }
+        }
+    ],
+    "parameters": {
+        "ff": {
+            "type": "Parameter",
+            "observedProperty": {
+                "label": {
+                    "en": "ff"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "m s-1"
+                }
+            }
+        },
+        "rh": {
+            "type": "Parameter",
+            "observedProperty": {
+                "label": {
+                    "en": "rh"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "%"
+                }
+            }
+        }
+    }
+}

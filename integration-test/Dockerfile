@@ -29,6 +29,9 @@ RUN python -m grpc_tools.protoc  \
 
 COPY "${PROJECT_PYTHON_PATH}/test_knmi.py" "${DOCKER_PATH}/test_knmi.py"
 COPY "${PROJECT_PYTHON_PATH}/test_delete.py" "${DOCKER_PATH}/test_delete.py"
+COPY "${PROJECT_PYTHON_PATH}/test_api.py" "${DOCKER_PATH}/test_api.py"
+
+COPY "${PROJECT_PYTHON_PATH}/response/" "${DOCKER_PATH}/response/"
 
 WORKDIR "${DOCKER_PATH}"
 CMD ["pytest"]
