@@ -208,6 +208,10 @@ func getCombo(tsMdata1 *datastore.TSMetadata, goNames []string) (*datastore.TSMe
 // getTSAttrGroupsIncInstances creates an array of groups from cols such that each group contains
 // all instances that match a unique combination of database values corresponding to cols.
 // All attributes, including those in cols, are set to the actual values found in the database.
+//
+// NOTE: cols is assumed to be sanitized by validateAttrs, so there is no risk of SQL injection
+// in the below query.
+//
 // Returns (array of groups, nil) upon success, otherwise (..., error).
 func getTSAttrGroupsIncInstances(
 	db *sql.DB, cols []string) ([]*datastore.TSMdataGroup, error) {
@@ -279,8 +283,13 @@ func getTSAttrGroupsIncInstances(
 // getTSAttrGroupsComboOnly creates an array of groups from cols such that each group contains a
 // single, unique combination of database values corresponding to cols. Other attributes than those
 // in cols have the default value for the type (i.e. "" for string, etc.).
+//
+// NOTE: cols is assumed to be sanitized by validateAttrs, so there is no risk of SQL injection
+// in the below query.
+//
 // Returns (array of groups, nil) upon success, otherwise (..., error).
 func getTSAttrGroupsComboOnly(db *sql.DB, cols []string) ([]*datastore.TSMdataGroup, error) {
+
 	// query database for unique combinations of cols in time_series, ordered by cols
 	colsS := strings.Join(cols, ",")
 	query := fmt.Sprintf("SELECT DISTINCT %s FROM time_series ORDER BY %s", colsS, colsS)
