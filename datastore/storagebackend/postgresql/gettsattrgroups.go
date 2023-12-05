@@ -205,17 +205,17 @@ func getCombo(tsMdata1 *datastore.TSMetadata, goNames []string) (*datastore.TSMe
 	return &tsMdata2, nil
 }
 
-// getTSAttrGroupsIncInstances populates groups from cols such that each group contains all
-// instances that match a unique combination of database values corresponding to cols.
+// getTSAttrGroupsIncInstances creates an array of groups from cols such that each group contains
+// all instances that match a unique combination of database values corresponding to cols.
 // All attributes, including those in cols, are set to the actual values found in the database.
-// Returns nil upon success, otherwise error.
+// Returns (array of groups, nil) upon success, otherwise (..., error).
 func getTSAttrGroupsIncInstances(
-	db *sql.DB, cols []string, groups *[]*datastore.TSMdataGroup) error {
+	db *sql.DB, cols []string) ([]*datastore.TSMdataGroup, error) {
 	allCols := getTSAllPBNames() // get all protobuf names of TSMetadata message
 
 	goNames, err := getTSGoNamesFromPBNames(cols)
 	if err != nil {
-		return fmt.Errorf("getTSGoNamesFromPBNames() failed: %v", err)
+		return nil, fmt.Errorf("getTSGoNamesFromPBNames() failed: %v", err)
 	}
 
 	// query database for all columns in time_series, ordered by cols
@@ -224,9 +224,11 @@ func getTSAttrGroupsIncInstances(
 	query := fmt.Sprintf("SELECT %s FROM time_series ORDER BY %s", allColsS, colsS)
 	rows, err := db.Query(query)
 	if err != nil {
-		return fmt.Errorf("db.Query() failed: %v", err)
+		return nil, fmt.Errorf("db.Query() failed: %v", err)
 	}
 	defer rows.Close()
+
+	groups := []*datastore.TSMdataGroup{}
 
 	// aggregate rows into groups
 	currInstances := []*datastore.TSMetadata{} // initial current instance set
@@ -234,22 +236,22 @@ func getTSAttrGroupsIncInstances(
 		// extract tsMdata from current result row
 		tsMdata, err := scanTsMdata(rows, allCols)
 		if err != nil {
-			return fmt.Errorf("scanTsMdata() failed: %v", err)
+			return nil, fmt.Errorf("scanTsMdata() failed: %v", err)
 		}
 
 		if len(currInstances) > 0 { // check if we should create a new current instance set
 			equal, err := tsMdataEqual(tsMdata, currInstances[0], goNames)
 			if err != nil {
-				return fmt.Errorf("tsMdataEqual() failed: %v", err)
+				return nil, fmt.Errorf("tsMdataEqual() failed: %v", err)
 			}
 
 			if !equal { // ts metadata changed wrt. cols
 				// add next group with current instance set
 				currCombo, err := getCombo(currInstances[0], goNames)
 				if err != nil {
-					return fmt.Errorf("getCombo() failed (1): %v", err)
+					return nil, fmt.Errorf("getCombo() failed (1): %v", err)
 				}
-				*groups = append(*groups, &datastore.TSMdataGroup{
+				groups = append(groups, &datastore.TSMdataGroup{
 					Combo:     currCombo,
 					Instances: currInstances,
 				})
@@ -264,44 +266,46 @@ func getTSAttrGroupsIncInstances(
 	// add final group with current instance set
 	currCombo, err := getCombo(currInstances[0], goNames)
 	if err != nil {
-		return fmt.Errorf("getCombo() failed (2): %v", err)
+		return nil, fmt.Errorf("getCombo() failed (2): %v", err)
 	}
-	*groups = append(*groups, &datastore.TSMdataGroup{
+	groups = append(groups, &datastore.TSMdataGroup{
 		Combo:     currCombo,
 		Instances: currInstances,
 	})
 
-	return nil
+	return groups, nil
 }
 
-// getTSAttrGroupsComboOnly populates groups from cols such that each group contains a single,
-// unique combination of database values corresponding to cols. Other attributes than those in cols
-// have the default value for the type (i.e. "" for string, etc.).
-// Returns nil upon success, otherwise error.
-func getTSAttrGroupsComboOnly(db *sql.DB, cols []string, groups *[]*datastore.TSMdataGroup) error {
+// getTSAttrGroupsComboOnly creates an array of groups from cols such that each group contains a
+// single, unique combination of database values corresponding to cols. Other attributes than those
+// in cols have the default value for the type (i.e. "" for string, etc.).
+// Returns (array of groups, nil) upon success, otherwise (..., error).
+func getTSAttrGroupsComboOnly(db *sql.DB, cols []string) ([]*datastore.TSMdataGroup, error) {
 	// query database for unique combinations of cols in time_series, ordered by cols
 	colsS := strings.Join(cols, ",")
 	query := fmt.Sprintf("SELECT DISTINCT %s FROM time_series ORDER BY %s", colsS, colsS)
 	rows, err := db.Query(query)
 	if err != nil {
-		return fmt.Errorf("db.Query() failed: %v", err)
+		return nil, fmt.Errorf("db.Query() failed: %v", err)
 	}
 	defer rows.Close()
+
+	groups := []*datastore.TSMdataGroup{}
 
 	// aggregate rows into groups
 	for rows.Next() {
 		// extract tsMdata from current result row
 		tsMdata, err := scanTsMdata(rows, cols)
 		if err != nil {
-			return fmt.Errorf("scanTsMdata() failed: %v", err)
+			return nil, fmt.Errorf("scanTsMdata() failed: %v", err)
 		}
 
 		// add new group with tsMData as the combo (and leaving the instances
 		// array unset)
-		*groups = append(*groups, &datastore.TSMdataGroup{Combo: tsMdata})
+		groups = append(groups, &datastore.TSMdataGroup{Combo: tsMdata})
 	}
 
-	return nil
+	return groups, nil
 }
 
 // GetTSAttrGroups ... (see documentation in StorageBackend interface)
@@ -312,15 +316,16 @@ func (sbe *PostgreSQL) GetTSAttrGroups(request *datastore.GetTSAGRequest) (
 		return nil, fmt.Errorf("validateAttrs() failed: %v", err)
 	}
 
-	groups := []*datastore.TSMdataGroup{}
+	var groups []*datastore.TSMdataGroup
+	var err error
 
 	if request.IncludeInstances {
-		if err := getTSAttrGroupsIncInstances(sbe.Db, request.Attrs, &groups); err != nil {
-			return nil, fmt.Errorf("getTSAGroupsIncInstances() failed: %v", err)
+		if groups, err = getTSAttrGroupsIncInstances(sbe.Db, request.Attrs); err != nil {
+			return nil, fmt.Errorf("getTSAttrGroupsIncInstances() failed: %v", err)
 		}
 	} else {
-		if err := getTSAttrGroupsComboOnly(sbe.Db, request.Attrs, &groups); err != nil {
-			return nil, fmt.Errorf("getTSAGroupsComboOnly() failed: %v", err)
+		if groups, err = getTSAttrGroupsComboOnly(sbe.Db, request.Attrs); err != nil {
+			return nil, fmt.Errorf("getTSAttrGroupsComboOnly() failed: %v", err)
 		}
 	}
 
