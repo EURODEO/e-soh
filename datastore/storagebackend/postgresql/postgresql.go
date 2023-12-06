@@ -72,7 +72,7 @@ func NewPostgreSQL() (*PostgreSQL, error) {
 
 	host := common.Getenv("PGHOST", "localhost")
 	port := common.Getenv("PGPORT", "5433")
-	user := common.Getenv("PGUSER", "postgres")
+	user := common.Getenv("PGUSER", "db_user")
 	password := common.Getenv("PGPASSWORD", "mysecretpassword")
 	dbname := common.Getenv("PGDBNAME", "data")
 

@@ -1,6 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS postgis;
 
-CREATE TABLE time_series (
+CREATE TABLE IF NOT EXISTS time_series (
     id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 
 	-- --- BEGIN metadata fields that usually don't vary with obs time ---
@@ -40,7 +40,7 @@ CREATE TABLE time_series (
 	link_hreflang, link_title)
 );
 
-CREATE TABLE geo_point (
+CREATE TABLE IF NOT EXISTS geo_point (
 	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 	point GEOGRAPHY(Point, 4326) NOT NULL UNIQUE
 );
@@ -48,14 +48,14 @@ CREATE TABLE geo_point (
 CREATE INDEX geo_point_idx ON geo_point USING GIST(point);
 
 -- not supported yet
--- CREATE TABLE geo_polygon (
+-- CREATE TABLE IF NOT EXISTS geo_polygon (
 -- 	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 -- 	polygon GEOGRAPHY(Polygon, 4326) NOT NULL
 -- )
 --
 -- CREATE INDEX geo_polygon_idx ON geo_polygon USING GIST(polygon);
 
-CREATE TABLE observation (
+CREATE TABLE IF NOT EXISTS observation (
 	ts_id BIGINT NOT NULL REFERENCES time_series(id) ON DELETE CASCADE,
 
 	-- --- BEGIN metadata fields that usually vary with obs time ---
@@ -91,3 +91,9 @@ CREATE TABLE observation (
 
 	PRIMARY KEY (ts_id, obstime_instant)
 );
+
+CREATE USER db_user WITH NOSUPERUSER NOCREATEDB NOCREATEROLE PASSWORD 'mysecretpassword';
+ALTER ROLE db_user SET search_path TO public;
+GRANT USAGE ON SCHEMA public TO db_user;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO db_user;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public to db_user;

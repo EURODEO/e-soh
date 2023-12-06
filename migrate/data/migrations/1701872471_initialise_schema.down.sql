@@ -1,0 +1,9 @@
+-- Commented out the statements below as you never want to undo the initialise.
+-- DROP TABLE IF EXISTS users;
+-- DROP TABLE IF EXISTS observation;
+-- DROP TABLE IF EXISTS geo_point;
+-- -- not supported yet
+-- -- DROP TABLE IF EXISTS geo_polygon;
+-- DROP TABLE IF EXISTS time_series;
+-- DROP USER IF EXISTS db_user;
+-- DROP EXTENSION IF EXISTS postgis;
