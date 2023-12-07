@@ -16,7 +16,8 @@ services:
       - POSTGRES_DB=data
     restart: on-failure
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
+      # HACK This healthcheck is always healthy
+      test: [ "CMD-SHELL", "psql postgresql://postgres:mysecretpassword@localhost -XtAc \"SELECT 1 FROM pg_database WHERE datname='data'\"" ]
       interval: 5s
       timeout: 1s
       retries: 3
@@ -104,8 +105,8 @@ services:
       - DSPORT=50050
       - BASE_URL=http://api:8000
     depends_on:
-      loader:
-        condition: service_completed_successfully
+      store:
+        condition: service_healthy
 
 volumes:
   ts-data:
