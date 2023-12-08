@@ -10,14 +10,15 @@ services:
     volumes:
 #      - ts-data:/home/postgres/pgdata/data # for timescale image
       - ts-data:/var/lib/postgresql/data # for postgres image
-      - ./database/postgis_healthcheck.sh:/postgis_healthcheck.sh # for the healthcheck
+      - ./database/healthcheck_postgis_uptime.sh:/healthcheck_postgis_uptime.sh # for the healthcheck
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=mysecretpassword
       - POSTGRES_DB=data
     restart: on-failure
     healthcheck:
-      test: ["CMD-SHELL", "/postgis_healthcheck.sh postgresql://postgres:mysecretpassword@localhost/data 10 second"]
+      # HACK Due to the installation of Postgis extension the database is restarted, the healthcheck checks if the database is up for longer than specified time.
+      test: ["CMD-SHELL", "/healthcheck_postgis_uptime.sh postgresql://postgres:mysecretpassword@localhost/data 10 second"]
       interval: 5s
       timeout: 1s
       retries: 3
