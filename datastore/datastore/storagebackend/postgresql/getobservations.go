@@ -291,14 +291,14 @@ func getObs(db *sql.DB, request *datastore.GetObsRequest, obs *[]*datastore.Meta
 	// --- END get search expression for string attributes ----------------
 
 	query := fmt.Sprintf(`
-		SELECT ts_id, observation.id, geo_point_id, pubtime, data_id, history, metadata_id,
+		SELECT ts_id, geo_point_id, observation.id, pubtime, data_id, history, metadata_id,
 			obstime_instant, processing_level, value, point
 		FROM observation
-		    JOIN geo_point gp ON observation.geo_point_id = gp.id
-			JOIN time_series ts on ts.id = observation.ts_id
+		JOIN time_series on time_series.id = observation.ts_id
+		JOIN geo_point gp ON observation.geo_point_id = gp.id
 		WHERE %s AND %s AND %s
 		ORDER BY ts_id, obstime_instant
-	`, timeExpr, mdataExpr, geoExpr)
+	`, timeExpr, geoExpr, mdataExpr)
 
 	rows, err := db.Query(query, phVals...)
 	if err != nil {
@@ -310,8 +310,8 @@ func getObs(db *sql.DB, request *datastore.GetObsRequest, obs *[]*datastore.Meta
 	for rows.Next() {
 		var (
 			tsID            int64
-			id              string
 			gpID            int64
+			id              string
 			pubTime0        time.Time
 			dataID          string
 			history         string
@@ -321,18 +321,18 @@ func getObs(db *sql.DB, request *datastore.GetObsRequest, obs *[]*datastore.Meta
 			value           string
 			point           postgis.PointS
 		)
-		if err := rows.Scan(&tsID, &id, &gpID, &pubTime0, &dataID, &history, &metadataID,
+		if err := rows.Scan(&tsID, &gpID, &id, &pubTime0, &dataID, &history, &metadataID,
 			&obsTimeInstant0, &processingLevel, &value, &point); err != nil {
 			return fmt.Errorf("rows.Scan() failed: %v", err)
 		}
 
 		obsMdata := &datastore.ObsMetadata{
-			Id: id,
 			Geometry: &datastore.ObsMetadata_GeoPoint{
 				GeoPoint: &datastore.Point{
 					Lon: point.X,
 					Lat: point.Y},
 			},
+			Id: id,
 			Pubtime:    timestamppb.New(pubTime0),
 			DataId:     dataID,
 			History:    history,

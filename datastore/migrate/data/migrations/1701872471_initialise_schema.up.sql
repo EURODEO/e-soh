@@ -51,11 +51,12 @@ CREATE TABLE observation (
 	ts_id BIGINT NOT NULL REFERENCES time_series(id) ON DELETE CASCADE,
 
 	-- --- BEGIN metadata fields that usually vary with obs time ---
-	id TEXT NOT NULL, -- required
 
 	-- Refer to geometry via a foreign key to ensure that each distinct geometry is
 	-- stored only once in the geo_* table, thus speeding up geo search.
 	geo_point_id BIGINT NOT NULL REFERENCES geo_point(id) ON DELETE CASCADE,
+
+	id TEXT NOT NULL, -- required
 
 	pubtime timestamptz NOT NULL, -- required
 	data_id TEXT NOT NULL, -- required
