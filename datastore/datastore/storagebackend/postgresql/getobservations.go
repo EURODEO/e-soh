@@ -5,6 +5,7 @@ import (
 	"datastore/common"
 	"datastore/datastore"
 	"fmt"
+	"reflect"
 	"strings"
 	"time"
 
@@ -144,13 +145,14 @@ func getTimeFilter(ti *datastore.TimeInterval) string {
 	return timeExpr
 }
 
-type filterInfo struct {
+type stringFilterInfo struct {
 	colName  string
-	patterns []string // NOTE: only []string supported for now
+	patterns []string
 }
+// TODO: add filter infos for other types than string
 
-// getMdataFilter derives from filterInfos the expression used in a WHERE clause for "match any"
-// filtering on a set of attributes.
+// getMdataFilter derives from stringFilterInfos the expression used in a WHERE clause for
+// "match any" filtering on a set of attributes.
 //
 // The expression will be of the form
 //
@@ -163,13 +165,13 @@ type filterInfo struct {
 // Values to be used for query placeholders are appended to phVals.
 //
 // Returns expression.
-func getMdataFilter(filterInfos []filterInfo, phVals *[]interface{}) string {
+func getMdataFilter(stringFilterInfos []stringFilterInfo, phVals *[]interface{}) string {
 
 	whereExprAND := []string{}
 
-	for _, fi := range filterInfos {
+	for _, sfi := range stringFilterInfos {
 		addWhereCondMatchAnyPattern(
-			fi.colName, fi.patterns, &whereExprAND, phVals)
+			sfi.colName, sfi.patterns, &whereExprAND, phVals)
 	}
 
 	whereExpr := "TRUE" // by default, don't filter
@@ -219,30 +221,71 @@ func getGeoFilter(inside *datastore.Polygon, phVals *[]interface{}) (string, err
 	return whereExpr, nil
 }
 
+type stringFieldInfo struct {
+	field reflect.StructField
+	method reflect.Value
+	methodName string
+}
+
 // getObs gets into obs all observations that match request.
 // Returns nil upon success, otherwise error.
 func getObs(db *sql.DB, request *datastore.GetObsRequest, obs *[]*datastore.Metadata2) error {
 
 	phVals := []interface{}{} // placeholder values
 
+	// --- BEGIN get temporal and spatial search expressions ----------------
+
 	timeExpr := getTimeFilter(request.GetInterval())
-
-	tsMdataExpr := getMdataFilter([]filterInfo{
-		{"platform", request.GetPlatforms()},
-		{"standard_name", request.GetStandardNames()},
-		{"instrument", request.GetInstruments()},
-		// TODO: add search filters for more columns in table 'time_series'
-	}, &phVals)
-
-	obsMdataExpr := getMdataFilter([]filterInfo{
-		{"processing_level", request.GetProcessingLevels()},
-		// TODO: add search filters for more columns in table 'observation'
-	}, &phVals)
 
 	geoExpr, err := getGeoFilter(request.Inside, &phVals)
 	if err != nil {
 		return fmt.Errorf("getGeoFilter() failed: %v", err)
 	}
+
+	// --- END get temporal and spatial search expressions ----------------
+
+	// --- BEGIN get search expression for string attributes ----------------
+
+	rv := reflect.ValueOf(request)
+
+	stringFilterInfos := []stringFilterInfo{}
+
+	stringFieldInfos := []stringFieldInfo{}
+
+	addStringFields := func(s interface{}) {
+		for _, field := range reflect.VisibleFields(reflect.TypeOf(s)) {
+			mtdName := fmt.Sprintf("Get%s", field.Name)
+			mtd := rv.MethodByName(mtdName)
+			if field.IsExported() && (field.Type.Kind() == reflect.String) && (mtd.IsValid()) {
+				stringFieldInfos = append(stringFieldInfos, stringFieldInfo{
+					field: field,
+					method: mtd,
+					methodName: mtdName,
+				})
+			}
+		}
+	}
+	addStringFields(datastore.TSMetadata{})
+	addStringFields(datastore.ObsMetadata{})
+
+	for _, sfInfo := range stringFieldInfos {
+		patterns, ok := sfInfo.method.Call([]reflect.Value{})[0].Interface().([]string)
+		if !ok {
+			return fmt.Errorf(
+				"sfInfo.method.Call() failed for method %s; failed to return []string",
+				sfInfo.methodName)
+		}
+		if len(patterns) > 0 {
+			stringFilterInfos = append(stringFilterInfos, stringFilterInfo{
+				colName: common.ToSnakeCase(sfInfo.field.Name),
+				patterns: patterns,
+			})
+		}
+	}
+
+	mdataExpr := getMdataFilter(stringFilterInfos, &phVals)
+
+	// --- END get search expression for string attributes ----------------
 
 	query := fmt.Sprintf(`
 		SELECT ts_id, observation.id, geo_point_id, pubtime, data_id, history, metadata_id,
@@ -250,9 +293,9 @@ func getObs(db *sql.DB, request *datastore.GetObsRequest, obs *[]*datastore.Meta
 		FROM observation
 		    JOIN geo_point gp ON observation.geo_point_id = gp.id
 			JOIN time_series ts on ts.id = observation.ts_id
-		WHERE %s AND %s AND %s AND %s
+		WHERE %s AND %s AND %s
 		ORDER BY ts_id, obstime_instant
-	`, timeExpr, tsMdataExpr, obsMdataExpr, geoExpr)
+	`, timeExpr, mdataExpr, geoExpr)
 
 	rows, err := db.Query(query, phVals...)
 	if err != nil {
