@@ -223,6 +223,7 @@ func getGeoFilter(inside *datastore.Polygon, phVals *[]interface{}) (string, err
 
 type stringFieldInfo struct {
 	field reflect.StructField
+	tableName string
 	method reflect.Value
 	methodName string
 }
@@ -252,21 +253,22 @@ func getObs(db *sql.DB, request *datastore.GetObsRequest, obs *[]*datastore.Meta
 
 	stringFieldInfos := []stringFieldInfo{}
 
-	addStringFields := func(s interface{}) {
+	addStringFields := func(s interface{}, tableName string) {
 		for _, field := range reflect.VisibleFields(reflect.TypeOf(s)) {
 			mtdName := fmt.Sprintf("Get%s", field.Name)
 			mtd := rv.MethodByName(mtdName)
 			if field.IsExported() && (field.Type.Kind() == reflect.String) && (mtd.IsValid()) {
 				stringFieldInfos = append(stringFieldInfos, stringFieldInfo{
 					field: field,
+					tableName: tableName,
 					method: mtd,
 					methodName: mtdName,
 				})
 			}
 		}
 	}
-	addStringFields(datastore.TSMetadata{})
-	addStringFields(datastore.ObsMetadata{})
+	addStringFields(datastore.TSMetadata{}, "time_series")
+	addStringFields(datastore.ObsMetadata{}, "observation")
 
 	for _, sfInfo := range stringFieldInfos {
 		patterns, ok := sfInfo.method.Call([]reflect.Value{})[0].Interface().([]string)
@@ -277,7 +279,8 @@ func getObs(db *sql.DB, request *datastore.GetObsRequest, obs *[]*datastore.Meta
 		}
 		if len(patterns) > 0 {
 			stringFilterInfos = append(stringFilterInfos, stringFilterInfo{
-				colName: common.ToSnakeCase(sfInfo.field.Name),
+				colName: fmt.Sprintf(
+					"%s.%s", sfInfo.tableName, common.ToSnakeCase(sfInfo.field.Name)),
 				patterns: patterns,
 			})
 		}
