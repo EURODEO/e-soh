@@ -1,6 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS postgis;
 
-CREATE TABLE IF NOT EXISTS time_series (
+CREATE TABLE time_series (
     id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 
 	-- --- BEGIN metadata fields that usually don't vary with obs time ---
@@ -40,14 +40,14 @@ CREATE TABLE IF NOT EXISTS time_series (
 	link_hreflang, link_title)
 );
 
-CREATE TABLE IF NOT EXISTS geo_point (
+CREATE TABLE geo_point (
 	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 	point GEOGRAPHY(Point, 4326) NOT NULL UNIQUE
 );
 
 CREATE INDEX geo_point_idx ON geo_point USING GIST(point);
 
-CREATE TABLE IF NOT EXISTS observation (
+CREATE TABLE observation (
 	ts_id BIGINT NOT NULL REFERENCES time_series(id) ON DELETE CASCADE,
 
 	-- --- BEGIN metadata fields that usually vary with obs time ---
