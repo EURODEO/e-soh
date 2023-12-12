@@ -72,6 +72,7 @@ message Link {
 }
 
 message TSMetadata {
+  // --- BEGIN metadata of type 'single string' -----------------
   string version = 1;
   string type = 2;
   string title = 3;
@@ -94,25 +95,33 @@ message TSMetadata {
   string unit = 20;
   string instrument = 21;
   string instrument_vocabulary = 22 [json_name = "instrument_vocabulary"];
+  // --- END metadata of type 'single string' -----------------
+
+  // --- BEGIN metadata of other type -----------------
   repeated Link links = 23;
+  // --- END metadata of other type -----------------
 }
 
 message ObsMetadata {
-  string id = 1;
   oneof geometry {
-    Point geo_point = 2 [json_name = "geo_point"];
-    Polygon geo_polygon = 3 [json_name = "geo_polygon"];
+    Point geo_point = 1 [json_name = "geo_point"];
+    Polygon geo_polygon = 2 [json_name = "geo_polygon"];
   }
-  google.protobuf.Timestamp pubtime = 4;
-  string data_id = 5 [json_name = "data_id"];
-  string history = 6;
-  string metadata_id = 7 [json_name = "metadata_id"];
   oneof obstime {
-    google.protobuf.Timestamp obstime_instant = 8 [json_name = "obstime_instant"];
-    //TimeInterval obstime_interval = 9 [json_name = "obstime_interval"]; -- unsupported for now
+    google.protobuf.Timestamp obstime_instant = 3 [json_name = "obstime_instant"];
+    //TimeInterval obstime_interval = 4 [json_name = "obstime_interval"]; -- unsupported for now
   }
+  google.protobuf.Timestamp pubtime = 5;
+
+  // --- BEGIN metadata of type 'single string' -----------------
+  string id = 6;
+  string data_id = 7 [json_name = "data_id"];
+  string history = 8;
+  string metadata_id = 9 [json_name = "metadata_id"];
   string processing_level = 10 [json_name = "processing_level"];
-  string value = 11;
+  // --- END metadata of type 'single string' -----------------
+
+  string value = 11; // obs value
 }
 
 //---------------------------------------------------------------------------
