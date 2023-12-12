@@ -291,11 +291,11 @@ func getObs(db *sql.DB, request *datastore.GetObsRequest, obs *[]*datastore.Meta
 	// --- END get search expression for string attributes ----------------
 
 	query := fmt.Sprintf(`
-		SELECT ts_id, geo_point_id, observation.id, pubtime, data_id, history, metadata_id,
-			obstime_instant, processing_level, value, point
+		SELECT ts_id, geo_point_id, obstime_instant, pubtime, observation.id, data_id, history, metadata_id,
+			processing_level, value, geo_point.point
 		FROM observation
 		JOIN time_series on time_series.id = observation.ts_id
-		JOIN geo_point gp ON observation.geo_point_id = gp.id
+		JOIN geo_point ON observation.geo_point_id = geo_point.id
 		WHERE %s AND %s AND %s
 		ORDER BY ts_id, obstime_instant
 	`, timeExpr, geoExpr, mdataExpr)
@@ -311,18 +311,18 @@ func getObs(db *sql.DB, request *datastore.GetObsRequest, obs *[]*datastore.Meta
 		var (
 			tsID            int64
 			gpID            int64
-			id              string
+			obsTimeInstant0 time.Time
 			pubTime0        time.Time
+			id              string
 			dataID          string
 			history         string
 			metadataID      string
-			obsTimeInstant0 time.Time
 			processingLevel string
 			value           string
 			point           postgis.PointS
 		)
-		if err := rows.Scan(&tsID, &gpID, &id, &pubTime0, &dataID, &history, &metadataID,
-			&obsTimeInstant0, &processingLevel, &value, &point); err != nil {
+		if err := rows.Scan(&tsID, &gpID, &obsTimeInstant0, &pubTime0, &id, &dataID, &history, &metadataID,
+			&processingLevel, &value, &point); err != nil {
 			return fmt.Errorf("rows.Scan() failed: %v", err)
 		}
 
@@ -330,16 +330,17 @@ func getObs(db *sql.DB, request *datastore.GetObsRequest, obs *[]*datastore.Meta
 			Geometry: &datastore.ObsMetadata_GeoPoint{
 				GeoPoint: &datastore.Point{
 					Lon: point.X,
-					Lat: point.Y},
+					Lat: point.Y,
+				},
 			},
-			Id: id,
-			Pubtime:    timestamppb.New(pubTime0),
-			DataId:     dataID,
-			History:    history,
-			MetadataId: metadataID,
 			Obstime: &datastore.ObsMetadata_ObstimeInstant{
 				ObstimeInstant: timestamppb.New(obsTimeInstant0),
 			},
+			Pubtime:    timestamppb.New(pubTime0),
+			Id: id,
+			DataId:     dataID,
+			History:    history,
+			MetadataId: metadataID,
 			ProcessingLevel: processingLevel,
 			Value:           value,
 		}
