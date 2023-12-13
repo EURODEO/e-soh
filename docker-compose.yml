@@ -25,7 +25,7 @@ services:
       start_period: 30s   # Failures in 30 seconds do not mark container as unhealthy
 
   migrate:
-    image: migrate/migrate
+    image: migrate/migrate:4
     volumes:
       - ./migrate/data/migrations:/data/migrations
     command: ["-path", "/data/migrations", "-database", "postgres://postgres:mysecretpassword@db:5432/data?sslmode=disable", "up"]
