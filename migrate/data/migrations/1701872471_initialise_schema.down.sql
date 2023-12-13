@@ -2,5 +2,4 @@
 -- DROP TABLE IF EXISTS observation;
 -- DROP TABLE IF EXISTS geo_point;
 -- DROP TABLE IF EXISTS time_series;
--- DROP USER IF EXISTS db_user;
 -- DROP EXTENSION IF EXISTS postgis;

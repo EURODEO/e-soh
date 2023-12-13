@@ -72,9 +72,3 @@ CREATE TABLE observation (
 
 	PRIMARY KEY (ts_id, obstime_instant)
 );
-
-CREATE USER db_user WITH NOSUPERUSER NOCREATEDB NOCREATEROLE PASSWORD 'mysecretpassword';
-ALTER ROLE db_user SET search_path TO public;
-GRANT USAGE ON SCHEMA public TO db_user;
-GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO db_user;
-GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public to db_user;
