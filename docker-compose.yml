@@ -10,18 +10,28 @@ services:
     volumes:
 #      - ts-data:/home/postgres/pgdata/data # for timescale image
       - ts-data:/var/lib/postgresql/data # for postgres image
-      - ./datastore/ts-init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./database/healthcheck_postgis_uptime.sh:/healthcheck_postgis_uptime.sh # for the healthcheck
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=mysecretpassword
       - POSTGRES_DB=data
     restart: on-failure
     healthcheck:
-      test: [ "CMD-SHELL", "psql postgresql://postgres:mysecretpassword@localhost/data -c \"SELECT COUNT(*) from OBSERVATION\"" ]
+      # HACK Due to the installation of Postgis extension the database is restarted, the healthcheck checks if the database is up for longer than specified time.
+      test: ["CMD-SHELL", "/healthcheck_postgis_uptime.sh postgresql://postgres:mysecretpassword@localhost/data 10 second"]
       interval: 5s
       timeout: 1s
       retries: 3
       start_period: 30s   # Failures in 30 seconds do not mark container as unhealthy
+
+  migrate:
+    image: migrate/migrate:4
+    volumes:
+      - ./migrate/data/migrations:/data/migrations
+    command: ["-path", "/data/migrations", "-database", "postgres://postgres:mysecretpassword@db:5432/data?sslmode=disable", "up"]
+    depends_on:
+      db:
+        condition: service_healthy
 
   store:
     build:
@@ -45,11 +55,10 @@ services:
       retries: 3
       start_period: 30s   # Failures in 30 seconds do not mark container as unhealthy
     depends_on:
-      db:
-        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
 
   api:
-    hostname: api
     build:
       context: .  # TODO: Needed to get proto file. Find a better solution
       dockerfile: api/Dockerfile

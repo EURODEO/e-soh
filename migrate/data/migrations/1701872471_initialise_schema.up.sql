@@ -47,14 +47,6 @@ CREATE TABLE geo_point (
 
 CREATE INDEX geo_point_idx ON geo_point USING GIST(point);
 
--- not supported yet
--- CREATE TABLE geo_polygon (
--- 	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
--- 	polygon GEOGRAPHY(Polygon, 4326) NOT NULL
--- )
---
--- CREATE INDEX geo_polygon_idx ON geo_polygon USING GIST(polygon);
-
 CREATE TABLE observation (
 	ts_id BIGINT NOT NULL REFERENCES time_series(id) ON DELETE CASCADE,
 
@@ -64,7 +56,6 @@ CREATE TABLE observation (
 	-- Refer to geometry via a foreign key to ensure that each distinct geometry is
 	-- stored only once in the geo_* table, thus speeding up geo search.
 	geo_point_id BIGINT NOT NULL REFERENCES geo_point(id) ON DELETE CASCADE,
-	-- geo_polygon_id integer NOT NULL REFERENCES geo_polygon(id) ON DELETE CASCADE, -- not supported yet
 
 	pubtime timestamptz NOT NULL, -- required
 	data_id TEXT NOT NULL, -- required
@@ -72,18 +63,8 @@ CREATE TABLE observation (
 	metadata_id TEXT NOT NULL, -- required
 
 	-- --- BEGIN for now support only a single instant for obs time ---------
-	obstime_instant timestamptz, -- NOT NULL, but implied by being part of PK
+	obstime_instant timestamptz, -- NOT NULL, but implied by being part of PK; obs time variant 1: single instant
 	-- --- END for now support only a single instant for obs time ---------
-
-	-- --- BEGIN support both single instant and interval for obs time ---------
-	-- obstime_instant timestamptz, -- obs time variant 1: single instant
-	-- obstime_start timestamptz,   -- obs time variant 2: interval
-	-- obstime_end timestamptz,
-	-- CHECK ( -- ensure exactly one of [1] obstime_instant and [2] obstime_start/-end is defined
-	-- 	((obstime_instant IS NOT NULL) AND (obstime_start IS NULL) AND (obstime_end IS NULL)) OR
-	-- 	((obstime_instant IS NULL) AND (obstime_start IS NOT NULL) AND (obstime_end IS NOT NULL))
-	-- ),
-	-- --- END support both single instant and interval for obs time ---------
 
 	processing_level TEXT,
 	value TEXT NOT NULL, -- obs value
