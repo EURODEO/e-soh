@@ -22,10 +22,10 @@ var (
 
 func init() {
 	tspb2go = map[string]string{}
-	for _, f := range reflect.VisibleFields(reflect.TypeOf(datastore.TSMetadata{})) {
-		if f.IsExported() && (f.Type.Kind() == reflect.String) {
+	for _, field := range reflect.VisibleFields(reflect.TypeOf(datastore.TSMetadata{})) {
+		if field.IsExported() && (field.Type.Kind() == reflect.String) {
 			// TODO: support non-string types, like the 'links' attribute
-			goName := f.Name
+			goName := field.Name
 			pbName := common.ToSnakeCase(goName)
 			tspb2go[pbName] = goName
 		}
