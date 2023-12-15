@@ -44,34 +44,7 @@ func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, error) {
 
 	colVals := []interface{}{}
 
-	// main section
-
-	colVals = []interface{}{
-		tsMdata.GetVersion(),
-		tsMdata.GetType(),
-		tsMdata.GetTitle(),
-		tsMdata.GetSummary(),
-		tsMdata.GetKeywords(),
-		tsMdata.GetKeywordsVocabulary(),
-		tsMdata.GetLicense(),
-		tsMdata.GetConventions(),
-		tsMdata.GetNamingAuthority(),
-		tsMdata.GetCreatorType(),
-		tsMdata.GetCreatorName(),
-		tsMdata.GetCreatorEmail(),
-		tsMdata.GetCreatorUrl(),
-		tsMdata.GetInstitution(),
-		tsMdata.GetProject(),
-		tsMdata.GetSource(),
-		tsMdata.GetPlatform(),
-		tsMdata.GetPlatformVocabulary(),
-		tsMdata.GetStandardName(),
-		tsMdata.GetUnit(),
-		tsMdata.GetInstrument(),
-		tsMdata.GetInstrumentVocabulary(),
-	}
-
-	// links section
+	// links section (aka. non-string metadata ...)
 
 	getLinkVals := func(key string) ([]string, error) {
 		linkVals := []string{}
@@ -103,6 +76,35 @@ func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, error) {
 			colVals = append(colVals, pq.StringArray(linkVals))
 		}
 	}
+
+	// main section (aka. string metadata ...)
+
+	// ### TODO: modify to use reflection instead of explicit field referrals
+
+	colVals = append(colVals, []interface{}{
+		tsMdata.GetVersion(),
+		tsMdata.GetType(),
+		tsMdata.GetTitle(),
+		tsMdata.GetSummary(),
+		tsMdata.GetKeywords(),
+		tsMdata.GetKeywordsVocabulary(),
+		tsMdata.GetLicense(),
+		tsMdata.GetConventions(),
+		tsMdata.GetNamingAuthority(),
+		tsMdata.GetCreatorType(),
+		tsMdata.GetCreatorName(),
+		tsMdata.GetCreatorEmail(),
+		tsMdata.GetCreatorUrl(),
+		tsMdata.GetInstitution(),
+		tsMdata.GetProject(),
+		tsMdata.GetSource(),
+		tsMdata.GetPlatform(),
+		tsMdata.GetPlatformVocabulary(),
+		tsMdata.GetStandardName(),
+		tsMdata.GetUnit(),
+		tsMdata.GetInstrument(),
+		tsMdata.GetInstrumentVocabulary(),
+	}...)
 
 	return colVals, nil
 }
@@ -155,6 +157,8 @@ func getTimeSeriesID(
 		cols[0],
 		cols[0],
 	)
+	fmt.Printf("insertCmd: %s; len(cols): %d; len(phs): %d\n",
+		insertCmd, len(cols), len(createPlaceholders(formats)))
 
 	_, err = tx.Exec(insertCmd, colVals...)
 	if err != nil {

@@ -92,8 +92,15 @@ func NewPostgreSQL() (*PostgreSQL, error) {
 
 // getTSMdataCols returns time series metadata column names.
 func getTSMdataCols() []string {
+	// ### TODO: modify to use reflection instead of explicit field referrals
 	return []string{
-		// main section
+		// links section (aka. non-string metadata ...)
+		"link_href",
+		"link_rel",
+		"link_type",
+		"link_hreflang",
+		"link_title",
+		// main section (aka. string metadata ...)
 		"version",
 		"type",
 		"title",
@@ -116,12 +123,6 @@ func getTSMdataCols() []string {
 		"unit",
 		"instrument",
 		"instrument_vocabulary",
-		// links section
-		"link_href",
-		"link_rel",
-		"link_type",
-		"link_hreflang",
-		"link_title",
 	}
 }
 
