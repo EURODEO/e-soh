@@ -44,7 +44,7 @@ func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, error) {
 
 	colVals := []interface{}{}
 
-	// links section (aka. non-string metadata ...)
+	// --- BEGIN non-string metadata ---------------------------
 
 	getLinkVals := func(key string) ([]string, error) {
 		linkVals := []string{}
@@ -77,7 +77,9 @@ func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, error) {
 		}
 	}
 
-	// main section (aka. string metadata ...)
+	// --- END non-string metadata ---------------------------
+
+	// --- BEGIN string metadata ---------------------------
 
 	// ### TODO: modify to use reflection instead of explicit field referrals
 
@@ -105,6 +107,8 @@ func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, error) {
 		tsMdata.GetInstrument(),
 		tsMdata.GetInstrumentVocabulary(),
 	}...)
+
+	// --- END string metadata ---------------------------
 
 	return colVals, nil
 }
