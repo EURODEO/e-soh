@@ -92,41 +92,20 @@ func NewPostgreSQL() (*PostgreSQL, error) {
 
 // getTSMdataCols returns time series metadata column names.
 func getTSMdataCols() []string {
-	// ### TODO: modify to use reflection instead of explicit field referrals
-	return []string{
-		// --- BEGIN non-string metadata ---------------------------
+
+	// initialize cols with non-string metadata
+	cols := []string{
 		"link_href",
 		"link_rel",
 		"link_type",
 		"link_hreflang",
 		"link_title",
-		// --- END non-string metadata ---------------------------
-
-		// --- BEGIN string metadata ---------------------------
-		"version",
-		"type",
-		"title",
-		"summary",
-		"keywords",
-		"keywords_vocabulary",
-		"license",
-		"conventions",
-		"naming_authority",
-		"creator_type",
-		"creator_name",
-		"creator_email",
-		"creator_url",
-		"institution",
-		"project",
-		"source",
-		"platform",
-		"platform_vocabulary",
-		"standard_name",
-		"unit",
-		"instrument",
-		"instrument_vocabulary",
-		// --- END string metadata ---------------------------
 	}
+
+	// complete cols with string metadata
+	cols = append(cols, tsStringMdataPBNames...)
+
+	return cols
 }
 
 // createPlaceholders returns the list of n placeholder strings for

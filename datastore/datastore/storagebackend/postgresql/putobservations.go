@@ -81,7 +81,7 @@ func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, error) {
 
 	// --- BEGIN string metadata ---------------------------
 
-	// ### TODO: modify to use reflection instead of explicit field referrals
+	// ### TODO: modify to use reflection instead of explicit field referencing
 
 	colVals = append(colVals, []interface{}{
 		tsMdata.GetVersion(),
