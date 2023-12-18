@@ -167,7 +167,6 @@ func getTSMetadata(db *sql.DB, tsIDs []string, tsMdatas map[int64]*datastore.TSM
 		strings.Join(getTSMdataCols(), ","),
 		createSetFilter("id", tsIDs),
 	)
-	fmt.Printf("getTSMetadata(): query: %s\n", query)
 
 	rows, err := db.Query(query)
 	if err != nil {
