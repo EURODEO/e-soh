@@ -58,7 +58,9 @@ func init() {
 	}
 }
 
-// addStringMdata ... (TODO: document!)
+// addStringMdata assigns the values of colVals to the corresponding struct fields in
+// stringMdataGoNames (value i corresponds to field i ...). The struct is represented by rv.
+// Returns nil upon success, otherwise error.
 func addStringMdata(rv reflect.Value, stringMdataGoNames []string, colVals []interface{}) error {
 	for i, goName := range stringMdataGoNames {
 		val, ok := colVals[i].(string)
@@ -100,9 +102,10 @@ func addWhereCondMatchAnyPattern(
 	*whereExpr = append(*whereExpr, fmt.Sprintf("(%s)", strings.Join(whereExprOR, " OR ")))
 }
 
-// scanTSRow ... (TODO: document!)
+// scanTSRow scans all columns from the current result row in rows and converts to a TSMetadata
+// object.
+// Returns (TSMetadata object, time series ID, nil) upon success, otherwise (..., ..., error).
 func scanTSRow(rows *sql.Rows) (*datastore.TSMetadata, int64, error) {
-
 	var (
 		tsID int64
 		linkHref pq.StringArray
@@ -112,7 +115,7 @@ func scanTSRow(rows *sql.Rows) (*datastore.TSMetadata, int64, error) {
 		linkTitle pq.StringArray
 	)
 
-	// initialize colValPtrs
+	// initialize colValPtrs with non-string metadata
 	colValPtrs := []interface{}{
 		&tsID,
 		&linkHref,
@@ -161,7 +164,6 @@ func scanTSRow(rows *sql.Rows) (*datastore.TSMetadata, int64, error) {
 // tsIDs. The keys of tsMdatas are the time series IDs.
 // Returns nil upon success, otherwise error
 func getTSMetadata(db *sql.DB, tsIDs []string, tsMdatas map[int64]*datastore.TSMetadata) error {
-
 	query := fmt.Sprintf(
 		`SELECT id, %s FROM time_series WHERE %s`,
 		strings.Join(getTSMdataCols(), ","),
@@ -218,7 +220,7 @@ type stringFilterInfo struct {
 	colName  string
 	patterns []string
 }
-// TODO: add filter infos for other types than string
+// TODO: add filter infos for non-string types
 
 // getMdataFilter derives from stringFilterInfos the expression used in a WHERE clause for
 // "match any" filtering on a set of attributes.
@@ -253,6 +255,9 @@ func getMdataFilter(stringFilterInfos []stringFilterInfo, phVals *[]interface{})
 
 // getGeoFilter derives from 'inside' the expression used in a WHERE clause for keeping
 // observations inside this polygon.
+//
+// Values to be used for query placeholders are appended to phVals.
+//
 // Returns expression.
 func getGeoFilter(inside *datastore.Polygon, phVals *[]interface{}) (string, error) {
 	whereExpr := "TRUE" // by default, don't filter
@@ -297,7 +302,13 @@ type stringFieldInfo struct {
 	methodName string
 }
 
-// getStringMdataFilter ... (TODO: document)
+// getStringMdataFilter creates from 'request' the string metadata filter used for querying
+// observations.
+//
+// Values to be used for query placeholders are appended to phVals.
+//
+// Returns upon success (string metadata filter used in a 'WHERE ... AND ...' clause (possibly
+// just 'TRUE'), nil), otherwise (..., error).
 func getStringMdataFilter(
 	request *datastore.GetObsRequest, phVals *[]interface{}) (string, error) {
 
@@ -343,13 +354,16 @@ func getStringMdataFilter(
 	return getMdataFilter(stringFilterInfos, phVals), nil
 }
 
-// createObsQueryVals creates values used for querying observations.
-// Upon success returns:
-// - time filter used in 'WHERE ... AND ...' clause (possibly just 'TRUE')
+// createObsQueryVals creates from 'request' values used for querying observations.
+//
+// Values to be used for query placeholders are appended to phVals.
+//
+// Upon success the function returns four values:
+// - time filter used in a 'WHERE ... AND ...' clause (possibly just 'TRUE')
 // - geo filter ... ditto
 // - string metadata ... ditto
-// - nil
-// Upon failure returns ..., ..., ..., error
+// - nil,
+// otherwise (..., ..., ..., error).
 func createObsQueryVals(
 	request *datastore.GetObsRequest, phVals *[]interface{}) (string, string, string, error) {
 
@@ -368,9 +382,10 @@ func createObsQueryVals(
 	return timeFilter, geoFilter, stringMdataFilter, nil
 }
 
-// scanObsRow ... (TODO: document!)
+// scanObsRow scans all columns from the current result row in rows and converts to an ObsMetadata
+// object.
+// Returns (ObsMetadata object, time series ID, nil) upon success, otherwise (..., ..., error).
 func scanObsRow(rows *sql.Rows) (*datastore.ObsMetadata, int64, error) {
-
 	var (
 		tsID            int64
 		obsTimeInstant0 time.Time
@@ -379,7 +394,7 @@ func scanObsRow(rows *sql.Rows) (*datastore.ObsMetadata, int64, error) {
 		point           postgis.PointS
 	)
 
-	// initialize colValPtrs
+	// initialize colValPtrs with non-string metadata
 	colValPtrs := []interface{}{
 		&tsID,
 		&obsTimeInstant0,
@@ -399,7 +414,7 @@ func scanObsRow(rows *sql.Rows) (*datastore.ObsMetadata, int64, error) {
 		return nil, -1, fmt.Errorf("rows.Scan() failed: %v", err)
 	}
 
-	// initialize obsMdata with obs value and non-string metadata
+	// initialize obsMdata with non-string metadata and obs value
 	obsMdata := datastore.ObsMetadata{
 		Geometry: &datastore.ObsMetadata_GeoPoint{
 			GeoPoint: &datastore.Point{

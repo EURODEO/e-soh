@@ -42,7 +42,6 @@ func initPutObsLimit() {
 // getTSColVals gets the time series metadata column values from tsMdata.
 // Returns (column values, nil) upon success, otherwise (..., error).
 func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, error) {
-
 	colVals := []interface{}{}
 
 	// --- BEGIN non-string metadata ---------------------------

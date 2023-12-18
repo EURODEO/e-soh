@@ -75,9 +75,9 @@ func validateAttrs(pbNames []string) error {
 	return nil
 }
 
-// getTSMdata returns a TSMetadata object initialized from colVals.
+// getTSMdata creates a TSMetadata object initialized from colVals.
+// Returns (TSMetadata object, nil) upon success, otherwise (..., error).
 func getTSMdata(colVals map[string]interface{}) (*datastore.TSMetadata, error) {
-
 	tsMData := datastore.TSMetadata{}
 	tp := reflect.ValueOf(&tsMData)
 
@@ -117,12 +117,10 @@ func getTSMdata(colVals map[string]interface{}) (*datastore.TSMetadata, error) {
 	return &tsMData, nil
 }
 
-// scanTsMdata scans the current row in rows and converts the result into a TSMetadata object.
-// It is assumed that cols contains exactly the columns (names, types, order) that were used for
-// the query that resulted in rows.
+// scanTsRow scans columns cols from the current result row in rows and converts to a TSMetadata
+// object.
 // Returns (TSMetadata object, nil) upon success, otherwise (..., error).
-func scanTsMdata(rows *sql.Rows, cols []string) (*datastore.TSMetadata, error) {
-
+func scanTsRow(rows *sql.Rows, cols []string) (*datastore.TSMetadata, error) {
 	colVals0 := make([]interface{}, len(cols))   // column values
 	colValPtrs := make([]interface{}, len(cols)) // pointers to column values
 	for i := range colVals0 {
@@ -238,9 +236,9 @@ func getTSAttrGroupsIncInstances(
 	currInstances := []*datastore.TSMetadata{} // initial current instance set
 	for rows.Next() {
 		// extract tsMdata from current result row
-		tsMdata, err := scanTsMdata(rows, allCols)
+		tsMdata, err := scanTsRow(rows, allCols)
 		if err != nil {
-			return nil, fmt.Errorf("scanTsMdata() failed: %v", err)
+			return nil, fmt.Errorf("scanTsRow() failed: %v", err)
 		}
 
 		if len(currInstances) > 0 { // check if we should create a new current instance set
@@ -304,13 +302,12 @@ func getTSAttrGroupsComboOnly(db *sql.DB, cols []string) ([]*datastore.TSMdataGr
 	// aggregate rows into groups
 	for rows.Next() {
 		// extract tsMdata from current result row
-		tsMdata, err := scanTsMdata(rows, cols)
+		tsMdata, err := scanTsRow(rows, cols)
 		if err != nil {
-			return nil, fmt.Errorf("scanTsMdata() failed: %v", err)
+			return nil, fmt.Errorf("scanTsRow() failed: %v", err)
 		}
 
-		// add new group with tsMData as the combo (and leaving the instances
-		// array unset)
+		// add new group with tsMData as the combo (and leaving the Instances array unset)
 		groups = append(groups, &datastore.TSMdataGroup{Combo: tsMdata})
 	}
 
