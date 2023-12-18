@@ -82,35 +82,18 @@ func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, error) {
 
 	// --- BEGIN string metadata ---------------------------
 
-	type stringFieldInfo struct {
-		field reflect.StructField
-		method reflect.Value
-		methodName string
-	}
-
-	stringFieldInfos := []stringFieldInfo{}
-
 	rv := reflect.ValueOf(tsMdata)
 	for _, field := range reflect.VisibleFields(reflect.TypeOf(datastore.TSMetadata{})) {
-		mtdName := fmt.Sprintf("Get%s", field.Name)
-		mtd := rv.MethodByName(mtdName)
-		if field.IsExported() && (field.Type.Kind() == reflect.String) && (mtd.IsValid()) {
-			stringFieldInfos = append(stringFieldInfos, stringFieldInfo{
-				field: field,
-				method: mtd,
-				methodName: mtdName,
-			})
+		methodName := fmt.Sprintf("Get%s", field.Name)
+		method := rv.MethodByName(methodName)
+		if field.IsExported() && (field.Type.Kind() == reflect.String) && (method.IsValid()) {
+			val, ok := method.Call([]reflect.Value{})[0].Interface().(string)
+			if !ok {
+				return nil, fmt.Errorf(
+					"method.Call() failed for method %s; failed to return string", methodName)
+			}
+			colVals = append(colVals, val)
 		}
-	}
-
-	for _, sfInfo := range stringFieldInfos {
-		val, ok := sfInfo.method.Call([]reflect.Value{})[0].Interface().(string)
-		if !ok {
-			return nil, fmt.Errorf(
-				"sfInfo.method.Call() failed for method %s; failed to return string",
-				sfInfo.methodName)
-		}
-		colVals = append(colVals, val)
 	}
 
 	// --- END string metadata ---------------------------
