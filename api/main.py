@@ -266,7 +266,7 @@ def get_data_area(
     assert poly.geom_type == "Polygon"
     range = get_datetime_range(datetime)
     get_obs_request = dstore.GetObsRequest(
-        instruments=list(map(str.strip, parameter_name.split(","))),
+        instrument=list(map(str.strip, parameter_name.split(","))),
         inside=dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]),
         interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
