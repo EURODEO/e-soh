@@ -29,7 +29,7 @@ var (
 	// - Protobuf names are snake case (aaa_bbb) whereas Go names are camel case (aaaBbb or AaaBbb).
 
 	obsStringMdataGoNames []string // Go names for observation metadata of type string
-	obsStringMdataCols []string // column names qualified with table name 'observation'
+	obsStringMdataCols    []string // column names qualified with table name 'observation'
 )
 
 func init() {
@@ -48,7 +48,7 @@ func init() {
 	obsStringMdataCols = []string{}
 	for _, field := range reflect.VisibleFields(reflect.TypeOf(datastore.ObsMetadata{})) {
 		if field.IsExported() && (field.Type.Kind() == reflect.String) &&
-		(strings.ToLower(field.Name) != "value") { // (obs value not considered metadata here)
+			(strings.ToLower(field.Name) != "value") { // (obs value not considered metadata here)
 			goName := field.Name
 			pbName := common.ToSnakeCase(goName)
 			obspb2go[pbName] = goName
@@ -107,12 +107,12 @@ func addWhereCondMatchAnyPattern(
 // Returns (TSMetadata object, time series ID, nil) upon success, otherwise (..., ..., error).
 func scanTSRow(rows *sql.Rows) (*datastore.TSMetadata, int64, error) {
 	var (
-		tsID int64
-		linkHref pq.StringArray
-		linkRel  pq.StringArray
-		linkType pq.StringArray
+		tsID         int64
+		linkHref     pq.StringArray
+		linkRel      pq.StringArray
+		linkType     pq.StringArray
 		linkHrefLang pq.StringArray
-		linkTitle pq.StringArray
+		linkTitle    pq.StringArray
 	)
 
 	// initialize colValPtrs with non-string metadata
@@ -220,6 +220,7 @@ type stringFilterInfo struct {
 	colName  string
 	patterns []string
 }
+
 // TODO: add filter info for non-string types
 
 // getMdataFilter derives from stringFilterInfos the expression used in a WHERE clause for
@@ -296,9 +297,9 @@ func getGeoFilter(inside *datastore.Polygon, phVals *[]interface{}) (string, err
 }
 
 type stringFieldInfo struct {
-	field reflect.StructField
-	tableName string
-	method reflect.Value
+	field      reflect.StructField
+	tableName  string
+	method     reflect.Value
 	methodName string
 }
 
@@ -324,9 +325,9 @@ func getStringMdataFilter(
 			mtd := rv.MethodByName(mtdName)
 			if field.IsExported() && (field.Type.Kind() == reflect.String) && (mtd.IsValid()) {
 				stringFieldInfos = append(stringFieldInfos, stringFieldInfo{
-					field: field,
-					tableName: tableName,
-					method: mtd,
+					field:      field,
+					tableName:  tableName,
+					method:     mtd,
 					methodName: mtdName,
 				})
 			}
@@ -426,7 +427,7 @@ func scanObsRow(rows *sql.Rows) (*datastore.ObsMetadata, int64, error) {
 			ObstimeInstant: timestamppb.New(obsTimeInstant0),
 		},
 		Pubtime: timestamppb.New(pubTime0),
-		Value: value,
+		Value:   value,
 	}
 
 	// complete obsMdata with string metadata (handleable with reflection)
