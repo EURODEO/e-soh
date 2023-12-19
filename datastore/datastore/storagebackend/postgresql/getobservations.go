@@ -70,7 +70,7 @@ func addStringMdata(rv reflect.Value, stringMdataGoNames []string, colVals []int
 
 		field := rv.Elem().FieldByName(goName)
 
-		// NOTE: we assume the following assignemnt will never panic, hence we don't do
+		// NOTE: we assume the following assignment will never panic, hence we don't do
 		// any pre-validation of field
 		field.SetString(val)
 	}
