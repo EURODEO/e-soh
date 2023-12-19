@@ -79,7 +79,7 @@ func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, error) {
 
 	// --- END non-string metadata ---------------------------
 
-	// --- BEGIN string metadata ---------------------------
+	// --- BEGIN string metadata (handleable with reflection) ---------------------------
 
 	rv := reflect.ValueOf(tsMdata)
 	for _, field := range reflect.VisibleFields(reflect.TypeOf(datastore.TSMetadata{})) {

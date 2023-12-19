@@ -76,7 +76,7 @@ message TSMetadata {
   repeated Link links = 1;
   // --- END non-string metadata -----------------
 
-  // --- BEGIN string metadata -----------------
+  // --- BEGIN string metadata (handleable with reflection) -----------------
   string version = 2;
   string type = 3;
   string title = 4;
@@ -115,7 +115,7 @@ message ObsMetadata {
   google.protobuf.Timestamp pubtime = 5;
   // --- END non-string metadata -----------------
 
-  // --- BEGIN string metadata -----------------
+  // --- BEGIN string metadata (handleable with reflection) -----------------
   string id = 6;
   string data_id = 7 [json_name = "data_id"];
   string history = 8;
@@ -152,14 +152,29 @@ message PutObsResponse {
 //---------------------------------------------------------------------------
 
 message GetObsRequest {
-  // --- BEGIN special handling of temporal and spatial search -----------------
-  TimeInterval interval = 1; // only return observations in this time range
-  Polygon inside = 2; // if specified, only return observations in this area
-  // --- END special handling of temporal and spatial search -----------------
+  // --- BEGIN non-string metadata -------------------------
 
-  // --- BEGIN general handling of strings; field names must correspond exactly with string field names in TSMetadata or ObsMetadata -----
-  // - if the field F is specified (where F is for example 'platform'), only observations matching at least one these values for F will be returned
-  // - if the field F is not specified, filtering on F is effectively disabled
+  // temporal search
+  TimeInterval interval = 1; // only return observations in this time range
+
+  // spatial search
+  Polygon inside = 2; // if specified, only return observations in this area
+
+  // search wrt. TSMetadata.links
+  // TODO - needs special handling
+
+  // --- END non-string metadata -------------------------
+
+
+  // --- BEGIN string metadata (handleable with reflection) -------------------------
+  //
+  //   - field names must correspond exactly with string field names in TSMetadata or ObsMetadata
+  //
+  //   - if the field F is specified (where F is for example 'platform'), only observations
+  //     matching at least one these values for F will be returned
+  //
+  //   - if the field F is not specified, filtering on F is effectively disabled
+
   repeated string version = 3;
   repeated string type = 4;
   repeated string title = 5;
@@ -187,11 +202,7 @@ message GetObsRequest {
   repeated string history = 27;
   repeated string metadata_id = 28 [json_name = "metadata_id"];
   repeated string processing_level = 29 [json_name = "processing_level"];
-  // --- END general handling of strings -----
-
-  // --- BEGIN special handling of 'repeated Link' ------
-  // TODO
-  // --- END special handling of 'repeated Link' ------
+  // --- END string metadata -------------------------------------
 }
 
 message GetObsResponse {

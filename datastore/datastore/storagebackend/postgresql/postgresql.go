@@ -102,7 +102,7 @@ func getTSMdataCols() []string {
 		"link_title",
 	}
 
-	// complete cols with string metadata
+	// complete cols with string metadata (handleable with reflection)
 	cols = append(cols, tsStringMdataPBNames...)
 
 	return cols

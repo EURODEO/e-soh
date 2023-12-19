@@ -125,7 +125,7 @@ func scanTSRow(rows *sql.Rows) (*datastore.TSMetadata, int64, error) {
 		&linkTitle,
 	}
 
-	// complete colValPtrs with string metadata
+	// complete colValPtrs with string metadata (handleable with reflection)
 	colVals0 := make([]interface{}, len(tsStringMdataGoNames))
 	for i := range tsStringMdataGoNames {
 		colValPtrs = append(colValPtrs, &colVals0[i])
@@ -151,7 +151,7 @@ func scanTSRow(rows *sql.Rows) (*datastore.TSMetadata, int64, error) {
 		Links: links,
 	}
 
-	// complete tsMdata with string metadata
+	// complete tsMdata with string metadata (handleable with reflection)
 	err := addStringMdata(reflect.ValueOf(&tsMdata), tsStringMdataGoNames, colVals0)
 	if err != nil {
 		return nil, -1, fmt.Errorf("addStringMdata() failed: %v", err)
@@ -220,7 +220,7 @@ type stringFilterInfo struct {
 	colName  string
 	patterns []string
 }
-// TODO: add filter infos for non-string types
+// TODO: add filter info for non-string types
 
 // getMdataFilter derives from stringFilterInfos the expression used in a WHERE clause for
 // "match any" filtering on a set of attributes.
@@ -403,7 +403,7 @@ func scanObsRow(rows *sql.Rows) (*datastore.ObsMetadata, int64, error) {
 		&point,
 	}
 
-	// complete colValPtrs with string metadata
+	// complete colValPtrs with string metadata (handleable with reflection)
 	colVals0 := make([]interface{}, len(obsStringMdataGoNames))
 	for i := range obsStringMdataGoNames {
 		colValPtrs = append(colValPtrs, &colVals0[i])
@@ -429,7 +429,7 @@ func scanObsRow(rows *sql.Rows) (*datastore.ObsMetadata, int64, error) {
 		Value: value,
 	}
 
-	// complete obsMdata with string metadata
+	// complete obsMdata with string metadata (handleable with reflection)
 	err := addStringMdata(reflect.ValueOf(&obsMdata), obsStringMdataGoNames, colVals0)
 	if err != nil {
 		return nil, -1, fmt.Errorf("addStringMdata() failed: %v", err)
