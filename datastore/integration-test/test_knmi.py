@@ -20,7 +20,7 @@ def grpc_stub():
 
 
 def test_find_series_single_station_single_parameter(grpc_stub):
-    request = dstore.GetObsRequest(platforms=["06260"], instruments=["rh"])
+    request = dstore.GetObsRequest(platform=["06260"], instrument=["rh"])
     response = grpc_stub.GetObservations(request)
 
     assert len(response.observations) == 1
@@ -30,21 +30,21 @@ def test_find_series_single_station_single_parameter(grpc_stub):
 
 
 def test_find_series_all_stations_single_parameter(grpc_stub):
-    request = dstore.GetObsRequest(instruments=["rh"])
+    request = dstore.GetObsRequest(instrument=["rh"])
     response = grpc_stub.GetObservations(request)
 
     assert len(response.observations) == 46  # Not all station have RH
 
 
 def test_find_series_single_station_all_parameters(grpc_stub):
-    request = dstore.GetObsRequest(platforms=["06260"])
+    request = dstore.GetObsRequest(platform=["06260"])
     response = grpc_stub.GetObservations(request)
 
     assert len(response.observations) == 42  # Station 06260 doesn't have all parameters
 
 
 def test_get_values_single_station_single_parameter(grpc_stub):
-    ts_request = dstore.GetObsRequest(platforms=["06260"], instruments=["rh"])
+    ts_request = dstore.GetObsRequest(platform=["06260"], instrument=["rh"])
     response = grpc_stub.GetObservations(ts_request)
 
     assert len(response.observations) == 1
@@ -60,7 +60,7 @@ def test_get_values_single_station_single_parameter_one_hour(grpc_stub):
     end_datetime.FromDatetime(datetime(2022, 12, 31, 12))
 
     ts_request = dstore.GetObsRequest(
-        platforms=["06260"], instruments=["rh"], interval=dstore.TimeInterval(start=start_datetime, end=end_datetime)
+        platform=["06260"], instrument=["rh"], interval=dstore.TimeInterval(start=start_datetime, end=end_datetime)
     )
     response = grpc_stub.GetObservations(ts_request)
 
@@ -148,7 +148,7 @@ input_params_polygon = [
 @pytest.mark.parametrize("coords,param_ids,expected_station_ids", input_params_polygon)
 def test_get_observations_with_polygon(grpc_stub, coords, param_ids, expected_station_ids):
     polygon = dstore.Polygon(points=[dstore.Point(lat=lat, lon=lon) for lat, lon in coords])
-    get_obs_request = dstore.GetObsRequest(inside=polygon, instruments=param_ids)
+    get_obs_request = dstore.GetObsRequest(inside=polygon, instrument=param_ids)
     get_obs_response = grpc_stub.GetObservations(get_obs_request)
 
     actual_station_ids = sorted({ts.ts_mdata.platform for ts in get_obs_response.observations})

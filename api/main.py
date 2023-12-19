@@ -192,7 +192,7 @@ def get_locations(bbox: str = Query(..., example="5.0,52.0,6.0,52.1")) -> Featur
     with grpc.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") as channel:
         grpc_stub = dstore_grpc.DatastoreStub(channel)
         ts_request = dstore.GetObsRequest(
-            instruments=["tn"],  # Hack
+            instrument=["tn"],  # Hack
             inside=dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]),
         )
         ts_response = grpc_stub.GetObservations(ts_request)
@@ -227,8 +227,8 @@ def get_data_location_id(
     #  This is just a quick and dirty demo
     range = get_datetime_range(datetime)
     get_obs_request = dstore.GetObsRequest(
-        platforms=[location_id],
-        instruments=list(map(str.strip, parameter_name.split(","))),
+        platform=[location_id],
+        instrument=list(map(str.strip, parameter_name.split(","))),
         interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
     return get_data_for_time_series(get_obs_request)
