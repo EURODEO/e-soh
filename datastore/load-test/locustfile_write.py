@@ -88,8 +88,8 @@ class IngestionGrpcUser(grpc_user.GrpcUser):
         self.index = 0
 
     @task
-    def ingest_data_per_observation(self):
-        # 44 observations per task
+    def ingest_data_per_timestamp_per_station(self):
+        # 44 observations (parameters) per task
         observations = self.dummy_observations_per_station[self.index]["observations"]
         request_messages = dstore.PutObsRequest(observations=observations)
         response = self.stub.PutObservations(request_messages)

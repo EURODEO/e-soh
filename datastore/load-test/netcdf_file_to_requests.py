@@ -114,5 +114,5 @@ def generate_dummy_requests_from_netcdf_per_station_per_timestamp(file_path: Pat
             obs_per_station.append(obs_per_timestamp)
 
     print("Finished creating the time series and observation requests " f"{perf_counter() - create_requests_start}.")
-    print(f"Total number of obs generated per station is {len(obs_per_parameter)*len(obs_per_timestamp)}")
+    print(f"Total number of obs generated per station is {len(obs_per_parameter) * len(obs_per_timestamp)}")
     return obs_per_station
