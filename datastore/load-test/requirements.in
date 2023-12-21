@@ -7,3 +7,4 @@ grpcio-tools~=1.56
 grpc-interceptor~=0.15.3
 locust~=2.16
 shapely~=2.0
+psycopg2~=2.9
