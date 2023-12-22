@@ -74,19 +74,17 @@ def generate_dummy_requests_from_netcdf_per_station_per_timestamp(file_path: Pat
     obs_per_station = []
 
     with xr.open_dataset(file_path, engine="netcdf4", chunks=None) as file:  # chunks=None to disable dask
-        # Slice enough timestamps to generate data for the test to run 15 min
-        time_slice = file.sel(time=slice(datetime(2023, 1, 1, 0, 0, 0), datetime(2023, 1, 1, 1, 1, 0)))
         for station_id, latitude, longitude, height in zip(
-            time_slice["station"].values,
-            time_slice["lat"].values[0],
-            time_slice["lon"].values[0],
-            time_slice["height"].values[0],
+                file["station"].values,
+                file["lat"].values[0],
+                file["lon"].values[0],
+                file["height"].values[0],
         ):
-            station_slice = time_slice.sel(station=station_id)
+            station_slice = file.sel(station=station_id)
             obs_per_timestamp = []
             for time in pd.to_datetime(station_slice["time"].data).to_pydatetime():
-                # Generate 5-sec data from each 10-min observation
-                for i in range(0, 600, 5):  # 5-sec data
+                # Generate 100-sec data from each 10-min observation
+                for i in range(0, 600, 100):  # 100-sec data
                     obs_per_parameter = []
                     generated_timestamp = time + timedelta(seconds=i)
                     ts = Timestamp()
