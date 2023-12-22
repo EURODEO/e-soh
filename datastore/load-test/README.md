@@ -1,11 +1,11 @@
 # Load test datastore
 
-Locust is used for performance testing of the datastore. Tests are done on a Macbook M1 Pro (32gb) with 
+Locust is used for performance testing of the datastore. Tests are done on a Macbook M1 Pro (32gb) with
 Docker settings 2 CPUs and 6 GB memory.
 
 ## Read test
 Two tasks are defined: 1) get_data_for_single_timeserie and 2) get_data_single_station_through_bbox. As it is unclear
-how many users the datastore expect, the test is done for 5 users over 60 seconds in the ci. 
+how many users the datastore expect, the test is done for 5 users over 60 seconds in the ci.
 A example run of the test in the ci is shown in the table below for 60 sec runtime.
 
 |       |       |                |          |                       |                       |

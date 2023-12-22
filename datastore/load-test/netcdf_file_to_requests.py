@@ -1,6 +1,5 @@
 import math
 import uuid
-from datetime import datetime
 from datetime import timedelta
 from pathlib import Path
 from time import perf_counter
@@ -75,10 +74,10 @@ def generate_dummy_requests_from_netcdf_per_station_per_timestamp(file_path: Pat
 
     with xr.open_dataset(file_path, engine="netcdf4", chunks=None) as file:  # chunks=None to disable dask
         for station_id, latitude, longitude, height in zip(
-                file["station"].values,
-                file["lat"].values[0],
-                file["lon"].values[0],
-                file["height"].values[0],
+            file["station"].values,
+            file["lat"].values[0],
+            file["lon"].values[0],
+            file["height"].values[0],
         ):
             station_slice = file.sel(station=station_id)
             obs_per_timestamp = []
