@@ -12,63 +12,63 @@ from netcdf_file_to_requests import generate_dummy_requests_from_netcdf_per_stat
 
 file_path = Path(Path(__file__).parents[1] / "test-data" / "KNMI" / "20230101.nc")
 
-stations = [
-    "06201",
-    "06203",
-    "06204",
-    "06205",
-    "06207",
-    "06208",
-    "06211",
-    "06214",
-    "06215",
-    "06225",
-    "06229",
-    "06235",
-    "06239",
-    "06240",
-    "06242",
-    "06248",
-    "06249",
-    "06251",
-    "06252",
-    "06257",
-    "06258",
-    "06260",
-    "06267",
-    "06269",
-    "06270",
-    "06273",
-    "06275",
-    "06277",
-    "06278",
-    "06279",
-    "06280",
-    "06283",
-    "06286",
-    "06290",
-    "06310",
-    "06317",
-    "06319",
-    "06320",
-    "06321",
-    "06323",
-    "06330",
-    "06340",
-    "06343",
-    "06344",
-    "06348",
-    "06350",
-    "06356",
-    "06370",
-    "06375",
-    "06377",
-    "06380",
-    "06391",
-    "78871",
-    "78873",
-    "78990",
-]
+# stations = [
+#     "06201",
+#     "06203",
+#     "06204",
+#     "06205",
+#     "06207",
+#     "06208",
+#     "06211",
+#     "06214",
+#     "06215",
+#     "06225",
+#     "06229",
+#     "06235",
+#     "06239",
+#     "06240",
+#     "06242",
+#     "06248",
+#     "06249",
+#     "06251",
+#     "06252",
+#     "06257",
+#     "06258",
+#     "06260",
+#     "06267",
+#     "06269",
+#     "06270",
+#     "06273",
+#     "06275",
+#     "06277",
+#     "06278",
+#     "06279",
+#     "06280",
+#     "06283",
+#     "06286",
+#     "06290",
+#     "06310",
+#     "06317",
+#     "06319",
+#     "06320",
+#     "06321",
+#     "06323",
+#     "06330",
+#     "06340",
+#     "06343",
+#     "06344",
+#     "06348",
+#     "06350",
+#     "06356",
+#     "06370",
+#     "06375",
+#     "06377",
+#     "06380",
+#     "06391",
+#     "78871",
+#     "78873",
+#     "78990",
+# ]
 
 
 class IngestionGrpcUser(grpc_user.GrpcUser):
@@ -97,8 +97,8 @@ class IngestionGrpcUser(grpc_user.GrpcUser):
         self.index += 1
 
     @events.test_stop.add_listener
-    def on_test_stop(environment, **kwargs):
-        print("Cleaning up test data")
+    def on_test_stop(environment, **kwargs):  # noqa: N805
+        print("Cleaning up test data...")
         conn = psycopg2.connect(
             database="data", user="postgres", password="mysecretpassword", host="localhost", port="5433"
         )
@@ -109,3 +109,4 @@ class IngestionGrpcUser(grpc_user.GrpcUser):
         # Commit your changes in the database
         conn.commit()
         conn.close()
+        print("Done cleaning up test data")

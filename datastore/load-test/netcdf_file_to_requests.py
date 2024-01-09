@@ -81,7 +81,7 @@ def generate_dummy_requests_from_netcdf_per_station_per_timestamp(file_path: Pat
         ):
             station_slice = file.sel(station=station_id)
             obs_per_timestamp = []
-            for time in pd.to_datetime(station_slice["time"].data).to_pydatetime():
+            for idx, time in enumerate(pd.to_datetime(station_slice["time"].data).to_pydatetime()):
                 # Generate 100-sec data from each 10-min observation
                 for i in range(0, 600, 100):  # 100-sec data
                     obs_per_parameter = []
@@ -90,7 +90,7 @@ def generate_dummy_requests_from_netcdf_per_station_per_timestamp(file_path: Pat
                     ts.FromDatetime(generated_timestamp)
                     for param_id in knmi_parameter_names:
                         param = station_slice[param_id]
-                        obs_value = station_slice[param_id].data[0]
+                        obs_value = station_slice[param_id].data[idx]  # Use 10 minute data value for each
                         obs_value = 0 if math.isnan(obs_value) else obs_value  # dummy data so obs_value doesn't matter
                         ts_mdata = dstore.TSMetadata(
                             platform=station_id,
