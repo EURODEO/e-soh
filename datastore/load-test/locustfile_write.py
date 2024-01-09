@@ -76,7 +76,7 @@ class IngestionGrpcUser(grpc_user.GrpcUser):
     stub_class = dstore_grpc.DatastoreStub
     wait_time = between(1.5, 2.5)
     user_nr = 0
-    dummy_observations_all_stations = generate_dummy_requests_from_netcdf_per_station_per_timestamp(file_path)
+    dummy_observations_all_stations = generate_dummy_requests_from_netcdf_per_station_per_timestamp(file_path, False)
     weight = 7
 
     def on_start(self):
@@ -84,6 +84,9 @@ class IngestionGrpcUser(grpc_user.GrpcUser):
         self.dummy_observations_per_station = IngestionGrpcUser.dummy_observations_all_stations[
             IngestionGrpcUser.user_nr
         ]
+        print(f"Number of messages to send: {len(self.dummy_observations_per_station)}")
+        print(f'Number of observations in first: {len(self.dummy_observations_per_station[0]["observations"])}')
+        print(f'Number of observations in last: {len(self.dummy_observations_per_station[-1]["observations"])}')
         IngestionGrpcUser.user_nr += 1
         self.index = 0
 

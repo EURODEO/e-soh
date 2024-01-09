@@ -67,7 +67,9 @@ def timerange(start_time, end_time, interval_minutes):
         current_time += timedelta(minutes=interval_minutes)
 
 
-def generate_dummy_requests_from_netcdf_per_station_per_timestamp(file_path: Path | str) -> Tuple[List, List]:
+def generate_dummy_requests_from_netcdf_per_station_per_timestamp(
+    file_path: Path | str, per_variable: bool = False
+) -> Tuple[List, List]:
     print("Starting with creating the time series and observations requests.")
     create_requests_start = perf_counter()
     obs_per_station = []
@@ -90,7 +92,7 @@ def generate_dummy_requests_from_netcdf_per_station_per_timestamp(file_path: Pat
                     ts.FromDatetime(generated_timestamp)
                     for param_id in knmi_parameter_names:
                         param = station_slice[param_id]
-                        obs_value = station_slice[param_id].data[idx]  # Use 10 minute data value for each
+                        obs_value = station_slice[param_id].data[idx]  # Use 10-minute data value for each
                         obs_value = 0 if math.isnan(obs_value) else obs_value  # dummy data so obs_value doesn't matter
                         ts_mdata = dstore.TSMetadata(
                             platform=station_id,
@@ -107,7 +109,12 @@ def generate_dummy_requests_from_netcdf_per_station_per_timestamp(file_path: Pat
                         )
                         observation = dstore.Metadata1(ts_mdata=ts_mdata, obs_mdata=obs_mdata)
                         obs_per_parameter.append(observation)
-                    obs_per_timestamp.append({"time": generated_timestamp, "observations": obs_per_parameter})
+                        if per_variable:
+                            obs_per_timestamp.append({"time": generated_timestamp, "observations": obs_per_parameter})
+                            obs_per_parameter = []
+
+                    if not per_variable:
+                        obs_per_timestamp.append({"time": generated_timestamp, "observations": obs_per_parameter})
             obs_per_station.append(obs_per_timestamp)
 
     print("Finished creating the time series and observation requests " f"{perf_counter() - create_requests_start}.")
