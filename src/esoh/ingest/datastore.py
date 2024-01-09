@@ -145,7 +145,6 @@ class datastore_connection():
         except grpc.RpcError as e:
             logger.critical(str(e))
             pass
-            raise
 
     def ingest_list(self, msg_list: list) -> None:
         for i in msg_list:
