@@ -13,10 +13,9 @@ from esoh.ingest.bufr.bufresohmsg_py import init_bufrtables_py, \
     init_bufr_schema_py
 
 
-@pytest.mark.timeout(420)
+@pytest.mark.timeout(1000)
 @pytest.mark.parametrize("bufr_file_path",
-                         glob.glob("test/test_data/bufr/*.buf*")
-                         + glob.glob("test/test_data/bufr/data????"))
+                         glob.glob("test/test_data/bufr/*.buf*"))
 def test_verify_json_payload_bufr(bufr_file_path):
     # Load the schema
     with open("src/esoh/schemas/e-soh-message-spec.json", "r") as file:

@@ -7,6 +7,7 @@
  *
  */
 
+#include <algorithm>
 #include <bitset>
 #include <iostream>
 
@@ -129,4 +130,10 @@ std::string NorBufrIO::strTrim(const std::string s) {
     ret = s.substr(str_begin, str_range);
   }
   return ret;
+}
+
+void NorBufrIO::strPrintable(std::string &s) {
+  s.erase(std::remove_if(s.begin(), s.end(),
+                         [](unsigned char c) { return !std::isprint(c); }),
+          s.end());
 }
