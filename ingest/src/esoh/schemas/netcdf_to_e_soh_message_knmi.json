@@ -1,0 +1,127 @@
+{
+	"root": {
+		"translation_fields": {
+			"iso_dataset": {
+				"geometry": {
+					"type": {
+						"inpt_type": "raw",
+						"value": "point"
+					},
+					"coordinates": {
+						"inpt_type": "list",
+						"fields": [
+							"max-y",
+							"max-x"
+						]
+					},
+					"inpt_type": "multi"
+				},
+				"type": {
+					"inpt_type": "raw",
+					"value": "Feature"
+				}
+			}
+		}
+	},
+	"properties": {
+		"translation_fields": {
+			"iso_dataset": {
+				"metadata_id": {
+					"fields": [
+						"organisationName_metadata",
+						"metadata_id"
+					],
+					"inpt_type": "str",
+					"sep": ":"
+				},
+				"data_id": {
+					"inpt_type": "raw",
+					"value": "placeholder"
+				},
+				"naming_authority": {
+					"inpt_type": "raw",
+					"value": "nl.knmi"
+				},
+				"keywords_vocabulary": {
+					"inpt_type": "raw",
+					"value": "placeholder"
+				},
+				"license": {
+					"inpt_type": "raw",
+					"value": "No license provided"
+				},
+				"creator_url": {
+					"fields": [
+						"url_metadata"
+					],
+					"inpt_type": "str",
+					"sep": ""
+				},
+				"creator_email": {
+					"fields": [
+						"email_metadata"
+					],
+					"inpt_type": "str",
+					"sep": ""
+				},
+				"keywords": {
+					"fields": [
+						"keyword"
+					],
+					"inpt_type": "str",
+					"sep": ""
+				},
+				"access_constraint": {
+					"fields": [
+						"accessConstraints"
+					],
+					"inpt_type": "str",
+					"sep": ""
+				},
+				"summary": {
+					"fields": [
+						"abstract"
+					],
+					"inpt_type": "str",
+					"sep": ""
+				}
+			}
+		},
+		"persistant_fields": {
+			"attrs": [
+				"title",
+				"institution",
+				"Conventions",
+				"history",
+				"source"
+			]
+		}
+	},
+	"links": {
+		"translation_fields": {
+			"attrs": [
+				{
+					"href": {
+						"fields": [
+							"references"
+						],
+						"inpt_type": "str",
+						"sep": ""
+					},
+					"rel": {
+						"value": "canonical",
+						"inpt_type": "raw"
+					}
+				}
+			]
+		}
+	},
+	"description": "This json defines what fields to take from a netCDF file in to a E-SOH MQTT message. Fields in the translation have different names between the netCDF and MQTT message. persistant_fields are fields that can be directly extrated from the netCDF. This file is defined for netCDF created at METno.",
+	"ignore": [
+		"time",
+		"stationname",
+		"lat",
+		"lon",
+		"height"
+	]
+}

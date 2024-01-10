@@ -1,0 +1,71 @@
+{
+	"root": {
+		"translation_fields": {
+			"attrs": {
+				"geometry": {
+					"type": {
+						"inpt_type": "str",
+						"fields": [
+							"spatial_representation"
+						],
+						"sep": ""
+					},
+					"coordinates": {
+						"inpt_type": "list",
+						"fields": [
+							"geospatial_lat_min",
+							"geospatial_lon_min"
+						]
+					},
+					"inpt_type": "multi"
+				},
+				"type": {
+					"inpt_type": "raw",
+					"value": "Feature"
+				}
+			}
+		}
+	},
+	"properties": {
+		"persistant_fields": {
+			"attrs": [
+				"title",
+				"institution",
+				"Conventions",
+				"history",
+				"keywords",
+				"keywords_vocabulary",
+				"summary",
+				"source",
+				"creator_name",
+				"creator_url",
+				"creator_email",
+				"license",
+				"platform",
+				"platform_vocabulary",
+				"naming_authority"
+			]
+		}
+	},
+	"links": {
+		"translation_fields": {
+			"attrs": [
+				{
+					"href": {
+						"fields": [
+							"references"
+						],
+						"inpt_type": "str",
+						"sep": ""
+					},
+					"rel": {
+						"value": "canonical",
+						"inpt_type": "raw"
+					}
+				}
+			]
+		}
+	},
+	"description": "This json defines what fields to take from a netCDF file in to a E-SOH MQTT message. Fields in the translation have different names between the netCDF and MQTT message. persistant_fields are fields that can be directly extrated from the netCDF. This file is defined for netCDF created at METno.",
+	"ignore": []
+}

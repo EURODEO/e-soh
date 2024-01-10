@@ -1,0 +1,1300 @@
+{
+    "id": "b6f7636c-533e-424f-b38c-399db5ba74df",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            38.1,
+            -130.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:30:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_pressure",
+            "unit": "Pa",
+            "size": 6,
+            "value": "102110"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "b806e5a0-ab76-4715-a444-a260bfbcdbd2",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            38.1,
+            -130.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:30:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_pressure_at_mean_sea_level",
+            "unit": "Pa",
+            "size": 6,
+            "value": "102140"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "219ef799-9c27-436b-9004-797dabd37867",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            38.1,
+            -130.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:30:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "292.55"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "666c2048-5696-4982-a2e7-96ddca21eb75",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            38.1,
+            -130.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:30:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "dew_point_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "287.65"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "47b39dee-9998-4b5f-9a6e-e9216f3edfc2",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            38.1,
+            -130.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:30:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "293.35"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "6b2eee4b-4e5a-45ae-baa9-7b5f87ef1566",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            38.1,
+            -130.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:30:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 2,
+            "value": "20"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "03b485c4-d309-4104-b962-b0123d2e58eb",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            38.1,
+            -130.0
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:30:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 1,
+            "value": "7"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "ddc7076a-b65a-45d3-bebd-19052ad2557e",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            -14.3,
+            -170.5
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:26:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "301.45"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "4314c872-adca-43cd-9a44-35247dcd29ec",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            45.9,
+            -125.8
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:20:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_pressure",
+            "unit": "Pa",
+            "size": 6,
+            "value": "101840"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "69a921e8-7510-43ce-9c0c-b98651a5f75f",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            45.9,
+            -125.8
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:20:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_pressure_at_mean_sea_level",
+            "unit": "Pa",
+            "size": 6,
+            "value": "101870"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "237896f7-9a7b-4159-a141-a656526a2708",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            45.9,
+            -125.8
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:20:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "290.75"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "33449164-4182-4e6a-a823-f52e03780662",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            45.9,
+            -125.8
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:20:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "291.45"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "bc828ad9-8cac-44c9-9fb6-33a74b59dede",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            45.9,
+            -125.8
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:20:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "300"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "cc6fe759-004c-41d0-be40-3cc19952e43c",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            45.9,
+            -125.8
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:20:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 1,
+            "value": "6"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "ad7f7d41-b9e6-43f6-8b33-cfe9e3201454",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            45.9,
+            -125.8
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:30:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_pressure",
+            "unit": "Pa",
+            "size": 6,
+            "value": "101860"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "e9b27b38-5bc1-4054-96f7-6ca69ac47d12",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            45.9,
+            -125.8
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:30:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_pressure_at_mean_sea_level",
+            "unit": "Pa",
+            "size": 6,
+            "value": "101890"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "5a75d38d-3d40-4607-afce-13e86e8d1a05",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            45.9,
+            -125.8
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:30:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "290.75"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "70a6d618-177c-4cc8-b64f-ddbe8b006664",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            45.9,
+            -125.8
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:30:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "291.45"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "e39d0fb8-9381-4193-94c3-8674e0df9ef5",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            45.9,
+            -125.8
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:30:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "300"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "5fca27d2-168d-407b-92c1-bedf946d4f0c",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            45.9,
+            -125.8
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:30:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 1,
+            "value": "6"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "db7f6b06-1fba-40e7-a00c-c4c7d1b471dc",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            32.4,
+            -119.5
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:20:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_pressure",
+            "unit": "Pa",
+            "size": 6,
+            "value": "101380"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "09e1a082-fae6-4a0b-8a57-d9bfc0869e4b",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            32.4,
+            -119.5
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:20:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_pressure_at_mean_sea_level",
+            "unit": "Pa",
+            "size": 6,
+            "value": "101410"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "8efac52b-bc28-4c43-bfd3-a82c4de6267e",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            32.4,
+            -119.5
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:20:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "292.55"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "b27c3c14-a79d-402e-81f2-1f07547c582f",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            32.4,
+            -119.5
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:20:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "dew_point_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "291.65"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "5f8c6664-90d8-4c19-a5c6-daa4b24e1ae8",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            32.4,
+            -119.5
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:20:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "293.95"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "5ed94696-b46c-46fe-8c28-73468eea07ae",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            32.4,
+            -119.5
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:20:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "310"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "ebe05396-6628-4981-8d05-ac23deb727c0",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            32.4,
+            -119.5
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:20:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 1,
+            "value": "6"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "8c2accd2-d008-4b75-b343-dcfa79fc5af0",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            32.4,
+            -119.5
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:30:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_pressure",
+            "unit": "Pa",
+            "size": 6,
+            "value": "101370"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "e38d7fb3-94fa-40c3-8077-1dca4917e1e5",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            32.4,
+            -119.5
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:30:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_pressure_at_mean_sea_level",
+            "unit": "Pa",
+            "size": 6,
+            "value": "101400"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "4be0e313-df40-4f64-a5ca-1acf30cc4d1a",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            32.4,
+            -119.5
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:30:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "292.55"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "d63555df-3a7f-4f11-82f2-4663aeeade2e",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            32.4,
+            -119.5
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:30:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "dew_point_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "291.45"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "9370e8d5-0fe0-413d-ab5e-d658e3e3f523",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            32.4,
+            -119.5
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:30:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "293.85"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "29824f5c-3f65-43bb-a2d8-46b397bdb564",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            32.4,
+            -119.5
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:30:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "310"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "c90b7ebb-3011-4401-a315-c94d94999226",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            32.4,
+            -119.5
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:30:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 1,
+            "value": "7"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "87126c06-b345-4bb9-9793-122abc5dda37",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            13.4,
+            144.8
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:26:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "302.95"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "79a77da1-28c2-4434-893f-a536445e865a",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            33.2,
+            -119.9
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:26:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "292.55"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "c7545ec1-5ec6-44fb-9ae6-a58521ef76b5",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            42.7,
+            -130.5
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:20:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_pressure",
+            "unit": "Pa",
+            "size": 6,
+            "value": "102170"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "079052c7-d341-464c-b6c1-d4e84faf9199",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            42.7,
+            -130.5
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:20:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_pressure_at_mean_sea_level",
+            "unit": "Pa",
+            "size": 6,
+            "value": "102200"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "655a6b2d-8b74-459a-a1a8-1e0a85f9c210",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            42.7,
+            -130.5
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:20:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "291.75"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "6d021fc1-c3f3-43b3-a49d-95f3c6f1dbd8",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            42.7,
+            -130.5
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:20:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "dew_point_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "287.45"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "234db663-8a49-442e-a4a8-e4edfe212026",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            42.7,
+            -130.5
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:20:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "350"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "cee891b7-43cf-46de-aed0-b4a7876245dd",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            42.7,
+            -130.5
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:20:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 1,
+            "value": "6"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "5bb35b89-4f4f-42c0-8307-a0aec0ef331d",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            42.7,
+            -130.5
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:30:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_pressure",
+            "unit": "Pa",
+            "size": 6,
+            "value": "102170"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "5d3d63e6-a7b5-49c0-97c8-b07b6317b6af",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            42.7,
+            -130.5
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:30:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_pressure_at_mean_sea_level",
+            "unit": "Pa",
+            "size": 6,
+            "value": "102200"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "9a627923-dcc7-4a43-b0bf-1d3513e2d798",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            42.7,
+            -130.5
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:30:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "291.95"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "1ad77a2b-cccf-40bb-9191-9d87c033377b",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            42.7,
+            -130.5
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:30:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "dew_point_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "287.35"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "8379d57d-d1aa-44f2-91a2-882a3c4e4b0e",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            42.7,
+            -130.5
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:30:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_from_direction",
+            "unit": "degree",
+            "size": 3,
+            "value": "340"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "57ddc333-1dcb-47d4-83f7-5eb4bf1fc1bb",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            42.7,
+            -130.5
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:30:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "wind_speed",
+            "unit": "m s-1",
+            "size": 1,
+            "value": "6"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "01d893ff-5184-4518-a75a-608e89307705",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            7.1,
+            171.4
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:00:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "301.15"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "eb01e95d-83fd-4541-8a51-937d9394b5b5",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            7.1,
+            171.4
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:00:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "303.05"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "2ea60f38-4912-4898-94d4-fd1cef816696",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            7.1,
+            171.4
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:30:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "air_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "300.65"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
+{
+    "id": "6c65ff7d-de63-42c9-8165-83fc7ac95721",
+    "version": "v04",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            7.1,
+            171.4
+        ]
+    },
+    "properties": {
+        "data_id": "data_id",
+        "metadata_id": "metatata_id",
+        "datetime": "2023-08-23T04:30:00+0000",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "sea_water_temperature",
+            "unit": "K",
+            "size": 6,
+            "value": "302.95"
+        },
+        "pubtime": "2023-10-10T12:49:13+0000"
+    }
+}
