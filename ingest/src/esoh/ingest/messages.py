@@ -70,5 +70,8 @@ def messages(message, input_type, uuid_prefix, schema_path, validator):
                              schema_path=schema_path,
                              validator=validator)
     else:
+        logger.error(TypeError("Unknown netCDF type, expected path "
+                               + f"or xarray.Dataset, got {type(message)}"))
+        raise
         raise TypeError("Unknown netCDF type, expected path "
                         + f"or xarray.Dataset, got {type(message)}")

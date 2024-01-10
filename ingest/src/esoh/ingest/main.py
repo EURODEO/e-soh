@@ -6,10 +6,10 @@ from jsonschema import Draft202012Validator
 import json
 
 import pkg_resources
-
 import logging
 import os
 import re
+import grpc
 
 logger = logging.getLogger(__name__)
 
@@ -46,7 +46,13 @@ class ingest_to_pipeline():
             return
 
         self.dstore = datastore_connection(dstore_conn["dshost"], dstore_conn["dsport"])
-        self.mqtt = mqtt_connection(mqtt_conf["host"], mqtt_conf["topic"])
+        if "username" in mqtt_conf:
+            self.mqtt = mqtt_connection(mqtt_conf["host"],
+                                        mqtt_conf["topic"],
+                                        mqtt_conf["username"],
+                                        mqtt_conf["password"])
+        else:
+            self.mqtt = mqtt_connection(mqtt_conf["host"], mqtt_conf["topic"])
 
     def ingest(self, message: [str, object], input_type: str = None):
         """
@@ -67,8 +73,14 @@ class ingest_to_pipeline():
         """
         for msg in messages:
             if msg:
-                self.dstore.ingest(msg)
-                self.mqtt.send_message(msg)
+                try:
+                    self.dstore.ingest(msg)
+                    self.mqtt.send_message(msg)
+                except grpc.RpcError:
+                    self.dstore.is_channel_ready()
+                    pass
+                except Exception:
+                    pass
 
     def _decide_input_type(self, message) -> str:
         """
