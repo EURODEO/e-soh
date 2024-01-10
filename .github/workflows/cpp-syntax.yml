@@ -16,5 +16,5 @@ jobs:
         uses: jidicula/clang-format-action@v4.11.0
         with:
           clang-format-version: "13"
-          check-path: "src/esoh/ingest/bufr"
+          check-path: "ingest/src/esoh/ingest/bufr"
           fallback-style: "llvm"

@@ -12,7 +12,7 @@ on:
       - completed
 
 jobs:
-  pyTestCov:
+  ingest-pyTestCov:
     strategy:
       matrix:
         python-version: ["3.10"] # Add 3.11 back pybind11 bug is fixed
@@ -30,11 +30,8 @@ jobs:
       - name: Install Dependencies
         run: |
           pip install --upgrade pip
-          pip install -r requirements.txt
           pip install pytest-timeout
           pip install pytest-cov
-          pip install .
+          pip install ./ingest
       - name: Run Tests
-        run: python -m pytest -v --timeout=60
-      - name: Upload to Codecov
-        uses: codecov/codecov-action@v3
+        run: python -m pytest -v --timeout=60 ./ingest
