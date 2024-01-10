@@ -5,7 +5,7 @@ repos:
       - id: go-fmt
         name: go-fmt
         description: "Enforces Go standard formatting (whitespace, indentation, et cetera)."
-        entry: ./ci/go/go-fmt.sh
+        entry: ./datastore/ci/go/go-fmt.sh
         language: script
         pass_filenames: false
 #      # go-vet ~ Finds subtle issues in Go where your code may not work as intended
