@@ -1,0 +1,106 @@
+
+***************************************************************************************
+********************************** B U F R ********************************************
+***************************************************************************************
+
+=============== Section 0  ===============
+length: 122 Edition: 4
+=============== Section 1  ===============
+length: 22
+Master Table: 0
+Centre: 74
+Subcentre: 0
+Update Sequence Number: 0
+Optional Section: 0
+Data Category: 1
+International Data Subcategory: 25
+Local Data Subcategory: 3
+VersionMaster: 25
+VersionLocal: 255
+Time: Sun Aug 23 00:02:00 2023
+
+Local data[0]:
+
+=============== Section 2  ===============
+length: 0 zero: 0
+Local data:
+
+
+=============== Section 3  ===============
+length: 10 zero: 0
+Subsets: 1
+Observed: 1
+Compressed:0 
+Descriptors:
+[ 3 15 008 ] 
+=============== Section 4  ===============
+length: 78 zero: 0
+
+***************************************************************************************
+************************ EXPANDED DESCRIPTORS AND DATA  *******************************
+***************************************************************************************
+
+=============== S U B S E T 0 ===============
+
+[ 3 15 008 ]
+[ 3 01 126 ]
+[ 0 01 087 ]	6200103 Numeric		WMO MARINE OBSERVING PLATFORM EXTENDED IDENTIFIER
+[ 0 01 015 ]	Channel             		STATION OR SITE NAME
+[ 0 02 149 ]	 MOORING METEOROLOGICAL [code:35]		TYPE OF DATA BUOY
+[ 3 01 011 ]
+[ 0 04 001 ]	2023 a		YEAR
+[ 0 04 002 ]	8 mon		MONTH
+[ 0 04 003 ]	23 d		DAY
+[ 3 01 012 ]
+[ 0 04 004 ]	0 h		HOUR
+[ 0 04 005 ]	2 min		MINUTE
+[ 3 01 021 ]
+[ 0 05 001 ]	49.9081 deg		LATITUDE (HIGH ACCURACY)
+[ 0 06 001 ]	-2.8948 deg		LONGITUDE (HIGH ACCURACY)
+[ 3 06 038 ]
+[ 0 10 004 ]	102100 Pa		PRESSURE
+[ 0 10 051 ]	102120 Pa		PRESSURE REDUCED TO MEAN SEA LEVEL
+[ 0 07 033 ]	5.5 m		HEIGHT OF SENSOR ABOVE WATER SURFACE
+[ 0 12 101 ]	290.15 K		TEMPERATURE/AIR TEMPERATURE
+[ 0 12 103 ]	289.28 K		DEWPOINT TEMPERATURE
+[ 0 13 003 ]	95 %		RELATIVE HUMIDITY
+[ 0 07 033 ]	MISSING		HEIGHT OF SENSOR ABOVE WATER SURFACE
+[ 0 08 021 ]	 TIME AVERAGED (SEE NOTE 1) [code:2]		TIME SIGNIFICANCE
+[ 0 04 025 ]	10 min		TIME PERIOD OR DISPLACEMENT
+[ 0 11 001 ]	286 deg		WIND DIRECTION
+[ 0 11 002 ]	2.4 m/s		WIND SPEED
+[ 0 08 021 ]	MISSING [code:]		TIME SIGNIFICANCE
+[ 0 04 025 ]	MISSING		TIME PERIOD OR DISPLACEMENT
+[ 0 11 041 ]	MISSING		MAXIMUM WIND GUST SPEED
+[ 0 04 025 ]	10 min		TIME PERIOD OR DISPLACEMENT
+[ 0 07 033 ]	6.4 m		HEIGHT OF SENSOR ABOVE WATER SURFACE
+[ 0 02 005 ]	0.01 K		PRECISION OF TEMPERATURE OBSERVATION
+[ 0 07 063 ]	1 m		DEPTH BELOW SEA/WATER SURFACE (CM)
+[ 0 22 049 ]	289.98 K		SEA-SURFACE TEMPERATURE
+[ 1 01 000 ]
+[ 0 31 000 ]	0 Numeric		SHORT DELAYED DESCRIPTOR REPLICATION FACTOR
+[ 1 01 000 ]
+[ 0 31 000 ]	0 Numeric		SHORT DELAYED DESCRIPTOR REPLICATION FACTOR
+[ 1 01 000 ]
+[ 0 31 000 ]	1 Numeric		SHORT DELAYED DESCRIPTOR REPLICATION FACTOR
+[ 3 06 039 ]
+[ 0 22 078 ]	1200 s		DURATION OF WAVE RECORD
+[ 0 22 070 ]	1 m		SIGNIFICANT WAVE HEIGHT
+[ 0 22 073 ]	MISSING		MAXIMUM WAVE HEIGHT
+[ 0 22 074 ]	5.1 s		AVERAGE WAVE PERIOD
+[ 0 22 071 ]	8.3 s		SPECTRAL PEAK WAVE PERIOD
+[ 0 22 076 ]	MISSING		DIRECTION FROM WHICH DOMINANT WAVES ARE COMING
+[ 0 22 077 ]	MISSING		DIRECTIONAL SPREAD OF DOMINANT WAVE
+[ 1 01 000 ]
+[ 0 31 000 ]	0 Numeric		SHORT DELAYED DESCRIPTOR REPLICATION FACTOR
+[ 1 02 000 ]
+[ 0 31 000 ]	0 Numeric		SHORT DELAYED DESCRIPTOR REPLICATION FACTOR
+[ 1 02 000 ]
+[ 0 31 000 ]	0 Numeric		SHORT DELAYED DESCRIPTOR REPLICATION FACTOR
+[ 1 01 000 ]
+[ 0 31 000 ]	0 Numeric		SHORT DELAYED DESCRIPTOR REPLICATION FACTOR
+
+***************************************************************************************
+******************************* E N D B U F R *****************************************
+***************************************************************************************
+

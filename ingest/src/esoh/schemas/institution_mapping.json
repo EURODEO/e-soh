@@ -1,0 +1,4 @@
+{
+	"Norwegian Meteorological Institute (MET Norway)": "netcdf_to_e_soh_message_metno.json",
+	"Royal Netherlands Meteorological Institute (KNMI)": "netcdf_to_e_soh_message_knmi.json"
+}

@@ -1,0 +1,46 @@
+{
+	"properties": {
+		"title": "JAN MAYEN",
+		"institution": "Norwegian Meteorological Institute (MET Norway)",
+		"Conventions": "CF-1.10, ACDD-1.3",
+		"history": "2023-10-09 10:19:00: Created from kvalobs.",
+		"keywords": "Meteoroligical observations from ground stations",
+		"keywords_vocabulary": "placeholder",
+		"summary": "Ground observation from kvalobs, stationJAN MAYEN",
+		"source": "kvalobs",
+		"creator_name": "Norwegian Meteorological Institute",
+		"creator_url": "https//www.met.no",
+		"creator_email": "info@met.no",
+		"license": "http//spdx.org/licenses/CC-BY-4.0(CC-BY-4.0)",
+		"platform": "0-20000-0-01001",
+		"platform_vocabulary": "placeholder",
+		"naming_authority": "no.met",
+		"datetime": "2023-10-09T10:19:00",
+		"content": {
+			"encoding": "utf-8",
+			"standard_name": "relative_humidity",
+			"unit": "percent",
+			"size": 4,
+			"value": "91.0"
+		},
+		"metadata_id": "urn:x-wmo:md:norway:no.met:bb8c10a1-ba20-4676-a193-1e1929de9d13",
+		"data_id": "urn:x-wmo:md:norway:no.met:bb8c10a1-ba20-4676-a193-1e1929de9d13",
+		"pubtime": "2023-10-10T07:50:09.607843+00:00"
+	},
+	"links": [
+		{
+			"href": "Insert documentation about E-SOH datastore",
+			"rel": "canonical"
+		}
+	],
+	"geometry": {
+		"type": "Point",
+		"coordinates": [
+			70.9394,
+			-8.669
+		]
+	},
+	"type": "Feature",
+	"version": "v4.0",
+	"id": "urn:x-wmo:md:norway:no.met:bb8c10a1-ba20-4676-a193-1e1929de9d13"
+}
