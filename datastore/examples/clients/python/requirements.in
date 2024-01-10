@@ -1,0 +1,6 @@
+# Generate requirements.txt using:
+# pip-compile --upgrade --no-emit-index-url
+# Install using:
+# pip-sync
+
+grpcio-tools~=1.56

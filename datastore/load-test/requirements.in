@@ -1,0 +1,9 @@
+# Generate requirements.txt using:
+# pip-compile --upgrade --no-emit-index-url
+# Install using:
+# pip-sync
+
+grpcio-tools~=1.56
+grpc-interceptor~=0.15.3
+locust~=2.16
+shapely~=2.0

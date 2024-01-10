@@ -1,0 +1,112 @@
+version: '3.8'
+name: datastore
+
+services:
+  db:
+#    image: timescale/timescaledb-ha:pg15-latest
+    image: kartoza/postgis:15  # Use this instead of the official image as it has an arm64 image
+    ports:
+      - "5433:5432"
+    volumes:
+#      - ts-data:/home/postgres/pgdata/data # for timescale image
+      - ts-data:/var/lib/postgresql/data # for postgres image
+      - ./database/healthcheck_postgis_uptime.sh:/healthcheck_postgis_uptime.sh # for the healthcheck
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_DB=data
+    restart: on-failure
+    healthcheck:
+      # HACK Due to the installation of Postgis extension the database is restarted, the healthcheck checks if the database is up for longer than specified time.
+      test: ["CMD-SHELL", "/healthcheck_postgis_uptime.sh postgresql://postgres:mysecretpassword@localhost/data 10 second"]
+      interval: 5s
+      timeout: 1s
+      retries: 3
+      start_period: 30s   # Failures in 30 seconds do not mark container as unhealthy
+
+  migrate:
+    image: migrate/migrate:4
+    volumes:
+      - ./migrate/data/migrations:/data/migrations
+    command: ["-path", "/data/migrations", "-database", "postgres://postgres:mysecretpassword@db:5432/data?sslmode=disable", "up"]
+    depends_on:
+      db:
+        condition: service_healthy
+
+  store:
+    build:
+      context: datastore
+    ports:
+      - "50050:50050"
+      - "6060:6060" # for flame graphing
+    environment:
+      - PGHOST=db
+      - PGPORT=5432
+      - DYNAMICTIME=$DYNAMICTIME
+      - LOTIME=$LOTIME
+      - HITIME=$HITIME
+      - CLEANUPINTERVAL=$CLEANUPINTERVAL
+      - PUTOBSLIMIT=$PUTOBSLIMIT
+    restart: on-failure
+    healthcheck:
+      test: [ "CMD-SHELL", "exit $(/bin/grpc_health_probe -addr=localhost:50050)" ]
+      interval: 5s
+      timeout: 1s
+      retries: 3
+      start_period: 30s   # Failures in 30 seconds do not mark container as unhealthy
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+  api:
+    build:
+      context: .  # TODO: Needed to get proto file. Find a better solution
+      dockerfile: api/Dockerfile
+    ports:
+        - "8008:8000"
+    environment:
+      - DSHOST=store
+      - DSPORT=50050
+    depends_on:
+      store:
+        condition: service_healthy
+
+  client:
+    profiles: ["test"]
+    build:
+      context: .  # TODO: Needed to get proto file. Find a better solution
+      dockerfile: examples/clients/python/Dockerfile
+    environment:
+      - DSHOST=store
+      - DSPORT=50050
+    depends_on:
+      store:
+        condition: service_healthy
+
+  loader:
+    profiles: ["test"]
+    build:
+      context: .  # TODO: Needed to get proto file and test data. Find a better solution
+      dockerfile: data-loader/Dockerfile
+    environment:
+      - DSHOST=store
+      - DSPORT=50050
+    depends_on:
+      store:
+        condition: service_healthy
+
+  integration:
+    profiles: ["test"]
+    build:
+      context: .  # TODO: Needed to get proto file. Find a better solution
+      dockerfile: integration-test/Dockerfile
+    environment:
+      - DSHOST=store
+      - DSPORT=50050
+      - BASE_URL=http://api:8000
+    depends_on:
+      store:
+        condition: service_healthy
+
+volumes:
+  ts-data:

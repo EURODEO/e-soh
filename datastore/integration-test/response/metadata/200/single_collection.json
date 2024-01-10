@@ -1,0 +1,67 @@
+{
+    "id": "observations",
+    "links": [
+        {
+            "href": "http://localhost:8008/collections/observations/observations",
+            "rel": "self"
+        }
+    ],
+    "extent": {
+        "spatial": {
+            "bbox": [
+                [
+                    3,
+                    50,
+                    8,
+                    55
+                ]
+            ],
+            "crs": "WGS84"
+        }
+    },
+    "data_queries": {
+        "position": {
+            "link": {
+                "href": "http://localhost:8008/collections/observations/observations/position",
+                "rel": "data",
+                "variables": {
+                    "query_type": "position",
+                    "output_format": [
+                        "CoverageJSON"
+                    ]
+                }
+            }
+        },
+        "area": {
+            "link": {
+                "href": "http://localhost:8008/collections/observations/observations/area",
+                "rel": "data",
+                "variables": {
+                    "query_type": "area",
+                    "output_format": [
+                        "CoverageJSON"
+                    ]
+                }
+            }
+        },
+        "locations": {
+            "link": {
+                "href": "http://localhost:8008/collections/observations/observations/locations",
+                "rel": "data",
+                "variables": {
+                    "query_type": "locations",
+                    "output_format": [
+                        "CoverageJSON"
+                    ]
+                }
+            }
+        }
+    },
+    "crs": [
+        "WGS84"
+    ],
+    "output_formats": [
+        "CoverageJSON"
+    ],
+    "parameter_names": {}
+}

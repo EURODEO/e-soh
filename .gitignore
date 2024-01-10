@@ -1,0 +1,10 @@
+# Code editors
+.idea/
+.run/
+
+# Python
+.pytest_cache/
+__pycache__/
+venv/
+
+.env

@@ -1,0 +1,77 @@
+{
+    "links": [
+        {
+            "href": "http://localhost:8008/collections",
+            "rel": "self"
+        }
+    ],
+    "collections": [
+        {
+            "id": "observations",
+            "links": [
+                {
+                    "href": "http://localhost:8008/collections/observations",
+                    "rel": "self"
+                }
+            ],
+            "extent": {
+                "spatial": {
+                    "bbox": [
+                        [
+                            3.0,
+                            50.0,
+                            8.0,
+                            55.0
+                        ]
+                    ],
+                    "crs": "WGS84"
+                }
+            },
+            "data_queries": {
+                "position": {
+                    "link": {
+                        "href": "http://localhost:8008/collections/observations/position",
+                        "rel": "data",
+                        "variables": {
+                            "query_type": "position",
+                            "output_format": [
+                                "CoverageJSON"
+                            ]
+                        }
+                    }
+                },
+                "area": {
+                    "link": {
+                        "href": "http://localhost:8008/collections/observations/area",
+                        "rel": "data",
+                        "variables": {
+                            "query_type": "area",
+                            "output_format": [
+                                "CoverageJSON"
+                            ]
+                        }
+                    }
+                },
+                "locations": {
+                    "link": {
+                        "href": "http://localhost:8008/collections/observations/locations",
+                        "rel": "data",
+                        "variables": {
+                            "query_type": "locations",
+                            "output_format": [
+                                "CoverageJSON"
+                            ]
+                        }
+                    }
+                }
+            },
+            "crs": [
+                "WGS84"
+            ],
+            "output_formats": [
+                "CoverageJSON"
+            ],
+            "parameter_names": {}
+        }
+    ]
+}
