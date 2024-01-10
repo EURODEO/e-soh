@@ -41,19 +41,19 @@ jobs:
           python-version: '3.11'
 
       - name: Build docker containers
-        run: docker compose --profile test build
+        run: docker compose --project-directory datastore --profile test build
 
       - name: Start docker stack
-        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose up -d
+        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose --project-directory datastore up -d
 
       - name: Test loader runs without errors
-        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm loader
+        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose --project-directory datastore run --rm loader
 
       - name: Integration test
-        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm integration
+        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose --project-directory datastore run --rm integration
 
       - name: Test client runs without errors
-        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm client
+        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose --project-directory datastore run --rm client
 
       - name: Run load test
         run: |
@@ -81,4 +81,4 @@ jobs:
 
       - name: Cleanup
         if: always()
-        run: docker compose down --volumes
+        run: docker compose --project-directory datastore down --volumes
