@@ -41,14 +41,14 @@ repos:
 
   # black ~ Formats Python code
   - repo: https://github.com/psf/black
-    rev: 23.10.0
+    rev: 23.12.1
     hooks:
       - id: black
         args: ["--line-length=120"]
 
   # flake8 ~ Enforces the Python PEP8 style guide
   - repo: https://github.com/pycqa/flake8
-    rev: 6.1.0
+    rev: 7.0.0
     hooks:
       - id: flake8
         args:
