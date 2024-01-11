@@ -10,7 +10,7 @@ services:
     volumes:
 #      - ts-data:/home/postgres/pgdata/data # for timescale image
       - ts-data:/var/lib/postgresql/data # for postgres image
-      - ./database/healthcheck_postgis_uptime.sh:/healthcheck_postgis_uptime.sh # for the healthcheck
+      - ./datastore/database/healthcheck_postgis_uptime.sh:/healthcheck_postgis_uptime.sh # for the healthcheck
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=mysecretpassword
@@ -27,7 +27,7 @@ services:
   migrate:
     image: migrate/migrate:4
     volumes:
-      - ./migrate/data/migrations:/data/migrations
+      - ./datastore/migrate/data/migrations:/data/migrations
     command: ["-path", "/data/migrations", "-database", "postgres://postgres:mysecretpassword@db:5432/data?sslmode=disable", "up"]
     depends_on:
       db:
@@ -35,7 +35,7 @@ services:
 
   store:
     build:
-      context: datastore
+      context: datastore/datastore
     ports:
       - "50050:50050"
       - "6060:6060" # for flame graphing
@@ -60,8 +60,7 @@ services:
 
   api:
     build:
-      context: .  # TODO: Needed to get proto file. Find a better solution
-      dockerfile: api/Dockerfile
+      context: api
     ports:
         - "8008:8000"
     environment:
@@ -74,8 +73,7 @@ services:
   client:
     profiles: ["test"]
     build:
-      context: .  # TODO: Needed to get proto file. Find a better solution
-      dockerfile: examples/clients/python/Dockerfile
+      context: datastore/examples/clients/python
     environment:
       - DSHOST=store
       - DSPORT=50050
@@ -86,11 +84,11 @@ services:
   loader:
     profiles: ["test"]
     build:
-      context: .  # TODO: Needed to get proto file and test data. Find a better solution
-      dockerfile: data-loader/Dockerfile
+      context: datastore/data-loader
     environment:
       - DSHOST=store
       - DSPORT=50050
+      - BASE_URL=http://api:8000
     depends_on:
       store:
         condition: service_healthy
@@ -98,8 +96,7 @@ services:
   integration:
     profiles: ["test"]
     build:
-      context: .  # TODO: Needed to get proto file. Find a better solution
-      dockerfile: integration-test/Dockerfile
+      context: datastore/integration-test
     environment:
       - DSHOST=store
       - DSPORT=50050

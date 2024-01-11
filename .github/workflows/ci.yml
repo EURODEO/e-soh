@@ -40,26 +40,29 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Copy Protobuf files to Dockerfile directories
+        run: ./ci/docker/copy-protobuf.sh
+
       - name: Build docker containers
-        run: docker compose --project-directory datastore --profile test build
+        run: docker compose --profile test build
 
       - name: Start docker stack
-        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose --project-directory datastore up -d
+        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose up -d
 
       - name: Test loader runs without errors
-        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose --project-directory datastore run --rm loader
+        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm loader
 
       - name: Integration test
-        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose --project-directory datastore run --rm integration
+        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm integration
 
       - name: Test client runs without errors
-        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose --project-directory datastore run --rm client
+        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm client
 
       - name: Run load test
         run: |
           python --version
           pip install -r datastore/load-test/requirements.txt
-          python -m grpc_tools.protoc --proto_path=datastore/datastore/protobuf datastore.proto --python_out=datastore/load-test --grpc_python_out=datastore/load-test
+          python -m grpc_tools.protoc --proto_path=./protobuf datastore.proto --python_out=datastore/load-test --grpc_python_out=datastore/load-test
           cd datastore/load-test
           locust --headless -u 5 -r 1 --run-time 60 --only-summary --csv store
 
@@ -81,4 +84,4 @@ jobs:
 
       - name: Cleanup
         if: always()
-        run: docker compose --project-directory datastore down --volumes
+        run: docker compose down --volumes

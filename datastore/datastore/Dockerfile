@@ -36,6 +36,9 @@ RUN apt-get update \
 COPY . /go-grpc-demo
 
 WORKDIR /go-grpc-demo
+
+#ENTRYPOINT ["tail", "-f", "/dev/null"]
+
 RUN \
     # compile proto file \
     protoc --go_out=. --go-grpc_out=. protobuf/datastore.proto \
