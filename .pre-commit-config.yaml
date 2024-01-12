@@ -8,13 +8,19 @@ repos:
         entry: ./ci/go/go-fmt.sh
         language: script
         pass_filenames: false
-#      # go-vet ~ Finds subtle issues in Go where your code may not work as intended
-#      - id: go-vet
-#        name: go-vet
-#        description: "Finds subtle issues in Go where your code may not work as intended."
-#        entry: ./ci/go/go-vet.sh
-#        language: script
-#        pass_filenames: false
+  #      # go-vet ~ Finds subtle issues in Go where your code may not work as intended
+  #      - id: go-vet
+  #        name: go-vet
+  #        description: "Finds subtle issues in Go where your code may not work as intended."
+  #        entry: ./ci/go/go-vet.sh
+  #        language: script
+  #        pass_filenames: false
+
+  - repo: https://github.com/pocc/pre-commit-hooks
+    rev: master
+    hooks:
+      - id: clang-format
+        args: [--style=llvm]
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
@@ -53,11 +59,7 @@ repos:
     rev: 7.0.0
     hooks:
       - id: flake8
-        args:
-          [
-            "--ignore=W503",
-            "--max-line-length=120",
-          ]
+        args: ["--ignore=W503", "--max-line-length=120"]
 
   # hadolint ~ Docker linter
   - repo: https://github.com/hadolint/hadolint
