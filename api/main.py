@@ -1,11 +1,8 @@
 # Run with:
 # For developing:    uvicorn main:app --reload
-import math
 import os
 from datetime import datetime
 from datetime import timedelta
-from datetime import timezone
-from itertools import groupby
 from typing import Tuple
 
 import datastore_pb2 as dstore
@@ -13,18 +10,10 @@ import datastore_pb2_grpc as dstore_grpc
 import grpc
 import metadata_endpoints
 from brotli_asgi import BrotliMiddleware
+
 from covjson_pydantic.coverage import Coverage
 from covjson_pydantic.coverage import CoverageCollection
-from covjson_pydantic.domain import Axes
-from covjson_pydantic.domain import Domain
-from covjson_pydantic.domain import DomainType
-from covjson_pydantic.domain import ValuesAxis
-from covjson_pydantic.ndarray import NdArray
-from covjson_pydantic.observed_property import ObservedProperty
-from covjson_pydantic.parameter import Parameter
-from covjson_pydantic.reference_system import ReferenceSystem
-from covjson_pydantic.reference_system import ReferenceSystemConnectionObject
-from covjson_pydantic.unit import Unit
+
 from edr_pydantic.capabilities import LandingPageModel
 from edr_pydantic.collections import Collection
 from edr_pydantic.collections import Collections
@@ -44,82 +33,14 @@ from shapely import geometry
 from shapely import wkt
 
 
+from grpc_getter import get_obsrequest
+
+from formatter import get_EDR_formatters
+
 app = FastAPI()
 app.add_middleware(BrotliMiddleware)
 
-
-def collect_data(ts_mdata, obs_mdata):
-    lat = obs_mdata[0].geo_point.lat  # HACK: For now assume they all have the same position
-    lon = obs_mdata[0].geo_point.lon
-    tuples = (
-        (o.obstime_instant.ToDatetime(tzinfo=timezone.utc), float(o.value)) for o in obs_mdata
-    )  # HACK: str -> float
-    (times, values) = zip(*tuples)
-    param_id = ts_mdata.instrument
-    unit = ts_mdata.unit
-
-    return (lat, lon, times), param_id, unit, values
-
-
-def get_data_for_time_series(get_obs_request):
-    with grpc.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") as channel:
-        grpc_stub = dstore_grpc.DatastoreStub(channel)
-        response = grpc_stub.GetObservations(get_obs_request)
-
-        # Collect data
-        coverages = []
-        data = [collect_data(md.ts_mdata, md.obs_mdata) for md in response.observations]
-
-        # Need to sort before using groupBy. Also sort on param_id to get consistently sorted output
-        data.sort(key=lambda x: (x[0], x[1]))
-        # The multiple coverage logic is not needed for this endpoint,
-        # but we want to share this code between endpoints
-        for (lat, lon, times), group in groupby(data, lambda x: x[0]):
-            referencing = [
-                ReferenceSystemConnectionObject(
-                    coordinates=["y", "x"],
-                    system=ReferenceSystem(type="GeographicCRS", id="http://www.opengis.net/def/crs/EPSG/0/4326"),
-                ),
-                ReferenceSystemConnectionObject(
-                    coordinates=["z"],
-                    system=ReferenceSystem(type="TemporalRS", calendar="Gregorian"),
-                ),
-            ]
-            domain = Domain(
-                domainType=DomainType.point_series,
-                axes=Axes(
-                    x=ValuesAxis[float](values=[lon]),
-                    y=ValuesAxis[float](values=[lat]),
-                    t=ValuesAxis[AwareDatetime](values=times),
-                ),
-                referencing=referencing,
-            )
-
-            parameters = {}
-            ranges = {}
-            for (_, _, _), param_id, unit, values in group:
-                if all(math.isnan(v) for v in values):
-                    continue  # Drop ranges if completely nan.
-                    # TODO: Drop the whole coverage if it becomes empty?
-                values_no_nan = [v if not math.isnan(v) else None for v in values]
-                # TODO: Improve this based on "standard name", etc.
-                parameters[param_id] = Parameter(
-                    observedProperty=ObservedProperty(label={"en": param_id}), unit=Unit(label={"en": unit})
-                )  # TODO: Also fill symbol?
-                ranges[param_id] = NdArray(
-                    values=values_no_nan, axisNames=["t", "y", "x"], shape=[len(values_no_nan), 1, 1]
-                )
-
-            coverages.append(Coverage(domain=domain, parameters=parameters, ranges=ranges))
-
-        if len(coverages) == 0:
-            raise HTTPException(status_code=404, detail="No data found")
-        elif len(coverages) == 1:
-            return coverages[0]
-        else:
-            return CoverageCollection(
-                coverages=coverages, parameters=coverages[0].parameters
-            )  # HACK to take parameters from first one
+edr_formatter = get_EDR_formatters()
 
 
 def get_datetime_range(datetime_string: str | None) -> Tuple[Timestamp, Timestamp] | None:
@@ -141,7 +62,8 @@ def get_datetime_range(datetime_string: str | None) -> Tuple[Timestamp, Timestam
             start_datetime.FromDatetime(datetime.min)
         if datetimes[1] != "..":
             # HACK add one second so that the end_datetime is included in the interval.
-            end_datetime.FromDatetime(aware_datetime_type_adapter.validate_python(datetimes[1]) + timedelta(seconds=1))
+            end_datetime.FromDatetime(aware_datetime_type_adapter.validate_python(
+                datetimes[1]) + timedelta(seconds=1))
         else:
             end_datetime.FromDatetime(datetime.max)
 
@@ -193,7 +115,8 @@ def get_locations(bbox: str = Query(..., example="5.0,52.0,6.0,52.1")) -> Featur
         grpc_stub = dstore_grpc.DatastoreStub(channel)
         ts_request = dstore.GetObsRequest(
             instruments=["tn"],  # Hack
-            inside=dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]),
+            inside=dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0])
+                                  for coord in poly.exterior.coords]),
         )
         ts_response = grpc_stub.GetObservations(ts_request)
 
@@ -261,13 +184,24 @@ def get_data_area(
     coords: str = Query(..., example="POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))"),
     parameter_name: str = Query(..., alias="parameter-name", example="dd,ff,rh,pp,tn"),
     datetime: str | None = None,
+    f: str | None = "covjson"
 ):
     poly = wkt.loads(coords)
     assert poly.geom_type == "Polygon"
     range = get_datetime_range(datetime)
     get_obs_request = dstore.GetObsRequest(
         instruments=list(map(str.strip, parameter_name.split(","))),
-        inside=dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]),
+        inside=dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0])
+                              for coord in poly.exterior.coords]),
         interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
-    return get_data_for_time_series(get_obs_request)
+    coverages = get_obsrequest(get_obs_request)
+    coverages = edr_formatter[f](coverages)  # will need to handle new format request
+    if len(coverages) == 0:
+        raise HTTPException(status_code=404, detail="No data found")
+    elif len(coverages) == 1:
+        return coverages[0]
+    else:
+        return CoverageCollection(
+            coverages=coverages, parameters=coverages[0].parameters
+        )  # HACK to take parameters from first one
