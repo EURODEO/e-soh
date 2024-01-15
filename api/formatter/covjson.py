@@ -32,6 +32,7 @@ class Covjson(EDR_formatter):
 
     def __init__(self):
         self.alias = ["covjson", "coveragejson"]
+        self.mime_type = "application/json"  # find the type for covjson
 
     def convert(self, response):
         # Collect data

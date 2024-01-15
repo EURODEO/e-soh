@@ -1,7 +1,7 @@
 import importlib
 import glob
 
-from base_formatter import EDR_formatter
+from formatter.base_formatter import EDR_formatter
 
 
 def get_EDR_formatters() -> dict:
