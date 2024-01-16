@@ -9,7 +9,7 @@ from locust import events
 from locust import task
 from netcdf_file_to_requests import generate_dummy_requests_from_netcdf_per_station_per_timestamp
 
-
+print(Path(__file__))
 file_path = Path(Path(__file__).parents[1] / "data-loader" / "test-data" / "KNMI" / "20230101.nc")
 
 # stations = [
