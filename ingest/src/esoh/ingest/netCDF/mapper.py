@@ -2,7 +2,7 @@ import json
 import os
 
 
-class mapper():
+class Mapper:
     """
     Delivers and loads json mappings for netCDF metadata parsing
     Will lazy load maps.
@@ -42,4 +42,4 @@ class mapper():
 
 
 if __name__ == "__main__":
-    mapper()
+    Mapper()

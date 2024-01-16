@@ -1,6 +1,8 @@
-import sys
 import os
-from bufresohmsg_py import bufrprint_py, init_bufrtables_py
+import sys
+
+from bufresohmsg_py import bufrprint_py
+from bufresohmsg_py import init_bufrtables_py
 
 
 def bufrprint(bufr_file: str) -> str:
@@ -22,7 +24,6 @@ def bufrprint(bufr_file: str) -> str:
 
 
 if __name__ == "__main__":
-
     test_path = "../test/test_data/SYNOP_BUFR_2718.bufr"
     msg = ""
 
