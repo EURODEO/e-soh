@@ -11,3 +11,4 @@ shapely~=2.0
 pandas~=2.1
 psycopg2-binary~=2.9
 xarray~=2023.12
+apscheduler~=3.10

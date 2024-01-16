@@ -4,6 +4,8 @@
 #
 #    pip-compile --no-emit-index-url
 #
+apscheduler==3.10.4
+    # via -r requirements.in
 blinker==1.7.0
     # via flask
 brotli==1.1.0
@@ -84,7 +86,9 @@ psycopg2-binary==2.9.9
 python-dateutil==2.8.2
     # via pandas
 pytz==2023.3.post1
-    # via pandas
+    # via
+    #   apscheduler
+    #   pandas
 pyzmq==25.1.2
     # via locust
 requests==2.31.0
@@ -95,10 +99,13 @@ shapely==2.0.2
     # via -r requirements.in
 six==1.16.0
     # via
+    #   apscheduler
     #   geventhttpclient
     #   python-dateutil
 tzdata==2023.4
     # via pandas
+tzlocal==5.2
+    # via apscheduler
 urllib3==2.1.0
     # via requests
 werkzeug==3.0.1
