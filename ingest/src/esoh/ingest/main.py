@@ -1,31 +1,33 @@
-from esoh.ingest.send_mqtt import mqtt_connection
-from esoh.ingest.messages import messages
-from esoh.ingest.datastore import datastore_connection
-
-from jsonschema import Draft202012Validator
 import json
-
-import pkg_resources
 import logging
 import os
 import re
+
 import grpc
+import pkg_resources
+from esoh.ingest.datastore import DatastoreConnection
+from esoh.ingest.messages import messages
+from esoh.ingest.send_mqtt import MQTTConnection
+from jsonschema import Draft202012Validator
 
 logger = logging.getLogger(__name__)
 
 
-class ingest_to_pipeline():
+class IngestToPipeline:
     """
     This class should be the main interaction with this python package.
     Should accept paths or objects to pass on to the datastore and mqtt broker.
     """
 
-    def __init__(self, mqtt_conf: dict,
-                 dstore_conn: dict,
-                 uuid_prefix: str,
-                 testing: bool = False,
-                 schema_path=None,
-                 schema_file=None):
+    def __init__(
+        self,
+        mqtt_conf: dict,
+        dstore_conn: dict,
+        uuid_prefix: str,
+        testing: bool = False,
+        schema_path=None,
+        schema_file=None,
+    ):
         self.uuid_prefix = uuid_prefix
 
         if not schema_path:
@@ -45,14 +47,13 @@ class ingest_to_pipeline():
         if testing:
             return
 
-        self.dstore = datastore_connection(dstore_conn["dshost"], dstore_conn["dsport"])
+        self.dstore = DatastoreConnection(dstore_conn["dshost"], dstore_conn["dsport"])
         if "username" in mqtt_conf:
-            self.mqtt = mqtt_connection(mqtt_conf["host"],
-                                        mqtt_conf["topic"],
-                                        mqtt_conf["username"],
-                                        mqtt_conf["password"])
+            self.mqtt = MQTTConnection(
+                mqtt_conf["host"], mqtt_conf["topic"], mqtt_conf["username"], mqtt_conf["password"]
+            )
         else:
-            self.mqtt = mqtt_connection(mqtt_conf["host"], mqtt_conf["topic"])
+            self.mqtt = MQTTConnection(mqtt_conf["host"], mqtt_conf["topic"])
 
     def ingest(self, message: [str, object], input_type: str = None):
         """
@@ -106,12 +107,6 @@ class ingest_to_pipeline():
             if isinstance(message, str):
                 input_type = self._decide_input_type(message)
             else:
-                logger.critical("Illegal usage, not allowed to input"
-                                + "objects without specifying input type")
-                raise TypeError("Illegal usage, not allowed to input"
-                                + "objects without specifying input type")
-        return messages(message,
-                        input_type,
-                        self.uuid_prefix,
-                        self.schema_path,
-                        self.schema_validator)
+                logger.critical("Illegal usage, not allowed to input" + "objects without specifying input type")
+                raise TypeError("Illegal usage, not allowed to input" + "objects without specifying input type")
+        return messages(message, input_type, self.uuid_prefix, self.schema_path, self.schema_validator)

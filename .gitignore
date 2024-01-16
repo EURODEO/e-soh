@@ -198,3 +198,9 @@ __pycache__/
 venv/
 
 .env
+
+# Ignore generated local protobuf files.
+datastore_pb2.py
+datastore_pb2_grpc.py
+# Ignore all the copied protobuf directories, as the root contains the source of truth.
+**/protobuf

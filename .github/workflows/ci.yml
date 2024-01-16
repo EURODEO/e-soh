@@ -3,9 +3,9 @@ name: CI
 on:
   push:
     branches:
-      - '**'
+      - "**"
     tags:
-      - '[0-9]+.[0-9]+.[0-9]+'
+      - "[0-9]+.[0-9]+.[0-9]+"
 
 permissions:
   contents: read
@@ -14,23 +14,23 @@ jobs:
   pre-commit-hook:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-python@v3
-    - name: Install pre-commit
-      run: python -m pip install pre-commit
-      shell: bash
-    - name: Show pre-commit requirements
-      run: python -m pip freeze --local
-      shell: bash
-    - uses: actions/cache@v3
-      with:
-        path: ~/.cache/pre-commit
-        key: pre-commit-3|${{ env.pythonLocation }}|${{ hashFiles('.pre-commit-config.yaml') }}
-    - name: Run pre-commit for all files
-      run: pre-commit run --config './.pre-commit-config.yaml' --all-files --color=always --show-diff-on-failure
-      shell: bash
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+      - name: Install pre-commit
+        run: python -m pip install pre-commit
+        shell: bash
+      - name: Show pre-commit requirements
+        run: python -m pip freeze --local
+        shell: bash
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/pre-commit
+          key: pre-commit-3|${{ env.pythonLocation }}|${{ hashFiles('.pre-commit-config.yaml') }}
+      - name: Run pre-commit for all files
+        run: pre-commit run --config './.pre-commit-config.yaml' --all-files --color=always --show-diff-on-failure
+        shell: bash
 
-  test:
+  test-datastore:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
@@ -38,28 +38,31 @@ jobs:
 
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: "3.11"
+
+      - name: Copy Protobuf files to Dockerfile directories
+        run: ./ci/docker/copy-protobuf.sh
 
       - name: Build docker containers
-        run: docker compose --project-directory datastore --profile test build
+        run: docker compose --profile test build
 
       - name: Start docker stack
-        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose --project-directory datastore up -d
+        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose up -d
 
       - name: Test loader runs without errors
-        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose --project-directory datastore run --rm loader
+        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm loader
 
       - name: Integration test
-        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose --project-directory datastore run --rm integration
+        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm integration
 
       - name: Test client runs without errors
-        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose --project-directory datastore run --rm client
+        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm client
 
       - name: Run load test
         run: |
           python --version
           pip install -r datastore/load-test/requirements.txt
-          python -m grpc_tools.protoc --proto_path=datastore/datastore/protobuf datastore.proto --python_out=datastore/load-test --grpc_python_out=datastore/load-test
+          python -m grpc_tools.protoc --proto_path=./protobuf datastore.proto --python_out=datastore/load-test --grpc_python_out=datastore/load-test
           cd datastore/load-test
           locust --headless -u 5 -r 1 --run-time 60 --only-summary --csv store
 
@@ -81,4 +84,29 @@ jobs:
 
       - name: Cleanup
         if: always()
-        run: docker compose --project-directory datastore down --volumes
+        run: docker compose down --volumes
+  test-ingest:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10"] # Add 3.11 back pybind11 bug is fixed
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v3
+      - name: Ubuntu setup
+        run: sudo apt update && sudo apt install libeccodes-data	rapidjson-dev	pybind11-dev libssl-dev
+      - name: Python Setup
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: x64
+      - name: Checkout Source
+        uses: actions/checkout@v3
+      - name: Install Dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pytest-timeout
+          pip install pytest-cov
+          pip install ./ingest
+      - name: Run Tests
+        run: python -m pytest -v --timeout=60 ./ingest

@@ -2,8 +2,6 @@ FROM python:3.11-slim-bookworm
 
 SHELL ["/bin/bash", "-eux", "-o", "pipefail", "-c"]
 
-ENV PROJECT_DATASTORE_PATH="datastore"
-ENV PROJECT_PYTHON_PATH="api"
 ENV DOCKER_PATH="/app"
 
 RUN apt-get update \
@@ -15,8 +13,8 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-COPY "${PROJECT_DATASTORE_PATH}/protobuf/datastore.proto" "/protobuf/datastore.proto"
-COPY "${PROJECT_PYTHON_PATH}/requirements.txt" "${DOCKER_PATH}/requirements.txt"
+COPY "./protobuf/datastore.proto" "/protobuf/datastore.proto"
+COPY "./requirements.txt" "${DOCKER_PATH}/requirements.txt"
 
 # hadolint ignore=DL3013
 RUN pip install --no-cache-dir --upgrade pip \
@@ -28,8 +26,8 @@ RUN python -m grpc_tools.protoc  \
     --python_out="${DOCKER_PATH}"  \
     --grpc_python_out="${DOCKER_PATH}"
 
-COPY "${PROJECT_PYTHON_PATH}/main.py" "${DOCKER_PATH}/main.py"
-COPY "${PROJECT_PYTHON_PATH}/metadata_endpoints.py" "${DOCKER_PATH}/metadata_endpoints.py"
+COPY "./main.py" "${DOCKER_PATH}/main.py"
+COPY "./metadata_endpoints.py" "${DOCKER_PATH}/metadata_endpoints.py"
 
 WORKDIR "${DOCKER_PATH}"
 CMD ["gunicorn", "main:app", "--workers=4", "--worker-class=uvicorn.workers.UvicornWorker", "--bind=0.0.0.0:8000"]
