@@ -18,7 +18,7 @@ The E-SOH service consist of three parts.
 ## Usage
 All three parts of the service is kept in this repository and can be built and setup using docker-compose. For more documentation on each part of the service see README.md in each relevant folder in this repository.
 
-To keep a small docker context, and not have the extra maintenance of a .dockerignore. It is necessary when running locally to copy the protobuf file to the Dockerfile directories. You can do this by running: `./ci/docker/copy-protobuf.sh`. Which copies the protobuf files to all specified Dockerfile directories. At the moment the ingestor is not included.
+To keep a small docker context and not have the extra maintenance of a .dockerignore, it is necessary when running locally to copy the protobuf file to the Dockerfile directories. You can do this by running: `./ci/docker/copy-protobuf.sh`. Which copies the protobuf files to all specified Dockerfile directories. At the moment the ingestor is not included.
 
 ## Pre-commit
 
