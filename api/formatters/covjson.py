@@ -1,4 +1,5 @@
 import math
+
 from datetime import timezone
 from itertools import groupby
 
@@ -14,16 +15,17 @@ from covjson_pydantic.parameter import Parameter
 from covjson_pydantic.reference_system import ReferenceSystem
 from covjson_pydantic.reference_system import ReferenceSystemConnectionObject
 from covjson_pydantic.unit import Unit
-from fastapi import HTTPException
-from formatters.base_formatter import EDRFormatter
+
 from pydantic import AwareDatetime
 
+from formatters.base_formatter import EDR_formatter
+
+
 # Requierd for pugin discovery
-# Need to be available at top level of formatter plugin
 formatter_name = "Covjson"
 
 
-class Covjson(EDRFormatter):
+class Covjson(EDR_formatter):
     """
     Class for converting protobuf object to coverage json
     """
@@ -45,7 +47,8 @@ class Covjson(EDRFormatter):
             referencing = [
                 ReferenceSystemConnectionObject(
                     coordinates=["y", "x"],
-                    system=ReferenceSystem(type="GeographicCRS", id="http://www.opengis.net/def/crs/EPSG/0/4326"),
+                    system=ReferenceSystem(type="GeographicCRS",
+                                           id="http://www.opengis.net/def/crs/EPSG/0/4326"),
                 ),
                 ReferenceSystemConnectionObject(
                     coordinates=["z"],
@@ -78,17 +81,9 @@ class Covjson(EDRFormatter):
                 )
 
             coverages.append(Coverage(domain=domain, parameters=parameters, ranges=ranges))
+            return CoverageCollection(coverages=coverages)
 
-        if len(coverages) == 0:
-            raise HTTPException(status_code=404, detail="No data found")
-        elif len(coverages) == 1:
-            return coverages[0]
-        else:
-            return CoverageCollection(
-                coverages=coverages, parameters=coverages[0].parameters
-            )  # HACK to take parameters from first one
-
-    def _collect_data(self, ts_mdata, obs_mdata):
+    def _collect_data(ts_mdata, obs_mdata):
         lat = obs_mdata[0].geo_point.lat  # HACK: For now assume they all have the same position
         lon = obs_mdata[0].geo_point.lon
         tuples = (

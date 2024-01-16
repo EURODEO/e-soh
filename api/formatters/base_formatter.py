@@ -1,13 +1,11 @@
-from abc import ABC
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 
 
-class EDRFormatter(ABC):
+class EDR_formatter(ABC):
     """
     This is the abstract class for implementing a formatter in the E-SOH EDR formatter
     Name of class should represent expected output format.
     """
-
     pass
 
     @abstractmethod
