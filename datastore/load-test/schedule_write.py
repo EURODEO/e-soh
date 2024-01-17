@@ -93,7 +93,7 @@ if __name__ == "__main__":
         print(station_id, cron, period)
         # TODO: Spread less well over time, for example, all use same second, but add jitter < 60
         trigger = CronTrigger(minute=cron, second=random.randint(0, 59), jitter=1)
-        scheduler.add_job(write_data, args=(station,), id=station_id, trigger=trigger)
+        scheduler.add_job(write_data, args=(station,), id=station_id, name=station_id, trigger=trigger)
     print("Press Ctrl+{0} to exit".format("Break" if os.name == "nt" else "C"))
 
     try:
