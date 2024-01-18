@@ -72,7 +72,7 @@ jobs:
           python -m grpc_tools.protoc --proto_path=./protobuf datastore.proto --python_out=datastore/load-test --grpc_python_out=datastore/load-test
           cd datastore/load-test
           python schedule_write.py > schedule_write.log 2>&1 &
-          locust -f locustfile_read.py --headless -u 5 -r 10 --run-time 60 --only-summary --csv store_rw
+          locust -f locustfile_read.py --headless -u 10 -r 10 --run-time 1800 --only-summary --csv store_rw
           kill %1
           cat schedule_write.log
 
