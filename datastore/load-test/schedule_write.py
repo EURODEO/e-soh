@@ -85,16 +85,15 @@ if __name__ == "__main__":
     scheduler = BlockingScheduler()
     # scheduler.add_executor(ProcessPoolExecutor())
     scheduler.add_executor(ThreadPoolExecutor())
-    print(datetime.now())
+    print(f"Now: {datetime.now()}")
     for i in range(0, 5000):
         (period, cron) = random.choice(crons)
         station_id = f"station{i:04d}"
         station = Station(station_id, random.uniform(50.0, 55.0), random.uniform(4.0, 8.0), period)
-        print(station_id, cron, period)
+        # print(station_id, cron, period)
         # TODO: Spread less well over time, for example, all use same second, but add jitter < 60
         trigger = CronTrigger(minute=cron, second=random.randint(0, 59), jitter=1)
         scheduler.add_job(write_data, args=(station,), id=station_id, name=station_id, trigger=trigger)
-    print("Press Ctrl+{0} to exit".format("Break" if os.name == "nt" else "C"))
 
     try:
         scheduler.start()
