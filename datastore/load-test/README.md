@@ -15,7 +15,23 @@ A example run of the test in the ci is shown in the table below for 60 sec runti
 
 ## Write test
 
-### Setup & Data preparation
+### Write data using apscheduler
+[Advanced Python Scheduler](https://apscheduler.readthedocs.io/en/3.x/) is a package that can be
+used to schedule a large amount of jobs.
+
+We represent each station by an apscheduler job, which is scheduled to send data for all variables of that
+station once every 1, 5 or 10 minutes (randomly chosen). The timestamps in the data correspond to actual
+clock time, and the data values are randomly chosen. The setup will continue processing data until stopped.
+This will allow testing of the cleanup functionality of the datastore.
+
+A setup with 5000 stations roughly represents that actual expected load of the E-SOH system.
+
+To manually run the data writer, do the following:
+```shell
+python schedule_write.py
+```
+
+### Setup & Data preparation (alternative setup using locust for writing)
 To resemble the load from all EU partner, we need to multiply KNMI data and increase the input time resolution. For this we
 need to:
 * Generate dummy data from the KNMI input data by expanding the 10-minute observations to 100-sec observations.
@@ -32,12 +48,12 @@ Test requirements
 * User spawn rate = 1 user per sec
 
 ### Run locust via web
-```text
+```shell
 locust -f load-test/locustfile_write.py
 ```
 
 ### Run locust only via command line
-```text
+```shell
 locust -f load-test/locustfile_write.py --headless -u <USERS> -r <SPAWN_RATE> --run-time <RUNTIME> --only-summary --csv store_write
 ```
 
@@ -59,13 +75,13 @@ test. This is enforced by the weight variable for both user classes.
 
 ### Run multiple locust files via web
 
-```text
+```shell
 locust -f load-test/locustfile_write.py,load-test/locustfile_read.py
 ```
 
 ### Run multiple locust files only via command line
 
-```text
+```shell
 locust -f load-test/locustfile_write.py,load-test/locustfile_read.py --headless -u <USERS> -r <SPAWN_RATE> --run-time <RUNTIME> --only-summary --csv store_write_read
 ```
 

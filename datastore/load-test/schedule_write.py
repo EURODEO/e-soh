@@ -85,7 +85,7 @@ if __name__ == "__main__":
     scheduler = BlockingScheduler()
     # scheduler.add_executor(ProcessPoolExecutor())
     scheduler.add_executor(ThreadPoolExecutor())
-    print(f"Now: {datetime.now()}")
+    print(f"Now: {datetime.now()}", flush=True)
     for i in range(0, 5000):
         (period, cron) = random.choice(crons)
         station_id = f"station{i:04d}"
@@ -98,4 +98,4 @@ if __name__ == "__main__":
     try:
         scheduler.start()
     except (KeyboardInterrupt, SystemExit):
-        print("Shutting down...")
+        print("Shutting down...", flush=True)
