@@ -36,14 +36,14 @@ from shapely import geometry
 from shapely import wkt
 
 
-from grpc_getter import get_obsrequest
+from grpc_getter import getObsRequest
 
-from formatter import get_EDR_formatters
+import formatters
 
 app = FastAPI()
 app.add_middleware(BrotliMiddleware)
 
-edr_formatter = get_EDR_formatters()
+edr_formatter, edr_format_pydantic_model = formatters.get_EDR_formatters()
 
 
 def get_datetime_range(datetime_string: str | None) -> Tuple[Timestamp, Timestamp] | None:
@@ -144,10 +144,11 @@ def get_locations(bbox: str = Query(..., example="5.0,52.0,6.0,52.1")) -> Featur
     response_model=Coverage,
     response_model_exclude_none=True,
 )
-def get_data_location_id(
+async def get_data_location_id(
     location_id: str = Path(..., example="06260"),
     parameter_name: str = Query(..., alias="parameter-name", example="dd,ff,rh,pp,tn"),
     datetime: str | None = None,
+    f: edr_format_pydantic_model | None = "covjson"
 ):
     # TODO: There is no error handling of any kind at the moment!
     #  This is just a quick and dirty demo
@@ -157,7 +158,8 @@ def get_data_location_id(
         instruments=list(map(str.strip, parameter_name.split(","))),
         interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
-    return get_data_for_time_series(get_obs_request)
+    response = await getObsRequest(get_obs_request)
+    return edr_formatter[f](response)
 
 
 @app.get(
@@ -183,11 +185,11 @@ def get_data_position(
     response_model=Coverage | CoverageCollection,
     response_model_exclude_none=True,
 )
-def get_data_area(
+async def get_data_area(
     coords: str = Query(..., example="POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))"),
     parameter_name: str = Query(..., alias="parameter-name", example="dd,ff,rh,pp,tn"),
     datetime: str | None = None,
-    f: str | None = "covjson"
+    f: str = Query(default="covjson", alias="file", example="covjson")
 ):
     poly = wkt.loads(coords)
     assert poly.geom_type == "Polygon"
@@ -198,13 +200,6 @@ def get_data_area(
                               for coord in poly.exterior.coords]),
         interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
-    coverages = get_obsrequest(get_obs_request)
-    coverages = edr_formatter[f](coverages)  # will need to handle new format request
-    if len(coverages) == 0:
-        raise HTTPException(status_code=404, detail="No data found")
-    elif len(coverages) == 1:
-        return coverages[0]
-    else:
-        return CoverageCollection(
-            coverages=coverages, parameters=coverages[0].parameters
-        )  # HACK to take parameters from first one
+    coverages = await getObsRequest(get_obs_request)
+    coverages = edr_formatter[f](coverages)
+    return coverages
