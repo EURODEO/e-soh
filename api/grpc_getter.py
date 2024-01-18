@@ -4,9 +4,14 @@ import os
 import datastore_pb2_grpc as dstore_grpc
 
 
-def get_obsrequest(get_obs_request):
-    with grpc.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") as channel:
-        grpc_stub = dstore_grpc.DatastoreStub(channel)
-        response = grpc_stub.GetObservations(get_obs_request)
+# Functions in this file should be made async,
+# These functions should be the only components that are
+# dependent on external services.
+
+async def getObsRequest(get_obs_request):
+    channel = grpc.aio.insecure_channel(
+        f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}")
+    grpc_stub = dstore_grpc.DatastoreStub(channel)
+    response = await grpc_stub.GetObservations(get_obs_request)
 
     return response

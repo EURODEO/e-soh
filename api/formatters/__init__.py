@@ -1,3 +1,4 @@
+from pydantic import BaseModel, validator
 import importlib
 import pkgutil
 
@@ -21,5 +22,14 @@ def get_EDR_formatters() -> dict:
             formatter_module, formatter_module.formatter_name)
 
     # Should also setup dict for alias discovery
+    class edr_formatters_model(BaseModel):
+        f: str
 
-    return available_formatters
+        @validator("f")
+        def f_must_be_available_formatter(cls, f):
+            named_formatters = list(available_formatters.keys())
+            if f not in named_formatters:
+                raise ValueError(f"f must be a provided formatter, one of {named_formatters}")
+            return f
+
+    return available_formatters, edr_formatters_model

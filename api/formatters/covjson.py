@@ -22,6 +22,7 @@ from formatters.base_formatter import EDR_formatter
 
 
 # Requierd for pugin discovery
+# Need to be available at top level of formatter plugin
 formatter_name = "Covjson"
 
 
