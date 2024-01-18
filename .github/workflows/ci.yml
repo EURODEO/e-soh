@@ -75,6 +75,7 @@ jobs:
           locust -f locustfile_read.py --headless -u 5 -r 10 --run-time 60 --only-summary --csv store_rw
           kill %1
           cat schedule_write.log
+          sleep 1
 
       - name: Archive load test artifacts
         uses: actions/upload-artifact@v3
