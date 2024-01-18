@@ -189,7 +189,7 @@ async def get_data_area(
     coords: str = Query(..., example="POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))"),
     parameter_name: str = Query(..., alias="parameter-name", example="dd,ff,rh,pp,tn"),
     datetime: str | None = None,
-    f: str = Query(default="covjson", alias="file", example="covjson")
+    f: str = Query(default="covjson", alias="f", description="Specify return format.")
 ):
     poly = wkt.loads(coords)
     assert poly.geom_type == "Polygon"
