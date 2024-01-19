@@ -82,16 +82,18 @@ class Covjson(EDR_formatter):
                 )
 
             coverages.append(Coverage(domain=domain, parameters=parameters, ranges=ranges))
+            if not coverages:
+                return {}
             return CoverageCollection(coverages=coverages)
 
-    def _collect_data(ts_mdata, obs_mdata):
+    def _collect_data(self, ts_mdata, obs_mdata):
         lat = obs_mdata[0].geo_point.lat  # HACK: For now assume they all have the same position
         lon = obs_mdata[0].geo_point.lon
         tuples = (
             (o.obstime_instant.ToDatetime(tzinfo=timezone.utc), float(o.value)) for o in obs_mdata
         )  # HACK: str -> float
         (times, values) = zip(*tuples)
-        param_id = ts_mdata.instrument
+        param_id = ts_mdata.standard_name
         unit = ts_mdata.unit
 
         return (lat, lon, times), param_id, unit, values
