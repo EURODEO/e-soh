@@ -1,8 +1,11 @@
 from pydantic import BaseModel, validator
 import importlib
 import pkgutil
+import logging
 
 import formatters
+
+logger = logging.getLogger(__name__)
 
 
 def get_EDR_formatters() -> dict:
@@ -15,21 +18,12 @@ def get_EDR_formatters() -> dict:
 
     formatter_plugins = [importlib.import_module("formatters."+i.name) for i in pkgutil.iter_modules(
         formatters.__path__) if i.name != "base_formatter"]
-    print(formatter_plugins)
+    logger.info(f"Loaded plugins : {formatter_plugins}")
     for formatter_module in formatter_plugins:
         # Make instance of formatter and save
         available_formatters[formatter_module.__name__.split(".")[-1]] = getattr(
-            formatter_module, formatter_module.formatter_name)
+            formatter_module, formatter_module.formatter_name)()
 
-    # Should also setup dict for alias discovery
-    class edr_formatters_model(BaseModel):
-        f: str
+    # Should also setup dict for alias discover
 
-        @validator("f")
-        def f_must_be_available_formatter(cls, f):
-            named_formatters = list(available_formatters.keys())
-            if f not in named_formatters:
-                raise ValueError(f"f must be a provided formatter, one of {named_formatters}")
-            return f
-
-    return available_formatters, edr_formatters_model
+    return available_formatters
