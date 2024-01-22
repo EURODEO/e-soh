@@ -3,8 +3,7 @@ import datetime
 import json
 import random
 import sys
-from abc import ABC
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 
 import common
 from netcdfsbe_tsmdatainpostgis import NetCDFSBE_TSMDataInPostGIS

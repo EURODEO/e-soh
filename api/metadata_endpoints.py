@@ -1,14 +1,8 @@
-from edr_pydantic.capabilities import Contact
-from edr_pydantic.capabilities import LandingPageModel
-from edr_pydantic.capabilities import Provider
-from edr_pydantic.collections import Collection
-from edr_pydantic.collections import Collections
-from edr_pydantic.data_queries import DataQueries
-from edr_pydantic.data_queries import EDRQuery
-from edr_pydantic.extent import Extent
-from edr_pydantic.extent import Spatial
-from edr_pydantic.link import EDRQueryLink
-from edr_pydantic.link import Link
+from edr_pydantic.capabilities import Contact, LandingPageModel, Provider
+from edr_pydantic.collections import Collection, Collections
+from edr_pydantic.data_queries import DataQueries, EDRQuery
+from edr_pydantic.extent import Extent, Spatial
+from edr_pydantic.link import EDRQueryLink, Link
 from edr_pydantic.variables import Variables
 
 

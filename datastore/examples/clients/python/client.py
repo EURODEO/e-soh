@@ -3,8 +3,7 @@
 # Generate protobuf code with following command from top level directory:
 # python -m grpc_tools.protoc --proto_path=datastore/protobuf datastore.proto --python_out=examples/clients/python --grpc_python_out=examples/clients/python  # noqa: E501
 import os
-from datetime import datetime
-from datetime import timezone
+from datetime import datetime, timezone
 
 import datastore_pb2 as dstore
 import datastore_pb2_grpc as dstore_grpc
