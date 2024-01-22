@@ -1,4 +1,3 @@
-from pydantic import BaseModel, validator
 import importlib
 import pkgutil
 import logging
@@ -16,8 +15,10 @@ def get_EDR_formatters() -> dict:
     """
     available_formatters = {}
 
-    formatter_plugins = [importlib.import_module("formatters."+i.name) for i in pkgutil.iter_modules(
-        formatters.__path__) if i.name != "base_formatter"]
+    formatter_plugins = [
+        importlib.import_module("formatters."+i.name)
+        for i in pkgutil.iter_modules(formatters.__path__)
+        if i.name != "base_formatter"]
     logger.info(f"Loaded plugins : {formatter_plugins}")
     for formatter_module in formatter_plugins:
         # Make instance of formatter and save

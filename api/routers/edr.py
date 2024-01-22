@@ -6,7 +6,7 @@ from covjson_pydantic.coverage import CoverageCollection
 
 # from edr_pydantic.collections import Collection
 # from edr_pydantic.collections import Collections
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 # from fastapi import HTTPException
 from fastapi import Path
 from fastapi import Query
