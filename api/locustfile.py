@@ -1,6 +1,7 @@
 import random
 
-from locust import HttpUser, task
+from locust import HttpUser
+from locust import task
 
 parameters = ["ff", "dd", "rh", "pp", "tn"]
 # fmt: off
