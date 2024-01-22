@@ -1,6 +1,6 @@
 import importlib
-import pkgutil
 import logging
+import pkgutil
 
 import formatters
 

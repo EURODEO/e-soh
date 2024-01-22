@@ -1,7 +1,7 @@
-import grpc
 import os
 
 import datastore_pb2_grpc as dstore_grpc
+import grpc
 
 
 # Functions in this file should be made async,
