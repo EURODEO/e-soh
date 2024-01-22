@@ -7,6 +7,7 @@ from covjson_pydantic.coverage import CoverageCollection
 # from edr_pydantic.collections import Collection
 # from edr_pydantic.collections import Collections
 from fastapi import APIRouter
+
 # from fastapi import HTTPException
 from fastapi import Path
 from fastapi import Query
@@ -22,9 +23,7 @@ import formatters
 from dependencies import get_datetime_range
 from grpc_getter import getObsRequest
 
-router = APIRouter(
-    prefix="/collections/observations"
-)
+router = APIRouter(prefix="/collections/observations")
 
 edr_formatter = formatters.get_EDR_formatters()
 
@@ -42,8 +41,7 @@ async def get_locations(bbox: str = Query(..., example="5.0,52.0,6.0,52.1")) -> 
     poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
     ts_request = dstore.GetObsRequest(
         instruments=["tn"],  # Hack
-        inside=dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0])
-                                      for coord in poly.exterior.coords]),
+        inside=dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]),
     )
 
     ts_response = await getObsRequest(ts_request)
@@ -73,7 +71,7 @@ async def get_data_location_id(
     location_id: str = Path(..., example="06260"),
     parameter_name: str = Query(..., alias="parameter-name", example="dd,ff,rh,pp,tn"),
     datetime: str | None = None,
-    f: str = Query(default="covjson", alias="f", description="Specify return format.")
+    f: str = Query(default="covjson", alias="f", description="Specify return format."),
 ):
     # TODO: There is no error handling of any kind at the moment!
     #  This is just a quick and dirty demo
@@ -97,7 +95,7 @@ async def get_data_position(
     coords: str = Query(..., example="POINT(5.179705 52.0988218)"),
     parameter_name: str = Query(..., alias="parameter-name", example="dd,ff,rh,pp,tn"),
     datetime: str | None = None,
-    f: str = Query(default="covjson", alias="f", description="Specify return format.")
+    f: str = Query(default="covjson", alias="f", description="Specify return format."),
 ):
     point = wkt.loads(coords)
     assert point.geom_type == "Point"
@@ -115,15 +113,14 @@ async def get_data_area(
     coords: str = Query(..., example="POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))"),
     parameter_name: str = Query(..., alias="parameter-name", example="dd,ff,rh,pp,tn"),
     datetime: str | None = None,
-    f: str = Query(default="covjson", alias="f", description="Specify return format.")
+    f: str = Query(default="covjson", alias="f", description="Specify return format."),
 ):
     poly = wkt.loads(coords)
     assert poly.geom_type == "Polygon"
     range = get_datetime_range(datetime)
     get_obs_request = dstore.GetObsRequest(
         standard_names=list(map(str.strip, parameter_name.split(","))),
-        inside=dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0])
-                              for coord in poly.exterior.coords]),
+        inside=dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]),
         interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
     coverages = await getObsRequest(get_obs_request)

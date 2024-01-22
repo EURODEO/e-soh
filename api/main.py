@@ -10,6 +10,7 @@ from edr_pydantic.collections import Collections
 from fastapi import FastAPI, Request
 
 from routers import edr  # , records
+
 logger = logging.getLogger(__name__)
 
 app = FastAPI()
@@ -44,6 +45,7 @@ async def get_collections(request: Request) -> Collections:
 )
 async def get_collection_metadata(request: Request) -> Collection:
     return metadata_endpoints.get_collection_metadata(request)
+
 
 # Include all routes
 app.include_router(edr.router)
