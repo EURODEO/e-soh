@@ -1,25 +1,17 @@
 import math
-
 from datetime import timezone
 from itertools import groupby
 
-from covjson_pydantic.coverage import Coverage
-from covjson_pydantic.coverage import CoverageCollection
-from covjson_pydantic.domain import Axes
-from covjson_pydantic.domain import Domain
-from covjson_pydantic.domain import DomainType
-from covjson_pydantic.domain import ValuesAxis
+from covjson_pydantic.coverage import Coverage, CoverageCollection
+from covjson_pydantic.domain import Axes, Domain, DomainType, ValuesAxis
 from covjson_pydantic.ndarray import NdArray
 from covjson_pydantic.observed_property import ObservedProperty
 from covjson_pydantic.parameter import Parameter
-from covjson_pydantic.reference_system import ReferenceSystem
-from covjson_pydantic.reference_system import ReferenceSystemConnectionObject
+from covjson_pydantic.reference_system import (ReferenceSystem,
+                                               ReferenceSystemConnectionObject)
 from covjson_pydantic.unit import Unit
-
-from pydantic import AwareDatetime
-
 from formatters.base_formatter import EDR_formatter
-
+from pydantic import AwareDatetime
 
 # Requierd for pugin discovery
 # Need to be available at top level of formatter plugin

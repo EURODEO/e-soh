@@ -9,9 +9,7 @@ import datastore_pb2_grpc as dstore_grpc
 import grpc_user
 from google.protobuf.timestamp_pb2 import Timestamp
 from locust import task
-from shapely import buffer
-from shapely import wkt
-
+from shapely import buffer, wkt
 
 parameters = ["ff", "dd", "rh", "pp", "tn"]
 # fmt: off

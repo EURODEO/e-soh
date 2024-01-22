@@ -1,6 +1,5 @@
 import sys
-from abc import ABC
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 
 import common
 import psycopg2

@@ -1,6 +1,5 @@
 import time
-from typing import Any
-from typing import Callable
+from typing import Any, Callable
 
 import grpc
 import grpc.experimental.gevent as grpc_gevent

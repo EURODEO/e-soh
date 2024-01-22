@@ -2,8 +2,7 @@ import json
 import sys
 
 import common
-from pgopbackend import PsqlBE
-from pgopbackend import Psycopg2BE
+from pgopbackend import PsqlBE, Psycopg2BE
 from storagebackend import StorageBackend
 
 # NOTE: we assume that the risk of SQL injection is zero in this context
