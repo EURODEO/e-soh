@@ -7,7 +7,8 @@ from brotli_asgi import BrotliMiddleware
 from edr_pydantic.capabilities import LandingPageModel
 from edr_pydantic.collections import Collection
 from edr_pydantic.collections import Collections
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
+from fastapi import Request
 
 from routers import edr  # , records
 
