@@ -3,13 +3,12 @@ import json
 
 import pytest
 import xarray as xr
-from esoh.ingest.bufr.bufresohmsg_py import (
-    init_bufr_schema_py,
-    init_bufrtables_py,
-    init_oscar_py,
-)
+from esoh.ingest.bufr.bufresohmsg_py import init_bufr_schema_py
+from esoh.ingest.bufr.bufresohmsg_py import init_bufrtables_py
+from esoh.ingest.bufr.bufresohmsg_py import init_oscar_py
 from esoh.ingest.main import IngestToPipeline
-from jsonschema import Draft202012Validator, ValidationError
+from jsonschema import Draft202012Validator
+from jsonschema import ValidationError
 
 
 @pytest.mark.timeout(1000)

@@ -7,7 +7,8 @@ from datetime import datetime
 from multiprocessing import cpu_count
 from pathlib import Path
 from time import perf_counter
-from typing import List, Tuple
+from typing import List
+from typing import Tuple
 
 import datastore_pb2 as dstore
 import datastore_pb2_grpc as dstore_grpc

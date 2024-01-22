@@ -17,7 +17,8 @@ import argparse
 import os
 import sys
 from collections import deque
-from datetime import datetime, timezone
+from datetime import datetime
+from datetime import timezone
 
 import datastore_pb2 as dstore
 import datastore_pb2_grpc as dstore_grpc
