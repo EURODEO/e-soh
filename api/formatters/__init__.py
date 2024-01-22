@@ -16,14 +16,16 @@ def get_EDR_formatters() -> dict:
     available_formatters = {}
 
     formatter_plugins = [
-        importlib.import_module("formatters."+i.name)
+        importlib.import_module("formatters." + i.name)
         for i in pkgutil.iter_modules(formatters.__path__)
-        if i.name != "base_formatter"]
+        if i.name != "base_formatter"
+    ]
     logger.info(f"Loaded plugins : {formatter_plugins}")
     for formatter_module in formatter_plugins:
         # Make instance of formatter and save
         available_formatters[formatter_module.__name__.split(".")[-1]] = getattr(
-            formatter_module, formatter_module.formatter_name)()
+            formatter_module, formatter_module.formatter_name
+        )()
 
     # Should also setup dict for alias discover
 

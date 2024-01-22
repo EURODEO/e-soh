@@ -24,8 +24,7 @@ def get_datetime_range(datetime_string: str | None) -> Tuple[Timestamp, Timestam
             start_datetime.FromDatetime(datetime.min)
         if datetimes[1] != "..":
             # HACK add one second so that the end_datetime is included in the interval.
-            end_datetime.FromDatetime(aware_datetime_type_adapter.validate_python(
-                datetimes[1]) + timedelta(seconds=1))
+            end_datetime.FromDatetime(aware_datetime_type_adapter.validate_python(datetimes[1]) + timedelta(seconds=1))
         else:
             end_datetime.FromDatetime(datetime.max)
 

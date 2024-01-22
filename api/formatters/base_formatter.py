@@ -6,6 +6,7 @@ class EDR_formatter(ABC):
     This is the abstract class for implementing a formatter in the E-SOH EDR formatter
     Name of class should represent expected output format.
     """
+
     pass
 
     @abstractmethod
