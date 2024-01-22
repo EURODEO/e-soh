@@ -44,7 +44,8 @@ class Covjson(EDR_formatter):
             referencing = [
                 ReferenceSystemConnectionObject(
                     coordinates=["y", "x"],
-                    system=ReferenceSystem(type="GeographicCRS", id="http://www.opengis.net/def/crs/EPSG/0/4326"),
+                    system=ReferenceSystem(type="GeographicCRS",
+                                           id="http://www.opengis.net/def/crs/EPSG/0/4326"),
                 ),
                 ReferenceSystemConnectionObject(
                     coordinates=["z"],
@@ -88,7 +89,7 @@ class Covjson(EDR_formatter):
             (o.obstime_instant.ToDatetime(tzinfo=timezone.utc), float(o.value)) for o in obs_mdata
         )  # HACK: str -> float
         (times, values) = zip(*tuples)
-        param_id = ts_mdata.standard_name
+        param_id = ts_mdata.instrument
         unit = ts_mdata.unit
 
         return (lat, lon, times), param_id, unit, values
