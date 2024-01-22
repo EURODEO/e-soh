@@ -1,8 +1,10 @@
-from datetime import datetime, timedelta
+from datetime import datetime
+from datetime import timedelta
 from typing import Tuple
 
 from google.protobuf.timestamp_pb2 import Timestamp
-from pydantic import AwareDatetime, TypeAdapter
+from pydantic import AwareDatetime
+from pydantic import TypeAdapter
 
 
 def get_datetime_range(datetime_string: str | None) -> Tuple[Timestamp, Timestamp] | None:
