@@ -45,8 +45,7 @@ class Covjson(EDR_formatter):
             referencing = [
                 ReferenceSystemConnectionObject(
                     coordinates=["y", "x"],
-                    system=ReferenceSystem(type="GeographicCRS",
-                                           id="http://www.opengis.net/def/crs/EPSG/0/4326"),
+                    system=ReferenceSystem(type="GeographicCRS", id="http://www.opengis.net/def/crs/EPSG/0/4326"),
                 ),
                 ReferenceSystemConnectionObject(
                     coordinates=["z"],
