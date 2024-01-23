@@ -62,7 +62,7 @@ services:
     build:
       context: api
     ports:
-        - "8008:8000"
+        - "8000:8000"
     environment:
       - DSHOST=store
       - DSPORT=50050
