@@ -2,8 +2,6 @@ import math
 from datetime import timezone
 from itertools import groupby
 
-from fastapi import HTTPException
-
 from covjson_pydantic.coverage import Coverage
 from covjson_pydantic.coverage import CoverageCollection
 from covjson_pydantic.domain import Axes
@@ -16,6 +14,7 @@ from covjson_pydantic.parameter import Parameter
 from covjson_pydantic.reference_system import ReferenceSystem
 from covjson_pydantic.reference_system import ReferenceSystemConnectionObject
 from covjson_pydantic.unit import Unit
+from fastapi import HTTPException
 from formatters.base_formatter import EDR_formatter
 from pydantic import AwareDatetime
 
