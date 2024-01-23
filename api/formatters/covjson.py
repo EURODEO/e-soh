@@ -2,6 +2,8 @@ import math
 from datetime import timezone
 from itertools import groupby
 
+from fastapi import HTTPException
+
 from covjson_pydantic.coverage import Coverage
 from covjson_pydantic.coverage import CoverageCollection
 from covjson_pydantic.domain import Axes
@@ -78,9 +80,15 @@ class Covjson(EDR_formatter):
                 )
 
             coverages.append(Coverage(domain=domain, parameters=parameters, ranges=ranges))
-            if not coverages:
-                return {}
-            return CoverageCollection(coverages=coverages)
+
+        if len(coverages) == 0:
+            raise HTTPException(status_code=404, detail="No data found")
+        elif len(coverages) == 1:
+            return coverages[0]
+        else:
+            return CoverageCollection(
+                coverages=coverages, parameters=coverages[0].parameters
+            )  # HACK to take parameters from first one
 
     def _collect_data(self, ts_mdata, obs_mdata):
         lat = obs_mdata[0].geo_point.lat  # HACK: For now assume they all have the same position
