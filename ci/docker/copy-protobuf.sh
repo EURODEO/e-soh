@@ -11,5 +11,5 @@ declare -a destination_paths=(
 
 for path in "${destination_paths[@]}"
 do
-  cp --verbose -r "./protobuf" "$path"
+  cp -v -r "./protobuf" "$path"
 done

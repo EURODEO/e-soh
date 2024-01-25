@@ -14,6 +14,7 @@ from covjson_pydantic.parameter import Parameter
 from covjson_pydantic.reference_system import ReferenceSystem
 from covjson_pydantic.reference_system import ReferenceSystemConnectionObject
 from covjson_pydantic.unit import Unit
+from fastapi import HTTPException
 from formatters.base_formatter import EDR_formatter
 from pydantic import AwareDatetime
 
@@ -44,8 +45,7 @@ class Covjson(EDR_formatter):
             referencing = [
                 ReferenceSystemConnectionObject(
                     coordinates=["y", "x"],
-                    system=ReferenceSystem(type="GeographicCRS",
-                                           id="http://www.opengis.net/def/crs/EPSG/0/4326"),
+                    system=ReferenceSystem(type="GeographicCRS", id="http://www.opengis.net/def/crs/EPSG/0/4326"),
                 ),
                 ReferenceSystemConnectionObject(
                     coordinates=["z"],
@@ -78,9 +78,15 @@ class Covjson(EDR_formatter):
                 )
 
             coverages.append(Coverage(domain=domain, parameters=parameters, ranges=ranges))
-            if not coverages:
-                return {}
-            return CoverageCollection(coverages=coverages)
+
+        if len(coverages) == 0:
+            raise HTTPException(status_code=404, detail="No data found")
+        elif len(coverages) == 1:
+            return coverages[0]
+        else:
+            return CoverageCollection(
+                coverages=coverages, parameters=coverages[0].parameters
+            )  # HACK to take parameters from first one
 
     def _collect_data(self, ts_mdata, obs_mdata):
         lat = obs_mdata[0].geo_point.lat  # HACK: For now assume they all have the same position
