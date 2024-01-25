@@ -1,0 +1,409 @@
+{
+    "observations": [
+        {
+            "ts_mdata": {
+                "title": "Ambient Temperature 1.5m 10 Min Minimum",
+                "platform": "06280",
+                "standard_name": "air_temperature",
+                "unit": "degrees Celsius",
+                "instrument": "tn"
+            },
+            "obs_mdata": [
+                {
+                    "id": "dfa0942d-f960-4733-ab7a-eba66ec593fb",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:00:00Z",
+                    "value": "12.0"
+                },
+                {
+                    "id": "237820d4-782b-4dfc-98fb-802f8538e3ea",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:10:00Z",
+                    "value": "12.0"
+                },
+                {
+                    "id": "08ccd862-366c-4a86-9ef5-9c5093720bd4",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:20:00Z",
+                    "value": "12.1"
+                },
+                {
+                    "id": "d32bfe3d-e290-40f3-a730-126792175ebf",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:30:00Z",
+                    "value": "12.1"
+                },
+                {
+                    "id": "6301018d-5b91-4627-859e-76b8ad8cf824",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:40:00Z",
+                    "value": "12.0"
+                },
+                {
+                    "id": "1cbb14f6-6ace-42d8-b8e8-ee68e1a59a2c",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:50:00Z",
+                    "value": "12.1"
+                },
+                {
+                    "id": "3f61de87-4b22-4fe9-b8b5-04224724e756",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T01:00:00Z",
+                    "value": "12.1"
+                }
+            ]
+        },
+        {
+            "ts_mdata": {
+                "title": "Wind Speed at 10m 10 Min Average",
+                "platform": "06280",
+                "standard_name": "wind_speed",
+                "unit": "m s-1",
+                "instrument": "ff"
+            },
+            "obs_mdata": [
+                {
+                    "id": "af50a680-d84a-41bb-a85f-4803dcd5d4b5",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:00:00Z",
+                    "value": "9.71"
+                },
+                {
+                    "id": "f236836d-5523-4609-9bfc-73158865076c",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:10:00Z",
+                    "value": "9.32"
+                },
+                {
+                    "id": "4b2eaa2e-1850-43f6-b844-ba4461c14d46",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:20:00Z",
+                    "value": "9.19"
+                },
+                {
+                    "id": "d3ee45d7-b7b7-419a-9bf5-77699c70894d",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:30:00Z",
+                    "value": "9.21"
+                },
+                {
+                    "id": "5232105a-ceb4-4ea5-9957-78f730f9f51d",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:40:00Z",
+                    "value": "8.7"
+                },
+                {
+                    "id": "bbb5733e-7598-4ba7-ba68-3462ee3df8cd",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:50:00Z",
+                    "value": "8.12"
+                },
+                {
+                    "id": "5a1157d9-bf37-4696-8068-ac5f15163a4f",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T01:00:00Z",
+                    "value": "7.28"
+                }
+            ]
+        },
+        {
+            "ts_mdata": {
+                "title": "Wind Direction 10 Min Average",
+                "platform": "06280",
+                "standard_name": "wind_from_direction",
+                "unit": "degree",
+                "instrument": "dd"
+            },
+            "obs_mdata": [
+                {
+                    "id": "f7ec5d92-f3ab-4524-ad4e-a777a05b3b68",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:00:00Z",
+                    "value": "226.7"
+                },
+                {
+                    "id": "12bebe9e-1ddd-46cf-b9fa-2f866e987683",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:10:00Z",
+                    "value": "230.7"
+                },
+                {
+                    "id": "106f74e3-233a-46e3-83d4-b8508eb77aaf",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:20:00Z",
+                    "value": "232.9"
+                },
+                {
+                    "id": "8f73802c-cead-4d6b-bdd4-1eb6720d36bf",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:30:00Z",
+                    "value": "234.9"
+                },
+                {
+                    "id": "5ebee705-1f84-4a75-a32f-9e07cbf42268",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:40:00Z",
+                    "value": "236.6"
+                },
+                {
+                    "id": "0a660569-26db-49d6-9ee2-fe0964f904c0",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:50:00Z",
+                    "value": "235.0"
+                },
+                {
+                    "id": "7ea2238e-6e73-41ec-821c-1ad788cc8034",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T01:00:00Z",
+                    "value": "237.0"
+                }
+            ]
+        },
+        {
+            "ts_mdata": {
+                "title": "Relative Humidity 1 Min Average",
+                "platform": "06280",
+                "standard_name": "relative_humidity",
+                "unit": "%",
+                "instrument": "rh"
+            },
+            "obs_mdata": [
+                {
+                    "id": "8319d5a3-1ae9-4dc1-a83e-1548acd7b1b3",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:00:00Z",
+                    "value": "88.0"
+                },
+                {
+                    "id": "dc714268-8a24-4527-bed9-ea1e20d0568e",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:10:00Z",
+                    "value": "88.0"
+                },
+                {
+                    "id": "e2f7e423-23e7-4270-ae8c-6c7f769f3098",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:20:00Z",
+                    "value": "88.0"
+                },
+                {
+                    "id": "d5d17c35-994b-4a4d-b51f-dab8599e80a3",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:30:00Z",
+                    "value": "88.0"
+                },
+                {
+                    "id": "81cb5b4c-b957-4ff8-8dd6-fcc2cf95bf49",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:40:00Z",
+                    "value": "89.0"
+                },
+                {
+                    "id": "e54b9e83-bf91-4c8d-8b55-06422c189899",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:50:00Z",
+                    "value": "89.0"
+                },
+                {
+                    "id": "554af437-adeb-41b5-87eb-254f3c17f994",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T01:00:00Z",
+                    "value": "89.0"
+                }
+            ]
+        },
+        {
+            "ts_mdata": {
+                "title": "Air Pressure at Sea Level 1 Min Average",
+                "platform": "06280",
+                "standard_name": "air_pressure_at_sea_level",
+                "unit": "hPa",
+                "instrument": "pp"
+            },
+            "obs_mdata": [
+                {
+                    "id": "cfa402dd-39ad-4743-b15b-f1cb72e3b561",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:00:00Z",
+                    "value": "1000.28"
+                },
+                {
+                    "id": "56781c8c-74c6-494b-b92a-5e79dc7b0fcd",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:10:00Z",
+                    "value": "1000.28"
+                },
+                {
+                    "id": "60778b4c-eec0-4daa-ad04-97b724e46bd4",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:20:00Z",
+                    "value": "1000.48"
+                },
+                {
+                    "id": "079bbee4-c624-4afe-b1cd-95d915c858f4",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:30:00Z",
+                    "value": "1000.48"
+                },
+                {
+                    "id": "5d6e30b2-897d-4398-be46-76faa3e75087",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:40:00Z",
+                    "value": "1000.48"
+                },
+                {
+                    "id": "fe8933fd-6098-4c7e-ac90-bdb11850a220",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:50:00Z",
+                    "value": "1000.58"
+                },
+                {
+                    "id": "ea5703a2-a6ce-42a9-ae9b-24f40f693c65",
+                    "geo_point": {
+                        "lat": 53.123676213651,
+                        "lon": 6.5848470019087
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T01:00:00Z",
+                    "value": "1000.68"
+                }
+            ]
+        }
+    ]
+}

@@ -3,29 +3,65 @@ import json
 
 import datastore_pb2 as dstore
 from covjson_pydantic.coverage import Coverage
-from covjson_pydantic.coverage import CoverageCollection
 from formatters.covjson import Covjson
 from google.protobuf.json_format import Parse
 
 
-def test_convert():
-    test_data = load_json("test/test_data/test1.json")
+def test_single_parameter_convert():
+    test_data = load_json("test/test_data/test_single.json")
+    compare_data = load_json("test/test_data/test_single_compare.json")
 
     response = create_mock_obs_response(test_data)
     coverage_collection = Covjson().convert(response)
 
     assert coverage_collection is not None
 
-    assert type(coverage_collection) is CoverageCollection
+    assert type(coverage_collection) is Coverage
 
-    assert len(coverage_collection.coverages) > 0
+    # Assert that the coverage collection has the correct parameter
+    # TODO: Change parameter name when parameter names have been decided
+    assert "ff" in coverage_collection.parameters.keys()
 
-    assert all(map(lambda cov: isinstance(cov, Coverage), coverage_collection.coverages))
+    # Check that correct values exist in the coverage collection
+    assert 9.21 in coverage_collection.ranges["ff"].values
 
-    # TODO: Add more assertion
+    # compare the coverage collection with the compare data
+    # TODO: Modify compare data when parameter names have been decided
+    coverage_collection_json = json.loads(coverage_collection.model_dump_json(exclude_none=True))
+    assert coverage_collection_json == compare_data
 
 
-# TODO: Add more tests
+def test_multiple_parameter_convert():
+    test_data = load_json("test/test_data/test_multiple.json")
+    compare_data = load_json("test/test_data/test_multiple_compare.json")
+
+    response = create_mock_obs_response(test_data)
+
+    coverage_collection = Covjson().convert(response)
+
+    assert coverage_collection is not None
+
+    assert type(coverage_collection) is Coverage
+
+    # Check that the coverage collection has the correct parameters
+    # TODO: Change parameter names when parameter names have been decided
+    assert all([parameter in ["dd", "ff", "rh", "pp", "tn"] for parameter in coverage_collection.parameters.keys()])
+
+    # Check that correct values exist in the coverage collection
+    assert 230.7 in coverage_collection.ranges["dd"].values
+    assert 1000.48 in coverage_collection.ranges["pp"].values
+
+    # TODO: Modify compare data when parameter names have been decided
+    coverage_collection_json = json.loads(coverage_collection.model_dump_json(exclude_none=True))
+    assert coverage_collection_json == compare_data
+
+
+def test_single_parameter_area_convert():
+    pass
+
+
+def test_empty_response_convert():
+    pass
 
 
 def create_mock_obs_response(json_data):
