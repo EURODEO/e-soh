@@ -74,7 +74,7 @@ async def get_data_location_id(
         interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
     response = await getObsRequest(get_obs_request)
-    return edr_formatter[f](response)
+    return edr_formatter[f].convert(response)
 
 
 @router.get(
