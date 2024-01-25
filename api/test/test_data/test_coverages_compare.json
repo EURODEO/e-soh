@@ -1,0 +1,1679 @@
+{
+    "type": "CoverageCollection",
+    "coverages": [
+        {
+            "type": "Coverage",
+            "domain": {
+                "type": "Domain",
+                "domainType": "PointSeries",
+                "axes": {
+                    "x": {
+                        "values": [
+                            22.94868333
+                        ]
+                    },
+                    "y": {
+                        "values": [
+                            59.7736333
+                        ]
+                    },
+                    "t": {
+                        "values": [
+                            "2022-12-31T00:00:00Z"
+                        ]
+                    }
+                },
+                "referencing": [
+                    {
+                        "coordinates": [
+                            "y",
+                            "x"
+                        ],
+                        "system": {
+                            "type": "GeographicCRS",
+                            "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "TemporalRS",
+                            "calendar": "Gregorian"
+                        }
+                    }
+                ]
+            },
+            "parameters": {
+                "TA_P1D_AVG": {
+                    "type": "Parameter",
+                    "observedProperty": {
+                        "label": {
+                            "en": "TA_P1D_AVG"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "degC"
+                        }
+                    }
+                }
+            },
+            "ranges": {
+                "TA_P1D_AVG": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        4.6
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Coverage",
+            "domain": {
+                "type": "Domain",
+                "domainType": "PointSeries",
+                "axes": {
+                    "x": {
+                        "values": [
+                            23.57309004
+                        ]
+                    },
+                    "y": {
+                        "values": [
+                            59.82075751
+                        ]
+                    },
+                    "t": {
+                        "values": [
+                            "2022-12-31T00:00:00Z"
+                        ]
+                    }
+                },
+                "referencing": [
+                    {
+                        "coordinates": [
+                            "y",
+                            "x"
+                        ],
+                        "system": {
+                            "type": "GeographicCRS",
+                            "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "TemporalRS",
+                            "calendar": "Gregorian"
+                        }
+                    }
+                ]
+            },
+            "parameters": {
+                "TA_P1D_AVG": {
+                    "type": "Parameter",
+                    "observedProperty": {
+                        "label": {
+                            "en": "TA_P1D_AVG"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "degC"
+                        }
+                    }
+                }
+            },
+            "ranges": {
+                "TA_P1D_AVG": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        4.0
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Coverage",
+            "domain": {
+                "type": "Domain",
+                "domainType": "PointSeries",
+                "axes": {
+                    "x": {
+                        "values": [
+                            23.248587292
+                        ]
+                    },
+                    "y": {
+                        "values": [
+                            59.84383111
+                        ]
+                    },
+                    "t": {
+                        "values": [
+                            "2022-12-31T00:00:00Z"
+                        ]
+                    }
+                },
+                "referencing": [
+                    {
+                        "coordinates": [
+                            "y",
+                            "x"
+                        ],
+                        "system": {
+                            "type": "GeographicCRS",
+                            "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "TemporalRS",
+                            "calendar": "Gregorian"
+                        }
+                    }
+                ]
+            },
+            "parameters": {
+                "TA_P1D_AVG": {
+                    "type": "Parameter",
+                    "observedProperty": {
+                        "label": {
+                            "en": "TA_P1D_AVG"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "degC"
+                        }
+                    }
+                }
+            },
+            "ranges": {
+                "TA_P1D_AVG": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        4.2
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Coverage",
+            "domain": {
+                "type": "Domain",
+                "domainType": "PointSeries",
+                "axes": {
+                    "x": {
+                        "values": [
+                            22.19342704
+                        ]
+                    },
+                    "y": {
+                        "values": [
+                            59.86948983
+                        ]
+                    },
+                    "t": {
+                        "values": [
+                            "2022-12-31T00:00:00Z"
+                        ]
+                    }
+                },
+                "referencing": [
+                    {
+                        "coordinates": [
+                            "y",
+                            "x"
+                        ],
+                        "system": {
+                            "type": "GeographicCRS",
+                            "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "TemporalRS",
+                            "calendar": "Gregorian"
+                        }
+                    }
+                ]
+            },
+            "parameters": {
+                "TA_P1D_AVG": {
+                    "type": "Parameter",
+                    "observedProperty": {
+                        "label": {
+                            "en": "TA_P1D_AVG"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "degC"
+                        }
+                    }
+                }
+            },
+            "ranges": {
+                "TA_P1D_AVG": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        5.2
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Coverage",
+            "domain": {
+                "type": "Domain",
+                "domainType": "PointSeries",
+                "axes": {
+                    "x": {
+                        "values": [
+                            24.35022868
+                        ]
+                    },
+                    "y": {
+                        "values": [
+                            59.91982322
+                        ]
+                    },
+                    "t": {
+                        "values": [
+                            "2022-12-31T00:00:00Z"
+                        ]
+                    }
+                },
+                "referencing": [
+                    {
+                        "coordinates": [
+                            "y",
+                            "x"
+                        ],
+                        "system": {
+                            "type": "GeographicCRS",
+                            "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "TemporalRS",
+                            "calendar": "Gregorian"
+                        }
+                    }
+                ]
+            },
+            "parameters": {
+                "TA_P1D_AVG": {
+                    "type": "Parameter",
+                    "observedProperty": {
+                        "label": {
+                            "en": "TA_P1D_AVG"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "degC"
+                        }
+                    }
+                }
+            },
+            "ranges": {
+                "TA_P1D_AVG": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        4.1
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Coverage",
+            "domain": {
+                "type": "Domain",
+                "domainType": "PointSeries",
+                "axes": {
+                    "x": {
+                        "values": [
+                            25.19439447
+                        ]
+                    },
+                    "y": {
+                        "values": [
+                            60.10120695
+                        ]
+                    },
+                    "t": {
+                        "values": [
+                            "2022-12-31T00:00:00Z"
+                        ]
+                    }
+                },
+                "referencing": [
+                    {
+                        "coordinates": [
+                            "y",
+                            "x"
+                        ],
+                        "system": {
+                            "type": "GeographicCRS",
+                            "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "TemporalRS",
+                            "calendar": "Gregorian"
+                        }
+                    }
+                ]
+            },
+            "parameters": {
+                "TA_P1D_AVG": {
+                    "type": "Parameter",
+                    "observedProperty": {
+                        "label": {
+                            "en": "TA_P1D_AVG"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "degC"
+                        }
+                    }
+                }
+            },
+            "ranges": {
+                "TA_P1D_AVG": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        3.6
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Coverage",
+            "domain": {
+                "type": "Domain",
+                "domainType": "PointSeries",
+                "axes": {
+                    "x": {
+                        "values": [
+                            24.97539
+                        ]
+                    },
+                    "y": {
+                        "values": [
+                            60.10512
+                        ]
+                    },
+                    "t": {
+                        "values": [
+                            "2022-12-31T00:00:00Z"
+                        ]
+                    }
+                },
+                "referencing": [
+                    {
+                        "coordinates": [
+                            "y",
+                            "x"
+                        ],
+                        "system": {
+                            "type": "GeographicCRS",
+                            "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "TemporalRS",
+                            "calendar": "Gregorian"
+                        }
+                    }
+                ]
+            },
+            "parameters": {
+                "TA_P1D_AVG": {
+                    "type": "Parameter",
+                    "observedProperty": {
+                        "label": {
+                            "en": "TA_P1D_AVG"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "degC"
+                        }
+                    }
+                }
+            },
+            "ranges": {
+                "TA_P1D_AVG": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        3.5
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Coverage",
+            "domain": {
+                "type": "Domain",
+                "domainType": "PointSeries",
+                "axes": {
+                    "x": {
+                        "values": [
+                            24.787433
+                        ]
+                    },
+                    "y": {
+                        "values": [
+                            60.177967
+                        ]
+                    },
+                    "t": {
+                        "values": [
+                            "2022-12-31T00:00:00Z"
+                        ]
+                    }
+                },
+                "referencing": [
+                    {
+                        "coordinates": [
+                            "y",
+                            "x"
+                        ],
+                        "system": {
+                            "type": "GeographicCRS",
+                            "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "TemporalRS",
+                            "calendar": "Gregorian"
+                        }
+                    }
+                ]
+            },
+            "parameters": {
+                "TA_P1D_AVG": {
+                    "type": "Parameter",
+                    "observedProperty": {
+                        "label": {
+                            "en": "TA_P1D_AVG"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "degC"
+                        }
+                    }
+                }
+            },
+            "ranges": {
+                "TA_P1D_AVG": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        3.8
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Coverage",
+            "domain": {
+                "type": "Domain",
+                "domainType": "PointSeries",
+                "axes": {
+                    "x": {
+                        "values": [
+                            27.18482492
+                        ]
+                    },
+                    "y": {
+                        "values": [
+                            60.28675765
+                        ]
+                    },
+                    "t": {
+                        "values": [
+                            "2022-12-31T00:00:00Z"
+                        ]
+                    }
+                },
+                "referencing": [
+                    {
+                        "coordinates": [
+                            "y",
+                            "x"
+                        ],
+                        "system": {
+                            "type": "GeographicCRS",
+                            "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "TemporalRS",
+                            "calendar": "Gregorian"
+                        }
+                    }
+                ]
+            },
+            "parameters": {
+                "TA_P1D_AVG": {
+                    "type": "Parameter",
+                    "observedProperty": {
+                        "label": {
+                            "en": "TA_P1D_AVG"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "degC"
+                        }
+                    }
+                }
+            },
+            "ranges": {
+                "TA_P1D_AVG": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        2.8
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Coverage",
+            "domain": {
+                "type": "Domain",
+                "domainType": "PointSeries",
+                "axes": {
+                    "x": {
+                        "values": [
+                            22.55182579
+                        ]
+                    },
+                    "y": {
+                        "values": [
+                            60.38690331
+                        ]
+                    },
+                    "t": {
+                        "values": [
+                            "2022-12-31T00:00:00Z"
+                        ]
+                    }
+                },
+                "referencing": [
+                    {
+                        "coordinates": [
+                            "y",
+                            "x"
+                        ],
+                        "system": {
+                            "type": "GeographicCRS",
+                            "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "TemporalRS",
+                            "calendar": "Gregorian"
+                        }
+                    }
+                ]
+            },
+            "parameters": {
+                "TA_P1D_AVG": {
+                    "type": "Parameter",
+                    "observedProperty": {
+                        "label": {
+                            "en": "TA_P1D_AVG"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "degC"
+                        }
+                    }
+                }
+            },
+            "ranges": {
+                "TA_P1D_AVG": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        4.0
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Coverage",
+            "domain": {
+                "type": "Domain",
+                "domainType": "PointSeries",
+                "axes": {
+                    "x": {
+                        "values": [
+                            24.3986218
+                        ]
+                    },
+                    "y": {
+                        "values": [
+                            60.41875496
+                        ]
+                    },
+                    "t": {
+                        "values": [
+                            "2022-12-31T00:00:00Z"
+                        ]
+                    }
+                },
+                "referencing": [
+                    {
+                        "coordinates": [
+                            "y",
+                            "x"
+                        ],
+                        "system": {
+                            "type": "GeographicCRS",
+                            "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "TemporalRS",
+                            "calendar": "Gregorian"
+                        }
+                    }
+                ]
+            },
+            "parameters": {
+                "TA_P1D_AVG": {
+                    "type": "Parameter",
+                    "observedProperty": {
+                        "label": {
+                            "en": "TA_P1D_AVG"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "degC"
+                        }
+                    }
+                }
+            },
+            "ranges": {
+                "TA_P1D_AVG": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        3.7
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Coverage",
+            "domain": {
+                "type": "Domain",
+                "domainType": "PointSeries",
+                "axes": {
+                    "x": {
+                        "values": [
+                            23.64975746
+                        ]
+                    },
+                    "y": {
+                        "values": [
+                            60.46415355
+                        ]
+                    },
+                    "t": {
+                        "values": [
+                            "2022-12-31T00:00:00Z"
+                        ]
+                    }
+                },
+                "referencing": [
+                    {
+                        "coordinates": [
+                            "y",
+                            "x"
+                        ],
+                        "system": {
+                            "type": "GeographicCRS",
+                            "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "TemporalRS",
+                            "calendar": "Gregorian"
+                        }
+                    }
+                ]
+            },
+            "parameters": {
+                "TA_P1D_AVG": {
+                    "type": "Parameter",
+                    "observedProperty": {
+                        "label": {
+                            "en": "TA_P1D_AVG"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "degC"
+                        }
+                    }
+                }
+            },
+            "ranges": {
+                "TA_P1D_AVG": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        3.5
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Coverage",
+            "domain": {
+                "type": "Domain",
+                "domainType": "PointSeries",
+                "axes": {
+                    "x": {
+                        "values": [
+                            26.59208891
+                        ]
+                    },
+                    "y": {
+                        "values": [
+                            60.4859467
+                        ]
+                    },
+                    "t": {
+                        "values": [
+                            "2022-12-31T00:00:00Z"
+                        ]
+                    }
+                },
+                "referencing": [
+                    {
+                        "coordinates": [
+                            "y",
+                            "x"
+                        ],
+                        "system": {
+                            "type": "GeographicCRS",
+                            "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "TemporalRS",
+                            "calendar": "Gregorian"
+                        }
+                    }
+                ]
+            },
+            "parameters": {
+                "TA_P1D_AVG": {
+                    "type": "Parameter",
+                    "observedProperty": {
+                        "label": {
+                            "en": "TA_P1D_AVG"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "degC"
+                        }
+                    }
+                }
+            },
+            "ranges": {
+                "TA_P1D_AVG": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        2.9
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Coverage",
+            "domain": {
+                "type": "Domain",
+                "domainType": "PointSeries",
+                "axes": {
+                    "x": {
+                        "values": [
+                            25.193422
+                        ]
+                    },
+                    "y": {
+                        "values": [
+                            60.627725
+                        ]
+                    },
+                    "t": {
+                        "values": [
+                            "2022-12-31T00:00:00Z"
+                        ]
+                    }
+                },
+                "referencing": [
+                    {
+                        "coordinates": [
+                            "y",
+                            "x"
+                        ],
+                        "system": {
+                            "type": "GeographicCRS",
+                            "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "TemporalRS",
+                            "calendar": "Gregorian"
+                        }
+                    }
+                ]
+            },
+            "parameters": {
+                "TA_P1D_AVG": {
+                    "type": "Parameter",
+                    "observedProperty": {
+                        "label": {
+                            "en": "TA_P1D_AVG"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "degC"
+                        }
+                    }
+                }
+            },
+            "ranges": {
+                "TA_P1D_AVG": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        2.9
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Coverage",
+            "domain": {
+                "type": "Domain",
+                "domainType": "PointSeries",
+                "axes": {
+                    "x": {
+                        "values": [
+                            26.81105556
+                        ]
+                    },
+                    "y": {
+                        "values": [
+                            60.6965
+                        ]
+                    },
+                    "t": {
+                        "values": [
+                            "2022-12-31T00:00:00Z"
+                        ]
+                    }
+                },
+                "referencing": [
+                    {
+                        "coordinates": [
+                            "y",
+                            "x"
+                        ],
+                        "system": {
+                            "type": "GeographicCRS",
+                            "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "TemporalRS",
+                            "calendar": "Gregorian"
+                        }
+                    }
+                ]
+            },
+            "parameters": {
+                "TA_P1D_AVG": {
+                    "type": "Parameter",
+                    "observedProperty": {
+                        "label": {
+                            "en": "TA_P1D_AVG"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "degC"
+                        }
+                    }
+                }
+            },
+            "ranges": {
+                "TA_P1D_AVG": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        2.8
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Coverage",
+            "domain": {
+                "type": "Domain",
+                "domainType": "PointSeries",
+                "axes": {
+                    "x": {
+                        "values": [
+                            26.92915
+                        ]
+                    },
+                    "y": {
+                        "values": [
+                            60.89077
+                        ]
+                    },
+                    "t": {
+                        "values": [
+                            "2022-12-31T00:00:00Z"
+                        ]
+                    }
+                },
+                "referencing": [
+                    {
+                        "coordinates": [
+                            "y",
+                            "x"
+                        ],
+                        "system": {
+                            "type": "GeographicCRS",
+                            "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "TemporalRS",
+                            "calendar": "Gregorian"
+                        }
+                    }
+                ]
+            },
+            "parameters": {
+                "TA_P1D_AVG": {
+                    "type": "Parameter",
+                    "observedProperty": {
+                        "label": {
+                            "en": "TA_P1D_AVG"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "degC"
+                        }
+                    }
+                }
+            },
+            "ranges": {
+                "TA_P1D_AVG": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        2.2
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Coverage",
+            "domain": {
+                "type": "Domain",
+                "domainType": "PointSeries",
+                "axes": {
+                    "x": {
+                        "values": [
+                            25.620202
+                        ]
+                    },
+                    "y": {
+                        "values": [
+                            60.974654
+                        ]
+                    },
+                    "t": {
+                        "values": [
+                            "2022-12-31T00:00:00Z"
+                        ]
+                    }
+                },
+                "referencing": [
+                    {
+                        "coordinates": [
+                            "y",
+                            "x"
+                        ],
+                        "system": {
+                            "type": "GeographicCRS",
+                            "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "TemporalRS",
+                            "calendar": "Gregorian"
+                        }
+                    }
+                ]
+            },
+            "parameters": {
+                "TA_P1D_AVG": {
+                    "type": "Parameter",
+                    "observedProperty": {
+                        "label": {
+                            "en": "TA_P1D_AVG"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "degC"
+                        }
+                    }
+                }
+            },
+            "ranges": {
+                "TA_P1D_AVG": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        2.7
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Coverage",
+            "domain": {
+                "type": "Domain",
+                "domainType": "PointSeries",
+                "axes": {
+                    "x": {
+                        "values": [
+                            28.47308
+                        ]
+                    },
+                    "y": {
+                        "values": [
+                            61.1982
+                        ]
+                    },
+                    "t": {
+                        "values": [
+                            "2022-12-31T00:00:00Z"
+                        ]
+                    }
+                },
+                "referencing": [
+                    {
+                        "coordinates": [
+                            "y",
+                            "x"
+                        ],
+                        "system": {
+                            "type": "GeographicCRS",
+                            "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "TemporalRS",
+                            "calendar": "Gregorian"
+                        }
+                    }
+                ]
+            },
+            "parameters": {
+                "TA_P1D_AVG": {
+                    "type": "Parameter",
+                    "observedProperty": {
+                        "label": {
+                            "en": "TA_P1D_AVG"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "degC"
+                        }
+                    }
+                }
+            },
+            "ranges": {
+                "TA_P1D_AVG": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        1.8
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Coverage",
+            "domain": {
+                "type": "Domain",
+                "domainType": "PointSeries",
+                "axes": {
+                    "x": {
+                        "values": [
+                            23.622561
+                        ]
+                    },
+                    "y": {
+                        "values": [
+                            61.419402
+                        ]
+                    },
+                    "t": {
+                        "values": [
+                            "2022-12-31T00:00:00Z"
+                        ]
+                    }
+                },
+                "referencing": [
+                    {
+                        "coordinates": [
+                            "y",
+                            "x"
+                        ],
+                        "system": {
+                            "type": "GeographicCRS",
+                            "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "TemporalRS",
+                            "calendar": "Gregorian"
+                        }
+                    }
+                ]
+            },
+            "parameters": {
+                "TA_P1D_AVG": {
+                    "type": "Parameter",
+                    "observedProperty": {
+                        "label": {
+                            "en": "TA_P1D_AVG"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "degC"
+                        }
+                    }
+                }
+            },
+            "ranges": {
+                "TA_P1D_AVG": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        3.1
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Coverage",
+            "domain": {
+                "type": "Domain",
+                "domainType": "PointSeries",
+                "axes": {
+                    "x": {
+                        "values": [
+                            29.461083
+                        ]
+                    },
+                    "y": {
+                        "values": [
+                            61.444667
+                        ]
+                    },
+                    "t": {
+                        "values": [
+                            "2022-12-31T00:00:00Z"
+                        ]
+                    }
+                },
+                "referencing": [
+                    {
+                        "coordinates": [
+                            "y",
+                            "x"
+                        ],
+                        "system": {
+                            "type": "GeographicCRS",
+                            "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "TemporalRS",
+                            "calendar": "Gregorian"
+                        }
+                    }
+                ]
+            },
+            "parameters": {
+                "TA_P1D_AVG": {
+                    "type": "Parameter",
+                    "observedProperty": {
+                        "label": {
+                            "en": "TA_P1D_AVG"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "degC"
+                        }
+                    }
+                }
+            },
+            "ranges": {
+                "TA_P1D_AVG": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        1.7
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Coverage",
+            "domain": {
+                "type": "Domain",
+                "domainType": "PointSeries",
+                "axes": {
+                    "x": {
+                        "values": [
+                            21.80839492
+                        ]
+                    },
+                    "y": {
+                        "values": [
+                            61.46011201
+                        ]
+                    },
+                    "t": {
+                        "values": [
+                            "2022-12-31T00:00:00Z"
+                        ]
+                    }
+                },
+                "referencing": [
+                    {
+                        "coordinates": [
+                            "y",
+                            "x"
+                        ],
+                        "system": {
+                            "type": "GeographicCRS",
+                            "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "TemporalRS",
+                            "calendar": "Gregorian"
+                        }
+                    }
+                ]
+            },
+            "parameters": {
+                "TA_P1D_AVG": {
+                    "type": "Parameter",
+                    "observedProperty": {
+                        "label": {
+                            "en": "TA_P1D_AVG"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "degC"
+                        }
+                    }
+                }
+            },
+            "ranges": {
+                "TA_P1D_AVG": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        4.0
+                    ]
+                }
+            }
+        }
+    ],
+    "parameters": {
+        "TA_P1D_AVG": {
+            "type": "Parameter",
+            "observedProperty": {
+                "label": {
+                    "en": "TA_P1D_AVG"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "degC"
+                }
+            }
+        }
+    }
+}

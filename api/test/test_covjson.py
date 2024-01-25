@@ -4,6 +4,7 @@ import json
 import datastore_pb2 as dstore
 import pytest
 from covjson_pydantic.coverage import Coverage
+from covjson_pydantic.coverage import CoverageCollection
 from fastapi import HTTPException
 from formatters.covjson import Covjson
 from google.protobuf.json_format import Parse
@@ -59,7 +60,28 @@ def test_multiple_parameter_convert():
 
 
 def test_single_parameter_area_convert():
-    pass
+    test_data = load_json("test/test_data/test_coverages.json")
+    compare_data = load_json("test/test_data/test_coverages_compare.json")
+
+    response = create_mock_obs_response(test_data)
+
+    coverage_collection = Covjson().convert(response)
+
+    assert coverage_collection is not None
+
+    assert type(coverage_collection) is CoverageCollection
+
+    assert len(coverage_collection.coverages) > 1
+
+    assert all([type(coverage) is Coverage for coverage in coverage_collection.coverages])
+
+    # Check that each coverage has the correct parameter
+    # TODO: Change parameter name when parameter names have been decided
+    assert all(["TA_P1D_AVG" in coverage.parameters.keys() for coverage in coverage_collection.coverages])
+
+    # TODO: Modify compare data when parameter names have been decided
+    coverage_collection_json = json.loads(coverage_collection.model_dump_json(exclude_none=True))
+    assert coverage_collection_json == compare_data
 
 
 def test_empty_response_convert():
