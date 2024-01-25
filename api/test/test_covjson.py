@@ -2,7 +2,9 @@
 import json
 
 import datastore_pb2 as dstore
+import pytest
 from covjson_pydantic.coverage import Coverage
+from fastapi import HTTPException
 from formatters.covjson import Covjson
 from google.protobuf.json_format import Parse
 
@@ -61,7 +63,12 @@ def test_single_parameter_area_convert():
 
 
 def test_empty_response_convert():
-    pass
+    test_data = load_json("test/test_data/test_empty.json")
+    response = create_mock_obs_response(test_data)
+
+    # Expect to get an HTTPException when converting an empty response
+    with pytest.raises(HTTPException):
+        Covjson().convert(response)
 
 
 def create_mock_obs_response(json_data):
