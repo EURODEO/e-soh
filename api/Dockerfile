@@ -26,7 +26,7 @@ RUN python -m grpc_tools.protoc  \
     --python_out="${DOCKER_PATH}"  \
     --grpc_python_out="${DOCKER_PATH}"
 
-COPY "./**/*" "${DOCKER_PATH}/"
+COPY "." "${DOCKER_PATH}/"
 
 
 WORKDIR "${DOCKER_PATH}"
