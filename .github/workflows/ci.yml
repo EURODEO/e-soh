@@ -47,7 +47,7 @@ jobs:
         run: docker compose --profile test build
 
       - name: Start docker stack
-        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose up -d --wait 120
+        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose up -d --wait
 
       - name: See if all services are alive
         run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose up --abort-on-container-exit
