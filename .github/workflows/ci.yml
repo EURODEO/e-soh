@@ -47,7 +47,7 @@ jobs:
         run: docker compose --profile test build
 
       - name: Start docker stack
-        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose up -d --wait --wait-timeout 120s
+        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose up -d --wait --wait-timeout 120
 
       - name: Test loader runs without errors
         run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm loader
