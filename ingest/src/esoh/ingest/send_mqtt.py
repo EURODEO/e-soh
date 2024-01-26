@@ -1,13 +1,13 @@
-import paho.mqtt.client as mqtt
-
 import json
 import logging
 import ssl
 
+import paho.mqtt.client as mqtt
+
 logger = logging.getLogger(__name__)
 
 
-class mqtt_connection():
+class MQTTConnection:
     def __init__(self, mqtt_host, mqtt_topic, mqtt_username=None, mqtt_password=None):
         self.mqtt_host = mqtt_host
         self.mqtt_topic = mqtt_topic
@@ -21,15 +21,12 @@ class mqtt_connection():
             self.pub_client.username_pw_set(mqtt_username, mqtt_password)
             logger.info("Set authentication for MQTT service")
 
-        self.pub_client.tls_set(certfile=None,
-                                keyfile=None,
-                                cert_reqs=ssl.CERT_REQUIRED)
+        self.pub_client.tls_set(certfile=None, keyfile=None, cert_reqs=ssl.CERT_REQUIRED)
 
         # Connect with MQTT Broker
         self.pub_client.connect(self.mqtt_host, port=self.mqtt_port)
 
-        logger.info(
-            f"Established MQTT connection to {self.mqtt_host}, with topic {self.mqtt_topic}")
+        logger.info(f"Established MQTT connection to {self.mqtt_host}, with topic {self.mqtt_topic}")
 
     def send_message(self, message: str):
         try:

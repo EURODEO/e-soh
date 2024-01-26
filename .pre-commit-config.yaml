@@ -5,16 +5,24 @@ repos:
       - id: go-fmt
         name: go-fmt
         description: "Enforces Go standard formatting (whitespace, indentation, et cetera)."
-        entry: ./datastore/ci/go/go-fmt.sh
+        entry: ./ci/go/go-fmt.sh
         language: script
         pass_filenames: false
-#      # go-vet ~ Finds subtle issues in Go where your code may not work as intended
-#      - id: go-vet
-#        name: go-vet
-#        description: "Finds subtle issues in Go where your code may not work as intended."
-#        entry: ./ci/go/go-vet.sh
-#        language: script
-#        pass_filenames: false
+  #      # go-vet ~ Finds subtle issues in Go where your code may not work as intended
+  #      - id: go-vet
+  #        name: go-vet
+  #        description: "Finds subtle issues in Go where your code may not work as intended."
+  #        entry: ./ci/go/go-vet.sh
+  #        language: script
+  #        pass_filenames: false
+
+  - repo: https://github.com/pre-commit/mirrors-clang-format
+    rev: ""
+    hooks:
+      - id: clang-format
+        entry: clang-format -i
+        args: [--style=llvm]
+        types_or: [c++]
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
@@ -23,9 +31,11 @@ repos:
       - id: end-of-file-fixer # Makes sure files end in a newline and only a newline.
       - id: pretty-format-json
         args: ["--autofix", "--indent=4", "--no-ensure-ascii", "--no-sort-keys"] # Formats and sorts your JSON files.
+        exclude: "ingest\/test\/test_data\/bufr\/.*"
       - id: trailing-whitespace # Trims trailing whitespace.
       # Checks
       - id: check-json # Attempts to load all json files to verify syntax.
+        exclude: "ingest\/test\/test_data\/bufr\/.*"
       - id: check-merge-conflict # Check for files that contain merge conflict strings.
       - id: check-shebang-scripts-are-executable # Checks that scripts with shebangs are executable.
       - id: check-yaml
@@ -41,21 +51,17 @@ repos:
 
   # black ~ Formats Python code
   - repo: https://github.com/psf/black
-    rev: 23.10.0
+    rev: 23.12.1
     hooks:
       - id: black
         args: ["--line-length=120"]
 
   # flake8 ~ Enforces the Python PEP8 style guide
   - repo: https://github.com/pycqa/flake8
-    rev: 6.1.0
+    rev: 7.0.0
     hooks:
       - id: flake8
-        args:
-          [
-            "--ignore=W503",
-            "--max-line-length=120",
-          ]
+        args: ["--ignore=W503", "--max-line-length=120"]
 
   # hadolint ~ Docker linter
   - repo: https://github.com/hadolint/hadolint

@@ -31,7 +31,7 @@ func initCleanupInterval() {
 		val = defaultVal
 	}
 
-	cleanupInterval = time.Duration(val)
+	cleanupInterval = time.Duration(val) * time.Second
 }
 
 func init() { // automatically called once on program startup (on first import of this package)
