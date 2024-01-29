@@ -1,3 +1,4 @@
 requirments.in
 **/__pycache__.py
 **/datastore_pb2*.py
+**/venv
