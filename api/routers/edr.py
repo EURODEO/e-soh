@@ -4,7 +4,9 @@ import formatters
 from covjson_pydantic.coverage import Coverage
 from covjson_pydantic.coverage import CoverageCollection
 from dependencies import get_datetime_range
+from dependencies import parse_parameter_name
 from fastapi import APIRouter
+from fastapi import HTTPException
 from fastapi import Path
 from fastapi import Query
 from geojson_pydantic import Feature
@@ -37,7 +39,6 @@ async def get_locations(bbox: str = Query(..., example="5.0,52.0,6.0,52.1")) -> 
     )
 
     ts_response = await getObsRequest(ts_request)
-    print(ts_response)
     features = [
         Feature(
             type="Feature",

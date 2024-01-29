@@ -53,7 +53,7 @@ services:
       interval: 5s
       timeout: 1s
       retries: 15
-      start_period: 60s   # Failures in 30 seconds do not mark container as unhealthy
+      start_period: 60s
     depends_on:
       migrate:
         condition: service_completed_successfully
@@ -66,6 +66,12 @@ services:
     environment:
       - DSHOST=store
       - DSPORT=50050
+    healthcheck:
+      test: curl --fail http://localhost:8008/health || exit 1
+      interval: 60s
+      retries: 5
+      start_period: 30s
+      timeout: 5s
     depends_on:
       store:
         condition: service_healthy
