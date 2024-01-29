@@ -4,7 +4,6 @@ import formatters
 from covjson_pydantic.coverage import Coverage
 from covjson_pydantic.coverage import CoverageCollection
 from dependencies import get_datetime_range
-from dependencies import parse_parameter_name
 from fastapi import APIRouter
 from fastapi import HTTPException
 from fastapi import Path
