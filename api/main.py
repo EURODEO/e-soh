@@ -25,6 +25,8 @@ class HealthCheck(BaseModel):
 
     status: str = "OK"
 
+
+
 @app.get(
     "/",
     tags=["Capabilities"],
