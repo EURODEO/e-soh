@@ -5,7 +5,6 @@ from covjson_pydantic.coverage import Coverage
 from covjson_pydantic.coverage import CoverageCollection
 from dependencies import get_datetime_range
 from fastapi import APIRouter
-from fastapi import HTTPException
 from fastapi import Path
 from fastapi import Query
 from geojson_pydantic import Feature
