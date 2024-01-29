@@ -1,6 +1,6 @@
 import requests
 import json
-
+import isodate
 
 from datetime import datetime
 from datetime import timedelta
@@ -71,9 +71,15 @@ def parse_parameter_name(parameter_name):
     except ValueError:
         errors.append(f"Level could not be converted to float")
 
-
     if func not in (legal_func := ["max", "min", "average", "instantaneous", "mean"]):
         errors.append(f"Unknown function given, {func}, has to be one of {legal_func}")
 
+    try:
+        isodate.parse_duration(period)
+    except isodate.ISO8601Error:
+        errors.append(f"Invalid ISO8601 duration")
+
     if not errors:
         raise HTTPException(400, detail="\n".join(errors))
+
+    return standard_name, level, func, period
