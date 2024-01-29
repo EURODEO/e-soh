@@ -7,9 +7,9 @@ from brotli_asgi import BrotliMiddleware
 from edr_pydantic.capabilities import LandingPageModel
 from edr_pydantic.collections import Collection
 from edr_pydantic.collections import Collections
-from fastapi import BaseModel
 from fastapi import FastAPI
 from fastapi import Request
+from pydantic import BaseModel
 from routers import edr  # , records
 
 logger = logging.getLogger(__name__)
@@ -60,8 +60,7 @@ app.include_router(edr.router)
 # app.include(records.router)
 
 
-@app.get("/health",
-         tags=["healthcheck"])
+@app.get("/health", tags=["healthcheck"])
 def get_health() -> HealthCheck:
     """
     Small health check to post a response if API is allive.
