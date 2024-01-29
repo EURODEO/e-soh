@@ -9,7 +9,6 @@ from edr_pydantic.collections import Collection
 from edr_pydantic.collections import Collections
 from fastapi import FastAPI
 from fastapi import Request
-from pydantic import BaseModel
 from routers import edr  # , records
 
 logger = logging.getLogger(__name__)
