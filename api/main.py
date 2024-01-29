@@ -18,15 +18,6 @@ app = FastAPI()
 app.add_middleware(BrotliMiddleware)
 
 
-class HealthCheck(BaseModel):
-    """
-    Response model for health check
-    """
-
-    status: str = "OK"
-
-
-
 @app.get(
     "/",
     tags=["Capabilities"],
@@ -60,13 +51,3 @@ async def get_collection_metadata(request: Request) -> Collection:
 # Include all routes
 app.include_router(edr.router)
 # app.include(records.router)
-
-
-@app.get("/health", tags=["healthcheck"])
-def get_health() -> HealthCheck:
-    """
-    Small health check to post a response if API is allive.
-    This should probably be expanded to also include availablity of grpc backend service.
-    """
-
-    return HealthCheck(status="OK")

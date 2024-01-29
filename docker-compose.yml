@@ -66,12 +66,6 @@ services:
     environment:
       - DSHOST=store
       - DSPORT=50050
-    healthcheck:
-      test: ["CMD-SHELL", "curl --fail http://localhost:8000/health || exit 1"]
-      interval: 60s
-      retries: 5
-      start_period: 30s
-      timeout: 5s
     depends_on:
       store:
         condition: service_healthy
