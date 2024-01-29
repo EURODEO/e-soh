@@ -1,10 +1,17 @@
+import requests
+import json
+
+
 from datetime import datetime
 from datetime import timedelta
 from typing import Tuple
+from functools import lru_cache
 
+from fastapi import HTTPException
 from google.protobuf.timestamp_pb2 import Timestamp
 from pydantic import AwareDatetime
 from pydantic import TypeAdapter
+
 
 
 def get_datetime_range(datetime_string: str | None) -> Tuple[Timestamp, Timestamp] | None:
@@ -31,3 +38,42 @@ def get_datetime_range(datetime_string: str | None) -> Tuple[Timestamp, Timestam
             end_datetime.FromDatetime(datetime.max)
 
     return start_datetime, end_datetime
+
+@lru_cache()
+def get_nerc_standard_names():
+    standard_names_json = json.loads(requests.get("https://vocab.nerc.ac.uk/collection/P07/current/"
+                                                  "?_profile=nvs&_mediatype=application%2Fld%2Bjson").content)
+    return set([i["prefLabel"]["@value"] for i in standard_names_json["@graph"] if isinstance(i["prefLabel"], dict)])
+
+
+
+def parse_parameter_name(parameter_name):
+    """
+    Function for parsing the aggregate parameter-name field.
+    """
+    parameter_name = parameter_name.split(":")
+    if (n_params := len(parameter_name)) != 4:
+        raise HTTPException(400, f"Wrong number of arguemnts in parameter-name, should be 4 got {n_params}")
+
+
+
+
+    standard_name, level, func, period = [i  if not i else None for i in parameter_name]
+    func = func.lower()
+
+    errors = []
+
+    if not standard_name in get_nerc_standard_names():
+        errors.append(f"Unknown standard_name given, {standard_name}")
+
+    try:
+        float(level)
+    except ValueError:
+        errors.append(f"Level could not be converted to float")
+
+
+    if func not in (legal_func := ["max", "min", "average", "instantaneous", "mean"]):
+        errors.append(f"Unknown function given, {func}, has to be one of {legal_func}")
+
+    if not errors:
+        raise HTTPException(400, detail="\n".join(errors))
