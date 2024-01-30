@@ -12,7 +12,6 @@ from locust import task
 from shapely import buffer
 from shapely import wkt
 
-
 parameters = ["ff", "dd", "rh", "pp", "tn"]
 # fmt: off
 stations = [
