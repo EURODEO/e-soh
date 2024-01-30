@@ -51,6 +51,7 @@ async def get_current_standard_names(ttl_hash=None):
     we want the lru_cache to be valid for.
     """
     del ttl_hash # make linter think we used this value
+
     unique_standard_names = dstore.GetTSAGRequest(attrs="standard_name")
     unique_standard_names = await getTSAGRequest(unique_standard_names)
 
@@ -65,7 +66,7 @@ async def parse_parameter_name(parameter_name):
     """
     parameter_name = parameter_name.split(":")
     if (n_params := len(parameter_name)) != 4:
-        raise HTTPException(400, f"Wrong number of arguemnts in parameter-name, should be 4 got {n_params}")
+        raise HTTPException(400, f"Wrong number of arguments in parameter-name, should be 4 got {n_params}")
 
     standard_name, level, func, period = [i if not i else None for i in parameter_name]
     func = func.lower()
@@ -73,7 +74,7 @@ async def parse_parameter_name(parameter_name):
     errors = []
 
     if not standard_name in get_current_standard_names(ttl_hash=datetime.now().hour):
-        errors.append(f"Unknown standard_name given, {standard_name}")
+        errors.append(f"Unknown standard_name given, {standard_name} not in datastore")
 
     try:
         float(level)

@@ -4,6 +4,7 @@ import formatters
 from covjson_pydantic.coverage import Coverage
 from covjson_pydantic.coverage import CoverageCollection
 from dependencies import get_datetime_range
+from dependencies import parse_parameter_name
 from fastapi import APIRouter
 from fastapi import Path
 from fastapi import Query
@@ -68,10 +69,14 @@ async def get_data_location_id(
     # TODO: There is no error handling of any kind at the moment!
     #  This is just a quick and dirty demo
     range = get_datetime_range(datetime)
+    standard_name, level, func, period = parse_parameter_name(parameter_name)
     get_obs_request = dstore.GetObsRequest(
         platforms=[location_id],
-        instruments=list(map(str.strip, parameter_name.split(","))),
         interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
+        standard_name=standard_name,
+        level=level,
+        func=func,
+        period=period
     )
     response = await getObsRequest(get_obs_request)
     return edr_formatter[f].convert(response)
@@ -110,8 +115,12 @@ async def get_data_area(
     poly = wkt.loads(coords)
     assert poly.geom_type == "Polygon"
     range = get_datetime_range(datetime)
+    standard_name, level, func, period = parse_parameter_name(parameter_name)
     get_obs_request = dstore.GetObsRequest(
-        instruments=list(map(str.strip, parameter_name.split(","))),
+        standard_name=standard_name,
+        level=level,
+        func=func,
+        period=period,
         inside=dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]),
         interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
