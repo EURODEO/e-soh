@@ -15,7 +15,7 @@ from covjson_pydantic.reference_system import ReferenceSystem
 from covjson_pydantic.reference_system import ReferenceSystemConnectionObject
 from covjson_pydantic.unit import Unit
 from fastapi import HTTPException
-from formatters.base_formatter import EDR_formatter
+from formatters.base_formatter import EDRFormatter
 from pydantic import AwareDatetime
 
 # Requierd for pugin discovery
@@ -23,7 +23,7 @@ from pydantic import AwareDatetime
 formatter_name = "Covjson"
 
 
-class Covjson(EDR_formatter):
+class Covjson(EDRFormatter):
     """
     Class for converting protobuf object to coverage json
     """

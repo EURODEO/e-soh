@@ -37,7 +37,6 @@ async def get_locations(bbox: str = Query(..., example="5.0,52.0,6.0,52.1")) -> 
     )
 
     ts_response = await getObsRequest(ts_request)
-    print(ts_response)
     features = [
         Feature(
             type="Feature",
@@ -74,7 +73,7 @@ async def get_data_location_id(
         interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
     response = await getObsRequest(get_obs_request)
-    return edr_formatter[f](response)
+    return edr_formatter[f].convert(response)
 
 
 @router.get(
@@ -111,7 +110,7 @@ async def get_data_area(
     assert poly.geom_type == "Polygon"
     range = get_datetime_range(datetime)
     get_obs_request = dstore.GetObsRequest(
-        standard_names=list(map(str.strip, parameter_name.split(","))),
+        instruments=list(map(str.strip, parameter_name.split(","))),
         inside=dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]),
         interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
