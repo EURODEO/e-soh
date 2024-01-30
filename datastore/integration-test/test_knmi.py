@@ -8,7 +8,6 @@ import grpc
 import pytest
 from google.protobuf.timestamp_pb2 import Timestamp
 
-
 NUMBER_OF_PARAMETERS = 44
 NUMBER_OF_STATIONS = 55
 
