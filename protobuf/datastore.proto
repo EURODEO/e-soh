@@ -151,58 +151,33 @@ message PutObsResponse {
 
 //---------------------------------------------------------------------------
 
+message Strings {
+  repeated string values = 1;
+}
+
 message GetObsRequest {
   // --- BEGIN non-string metadata -------------------------
 
-  // temporal search
-  TimeInterval interval = 1; // only return observations in this time range
+  // temporal filter
+  TimeInterval interval = 1; // only observations in this time range may be returned
 
-  // spatial search
-  Polygon inside = 2; // if specified, only return observations in this area
+  // spatial filter
+  Polygon inside = 2; // if specified, only observations in this area may be returned
 
   // search wrt. TSMetadata.links
   // TODO - needs special handling
 
   // --- END non-string metadata -------------------------
 
-
   // --- BEGIN string metadata (handleable with reflection) -------------------------
-  //
-  //   - field names must correspond exactly with string field names in TSMetadata or ObsMetadata
-  //
-  //   - if the field F is specified (where F is for example 'platform'), only observations
-  //     matching at least one these values for F will be returned
-  //
-  //   - if the field F is not specified, filtering on F is effectively disabled
 
-  repeated string version = 3;
-  repeated string type = 4;
-  repeated string title = 5;
-  repeated string summary = 6;
-  repeated string keywords = 7;
-  repeated string keywords_vocabulary = 8 [json_name = "keywords_vocabulary"];
-  repeated string license = 9;
-  repeated string conventions = 10;
-  repeated string naming_authority = 11 [json_name = "naming_authority"];
-  repeated string creator_type = 12 [json_name = "creator_type"];
-  repeated string creator_name = 13 [json_name = "creator_name"];
-  repeated string creator_email = 14 [json_name = "creator_email"];
-  repeated string creator_url = 15 [json_name = "creator_url"];
-  repeated string institution = 16;
-  repeated string project = 17;
-  repeated string source = 18;
-  repeated string platform = 19;
-  repeated string platform_vocabulary = 20 [json_name = "platform_vocabulary"];
-  repeated string standard_name = 21 [json_name = "standard_name"];
-  repeated string unit = 22;
-  repeated string instrument = 23;
-  repeated string instrument_vocabulary = 24 [json_name = "instrument_vocabulary"];
-  repeated string id = 25;
-  repeated string data_id = 26 [json_name = "data_id"];
-  repeated string history = 27;
-  repeated string metadata_id = 28 [json_name = "metadata_id"];
-  repeated string processing_level = 29 [json_name = "processing_level"];
-  // --- END string metadata -------------------------------------
+  // general filter
+  // - map keys must correspond exactly with string field names in TSMetadata or ObsMetadata
+  // - if map key F is specified (where F is for example 'platform'), only observations that match
+  //   at least one of these values for F may be returned
+  map<string, Strings> filter = 3;
+
+  // --- END string metadata (handleable with reflection) -------------------------
 }
 
 message GetObsResponse {
