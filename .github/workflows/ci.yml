@@ -102,6 +102,42 @@ jobs:
         if: always()
         run: docker compose down --volumes
 
+  test-api:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v3
+
+      - name: Python Setup
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Checkout Source
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pytest-timeout
+          pip install pytest-cov
+          pip install -r ./api/requirements.txt
+
+      - name: Copy Protobuf file to api directory and build
+        run: |
+          mkdir ./api/protobuf
+          cp ./protobuf/datastore.proto ./api/protobuf/datastore.proto
+          python -m grpc_tools.protoc --proto_path=./api/protobuf --python_out=./api --grpc_python_out=./api ./api/protobuf/datastore.proto
+
+      - name: Run Tests
+        run: |
+          cd api
+          python -m pytest -v --timeout=60
+
+
 # TODO: These tests don't currently work. Uncomment once this is resolved.
 #  test-ingest:
 #    runs-on: ubuntu-latest
