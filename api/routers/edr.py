@@ -30,9 +30,10 @@ edr_formatter = formatters.get_EDR_formatters()
 # Maybe it would be better to only query a limited set of data instead of everything (meaning 24 hours)
 async def get_locations(bbox: str = Query(..., example="5.0,52.0,6.0,52.1")) -> FeatureCollection:  # Hack to use string
     left, bottom, right, top = map(str.strip, bbox.split(","))
+    print("bbox: {}".format(bbox))
     poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
     ts_request = dstore.GetObsRequest(
-        filter=dict(instruments=dstore.Strings(values=["tn"])),  # Hack
+        filter=dict(instrument=dstore.Strings(values=["tn"])),  # Hack
         inside=dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]),
     )
 
