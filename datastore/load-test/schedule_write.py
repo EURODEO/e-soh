@@ -19,8 +19,9 @@ from variables import variable_info
 # from apscheduler.executors.pool import ProcessPoolExecutor
 
 
-# One channel & client per process (not per thread!)
-# TODO: Does this affect load on the database? Seems load here is lower then in Rosina's code
+# TODO: We use one channel & client per process (not per thread!). Check if this limits performance!
+# Want to try with one channel per metoffice (so split over 20 channels)
+# See also the fourth bullet here: https://grpc.io/docs/guides/performance/
 channel = grpc.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}")
 client = dstore_grpc.DatastoreStub(channel=channel)
 

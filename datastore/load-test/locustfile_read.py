@@ -34,7 +34,6 @@ points = [
 class StoreGrpcUser(grpc_user.GrpcUser):
     host = "localhost:50050"
     stub_class = dstore_grpc.DatastoreStub
-    weight = 1
 
     @task
     def get_data_for_single_timeserie(self):
