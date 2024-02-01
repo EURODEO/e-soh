@@ -11,8 +11,8 @@ from google.protobuf.json_format import Parse
 
 
 def test_single_parameter_convert():
-    test_data = load_json("test/test_data/test_single.json")
-    compare_data = load_json("test/test_data/test_single_compare.json")
+    test_data = load_json("test/test_data/test_single_proto.json")
+    compare_data = load_json("test/test_data/test_single_covjson.json")
 
     response = create_mock_obs_response(test_data)
     coverage_collection = Covjson().convert(response)
@@ -35,8 +35,8 @@ def test_single_parameter_convert():
 
 
 def test_multiple_parameter_convert():
-    test_data = load_json("test/test_data/test_multiple.json")
-    compare_data = load_json("test/test_data/test_multiple_compare.json")
+    test_data = load_json("test/test_data/test_multiple_proto.json")
+    compare_data = load_json("test/test_data/test_multiple_covjson.json")
 
     response = create_mock_obs_response(test_data)
 
@@ -60,8 +60,8 @@ def test_multiple_parameter_convert():
 
 
 def test_single_parameter_area_convert():
-    test_data = load_json("test/test_data/test_coverages.json")
-    compare_data = load_json("test/test_data/test_coverages_compare.json")
+    test_data = load_json("test/test_data/test_coverages_proto.json")
+    compare_data = load_json("test/test_data/test_coverages_covjson.json")
 
     response = create_mock_obs_response(test_data)
 
@@ -85,7 +85,7 @@ def test_single_parameter_area_convert():
 
 
 def test_empty_response_convert():
-    test_data = load_json("test/test_data/test_empty.json")
+    test_data = load_json("test/test_data/test_empty_proto.json")
     response = create_mock_obs_response(test_data)
 
     # Expect to get an HTTPException when converting an empty response
