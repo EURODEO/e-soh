@@ -28,6 +28,11 @@ def test_single_parameter_convert():
     # Check that correct values exist in the coverage collection
     assert 9.21 in coverage_collection.ranges["ff"].values
 
+    assert len(coverage_collection.domain.axes.t.values) == 7
+
+    # Number of time points should match with the number of observation values
+    assert len(coverage_collection.domain.axes.t.values) == len(coverage_collection.ranges["ff"].values)
+
     # compare the coverage collection with the compare data
     # TODO: Modify compare data when parameter names have been decided
     coverage_collection_json = json.loads(coverage_collection.model_dump_json(exclude_none=True))
@@ -48,11 +53,12 @@ def test_multiple_parameter_convert():
 
     # Check that the coverage collection has the correct parameters
     # TODO: Change parameter names when parameter names have been decided
-    assert all([parameter in ["dd", "ff", "rh", "pp", "tn"] for parameter in coverage_collection.parameters.keys()])
+    assert set(["dd", "ff", "rh"]) == coverage_collection.parameters.keys()
 
     # Check that correct values exist in the coverage collection
     assert 230.7 in coverage_collection.ranges["dd"].values
-    assert 1000.48 in coverage_collection.ranges["pp"].values
+    assert 9.19 in coverage_collection.ranges["ff"].values
+    assert 88.0 in coverage_collection.ranges["rh"].values
 
     # TODO: Modify compare data when parameter names have been decided
     coverage_collection_json = json.loads(coverage_collection.model_dump_json(exclude_none=True))
