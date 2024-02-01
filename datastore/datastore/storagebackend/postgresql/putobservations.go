@@ -7,37 +7,12 @@ import (
 	"fmt"
 	"log"
 	"reflect"
-	"strconv"
 	"strings"
 
 	"github.com/lib/pq"
 	_ "github.com/lib/pq"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
-
-var (
-	putObsLimit int // max # of observations in a single call to PutObservations
-)
-
-func init() { // automatically called once on program startup (on first import of this package)
-	initPutObsLimit()
-}
-
-// initPutObsLimit initializes putObsLimit from environment variable PUTOBSLIMIT.
-func initPutObsLimit() {
-	name := "PUTOBSLIMIT"
-	defaultLimit := 100000
-	limitS := common.Getenv(name, fmt.Sprintf("%d", defaultLimit))
-
-	var err error
-	putObsLimit, err = strconv.Atoi(limitS)
-	if (err != nil) || (putObsLimit < 1) {
-		log.Printf(
-			"WARNING: failed to parse %s as a positive integer: %s; falling back to default: %d",
-			name, limitS, defaultLimit)
-		putObsLimit = defaultLimit
-	}
-}
 
 // getTSColVals gets the time series metadata column values from tsMdata.
 // Returns (column values, nil) upon success, otherwise (..., error).
