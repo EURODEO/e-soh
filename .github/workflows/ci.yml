@@ -105,8 +105,8 @@ jobs:
   test-api:
     runs-on: ubuntu-latest
     permissions:
-      Contents: read
-      Metadata: read
+      contents: read
+      metadata: read
       issues: read
       pull-requests: write
 
