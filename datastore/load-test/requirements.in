@@ -6,9 +6,5 @@
 grpcio-tools~=1.56
 grpc-interceptor~=0.15.3
 locust~=2.16
-netCDF4~=1.6
 shapely~=2.0
-pandas~=2.1
-psycopg2-binary~=2.9
-xarray~=2023.12
 apscheduler~=3.10
