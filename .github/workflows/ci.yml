@@ -104,6 +104,12 @@ jobs:
 
   test-api:
     runs-on: ubuntu-latest
+    permissions:
+      Contents: read
+      Metadata: read
+      issues: read
+      pull-requests: write
+
     strategy:
       matrix:
         python-version: ["3.11"]
