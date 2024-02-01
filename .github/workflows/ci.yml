@@ -89,8 +89,9 @@ jobs:
   test-api:
     runs-on: ubuntu-latest
     permissions:
-      issues: write
-      pull-requests: write
+      contents: read|write
+      issues: read|write
+      pull-requests: read|write
 
     strategy:
       matrix:
