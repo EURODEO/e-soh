@@ -132,7 +132,21 @@ jobs:
       - name: Run Tests
         run: |
           cd api
-          python -m pytest -v --timeout=60
+          python -m pytest --timeout=60 --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=. | tee pytest-coverage.txt
+
+      - name: Comment coverage
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-coverage-path: .pytest-coverage.txt
+          title: API Unit Test Coverage Report
+          hide-badge: true
+          hide-report: false
+          create-new-comment: false
+          hide-comment: false
+          report-only-changed-files: false
+          remove-link-from-badge: false
+          junitxml-path: .pytest.xml
+          junitxml-title: API Unit Test Coverage Summary
 
 
 # TODO: These tests don't currently work. Uncomment once this is resolved.
