@@ -4,7 +4,7 @@
 ## Read test
 Locust is used for read performance testing of the datastore.
 
-Two tasks are defined: 1) `get_data_for_single_timeserie` and 2) get_data_single_station_through_bbox.
+Two tasks are defined: 1) `get_data_for_single_timeserie` and 2) `get_data_single_station_through_bbox`.
 Each user does one task, as soon as the query completes, it does another.
 We found that the maximum total throughput is reached with about 5 users.
 
