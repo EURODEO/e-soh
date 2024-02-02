@@ -1,8 +1,10 @@
 import json
 
 import datastore_pb2 as dstore
+import pytest
 from covjson_pydantic.coverage import Coverage
 from covjson_pydantic.coverage import CoverageCollection
+from fastapi import HTTPException
 from formatters.covjson import Covjson
 from google.protobuf.json_format import Parse
 
@@ -85,6 +87,19 @@ def test_single_parameter_area_convert():
     # TODO: Modify compare data when parameter names have been decided
     coverage_collection_json = json.loads(coverage_collection.model_dump_json(exclude_none=True))
     assert coverage_collection_json == compare_data
+
+
+def test_empty_response_convert():
+    test_data = load_json("test/test_data/test_empty_proto.json")
+    response = create_mock_obs_response(test_data)
+
+    # Expect to get an HTTPException with status code of 404 and detail of
+    # "No data found" when converting an empty response
+    with pytest.raises(HTTPException) as exception_info:
+        Covjson().convert(response)
+
+    assert exception_info.value.detail == "No data found"
+    assert exception_info.value.status_code == 404
 
 
 def create_mock_obs_response(json_data):
