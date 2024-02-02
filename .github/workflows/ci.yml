@@ -6,6 +6,9 @@ on:
       - "**"
     tags:
       - "[0-9]+.[0-9]+.[0-9]+"
+  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -101,6 +104,59 @@ jobs:
       - name: Cleanup
         if: always()
         run: docker compose down --volumes
+
+  test-api:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v4
+
+      - name: Python Setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pytest-timeout
+          pip install pytest-cov
+          pip install -r ./api/requirements.txt
+
+      - name: Copy Protobuf file to api directory and build
+        run: |
+          mkdir ./api/protobuf
+          cp ./protobuf/datastore.proto ./api/protobuf/datastore.proto
+          python -m grpc_tools.protoc --proto_path=./api/protobuf --python_out=./api --grpc_python_out=./api ./api/protobuf/datastore.proto
+
+      - name: Run Tests
+        run: |
+          cd api
+          python -m pytest --timeout=60 --junitxml=pytest.xml --cov-report=term-missing --cov=. | tee pytest-coverage.txt
+
+      - name: Comment coverage
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-coverage-path: ./api/pytest-coverage.txt
+          coverage-path-prefix: api/
+          title: API Unit Test Coverage Report
+          hide-badge: true
+          hide-report: false
+          create-new-comment: false
+          hide-comment: false
+          report-only-changed-files: false
+          remove-link-from-badge: false
+          junitxml-path: ./api/pytest.xml
+          junitxml-title: API Unit Test Coverage Summary
+
 
 # TODO: These tests don't currently work. Uncomment once this is resolved.
 #  test-ingest:
