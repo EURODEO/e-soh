@@ -57,10 +57,10 @@ func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, error) {
 	// --- BEGIN string metadata (handleable with reflection) ---------------------------
 
 	rv := reflect.ValueOf(tsMdata)
-	for _, field := range reflect.VisibleFields(reflect.TypeOf(datastore.TSMetadata{})) {
+	for _, field := range tsStructFields {
 		methodName := fmt.Sprintf("Get%s", field.Name)
 		method := rv.MethodByName(methodName)
-		if field.IsExported() && (field.Type.Kind() == reflect.String) && (method.IsValid()) {
+		if method.IsValid() {
 			val, ok := method.Call([]reflect.Value{})[0].Interface().(string)
 			if !ok {
 				return nil, fmt.Errorf(

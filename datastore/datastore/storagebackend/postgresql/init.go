@@ -19,6 +19,8 @@ var (
 
 	putObsLimit int // max # of observations in a single call to PutObservations
 
+	tsStructFields []reflect.StructField // applicable time series metadata struct fields
+
 	tsStringMdataGoNames []string // Go names for time series metadata of type string
 	tsStringMdataPBNames []string // protobuf names for time series metadata of type string
 
@@ -93,6 +95,14 @@ func init() { // automatically called once on program startup (on first import o
 	lastCleanupTime = time.Time{}
 
 	initPutObsLimit()
+
+	// create tsStructFields
+	tsStructFields = []reflect.StructField{}
+	for _, field := range reflect.VisibleFields(reflect.TypeOf(datastore.TSMetadata{})) {
+		if field.IsExported() && (field.Type.Kind() == reflect.String) {
+			tsStructFields = append(tsStructFields, field)
+		}
+	}
 
 	// create tsStringMdataGoNames and tsStringMdataPBNames
 	tsStringMdataGoNames = []string{}
