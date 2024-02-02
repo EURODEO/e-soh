@@ -35,6 +35,32 @@ def test_single_parameter_convert():
     assert coverage_collection_json == compare_data
 
 
+def test_multiple_parameter_convert():
+    test_data = load_json("test/test_data/test_multiple_proto.json")
+    compare_data = load_json("test/test_data/test_multiple_covjson.json")
+
+    response = create_mock_obs_response(test_data)
+
+    coverage_collection = Covjson().convert(response)
+
+    assert coverage_collection is not None
+
+    assert type(coverage_collection) is Coverage
+
+    # Check that the coverage collection has the correct parameters
+    # TODO: Change parameter names when parameter names have been decided
+    assert set(["dd", "ff", "rh"]) == coverage_collection.parameters.keys()
+
+    # Check that correct values exist in the coverage collection
+    assert 230.7 in coverage_collection.ranges["dd"].values
+    assert 9.19 in coverage_collection.ranges["ff"].values
+    assert 88.0 in coverage_collection.ranges["rh"].values
+
+    # TODO: Modify compare data when parameter names have been decided
+    coverage_collection_json = json.loads(coverage_collection.model_dump_json(exclude_none=True))
+    assert coverage_collection_json == compare_data
+
+
 def create_mock_obs_response(json_data):
     response = dstore.GetObsResponse()
     Parse(json.dumps(json_data), response)
