@@ -73,7 +73,7 @@ async def parse_parameter_name(parameter_name):
 
     errors = []
 
-    if not standard_name in get_current_standard_names(ttl_hash=datetime.now().hour):
+    if not standard_name in await get_current_standard_names(ttl_hash=datetime.now().hour):
         errors.append(f"Unknown standard_name given, {standard_name} not in datastore")
 
     try:
@@ -86,8 +86,8 @@ async def parse_parameter_name(parameter_name):
 
     try:
         isodate.parse_duration(period)
-    except isodate.ISO8601Error:
-        errors.append(f"Invalid ISO8601 duration")
+    except isodate.ISO8601Error as error:
+        raise error
 
     if not errors:
         raise HTTPException(400, detail="\n".join(errors))
