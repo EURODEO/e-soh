@@ -192,7 +192,7 @@ func getObsTime(obsMdata *datastore.ObsMetadata) (*timestamppb.Timestamp, error)
 	return nil, fmt.Errorf("obsMdata.GetObstimeInstant()is nil")
 }
 
-// --- BEGIN a variant of getObsTime that also supports intervals ---------------------------------
+// --- BEGIN a variant of getObsTime that also supports temporal intervals ------------------------
 // getObsTime extracts the obs time from obsMdata as either an instant time or the end of
 // an interval.
 // Returns (obs time, nil) upon success, otherwise (..., error).
@@ -201,13 +201,14 @@ func getObsTime(obsMdata *datastore.ObsMetadata) (*timestamppb.Timestamp, error)
 	if obsTime := obsMdata.GetInstant(); obsTime != nil {
 		return obsTime, nil
 	}
-	if obsTime := obsMdata.GetInterval().GetEnd(); obsTime != nil {
+	if obsTime := obsMdata.GetTemporalInterval().GetEnd(); obsTime != nil {
 		return obsTime, nil
 	}
-	return nil, fmt.Errorf("obsMdata.GetInstant() and obsMdata.GetInterval().GetEnd() are both nil")
+	return nil, fmt.Errorf(
+		"obsMdata.GetInstant() and obsMdata.GetTemporalInterval().GetEnd() are both nil")
 }
 */
-// --- END a variant of getObsTime that also supports intervals ---------------------------------
+// --- END a variant of getObsTime that also supports temporal intervals --------------------------
 
 // getGeoPointID retrieves the ID of the row in table geo_point that matches point,
 // inserting a new row if necessary. The ID is first looked up in a cache in order to save

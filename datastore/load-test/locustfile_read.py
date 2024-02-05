@@ -43,7 +43,7 @@ class StoreGrpcUser(grpc_user.GrpcUser):
         to_time.FromDatetime(datetime(2023, 1, 1))
 
         request = dstore.GetObsRequest(
-            interval=dstore.TimeInterval(start=from_time, end=to_time),
+            temporal_interval=dstore.TimeInterval(start=from_time, end=to_time),
             platforms=[random.choice(stations)],
             instruments=[random.choice(parameters)],
         )
@@ -62,9 +62,11 @@ class StoreGrpcUser(grpc_user.GrpcUser):
         poly = buffer(point, 0.0001, quad_segs=1)  # Roughly 10 meters around the point
 
         request = dstore.GetObsRequest(
-            interval=dstore.TimeInterval(start=from_time, end=to_time),
+            temporal_interval=dstore.TimeInterval(start=from_time, end=to_time),
             instruments=[random.choice(parameters)],
-            inside=dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]),
+            spatial_area=dstore.Polygon(
+                points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
+            ),
         )
         response = self.stub.GetObservations(request)
         assert len(response.observations) == 1

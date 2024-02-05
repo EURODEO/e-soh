@@ -225,7 +225,7 @@ func getObs(db *sql.DB, request *datastore.GetObsRequest, obs *[]*datastore.Meta
 
 	phVals := []interface{}{} // placeholder values
 
-	timeExpr := getTimeFilter(request.GetInterval())
+	timeExpr := getTimeFilter(request.GetTemporalInterval())
 
 	tsMdataExpr := getMdataFilter([]filterInfo{
 		{"platform", request.GetPlatforms()},
@@ -239,7 +239,7 @@ func getObs(db *sql.DB, request *datastore.GetObsRequest, obs *[]*datastore.Meta
 		// TODO: add search filters for more columns in table 'observation'
 	}, &phVals)
 
-	geoExpr, err := getGeoFilter(request.Inside, &phVals)
+	geoExpr, err := getGeoFilter(request.GetSpatialArea(), &phVals)
 	if err != nil {
 		return fmt.Errorf("getGeoFilter() failed: %v", err)
 	}

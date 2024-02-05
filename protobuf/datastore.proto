@@ -140,8 +140,8 @@ message PutObsResponse {
 //---------------------------------------------------------------------------
 
 message GetObsRequest {
-  TimeInterval interval = 1; // only return observations in this time range
-  Polygon inside = 2; // if specified, only return observations in this area
+  TimeInterval temporal_interval = 1; // only return observations in this time range
+  Polygon spatial_area = 2; // if specified, only return observations inside this area
   repeated string platforms = 3; // if specified, only return observations matching any of these platform patterns
   repeated string standard_names = 4 [json_name = "standard_names"]; // if specified, only return observations matching any of these standard names
   repeated string instruments = 5; // if specified, only return observations matching any of these instruments
