@@ -1,17 +1,18 @@
 # For developing:    uvicorn main:app --reload
 from typing import Annotated
+from collections import defaultdict
 
 import datastore_pb2 as dstore
 import formatters
 from covjson_pydantic.coverage import Coverage
 from covjson_pydantic.coverage import CoverageCollection
+from custom_geo_json.edr_feature_collection import EDRFeatureCollection
 from dependencies import get_datetime_range
 from fastapi import APIRouter
 from fastapi import HTTPException
 from fastapi import Path
 from fastapi import Query
 from geojson_pydantic import Feature
-from geojson_pydantic import FeatureCollection
 from geojson_pydantic import Point
 from grpc_getter import getObsRequest
 from shapely import buffer
@@ -27,29 +28,44 @@ router = APIRouter(prefix="/collections/observations")
 @router.get(
     "/locations",
     tags=["Collection data queries"],
-    response_model=FeatureCollection,
+    response_model=EDRFeatureCollection,
     response_model_exclude_none=True,
 )
 # We can currently only query data, even if we only need metadata like for this endpoint
 # Maybe it would be better to only query a limited set of data instead of everything (meaning 24 hours)
 async def get_locations(
     bbox: Annotated[str, Query(example="5.0,52.0,6.0,52.1")]
-) -> FeatureCollection:  # Hack to use string
+) -> EDRFeatureCollection:  # Hack to use string
     left, bottom, right, top = map(str.strip, bbox.split(","))
     poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
+
+    # fmt: off
+    all_parameters = [
+        "D1H", "R12H", "R1H", "R24H", "R6H", "Tgn12", "Tgn14", "Tgn6", "Tn12", "Tn14", "Tn6", "Tx12", "Tx24", "Tx6",
+        "dd", "dr", "ff", "gff", "hc", "hc1", "hc2", "hc3", "nc", "nc1", "nc2", "nc3", "pg", "pp", "pr", "pwc", "qg",
+        "rg", "rh", "ss", "ta", "td", "tgn", "tn", "tx", "ww", "ww-10", "zm"
+    ]
+    # fmt: on
+
     ts_request = dstore.GetObsRequest(
-        filter=dict(parameter_name=dstore.Strings(values=["air_temperature_2.0_maximum_PT10M"])),  # Hack
+        filter=dict(instrument=dstore.Strings(values=all_parameters)),  # Hack
         spatial_area=dstore.Polygon(
             points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
         ),
     )
-
+    # TODO: It is not possible to request all of the locations, because the request is too large for gRPC.
+    #  Thus it is necessary to update the datastore.
     ts_response = await getObsRequest(ts_request)
+
+    platform_standard_names = defaultdict(set)
+    for obs in sorted(ts_response.observations, key=lambda obs: obs.ts_mdata.platform):
+        platform_standard_names[obs.ts_mdata.platform].add(obs.ts_mdata.standard_name)
+
     features = [
         Feature(
             type="Feature",
             id=ts.ts_mdata.platform,
-            properties=None,
+            properties={"parameter-name": platform_standard_names[ts.ts_mdata.platform]},
             geometry=Point(
                 type="Point",
                 coordinates=(
@@ -60,7 +76,28 @@ async def get_locations(
         )  # HACK: Assume loc the same
         for ts in sorted(ts_response.observations, key=lambda ts: ts.ts_mdata.platform)
     ]
-    return FeatureCollection(features=features, type="FeatureCollection")
+
+    # TODO: Did a local hack to make the labels work, changed in the edr_pydantic library,
+    #  both the observedProperty, parameter and unit their label and description from string to i18n
+    parameters = {
+        "dd_10": {
+            "type": "Parameter",
+            "id": "<standard_name>_<level>_<function>_<period>",
+            "description": {"en": "Wind, direction, average, height sensor, 10'"},
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/wind_from_direction/",
+                "label": {"en": "Wind from direction"},
+            },
+            "unit": {
+                "label": {"en": "degree"},
+                "symbol": {"value": "°", "type": "http://www.opengis.net/def/uom/UCUM/"},
+            },
+        }
+    }
+
+    # feature_collection = FeatureCollection(features=features, type="FeatureCollection")
+    # return dict(feature_collection.model_dump(), **{"parameters": parameters})
+    return EDRFeatureCollection(features=features, type="FeatureCollection", parameters=parameters)
 
 
 @router.get(
