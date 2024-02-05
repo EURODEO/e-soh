@@ -1,0 +1,46 @@
+{
+    "observations": [
+        {
+            "ts_mdata": {
+                "title": "FMI test data",
+                "platform": "100945",
+                "standard_name": "TA_P1D_AVG",
+                "unit": "degC",
+                "instrument": "TA_P1D_AVG"
+            },
+            "obs_mdata": [
+                {
+                    "id": "56513647-809c-4582-94c1-40afeff639f8",
+                    "geo_point": {
+                        "lat": 59.86948983,
+                        "lon": 22.19342704
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:00:00Z",
+                    "value": "5.2"
+                }
+            ]
+        },
+        {
+            "ts_mdata": {
+                "title": "FMI test data",
+                "platform": "100976",
+                "standard_name": "TA_P1D_AVG",
+                "unit": "degC",
+                "instrument": "TA_P1D_AVG"
+            },
+            "obs_mdata": [
+                {
+                    "id": "7a144238-1c53-43de-b03e-9a630a89051f",
+                    "geo_point": {
+                        "lat": 60.41875496,
+                        "lon": 24.3986218
+                    },
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "obstime_instant": "2022-12-31T00:00:00Z",
+                    "value": "3.7"
+                }
+            ]
+        }
+    ]
+}
