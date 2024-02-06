@@ -159,10 +159,10 @@ message GetObsRequest {
   // --- BEGIN non-string metadata -------------------------
 
   // temporal filter
-  TimeInterval interval = 1; // only observations in this time range may be returned
+  TimeInterval temporal_interval = 1; // only observations in this time range may be returned
 
   // spatial filter
-  Polygon inside = 2; // if specified, only observations in this area may be returned
+  Polygon spatial_area = 2; // if specified, only observations in this area may be returned
 
   // search wrt. TSMetadata.links
   // TODO - needs special handling
