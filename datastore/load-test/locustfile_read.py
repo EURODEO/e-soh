@@ -66,7 +66,9 @@ class StoreGrpcUser(grpc_user.GrpcUser):
         request = dstore.GetObsRequest(
             temporal_interval=dstore.TimeInterval(start=from_time, end=to_time),
             filter=dict(instrument=dstore.Strings(values=[random.choice(parameters)])),
-            spatial_area=dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]),
+            spatial_area=dstore.Polygon(
+                points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
+            ),
         )
         response = self.stub.GetObservations(request)
         assert len(response.observations) == 1
