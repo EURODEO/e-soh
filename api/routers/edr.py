@@ -74,13 +74,12 @@ async def get_data_location_id(
     get_obs_request = dstore.GetObsRequest(
         filter=dict(
             platform=dstore.Strings(values=[location_id]),
-            instrument=dstore.Strings(values=list(map(str.strip, parameter_name.split(",")))),
+            standard_name=dstore.Strings(values=[standard_name]),
+            level=dstore.String(values=[level]),
+            func=dstore.String(values=[func]),
+            period=dstore.Strings(values=[period])
         ),
         interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
-        standard_name=standard_name,
-        level=level,
-        func=func,
-        period=period
     )
     response = await getObsRequest(get_obs_request)
     return edr_formatter[f].convert(response)
@@ -121,7 +120,12 @@ async def get_data_area(
     range = get_datetime_range(datetime)
     standard_name, level, func, period = parse_parameter_name(parameter_name)
     get_obs_request = dstore.GetObsRequest(
-        filter=dict(instrument=dstore.Strings(values=list(map(str.strip, parameter_name.split(","))))),
+        filter=dict(
+            standard_name=dstore.Strings(values=[standard_name]),
+            level=dstore.String(values=[level]),
+            func=dstore.String(values=[func]),
+            period=dstore.Strings(values=[period])
+        ),
         inside=dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]),
         interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
