@@ -1,7 +1,7 @@
 package storagebackend
 
 import (
-	datastore "datastore/datastore"
+	"datastore/datastore"
 )
 
 // StorageBackend is the interface for an observation storage backend.

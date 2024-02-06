@@ -141,19 +141,19 @@ go mod tidy
 
 The following environment variables are supported:
 
-Variable | Mandatory | Default value | Description
-:--      | :--       | :--           | :--
-`SERVERPORT`      | No  | `50050`            | Server port number.
-`PGHOST`          | No  | `localhost`        | PostgreSQL host.
-`PGPORT`          | No  | `5433`             | PostgreSQL port number.
-`PGBUSER`         | No  | `postgres`         | PostgreSQL user name.
-`PGPASSWORD`      | No  | `mysecretpassword` | PostgreSQL password.
-`PGDBNAME`        | No  | `data`             | PostgreSQL database name.
-`DYNAMICTIME`     | No  | `true`             | Whether the valid time range is _dynamic_ or _static_ (defined below).
-`LOTIME`          | No  | `86400`            | The _earliest_ valid time as seconds to be either [1] subtracted from the current time (if the valid time range is _dynamic_) or [2] added to UNIX epoch (1970-01-01T00:00:00Z) (if the valid time range is _static_). In the case of a _static_ valid time range, the `LOTIME` can optionally be specified as an ISO-8601 datetime of the exact form `2023-10-10T00:00:00Z`.
-`HITIME`          | No  | `-2`               | Same as `LOTIME`, but for the _latest_ valid time. Note a default leeway of 2 seconds into the future to reduce risk of missing the newest observations.
-`CLEANUPINTERVAL` | No  | `86400`            | The minimum time duration in seconds between automatic cleanups (like removing obsolete observations from the physical store).
-`PUTOBSLIMIT`     | No  | `100000`           | Maximum number of observations allowed in a single call to `PutObservations`.
+| Variable | Mandatory | Default value | Description |
+| :--      | :--       | :--           | :-- |
+| `SERVERPORT`      | No  | `50050`            | Server port number. |
+| `PGHOST`          | No  | `localhost`        | PostgreSQL host. |
+| `PGPORT`          | No  | `5433`             | PostgreSQL port number. |
+| `PGBUSER`         | No  | `postgres`         | PostgreSQL user name. |
+| `PGPASSWORD`      | No  | `mysecretpassword` | PostgreSQL password. |
+| `PGDBNAME`        | No  | `data`             | PostgreSQL database name. |
+| `DYNAMICTIME`     | No  | `true`             | Whether the valid time range is _dynamic_ or _static_ (defined below). |
+| `LOTIME`          | No  | `86400`            | The _earliest_ valid time as seconds to be either [1] subtracted from the current time (if the valid time range is _dynamic_) or [2] added to UNIX epoch (1970-01-01T00:00:00Z) (if the valid time range is _static_). In the case of a _static_ valid time range, the `LOTIME` can optionally be specified as an ISO-8601 datetime of the exact form `2023-10-10T00:00:00Z`. |
+| `HITIME`          | No  | `-2`               | Same as `LOTIME`, but for the _latest_ valid time. Note a default leeway of 2 seconds into the future to reduce risk of missing the newest observations. |
+| `CLEANUPINTERVAL` | No  | `86400`            | The minimum time duration in seconds between automatic cleanups (like removing obsolete observations from the physical store). |
+| `PUTOBSLIMIT`     | No  | `100000`           | Maximum number of observations allowed in a single call to `PutObservations`. |
 
 **TODO:** Ensure that these variables are [passed properly](https://docs.docker.com/compose/environment-variables/set-environment-variables/) to the relevant `docker compose`
 commands. Any secrets should be passed using a [special mechanism](https://docs.docker.com/compose/use-secrets/), etc.
@@ -175,8 +175,9 @@ datastore.Datastore
 $ grpcurl -plaintext -proto protobuf/datastore.proto describe
 datastore.Datastore is a service:
 service Datastore {
-  rpc GetObservations ( .datastore.GetObsRequest ) returns ( .datastore.GetObsResponse );
-  rpc PutObservations ( .datastore.PutObsRequest ) returns ( .datastore.PutObsResponse );
+  // get temporal and spatial extents of current storage contents
+  rpc GetExtents ( .datastore.GetExtentsRequest ) returns ( .datastore.GetExtentsResponse );
+  ...
 }
 ```
 
@@ -185,6 +186,7 @@ service Datastore {
 ```text
 $ grpcurl -plaintext -proto protobuf/datastore.proto describe datastore.Datastore.PutObservations
 datastore.Datastore.PutObservations is a method:
+// insert observations into the storage (or update existing ones)
 rpc PutObservations ( .datastore.PutObsRequest ) returns ( .datastore.PutObsResponse );
 ```
 
@@ -234,9 +236,8 @@ $ grpcurl -d '{"interval": {"start": "2023-01-01T00:00:00Z", "end": "2023-01-01T
 ```
 
 ### Retrieve wind speed and air temperature observations in a time range and a polygon
-
 ```text
-$ grpcurl -d '{"standard_names": ["wind_speed", "air_temperature"], "interval": {"start": "2023-01-01T00:00:00Z", "end": "2023-01-01T00:00:10Z"}, "inside": {"points": [{"lat": 59.90, "lon": 10.70}, {"lat": 59.90, "lon": 10.80}, {"lat": 60, "lon": 10.80}, {"lat": 60, "lon": 10.70}]}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
+$ grpcurl -d '{"filter": {"standard_name": {"values": ["wind_speed", "air_temperature"]}}, "interval": {"start": "2023-01-01T00:00:00Z", "end": "2023-01-01T00:00:10Z"}, "inside": {"points": [{"lat": 59.90, "lon": 10.70}, {"lat": 59.90, "lon": 10.80}, {"lat": 60, "lon": 10.80}, {"lat": 60, "lon": 10.70}]}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
 ...
 ```
 
