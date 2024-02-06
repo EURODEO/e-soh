@@ -6,7 +6,8 @@ import "google/protobuf/timestamp.proto";
 
 option go_package = "./datastore";
 
-// Notes:
+// NOTES:
+//
 // - A _time series_ is a context defined by a set of metadata (defined in TSMetadata below) that
 //   usually does not vary with observaion (time).
 //
@@ -71,47 +72,58 @@ message Link {
 }
 
 message TSMetadata {
-  string version = 1;
-  string type = 2;
-  string title = 3;
-  string summary = 4;
-  string keywords = 5;
-  string keywords_vocabulary = 6 [json_name = "keywords_vocabulary"];
-  string license = 7;
-  string conventions = 8;
-  string naming_authority = 9 [json_name = "naming_authority"];
-  string creator_type = 10 [json_name = "creator_type"];
-  string creator_name = 11 [json_name = "creator_name"];
-  string creator_email = 12 [json_name = "creator_email"];
-  string creator_url = 13 [json_name = "creator_url"];
-  string institution = 14;
-  string project = 15;
-  string source = 16;
-  string platform = 17;
-  string platform_vocabulary = 18 [json_name = "platform_vocabulary"];
-  string standard_name = 19 [json_name = "standard_name"];
-  string unit = 20;
-  string instrument = 21;
-  string instrument_vocabulary = 22 [json_name = "instrument_vocabulary"];
-  repeated Link links = 23;
+  // --- BEGIN non-string metadata -----------------
+  repeated Link links = 1;
+  // --- END non-string metadata -----------------
+
+  // --- BEGIN string metadata (handleable with reflection) -----------------
+  string version = 2;
+  string type = 3;
+  string title = 4;
+  string summary = 5;
+  string keywords = 6;
+  string keywords_vocabulary = 7 [json_name = "keywords_vocabulary"];
+  string license = 8;
+  string conventions = 9;
+  string naming_authority = 10 [json_name = "naming_authority"];
+  string creator_type = 101 [json_name = "creator_type"];
+  string creator_name = 12 [json_name = "creator_name"];
+  string creator_email = 13 [json_name = "creator_email"];
+  string creator_url = 14 [json_name = "creator_url"];
+  string institution = 15;
+  string project = 16;
+  string source = 17;
+  string platform = 18;
+  string platform_vocabulary = 19 [json_name = "platform_vocabulary"];
+  string standard_name = 20 [json_name = "standard_name"];
+  string unit = 21;
+  string instrument = 22;
+  string instrument_vocabulary = 23 [json_name = "instrument_vocabulary"];
+  // --- END string metadata -----------------
 }
 
 message ObsMetadata {
-  string id = 1;
+  // --- BEGIN non-string metadata -----------------
   oneof geometry {
-    Point geo_point = 2 [json_name = "geo_point"];
-    Polygon geo_polygon = 3 [json_name = "geo_polygon"];
+    Point geo_point = 1 [json_name = "geo_point"];
+    Polygon geo_polygon = 2 [json_name = "geo_polygon"];
   }
-  google.protobuf.Timestamp pubtime = 4;
-  string data_id = 5 [json_name = "data_id"];
-  string history = 6;
-  string metadata_id = 7 [json_name = "metadata_id"];
   oneof obstime {
-    google.protobuf.Timestamp obstime_instant = 8 [json_name = "obstime_instant"];
-    //TimeInterval obstime_interval = 9 [json_name = "obstime_interval"]; -- unsupported for now
+    google.protobuf.Timestamp obstime_instant = 3 [json_name = "obstime_instant"];
+    //TimeInterval obstime_interval = 4 [json_name = "obstime_interval"]; -- unsupported for now
   }
+  google.protobuf.Timestamp pubtime = 5;
+  // --- END non-string metadata -----------------
+
+  // --- BEGIN string metadata (handleable with reflection) -----------------
+  string id = 6;
+  string data_id = 7 [json_name = "data_id"];
+  string history = 8;
+  string metadata_id = 9 [json_name = "metadata_id"];
   string processing_level = 10 [json_name = "processing_level"];
-  string value = 11;
+  // --- END string metadata -----------------
+
+  string value = 11; // obs value (not metadata in a strict sense)
 }
 
 //---------------------------------------------------------------------------
@@ -139,14 +151,33 @@ message PutObsResponse {
 
 //---------------------------------------------------------------------------
 
+message Strings {
+  repeated string values = 1;
+}
+
 message GetObsRequest {
-  TimeInterval interval = 1; // only return observations in this time range
-  Polygon inside = 2; // if specified, only return observations in this area
-  repeated string platforms = 3; // if specified, only return observations matching any of these platform patterns
-  repeated string standard_names = 4 [json_name = "standard_names"]; // if specified, only return observations matching any of these standard names
-  repeated string instruments = 5; // if specified, only return observations matching any of these instruments
-  repeated string processing_levels = 6 [json_name = "processing_levels"]; // if specified, only return observations matching any of these processing levels
-  // TODO: add search filters for other metadata
+  // --- BEGIN non-string metadata -------------------------
+
+  // temporal filter
+  TimeInterval interval = 1; // only observations in this time range may be returned
+
+  // spatial filter
+  Polygon inside = 2; // if specified, only observations in this area may be returned
+
+  // search wrt. TSMetadata.links
+  // TODO - needs special handling
+
+  // --- END non-string metadata -------------------------
+
+  // --- BEGIN string metadata (handleable with reflection) -------------------------
+
+  // general filter
+  // - map keys must correspond exactly with string field names in TSMetadata or ObsMetadata
+  // - if map key F is specified (where F is for example 'platform'), only observations that match
+  //   at least one of these values for F may be returned
+  map<string, Strings> filter = 3;
+
+  // --- END string metadata (handleable with reflection) -------------------------
 }
 
 message GetObsResponse {

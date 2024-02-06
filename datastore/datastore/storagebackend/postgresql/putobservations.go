@@ -6,7 +6,7 @@ import (
 	"datastore/datastore"
 	"fmt"
 	"log"
-	"strconv"
+	"reflect"
 	"strings"
 
 	"github.com/lib/pq"
@@ -14,64 +14,12 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-var (
-	putObsLimit int // max # of observations in a single call to PutObservations
-)
-
-func init() { // automatically called once on program startup (on first import of this package)
-	initPutObsLimit()
-}
-
-// initPutObsLimit initializes putObsLimit from environment variable PUTOBSLIMIT.
-func initPutObsLimit() {
-	name := "PUTOBSLIMIT"
-	defaultLimit := 100000
-	limitS := common.Getenv(name, fmt.Sprintf("%d", defaultLimit))
-
-	var err error
-	putObsLimit, err = strconv.Atoi(limitS)
-	if (err != nil) || (putObsLimit < 1) {
-		log.Printf(
-			"WARNING: failed to parse %s as a positive integer: %s; falling back to default: %d",
-			name, limitS, defaultLimit)
-		putObsLimit = defaultLimit
-	}
-}
-
 // getTSColVals gets the time series metadata column values from tsMdata.
 // Returns (column values, nil) upon success, otherwise (..., error).
 func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, error) {
-
 	colVals := []interface{}{}
 
-	// main section
-
-	colVals = []interface{}{
-		tsMdata.GetVersion(),
-		tsMdata.GetType(),
-		tsMdata.GetTitle(),
-		tsMdata.GetSummary(),
-		tsMdata.GetKeywords(),
-		tsMdata.GetKeywordsVocabulary(),
-		tsMdata.GetLicense(),
-		tsMdata.GetConventions(),
-		tsMdata.GetNamingAuthority(),
-		tsMdata.GetCreatorType(),
-		tsMdata.GetCreatorName(),
-		tsMdata.GetCreatorEmail(),
-		tsMdata.GetCreatorUrl(),
-		tsMdata.GetInstitution(),
-		tsMdata.GetProject(),
-		tsMdata.GetSource(),
-		tsMdata.GetPlatform(),
-		tsMdata.GetPlatformVocabulary(),
-		tsMdata.GetStandardName(),
-		tsMdata.GetUnit(),
-		tsMdata.GetInstrument(),
-		tsMdata.GetInstrumentVocabulary(),
-	}
-
-	// links section
+	// --- BEGIN non-string metadata ---------------------------
 
 	getLinkVals := func(key string) ([]string, error) {
 		linkVals := []string{}
@@ -103,6 +51,26 @@ func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, error) {
 			colVals = append(colVals, pq.StringArray(linkVals))
 		}
 	}
+
+	// --- END non-string metadata ---------------------------
+
+	// --- BEGIN string metadata (handleable with reflection) ---------------------------
+
+	rv := reflect.ValueOf(tsMdata)
+	for _, field := range tsStructFields {
+		methodName := fmt.Sprintf("Get%s", field.Name)
+		method := rv.MethodByName(methodName)
+		if method.IsValid() {
+			val, ok := method.Call([]reflect.Value{})[0].Interface().(string)
+			if !ok {
+				return nil, fmt.Errorf(
+					"method.Call() failed for method %s; failed to return string", methodName)
+			}
+			colVals = append(colVals, val)
+		}
+	}
+
+	// --- END string metadata ---------------------------
 
 	return colVals, nil
 }
@@ -155,6 +123,8 @@ func getTimeSeriesID(
 		cols[0],
 		cols[0],
 	)
+	fmt.Printf("insertCmd: %s; len(cols): %d; len(phs): %d\n",
+		insertCmd, len(cols), len(createPlaceholders(formats)))
 
 	_, err = tx.Exec(insertCmd, colVals...)
 	if err != nil {

@@ -4,40 +4,11 @@ import (
 	"database/sql"
 	"datastore/common"
 	"fmt"
-	"log"
-	"strconv"
 	"strings"
 	"time"
 
 	_ "github.com/lib/pq"
 )
-
-var (
-	cleanupInterval time.Duration
-	lastCleanupTime time.Time
-)
-
-// initCleanupInterval initializes cleanupInterval.
-func initCleanupInterval() {
-	name := "CLEANUPINTERVAL"
-	defaultVal := int64(86400)
-	val0 := strings.ToLower(common.Getenv(name, fmt.Sprintf("%d", defaultVal)))
-
-	val, err := strconv.ParseInt(val0, 10, 64)
-	if err != nil {
-		log.Printf(
-			"WARNING: failed to parse %s as an int64: %s; falling back to default secs: %d",
-			name, val0, defaultVal)
-		val = defaultVal
-	}
-
-	cleanupInterval = time.Duration(val) * time.Second
-}
-
-func init() { // automatically called once on program startup (on first import of this package)
-	initCleanupInterval()
-	lastCleanupTime = time.Time{}
-}
 
 // PostgreSQL is an implementation of the StorageBackend interface that
 // keeps data in a PostgreSQL database.
@@ -92,37 +63,20 @@ func NewPostgreSQL() (*PostgreSQL, error) {
 
 // getTSMdataCols returns time series metadata column names.
 func getTSMdataCols() []string {
-	return []string{
-		// main section
-		"version",
-		"type",
-		"title",
-		"summary",
-		"keywords",
-		"keywords_vocabulary",
-		"license",
-		"conventions",
-		"naming_authority",
-		"creator_type",
-		"creator_name",
-		"creator_email",
-		"creator_url",
-		"institution",
-		"project",
-		"source",
-		"platform",
-		"platform_vocabulary",
-		"standard_name",
-		"unit",
-		"instrument",
-		"instrument_vocabulary",
-		// links section
+
+	// initialize cols with non-string metadata
+	cols := []string{
 		"link_href",
 		"link_rel",
 		"link_type",
 		"link_hreflang",
 		"link_title",
 	}
+
+	// complete cols with string metadata (handleable with reflection)
+	cols = append(cols, tsStringMdataPBNames...)
+
+	return cols
 }
 
 // createPlaceholders returns the list of n placeholder strings for
