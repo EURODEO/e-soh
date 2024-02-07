@@ -56,12 +56,12 @@ async def get_locations(bbox: str = Query(..., example="5.0,52.0,6.0,52.1")) -> 
 @router.get(
     "/locations/{location_id}",
     tags=["Collection data queries"],
-    response_model=Coverage,
+    response_model=Coverage | CoverageCollection,
     response_model_exclude_none=True,
 )
 async def get_data_location_id(
     location_id: str = Path(..., example="06260"),
-    parameter_name: str = Query(..., alias="parameter-name", example="dd,ff,rh,pp,tn"),
+    parameter_name: str = Query(None, alias="parameter-name", example="dd,ff,rh,pp,tn"),
     datetime: str | None = None,
     f: str = Query(default="covjson", alias="f", description="Specify return format."),
 ):
@@ -71,7 +71,9 @@ async def get_data_location_id(
     get_obs_request = dstore.GetObsRequest(
         filter=dict(
             platform=dstore.Strings(values=[location_id]),
-            instrument=dstore.Strings(values=list(map(str.strip, parameter_name.split(",")))),
+            instrument=dstore.Strings(
+                values=list(map(str.strip, parameter_name.split(","))) if parameter_name else "*"
+            ),
         ),
         interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
