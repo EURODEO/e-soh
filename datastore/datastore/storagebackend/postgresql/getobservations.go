@@ -316,9 +316,9 @@ func getStringMdataFilter(
 func createObsQueryVals(
 	request *datastore.GetObsRequest, phVals *[]interface{}) (string, string, string, error) {
 
-	timeFilter := getTimeFilter(request.GetInterval())
+	timeFilter := getTimeFilter(request.GetTemporalInterval())
 
-	geoFilter, err := getGeoFilter(request.Inside, phVals)
+	geoFilter, err := getGeoFilter(request.GetSpatialArea(), phVals)
 	if err != nil {
 		return "", "", "", fmt.Errorf("getGeoFilter() failed: %v", err)
 	}

@@ -64,7 +64,7 @@ def test_get_values_single_station_single_parameter_one_hour(grpc_stub):
 
     ts_request = dstore.GetObsRequest(
         filter=dict(platform=dstore.Strings(values=["06260"]), instrument=dstore.Strings(values=["rh"])),
-        interval=dstore.TimeInterval(start=start_datetime, end=end_datetime),
+        temporal_interval=dstore.TimeInterval(start=start_datetime, end=end_datetime),
     )
     response = grpc_stub.GetObservations(ts_request)
 
@@ -152,7 +152,9 @@ input_params_polygon = [
 @pytest.mark.parametrize("coords,param_ids,expected_station_ids", input_params_polygon)
 def test_get_observations_with_polygon(grpc_stub, coords, param_ids, expected_station_ids):
     polygon = dstore.Polygon(points=[dstore.Point(lat=lat, lon=lon) for lat, lon in coords])
-    get_obs_request = dstore.GetObsRequest(inside=polygon, filter=dict(instrument=dstore.Strings(values=param_ids)))
+    get_obs_request = dstore.GetObsRequest(
+        spatial_area=polygon, filter=dict(instrument=dstore.Strings(values=param_ids))
+    )
     get_obs_response = grpc_stub.GetObservations(get_obs_request)
 
     actual_station_ids = sorted({ts.ts_mdata.platform for ts in get_obs_response.observations})

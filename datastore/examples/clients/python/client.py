@@ -58,7 +58,7 @@ def call_put_obs(stub, version, type, standard_name, unit, value):
 # obs time range.
 def call_get_obs_in_time_range(stub):
     request = dstore.GetObsRequest(
-        interval=dstore.TimeInterval(
+        temporal_interval=dstore.TimeInterval(
             start=dtime2tstamp(datetime(2023, 1, 1, 0, 0, 0, 0, tzinfo=timezone.utc)),
             end=dtime2tstamp(datetime(2023, 1, 2, 0, 0, 0, 0, tzinfo=timezone.utc)),
         )
@@ -77,7 +77,7 @@ def call_get_obs_in_polygon(stub):
     points.append(dstore.Point(lat=60, lon=10.80))
     points.append(dstore.Point(lat=60, lon=10.70))
 
-    request = dstore.GetObsRequest(inside=dstore.Polygon(points=points))
+    request = dstore.GetObsRequest(spatial_area=dstore.Polygon(points=points))
     response = stub.GetObservations(request)
 
     return response

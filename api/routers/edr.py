@@ -34,7 +34,9 @@ async def get_locations(bbox: str = Query(..., example="5.0,52.0,6.0,52.1")) -> 
     poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
     ts_request = dstore.GetObsRequest(
         filter=dict(instrument=dstore.Strings(values=["tn"])),  # Hack
-        inside=dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]),
+        spatial_area=dstore.Polygon(
+            points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
+        ),
     )
 
     ts_response = await getObsRequest(ts_request)
@@ -73,7 +75,7 @@ async def get_data_location_id(
             platform=dstore.Strings(values=[location_id]),
             instrument=dstore.Strings(values=list(map(str.strip, parameter_name.split(",")))),
         ),
-        interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
+        temporal_interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
     response = await getObsRequest(get_obs_request)
     return edr_formatter[f].convert(response)
@@ -114,8 +116,10 @@ async def get_data_area(
     range = get_datetime_range(datetime)
     get_obs_request = dstore.GetObsRequest(
         filter=dict(instrument=dstore.Strings(values=list(map(str.strip, parameter_name.split(","))))),
-        inside=dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]),
-        interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
+        spatial_area=dstore.Polygon(
+            points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
+        ),
+        temporal_interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
     coverages = await getObsRequest(get_obs_request)
     coverages = edr_formatter[f].convert(coverages)
