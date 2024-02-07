@@ -89,7 +89,7 @@ async def get_data_location_id(
 )
 async def get_data_position(
     coords: str = Query(..., example="POINT(5.179705 52.0988218)"),
-    parameter_name: str = Query(..., alias="parameter-name", example="dd,ff,rh,pp,tn"),
+    parameter_name: str = Query(None, alias="parameter-name", example="dd,ff,rh,pp,tn"),
     datetime: str | None = None,
     f: str = Query(default="covjson", alias="f", description="Specify return format."),
 ):
@@ -107,7 +107,7 @@ async def get_data_position(
 )
 async def get_data_area(
     coords: str = Query(..., example="POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))"),
-    parameter_name: str = Query(..., alias="parameter-name", example="dd,ff,rh,pp,tn"),
+    parameter_name: str = Query(None, alias="parameter-name", example="dd,ff,rh,pp,tn"),
     datetime: str | None = None,
     f: str = Query(default="covjson", alias="f", description="Specify return format."),
 ):
@@ -115,7 +115,9 @@ async def get_data_area(
     assert poly.geom_type == "Polygon"
     range = get_datetime_range(datetime)
     get_obs_request = dstore.GetObsRequest(
-        filter=dict(instrument=dstore.Strings(values=list(map(str.strip, parameter_name.split(","))))),
+        filter=dict(
+            instrument=dstore.Strings(values=list(map(str.strip, parameter_name.split(","))) if parameter_name else "*")
+        ),
         inside=dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]),
         interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
