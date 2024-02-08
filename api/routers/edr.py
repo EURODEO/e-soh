@@ -15,6 +15,7 @@ from grpc_getter import getObsRequest
 from shapely import buffer
 from shapely import geometry
 from shapely import wkt
+from shapely.errors import GEOSException
 
 router = APIRouter(prefix="/collections/observations")
 
@@ -100,8 +101,14 @@ async def get_data_position(
         point = wkt.loads(coords)
         assert point.geom_type == "Point"
         poly = buffer(point, 0.0001, quad_segs=1)  # Roughly 10 meters around the point
+    except GEOSException:
+        raise HTTPException(status_code=422, detail={"coords": f"Invalid or unparseable wkt provided: {coords}"})
+    except AssertionError:
+        raise HTTPException(status_code=422, detail={"coords": f"Invalid geometric type: {point.geom_type}"})
     except Exception:
-        raise HTTPException(status_code=422, detail={"coords": "Invalid coordinates: {}".format(coords)})
+        raise HTTPException(
+            status_code=422, detail={"coords": f"Unexpected error occurred during wkt parsing: {coords}"}
+        )
 
     return await get_data_area(poly.wkt, parameter_name, datetime, f)
 
@@ -121,8 +128,14 @@ async def get_data_area(
     try:
         poly = wkt.loads(coords)
         assert poly.geom_type == "Polygon"
+    except GEOSException:
+        raise HTTPException(status_code=422, detail={"coords": f"Invalid or unparseable wkt provided: {coords}"})
+    except AssertionError:
+        raise HTTPException(status_code=422, detail={"coords": f"Invalid geometric type: {poly.geom_type}"})
     except Exception:
-        raise HTTPException(status_code=422, detail={"coords": "Invalid coordinates: {}".format(coords)})
+        raise HTTPException(
+            status_code=422, detail={"coords": f"Unexpected error occurred during wkt parsing: {coords}"}
+        )
 
     range = get_datetime_range(datetime)
     get_obs_request = dstore.GetObsRequest(

@@ -118,12 +118,16 @@ def test_get_area_with_incorrect_coords():
     response = client.get("/collections/observations/area?coords=POLYGON((22.12 59.86, 24.39 60.41))")
 
     assert response.status_code == 422
+    assert response.json() == {
+        "detail": {"coords": "Invalid or unparseable wkt provided: POLYGON((22.12 59.86, 24.39 60.41))"}
+    }
 
 
 def test_get_area_with_incorrect_geometry_type():
     response = client.get("/collections/observations/area?coords=POINT(22.12 59.86)")
 
     assert response.status_code == 422
+    assert response.json() == {"detail": {"coords": "Invalid geometric type: Point"}}
 
 
 def test_get_position_with_normal_query():
@@ -158,7 +162,7 @@ def test_get_position_with_incorrect_coords():
     response = client.get("/collections/observations/position?coords=POINT(60.41)")
 
     assert response.status_code == 422
-    assert response.json() == {"detail": {"coords": "Invalid coordinates: POINT(60.41)"}}
+    assert response.json() == {"detail": {"coords": "Invalid or unparseable wkt provided: POINT(60.41)"}}
 
 
 def test_get_position_with_incorrect_geometry_type():
@@ -168,11 +172,7 @@ def test_get_position_with_incorrect_geometry_type():
     )
 
     assert response.status_code == 422
-    assert response.json() == {
-        "detail": {
-            "coords": "Invalid coordinates: POLYGON((22.12 59.86, 24.39 60.41, 24.39 60.41, 24.39 59.86, 22.12 59.86))"
-        }
-    }
+    assert response.json() == {"detail": {"coords": "Invalid geometric type: Polygon"}}
 
 
 def create_mock_obs_response(json_data):
