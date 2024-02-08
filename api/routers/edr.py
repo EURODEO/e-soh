@@ -5,6 +5,7 @@ from covjson_pydantic.coverage import Coverage
 from covjson_pydantic.coverage import CoverageCollection
 from dependencies import get_datetime_range
 from fastapi import APIRouter
+from fastapi import HTTPException
 from fastapi import Path
 from fastapi import Query
 from geojson_pydantic import Feature
@@ -93,9 +94,13 @@ async def get_data_position(
     datetime: str = Query(None, example="2022-12-31T00:00Z/2023-01-01T00:00Z"),
     f: str = Query(default="covjson", alias="f", description="Specify return format."),
 ):
-    point = wkt.loads(coords)
-    assert point.geom_type == "Point"
-    poly = buffer(point, 0.0001, quad_segs=1)  # Roughly 10 meters around the point
+    try:
+        point = wkt.loads(coords)
+        assert point.geom_type == "Point"
+        poly = buffer(point, 0.0001, quad_segs=1)  # Roughly 10 meters around the point
+    except Exception:
+        raise HTTPException(status_code=422, detail={"coords": "Invalid coordinates: {}".format(coords)})
+
     return await get_data_area(poly.wkt, parameter_name, datetime, f)
 
 
@@ -111,8 +116,12 @@ async def get_data_area(
     datetime: str = Query(None, example="2022-12-31T00:00Z/2023-01-01T00:00Z"),
     f: str = Query(default="covjson", alias="f", description="Specify return format."),
 ):
-    poly = wkt.loads(coords)
-    assert poly.geom_type == "Polygon"
+    try:
+        poly = wkt.loads(coords)
+        assert poly.geom_type == "Polygon"
+    except Exception:
+        raise HTTPException(status_code=422, detail={"coords": "Invalid coordinates: {}".format(coords)})
+
     range = get_datetime_range(datetime)
     get_obs_request = dstore.GetObsRequest(
         filter=dict(
