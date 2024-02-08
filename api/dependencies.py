@@ -44,7 +44,7 @@ def get_datetime_range(datetime_string: str | None) -> Tuple[Timestamp, Timestam
 
     return start_datetime, end_datetime
 
-async def get_current_standard_names(ttl_hash=None):
+async def get_current_parameter_names(ttl_hash=None):
     """
     This function get a set of standard_names currently in the datastore
     The ttl_hash should be a value that is updated at the same frequency
@@ -54,60 +54,24 @@ async def get_current_standard_names(ttl_hash=None):
     @lru_cache(maxsize=1)
     async def async_helper(ttl_hash):
         del ttl_hash # make linter think we used this value
-        unique_standard_names = dstore.GetTSAGRequest(attrs=["standard_name"])
-        unique_standard_names = await getTSAGRequest(unique_standard_names)
+        unique_parameter_names = dstore.GetTSAGRequest(attrs=["parameter_name"])
+        unique_parameter_names = await getTSAGRequest(unique_parameter_names)
 
-        return set([i.combo.standard_name for i in unique_standard_names.groups])
+        return set([i.combo.standard_name for i in unique_parameter_names.groups])
 
     return await async_helper(ttl_hash)
 
 
-
-
-async def parse_parameter_name(parameter_name):
+async def verify_parameter_names(parameter_names: list) -> None:
     """
-    Function for parsing the aggregate parameter-name field.
+    Function for verifying that the given parameter names are valid.
+    Raises error with unknown names if any are found.
     """
-    parameter_name = parameter_name.split(":")
-    if (n_params := len(parameter_name)) != 4:
-        raise HTTPException(status_code=400, detail=f"Wrong number of arguments in parameter-name, should be 4 got {n_params}")
+    unknown_parameter_names = []
 
-    standard_name, level, func, period = [i for i in parameter_name]
-    standard_name = standard_name.lower() if standard_name else None
-    level = level if level else None
-    func = func.lower() if func else None
-    period = period if period else None
+    for i in parameter_names:
+        if i not in await get_current_parameter_names(datetime.now().hour):
+            unknown_parameter_names.append(i)
 
-    errors = {}
-
-    if not standard_name:
-        standard_name = None
-    elif not standard_name in await get_current_standard_names(ttl_hash=datetime.now().hour):
-        errors["standard_name"] = (f"Unknown standard_name given, {standard_name} not in datastore")
-
-    if level:
-        try:
-            float(level)
-        except ValueError:
-            errors["level"] = f"Level could not be converted to float"
-    else:
-        level = None
-
-    if not func:
-        func = None
-    elif func not in (legal_func := ["max", "min", "average", "instantaneous", "mean"]):
-        errors["func"] = f"Unknown function given, {func}, has to be one of {legal_func}"
-
-    if period:
-        try:
-            isodate.parse_duration(period)
-        except isodate.ISO8601Error:
-            errors["period"] = "Unable to parse period, not ISO8601 duration."
-    else:
-        period = None
-
-    if errors:
-        print(errors)
-        raise HTTPException(status_code=400, detail=errors)
-
-    return standard_name, level, func, period
+    if unknown_parameter_names:
+        raise HTTPException(400, detail=f"Unknown parameter-name {unknown_parameter_names}")

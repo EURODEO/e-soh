@@ -4,7 +4,7 @@ import formatters
 from covjson_pydantic.coverage import Coverage
 from covjson_pydantic.coverage import CoverageCollection
 from dependencies import get_datetime_range
-from dependencies import parse_parameter_name
+from dependencies import verify_parameter_names
 from fastapi import APIRouter
 from fastapi import Path
 from fastapi import Query
@@ -70,14 +70,11 @@ async def get_data_location_id(
     # TODO: There is no error handling of any kind at the moment!
     #  This is just a quick and dirty demo
     range = get_datetime_range(datetime)
-    standard_name, level, func, period = parse_parameter_name(parameter_name)
+    parameter_name = parameter_name.split(",")
+    parameter_name = verify_parameter_names(parameter_name)
     get_obs_request = dstore.GetObsRequest(
         filter=dict(
-            platform=dstore.Strings(values=[location_id]),
-            standard_name=dstore.Strings(values=[standard_name]),
-            level=dstore.String(values=[level]),
-            func=dstore.String(values=[func]),
-            period=dstore.Strings(values=[period])
+            parameter_name=dstore.Strings(values=parameter_name)
         ),
         interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
@@ -118,13 +115,10 @@ async def get_data_area(
     poly = wkt.loads(coords)
     assert poly.geom_type == "Polygon"
     range = get_datetime_range(datetime)
-    standard_name, level, func, period = parse_parameter_name(parameter_name)
+    verify_parameter_names(parameter_name)
     get_obs_request = dstore.GetObsRequest(
         filter=dict(
-            standard_name=dstore.Strings(values=[standard_name]),
-            level=dstore.String(values=[level]),
-            func=dstore.String(values=[func]),
-            period=dstore.Strings(values=[period])
+            parameter_name=dstore.Strings(values=parameter_name.split(","))
         ),
         inside=dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]),
         interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
