@@ -15,7 +15,6 @@ from fastapi import Query
 from geojson_pydantic import Feature
 from geojson_pydantic import Point
 from grpc_getter import getObsRequest
-from grpc_getter import getTSAttrGroupsRequest
 from shapely import buffer
 from shapely import geometry
 from shapely import wkt
@@ -40,14 +39,6 @@ async def get_locations(
     left, bottom, right, top = map(str.strip, bbox.split(","))
     poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
 
-    # ts_ag_request = dstore.GetTSAGRequest(
-    #     attrs=["instrument", "platform", "standard_name", "title"],  # "geo_point_id"],
-    #     # instrument=dstore.Strings(values=all_parameters),
-    #     # spatial_area=dstore.Polygon(
-    #     #     points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
-    #     # ),
-    #     include_instances=False,
-    # )
     ts_request = dstore.GetObsRequest(
         spatial_area=dstore.Polygon(
             points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
@@ -98,10 +89,7 @@ async def get_locations(
         }
     }
 
-    # feature_collection = FeatureCollection(features=features, type="FeatureCollection")
-    # return dict(feature_collection.model_dump(), **{"parameters": parameters})
     return EDRFeatureCollection(features=features, type="FeatureCollection", parameters=parameters)
-    # return
 
 
 @router.get(

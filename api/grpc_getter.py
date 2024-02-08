@@ -20,11 +20,3 @@ async def getTSAGRequest(get_tsag_request):
     grpc_stub = dstore_grpc.DatastoreStub(channel)
     response = await grpc_stub.GetTSAttrGroups(get_tsag_request)
     return response
-
-
-async def getTSAttrGroupsRequest(get_attr_groups_request):
-    channel = grpc.aio.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}")
-    grpc_stub = dstore_grpc.DatastoreStub(channel)
-    response = await grpc_stub.GetTSAttrGroups(get_attr_groups_request)
-
-    return response
