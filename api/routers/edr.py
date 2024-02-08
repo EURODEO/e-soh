@@ -15,6 +15,7 @@ from fastapi import Query
 from geojson_pydantic import Feature
 from geojson_pydantic import Point
 from grpc_getter import getObsRequest
+from grpc_getter import getTSAttrGroupsRequest
 from shapely import buffer
 from shapely import geometry
 from shapely import wkt
@@ -39,27 +40,29 @@ async def get_locations(
     left, bottom, right, top = map(str.strip, bbox.split(","))
     poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
 
-    # fmt: off
-    all_parameters = [
-        "D1H", "R12H", "R1H", "R24H", "R6H", "Tgn12", "Tgn14", "Tgn6", "Tn12", "Tn14", "Tn6", "Tx12", "Tx24", "Tx6",
-        "dd", "dr", "ff", "gff", "hc", "hc1", "hc2", "hc3", "nc", "nc1", "nc2", "nc3", "pg", "pp", "pr", "pwc", "qg",
-        "rg", "rh", "ss", "ta", "td", "tgn", "tn", "tx", "ww", "ww-10", "zm"
-    ]
-    # fmt: on
-
+    # ts_ag_request = dstore.GetTSAGRequest(
+    #     attrs=["instrument", "platform", "standard_name", "title"],  # "geo_point_id"],
+    #     # instrument=dstore.Strings(values=all_parameters),
+    #     # spatial_area=dstore.Polygon(
+    #     #     points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
+    #     # ),
+    #     include_instances=False,
+    # )
     ts_request = dstore.GetObsRequest(
-        filter=dict(instrument=dstore.Strings(values=all_parameters)),  # Hack
         spatial_area=dstore.Polygon(
             points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
         ),
     )
     # TODO: It is not possible to request all of the locations, because the request is too large for gRPC.
     #  Thus it is necessary to update the datastore.
+
+    # TODO: Add flag to protobuf so that it only retrieves the latest observations from the datastore.
+    # TODO: Simulate retrieval of last obs by setting a recent timestamp
     ts_response = await getObsRequest(ts_request)
 
     platform_standard_names = defaultdict(set)
     for obs in sorted(ts_response.observations, key=lambda obs: obs.ts_mdata.platform):
-        platform_standard_names[obs.ts_mdata.platform].add(obs.ts_mdata.standard_name)
+        platform_standard_names[obs.ts_mdata.platform].add(obs.ts_mdata.instrument)
 
     features = [
         Feature(
@@ -98,6 +101,7 @@ async def get_locations(
     # feature_collection = FeatureCollection(features=features, type="FeatureCollection")
     # return dict(feature_collection.model_dump(), **{"parameters": parameters})
     return EDRFeatureCollection(features=features, type="FeatureCollection", parameters=parameters)
+    # return
 
 
 @router.get(
