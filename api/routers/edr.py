@@ -1,4 +1,6 @@
 # For developing:    uvicorn main:app --reload
+from typing import Annotated
+
 import datastore_pb2 as dstore
 import formatters
 from covjson_pydantic.coverage import Coverage
@@ -65,8 +67,8 @@ async def get_locations(bbox: str = Query(..., example="5.0,52.0,6.0,52.1")) -> 
 )
 async def get_data_location_id(
     location_id: str = Path(..., example="06260"),
-    parameter_name: str = Query(None, alias="parameter-name", example="dd,ff,rh,pp,tn"),
-    datetime: str = Query(None, example="2022-12-31T00:00Z/2023-01-01T00:00Z"),
+    parameter_name: Annotated[str | None, Query(alias="parameter-name", example="dd,ff,rh,pp,tn")] = None,
+    datetime: Annotated[str | None, Query(alias="datetime", example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
     f: str = Query(default="covjson", alias="f", description="Specify return format."),
 ):
     # TODO: There is no error handling of any kind at the moment!
@@ -93,8 +95,8 @@ async def get_data_location_id(
 )
 async def get_data_position(
     coords: str = Query(..., example="POINT(5.179705 52.0988218)"),
-    parameter_name: str = Query(None, alias="parameter-name", example="dd,ff,rh,pp,tn"),
-    datetime: str = Query(None, example="2022-12-31T00:00Z/2023-01-01T00:00Z"),
+    parameter_name: Annotated[str | None, Query(alias="parameter-name", example="dd,ff,rh,pp,tn")] = None,
+    datetime: Annotated[str | None, Query(alias="datetime", example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
     f: str = Query(default="covjson", alias="f", description="Specify return format."),
 ):
     try:
@@ -122,8 +124,8 @@ async def get_data_position(
 )
 async def get_data_area(
     coords: str = Query(..., example="POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))"),
-    parameter_name: str = Query(None, alias="parameter-name", example="dd,ff,rh,pp,tn"),
-    datetime: str = Query(None, example="2022-12-31T00:00Z/2023-01-01T00:00Z"),
+    parameter_name: Annotated[str | None, Query(alias="parameter-name", example="dd,ff,rh,pp,tn")] = None,
+    datetime: Annotated[str | None, Query(alias="datetime", example={"2022-12-31T00:00Z/2023-01-01T00:00Z"})] = None,
     f: str = Query(default="covjson", alias="f", description="Specify return format."),
 ):
     try:
