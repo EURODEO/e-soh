@@ -141,7 +141,7 @@ jobs:
       - name: Run Tests
         run: |
           cd api
-          python -m pytest --timeout=60 --junitxml=pytest.xml --cov-report=term-missing --cov=. | tee pytest-coverage.txt
+          python -m pytest --timeout=60 --junitxml=pytest.xml --cov-report=term-missing --cov=. --cov-config=test/.coveragerc | tee pytest-coverage.txt
 
       - name: Comment coverage
         uses: MishaKav/pytest-coverage-comment@main
