@@ -1,12 +1,12 @@
 import json
 
-import datastore_pb2 as dstore
 import pytest
 from covjson_pydantic.coverage import Coverage
 from covjson_pydantic.coverage import CoverageCollection
 from fastapi import HTTPException
 from formatters.covjson import Covjson
-from google.protobuf.json_format import Parse
+from test.utilities import create_mock_obs_response
+from test.utilities import load_json
 
 
 def test_single_parameter_convert():
@@ -100,14 +100,3 @@ def test_empty_response_convert():
 
     assert exception_info.value.detail == "No data found"
     assert exception_info.value.status_code == 404
-
-
-def create_mock_obs_response(json_data):
-    response = dstore.GetObsResponse()
-    Parse(json.dumps(json_data), response)
-    return response
-
-
-def load_json(file_path):
-    with open(file_path, "r") as file:
-        return json.load(file)

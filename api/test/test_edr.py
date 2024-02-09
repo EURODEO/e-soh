@@ -1,11 +1,10 @@
-import json
 from unittest.mock import patch
 
-import datastore_pb2 as dstore
 import routers.edr as edr
 from fastapi.testclient import TestClient
-from google.protobuf.json_format import Parse
 from main import app
+from test.utilities import create_mock_obs_response
+from test.utilities import load_json
 
 
 client = TestClient(app)
@@ -170,14 +169,3 @@ def test_get_position_with_incorrect_geometry_type():
 
     assert response.status_code == 422
     assert response.json() == {"detail": {"coords": "Invalid geometric type: Polygon"}}
-
-
-def create_mock_obs_response(json_data):
-    response = dstore.GetObsResponse()
-    Parse(json.dumps(json_data), response)
-    return response
-
-
-def load_json(file_path):
-    with open(file_path, "r") as file:
-        return json.load(file)
