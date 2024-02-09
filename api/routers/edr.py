@@ -74,15 +74,11 @@ async def get_data_location_id(
     # TODO: There is no error handling of any kind at the moment!
     #  This is just a quick and dirty demo
     range = get_datetime_range(datetime)
+    filter = dict(platform=dstore.Strings(values=[location_id]))
+    if parameter_name:
+        filter["instrument"] = dstore.Strings(values=list(map(str.strip, parameter_name.split(","))))
     get_obs_request = dstore.GetObsRequest(
-        filter=dict(
-            platform=dstore.Strings(values=[location_id]),
-            **(
-                {"instrument": dstore.Strings(values=list(map(str.strip, parameter_name.split(","))))}
-                if parameter_name
-                else {}
-            ),
-        ),
+        filter=filter,
         temporal_interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
     response = await getObsRequest(get_obs_request)
@@ -98,7 +94,7 @@ async def get_data_location_id(
 async def get_data_position(
     coords: str = Query(..., example="POINT(5.179705 52.0988218)"),
     parameter_name: Annotated[str | None, Query(alias="parameter-name", example="dd,ff,rh,pp,tn")] = None,
-    datetime: Annotated[str | None, Query(alias="datetime", example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
+    datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
     f: str = Query(default="covjson", alias="f", description="Specify return format."),
 ):
     try:
@@ -144,14 +140,11 @@ async def get_data_area(
         )
 
     range = get_datetime_range(datetime)
+    filter = {}
+    if parameter_name:
+        filter = dict(instrument=dstore.Strings(values=list(map(str.strip, parameter_name.split(",")))))
     get_obs_request = dstore.GetObsRequest(
-        filter=dict(
-            **(
-                {"instrument": dstore.Strings(values=list(map(str.strip, parameter_name.split(","))))}
-                if parameter_name
-                else {}
-            ),
-        ),
+        filter=filter,
         spatial_area=dstore.Polygon(
             points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
         ),
