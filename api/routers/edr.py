@@ -21,8 +21,6 @@ from shapely.errors import GEOSException
 
 router = APIRouter(prefix="/collections/observations")
 
-edr_formatter = formatters.get_edr_formatters()
-
 
 @router.get(
     "/locations",
@@ -84,7 +82,7 @@ async def get_data_location_id(
         temporal_interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
     response = await getObsRequest(get_obs_request)
-    return edr_formatter[f].convert(response)
+    return formatters.formatters[f](response)
 
 
 @router.get(
@@ -153,5 +151,5 @@ async def get_data_area(
         temporal_interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
     coverages = await getObsRequest(get_obs_request)
-    coverages = edr_formatter[f].convert(coverages)
+    coverages = formatters.formatters[f](coverages)
     return coverages

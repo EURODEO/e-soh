@@ -7,11 +7,7 @@ logger = logging.getLogger(__name__)
 
 
 class Formats(str, Enum):
-    covjson = "covjson"
+    covjson = "CoverageJSON"  # According to EDR spec
 
 
-def get_edr_formatters() -> dict:
-    available_formatters = {"covjson": covjson.Covjson()}
-    # Should also setup dict for alias discover
-
-    return available_formatters
+formatters = {"CoverageJSON": covjson.convert_to_covjson}
