@@ -111,6 +111,26 @@ def test_get_area_with_normal_query():
         assert response.json() == compare_data
 
 
+def test_get_area_with_without_parameter_names_query():
+    with patch("routers.edr.getObsRequest") as mock_getObsRequest:
+        test_data = load_json("test/test_data/test_coverages_proto.json")
+        compare_data = load_json("test/test_data/test_coverages_covjson.json")
+
+        mock_getObsRequest.return_value = create_mock_obs_response(test_data)
+
+        response = client.get(
+            "/collections/observations/area?coords=POLYGON((22.12 59.86, 24.39 60.41, "
+            "24.39 60.41, 24.39 59.86, 22.12 59.86))"
+        )
+
+        mock_getObsRequest.assert_called_once()
+        m_args = mock_getObsRequest.call_args[0][0]
+
+        assert "instrument" not in m_args.filter
+        response.status_code == 200
+        response.json() == compare_data
+
+
 def test_get_area_with_incorrect_coords():
     response = client.get("/collections/observations/area?coords=POLYGON((22.12 59.86, 24.39 60.41))")
 
