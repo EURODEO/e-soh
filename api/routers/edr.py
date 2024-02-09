@@ -32,7 +32,9 @@ edr_formatter = formatters.get_EDR_formatters()
 )
 # We can currently only query data, even if we only need metadata like for this endpoint
 # Maybe it would be better to only query a limited set of data instead of everything (meaning 24 hours)
-async def get_locations(bbox: str = Query(..., example="5.0,52.0,6.0,52.1")) -> FeatureCollection:  # Hack to use string
+async def get_locations(
+    bbox: Annotated[str, Query(example="5.0,52.0,6.0,52.1")]
+) -> FeatureCollection:  # Hack to use string
     left, bottom, right, top = map(str.strip, bbox.split(","))
     print("bbox: {}".format(bbox))
     poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
@@ -66,10 +68,10 @@ async def get_locations(bbox: str = Query(..., example="5.0,52.0,6.0,52.1")) -> 
     response_model_exclude_none=True,
 )
 async def get_data_location_id(
-    location_id: str = Path(..., example="06260"),
+    location_id: Annotated[str, Path(example="06260")],
     parameter_name: Annotated[str | None, Query(alias="parameter-name", example="dd,ff,rh,pp,tn")] = None,
-    datetime: Annotated[str | None, Query(alias="datetime", example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
-    f: str = Query(default="covjson", alias="f", description="Specify return format."),
+    datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
+    f: Annotated[str, Query(description="Specify return format.")] = "covjson",
 ):
     # TODO: There is no error handling of any kind at the moment!
     #  This is just a quick and dirty demo
@@ -92,10 +94,10 @@ async def get_data_location_id(
     response_model_exclude_none=True,
 )
 async def get_data_position(
-    coords: str = Query(..., example="POINT(5.179705 52.0988218)"),
+    coords: Annotated[str, Query(example="POINT(5.179705 52.0988218)")],
     parameter_name: Annotated[str | None, Query(alias="parameter-name", example="dd,ff,rh,pp,tn")] = None,
     datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
-    f: str = Query(default="covjson", alias="f", description="Specify return format."),
+    f: Annotated[str, Query(description="Specify return format.")] = "covjson",
 ):
     try:
         point = wkt.loads(coords)
@@ -121,10 +123,10 @@ async def get_data_position(
     response_model_exclude_none=True,
 )
 async def get_data_area(
-    coords: str = Query(..., example="POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))"),
+    coords: Annotated[str, Query(example="POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))")],
     parameter_name: Annotated[str | None, Query(alias="parameter-name", example="dd,ff,rh,pp,tn")] = None,
-    datetime: Annotated[str | None, Query(alias="datetime", example={"2022-12-31T00:00Z/2023-01-01T00:00Z"})] = None,
-    f: str = Query(default="covjson", alias="f", description="Specify return format."),
+    datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
+    f: Annotated[str, Query(description="Specify return format.")] = "covjson",
 ):
     try:
         poly = wkt.loads(coords)
