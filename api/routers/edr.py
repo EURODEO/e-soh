@@ -99,11 +99,12 @@ async def get_data_position(
 ):
     try:
         point = wkt.loads(coords)
-        assert point.geom_type == "Point"
+        if point.geom_type != "Point":
+            raise TypeError
         poly = buffer(point, 0.0001, quad_segs=1)  # Roughly 10 meters around the point
     except GEOSException:
         raise HTTPException(status_code=422, detail={"coords": f"Invalid or unparseable wkt provided: {coords}"})
-    except AssertionError:
+    except TypeError:
         raise HTTPException(status_code=422, detail={"coords": f"Invalid geometric type: {point.geom_type}"})
     except Exception:
         raise HTTPException(
@@ -127,10 +128,11 @@ async def get_data_area(
 ):
     try:
         poly = wkt.loads(coords)
-        assert poly.geom_type == "Polygon"
+        if poly.geom_type != "Polygon":
+            raise TypeError
     except GEOSException:
         raise HTTPException(status_code=422, detail={"coords": f"Invalid or unparseable wkt provided: {coords}"})
-    except AssertionError:
+    except TypeError:
         raise HTTPException(status_code=422, detail={"coords": f"Invalid geometric type: {poly.geom_type}"})
     except Exception:
         raise HTTPException(
