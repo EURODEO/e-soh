@@ -50,7 +50,8 @@ def test_get_locations_id_without_parameter_names_query():
         mock_getObsRequest.assert_called_once()
         m_args = mock_getObsRequest.call_args[0][0]
 
-        assert {"*"} == set(m_args.filter["instrument"].values)
+        assert "instrument" not in m_args.filter
+        assert {"06260"} == set(m_args.filter["platform"].values)
         assert response.status_code == 200
         assert response.json() == compare_data
 

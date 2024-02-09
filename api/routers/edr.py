@@ -77,8 +77,10 @@ async def get_data_location_id(
     get_obs_request = dstore.GetObsRequest(
         filter=dict(
             platform=dstore.Strings(values=[location_id]),
-            instrument=dstore.Strings(
-                values=list(map(str.strip, parameter_name.split(","))) if parameter_name else "*"
+            **(
+                {"instrument": dstore.Strings(values=list(map(str.strip, parameter_name.split(","))))}
+                if parameter_name
+                else {}
             ),
         ),
         temporal_interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
@@ -144,7 +146,11 @@ async def get_data_area(
     range = get_datetime_range(datetime)
     get_obs_request = dstore.GetObsRequest(
         filter=dict(
-            instrument=dstore.Strings(values=list(map(str.strip, parameter_name.split(","))) if parameter_name else "*")
+            **(
+                {"instrument": dstore.Strings(values=list(map(str.strip, parameter_name.split(","))))}
+                if parameter_name
+                else {}
+            ),
         ),
         spatial_area=dstore.Polygon(
             points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
