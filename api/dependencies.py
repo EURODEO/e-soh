@@ -44,6 +44,6 @@ def get_datetime_range(datetime_string: str | None) -> Tuple[Timestamp, Timestam
         errors["datetime"] = f"Invalid format: {datetime_string}"
 
     if errors:
-        raise HTTPException(status_code=422, detail=errors)
+        raise HTTPException(status_code=400, detail=errors)
 
     return start_datetime, end_datetime

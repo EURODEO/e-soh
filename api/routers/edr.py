@@ -105,12 +105,12 @@ async def get_data_position(
             raise TypeError
         poly = buffer(point, 0.0001, quad_segs=1)  # Roughly 10 meters around the point
     except GEOSException:
-        raise HTTPException(status_code=422, detail={"coords": f"Invalid or unparseable wkt provided: {coords}"})
+        raise HTTPException(status_code=400, detail={"coords": f"Invalid or unparseable wkt provided: {coords}"})
     except TypeError:
-        raise HTTPException(status_code=422, detail={"coords": f"Invalid geometric type: {point.geom_type}"})
+        raise HTTPException(status_code=400, detail={"coords": f"Invalid geometric type: {point.geom_type}"})
     except Exception:
         raise HTTPException(
-            status_code=422, detail={"coords": f"Unexpected error occurred during wkt parsing: {coords}"}
+            status_code=400, detail={"coords": f"Unexpected error occurred during wkt parsing: {coords}"}
         )
 
     return await get_data_area(poly.wkt, parameter_name, datetime, f)
@@ -133,12 +133,12 @@ async def get_data_area(
         if poly.geom_type != "Polygon":
             raise TypeError
     except GEOSException:
-        raise HTTPException(status_code=422, detail={"coords": f"Invalid or unparseable wkt provided: {coords}"})
+        raise HTTPException(status_code=400, detail={"coords": f"Invalid or unparseable wkt provided: {coords}"})
     except TypeError:
-        raise HTTPException(status_code=422, detail={"coords": f"Invalid geometric type: {poly.geom_type}"})
+        raise HTTPException(status_code=400, detail={"coords": f"Invalid geometric type: {poly.geom_type}"})
     except Exception:
         raise HTTPException(
-            status_code=422, detail={"coords": f"Unexpected error occurred during wkt parsing: {coords}"}
+            status_code=400, detail={"coords": f"Unexpected error occurred during wkt parsing: {coords}"}
         )
 
     range = get_datetime_range(datetime)

@@ -58,7 +58,7 @@ def test_get_locations_id_without_parameter_names_query():
 def test_get_locations_id_with_incorrect_datetime_format():
     response = client.get("/collections/observations/locations/06260?datetime=20221231T000000Z/20221231T010000Z")
 
-    assert response.status_code == 422
+    assert response.status_code == 400
     assert response.json() == {"detail": {"datetime": "Invalid format: 20221231T000000Z/20221231T010000Z"}}
 
 
@@ -67,7 +67,7 @@ def test_get_locations_id_with_incorrect_datetime_range():
         "/collections/observations/locations/06260?datetime=2024-12-31T00:00:00Z/2022-12-31T01:00:00Z"
     )
 
-    assert response.status_code == 422
+    assert response.status_code == 400
     assert response.json() == {"detail": {"datetime": "Invalid range: 2024-12-31T00:00:00Z > 2022-12-31T01:00:00Z"}}
 
 
@@ -113,7 +113,7 @@ def test_get_area_with_normal_query():
 def test_get_area_with_incorrect_coords():
     response = client.get("/collections/observations/area?coords=POLYGON((22.12 59.86, 24.39 60.41))")
 
-    assert response.status_code == 422
+    assert response.status_code == 400
     assert response.json() == {
         "detail": {"coords": "Invalid or unparseable wkt provided: POLYGON((22.12 59.86, 24.39 60.41))"}
     }
@@ -122,7 +122,7 @@ def test_get_area_with_incorrect_coords():
 def test_get_area_with_incorrect_geometry_type():
     response = client.get("/collections/observations/area?coords=POINT(22.12 59.86)")
 
-    assert response.status_code == 422
+    assert response.status_code == 400
     assert response.json() == {"detail": {"coords": "Invalid geometric type: Point"}}
 
 
@@ -157,7 +157,7 @@ def test_get_position_with_normal_query():
 def test_get_position_with_incorrect_coords():
     response = client.get("/collections/observations/position?coords=POINT(60.41)")
 
-    assert response.status_code == 422
+    assert response.status_code == 400
     assert response.json() == {"detail": {"coords": "Invalid or unparseable wkt provided: POINT(60.41)"}}
 
 
@@ -167,5 +167,5 @@ def test_get_position_with_incorrect_geometry_type():
         "24.39 60.41, 24.39 59.86, 22.12 59.86))"
     )
 
-    assert response.status_code == 422
+    assert response.status_code == 400
     assert response.json() == {"detail": {"coords": "Invalid geometric type: Polygon"}}
