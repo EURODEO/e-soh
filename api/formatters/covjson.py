@@ -18,7 +18,6 @@ from fastapi import HTTPException
 from pydantic import AwareDatetime
 
 
-# alias = ["covjson", "coveragejson"]
 # mime_type = "application/prs.coverage+json"
 
 
