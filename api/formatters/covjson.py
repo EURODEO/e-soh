@@ -18,19 +18,14 @@ from fastapi import HTTPException
 from formatters.base_formatter import EDRFormatter
 from pydantic import AwareDatetime
 
-# Requierd for pugin discovery
-# Need to be available at top level of formatter plugin
-formatter_name = "Covjson"
-
 
 class Covjson(EDRFormatter):
     """
     Class for converting protobuf object to coverage json
     """
 
-    def __init__(self):
-        self.alias = ["covjson", "coveragejson"]
-        self.mime_type = "application/json"  # find the type for covjson
+    alias = ["covjson", "coveragejson"]
+    mime_type = "application/json"  # find the type for covjson
 
     def convert(self, response):
         # Collect data
