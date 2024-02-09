@@ -25,14 +25,12 @@ def test_get_locations_id_with_single_parameter_query_without_format():
 
         # Check that getObsRequest gets called with correct arguments given in query
         mock_getObsRequest.assert_called_once()
-        assert "ff" in mock_getObsRequest.call_args[0][0].filter["instrument"].values
-        assert "06260" in mock_getObsRequest.call_args[0][0].filter["platform"].values
-        assert "2022-12-31 00:00:00" == mock_getObsRequest.call_args[0][
-            0
-        ].temporal_interval.start.ToDatetime().strftime("%Y-%m-%d %H:%M:%S")
-        assert "2022-12-31 01:00:01" == mock_getObsRequest.call_args[0][0].temporal_interval.end.ToDatetime().strftime(
-            "%Y-%m-%d %H:%M:%S"
-        )
+        m_args = mock_getObsRequest.call_args[0][0]
+
+        assert {"ff"} == set(m_args.filter["instrument"].values)
+        assert {"06260"} == set(m_args.filter["platform"].values)
+        assert "2022-12-31 00:00:00" == m_args.temporal_interval.start.ToDatetime().strftime("%Y-%m-%d %H:%M:%S")
+        assert "2022-12-31 01:00:01" == m_args.temporal_interval.end.ToDatetime().strftime("%Y-%m-%d %H:%M:%S")
 
         assert response.status_code == 200
         assert response.json()["type"] == "Coverage"
@@ -51,8 +49,9 @@ def test_get_locations_id_without_parameter_names_query():
         # Check that getObsRequest gets called with correct arguments when no parameter names are given
         # in query
         mock_getObsRequest.assert_called_once()
-        assert "*" in mock_getObsRequest.call_args[0][0].filter["instrument"].values
+        m_args = mock_getObsRequest.call_args[0][0]
 
+        assert {"*"} == set(m_args.filter["instrument"].values)
         assert response.status_code == 200
         assert response.json() == compare_data
 
@@ -100,15 +99,13 @@ def test_get_area_with_normal_query():
 
         # Check that getObsRequest gets called with correct arguments given in query
         mock_getObsRequest.assert_called_once()
-        assert "TA_P1D_AVG" in mock_getObsRequest.call_args[0][0].filter["instrument"].values
-        assert len(mock_getObsRequest.call_args[0][0].spatial_area.points) == 5
-        assert 22.12 == mock_getObsRequest.call_args[0][0].spatial_area.points[0].lon
-        assert "2022-12-31 00:00:00" == mock_getObsRequest.call_args[0][
-            0
-        ].temporal_interval.start.ToDatetime().strftime("%Y-%m-%d %H:%M:%S")
-        assert "2022-12-31 01:00:01" == mock_getObsRequest.call_args[0][0].temporal_interval.end.ToDatetime().strftime(
-            "%Y-%m-%d %H:%M:%S"
-        )
+        m_args = mock_getObsRequest.call_args[0][0]
+
+        assert {"TA_P1D_AVG"} == set(m_args.filter["instrument"].values)
+        assert len(m_args.spatial_area.points) == 5
+        assert 22.12 == m_args.spatial_area.points[0].lon
+        assert "2022-12-31 00:00:00" == m_args.temporal_interval.start.ToDatetime().strftime("%Y-%m-%d %H:%M:%S")
+        assert "2022-12-31 01:00:01" == m_args.temporal_interval.end.ToDatetime().strftime("%Y-%m-%d %H:%M:%S")
 
         assert response.status_code == 200
         assert response.json() == compare_data
