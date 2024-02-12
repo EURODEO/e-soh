@@ -1,3 +1,4 @@
+from dependencies import get_current_parameter_names
 from edr_pydantic.capabilities import Contact
 from edr_pydantic.capabilities import LandingPageModel
 from edr_pydantic.capabilities import Provider
@@ -61,7 +62,7 @@ def get_collection_metadata(request) -> Collection:
         ),
         crs=["WGS84"],
         output_formats=["CoverageJSON"],
-        parameter_names={},  # TODO: Get these from database
+        parameter_names={get_current_parameter_names()},  # TODO: Get these from database
     )
     return collection
 

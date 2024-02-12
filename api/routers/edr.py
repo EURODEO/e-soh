@@ -39,7 +39,6 @@ async def get_locations(bbox: str = Query(..., example="5.0,52.0,6.0,52.1")) -> 
     )
 
     ts_response = await getObsRequest(ts_request)
-    print(ts_response)
     features = [
         Feature(
             type="Feature",
