@@ -144,7 +144,7 @@ async def get_data_area(
     range = get_datetime_range(datetime)
     filter = {}
     if parameter_name:
-        filter = dict(instrument=dstore.Strings(values=list(map(str.strip, parameter_name.split(",")))))
+        filter["instrument"] = dstore.Strings(values=list(map(str.strip, parameter_name.split(","))))
     get_obs_request = dstore.GetObsRequest(
         filter=filter,
         spatial_area=dstore.Polygon(
