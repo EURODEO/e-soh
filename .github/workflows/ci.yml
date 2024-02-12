@@ -17,15 +17,15 @@ jobs:
   pre-commit-hook:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
       - name: Install pre-commit
         run: python -m pip install pre-commit
         shell: bash
       - name: Show pre-commit requirements
         run: python -m pip freeze --local
         shell: bash
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: ~/.cache/pre-commit
           key: pre-commit-3|${{ env.pythonLocation }}|${{ hashFiles('.pre-commit-config.yaml') }}
@@ -37,9 +37,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
@@ -82,7 +82,7 @@ jobs:
           echo Done catting
 
       - name: Archive load test artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: performance
           path: |
@@ -167,16 +167,16 @@ jobs:
 #        python-version: ["3.10"] # Add 3.11 back pybind11 bug is fixed
 #    steps:
 #      - name: Checkout the repo
-#        uses: actions/checkout@v3
+#        uses: actions/checkout@v4
 #      - name: Ubuntu setup
 #        run: sudo apt update && sudo apt install libeccodes-data	rapidjson-dev	pybind11-dev libssl-dev
 #      - name: Python Setup
-#        uses: actions/setup-python@v4
+#        uses: actions/setup-python@v5
 #        with:
 #          python-version: ${{ matrix.python-version }}
 #          architecture: x64
 #      - name: Checkout Source
-#        uses: actions/checkout@v3
+#        uses: actions/checkout@v4
 #      - name: Install Dependencies
 #        run: |
 #          pip install --upgrade pip
