@@ -2,6 +2,7 @@ from datetime import datetime
 from datetime import timedelta
 from typing import Tuple
 
+from fastapi import HTTPException
 from google.protobuf.timestamp_pb2 import Timestamp
 from pydantic import AwareDatetime
 from pydantic import TypeAdapter
@@ -11,23 +12,38 @@ def get_datetime_range(datetime_string: str | None) -> Tuple[Timestamp, Timestam
     if not datetime_string:
         return None
 
+    errors = {}
+
     start_datetime, end_datetime = Timestamp(), Timestamp()
     aware_datetime_type_adapter = TypeAdapter(AwareDatetime)
-    datetimes = tuple(value.strip() for value in datetime_string.split("/"))
-    if len(datetimes) == 1:
-        start_datetime.FromDatetime(aware_datetime_type_adapter.validate_python(datetimes[0]))
-        end_datetime.FromDatetime(
-            aware_datetime_type_adapter.validate_python(datetimes[0]) + timedelta(seconds=1)
-        )  # HACK: Add one second so we get some data, as the store returns [start, end)
-    else:
-        if datetimes[0] != "..":
+
+    try:
+        datetimes = tuple(value.strip() for value in datetime_string.split("/"))
+        if len(datetimes) == 1:
             start_datetime.FromDatetime(aware_datetime_type_adapter.validate_python(datetimes[0]))
+            end_datetime.FromDatetime(
+                aware_datetime_type_adapter.validate_python(datetimes[0]) + timedelta(seconds=1)
+            )  # HACK: Add one second so we get some data, as the store returns [start, end)
         else:
-            start_datetime.FromDatetime(datetime.min)
-        if datetimes[1] != "..":
-            # HACK add one second so that the end_datetime is included in the interval.
-            end_datetime.FromDatetime(aware_datetime_type_adapter.validate_python(datetimes[1]) + timedelta(seconds=1))
-        else:
-            end_datetime.FromDatetime(datetime.max)
+            if datetimes[0] != "..":
+                start_datetime.FromDatetime(aware_datetime_type_adapter.validate_python(datetimes[0]))
+            else:
+                start_datetime.FromDatetime(datetime.min)
+            if datetimes[1] != "..":
+                # HACK add one second so that the end_datetime is included in the interval.
+                end_datetime.FromDatetime(
+                    aware_datetime_type_adapter.validate_python(datetimes[1]) + timedelta(seconds=1)
+                )
+            else:
+                end_datetime.FromDatetime(datetime.max)
+
+            if start_datetime.seconds > end_datetime.seconds:
+                errors["datetime"] = f"Invalid range: {datetimes[0]} > {datetimes[1]}"
+
+    except ValueError:
+        errors["datetime"] = f"Invalid format: {datetime_string}"
+
+    if errors:
+        raise HTTPException(status_code=400, detail=errors)
 
     return start_datetime, end_datetime
