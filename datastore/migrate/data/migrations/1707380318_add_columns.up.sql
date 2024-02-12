@@ -2,7 +2,7 @@ ALTER TABLE time_series
 	ADD COLUMN IF NOT EXISTS level TEXT,
 	ADD COLUMN IF NOT EXISTS period TEXT,
 	ADD COLUMN IF NOT EXISTS function TEXT,
-	ADD COLUMN IT NOT EXISTS parameter_name TEXT,
+	ADD COLUMN IF NOT EXISTS parameter_name TEXT,
 	DROP CONSTRAINT IF EXISTS unique_main,
 	ADD CONSTRAINT unique_main UNIQUE NULLS NOT DISTINCT (version, type, title, summary, keywords,
 		keywords_vocabulary, license, conventions, naming_authority, creator_type, creator_name,
