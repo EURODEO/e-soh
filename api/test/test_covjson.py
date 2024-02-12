@@ -4,7 +4,7 @@ import pytest
 from covjson_pydantic.coverage import Coverage
 from covjson_pydantic.coverage import CoverageCollection
 from fastapi import HTTPException
-from formatters.covjson import Covjson
+from formatters.covjson import convert_to_covjson
 from test.utilities import create_mock_obs_response
 from test.utilities import load_json
 
@@ -14,7 +14,7 @@ def test_single_parameter_convert():
     compare_data = load_json("test/test_data/test_single_covjson.json")
 
     response = create_mock_obs_response(test_data)
-    coverage_collection = Covjson().convert(response)
+    coverage_collection = convert_to_covjson(response)
 
     assert coverage_collection is not None
 
@@ -44,7 +44,7 @@ def test_multiple_parameter_convert():
 
     response = create_mock_obs_response(test_data)
 
-    coverage_collection = Covjson().convert(response)
+    coverage_collection = convert_to_covjson(response)
 
     assert coverage_collection is not None
 
@@ -70,7 +70,7 @@ def test_single_parameter_area_convert():
 
     response = create_mock_obs_response(test_data)
 
-    coverage_collection = Covjson().convert(response)
+    coverage_collection = convert_to_covjson(response)
 
     assert coverage_collection is not None
 
@@ -96,7 +96,7 @@ def test_empty_response_convert():
     # Expect to get an HTTPException with status code of 404 and detail of
     # "No data found" when converting an empty response
     with pytest.raises(HTTPException) as exception_info:
-        Covjson().convert(response)
+        convert_to_covjson(response)
 
     assert exception_info.value.detail == "No data found"
     assert exception_info.value.status_code == 404

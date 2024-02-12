@@ -5,7 +5,7 @@
 
 grpcio-tools~=1.56
 brotli-asgi~=1.4
-fastapi~=0.103.1
+fastapi~=0.109.2
 gunicorn~=21.2
 uvicorn[standard]~=0.23.2
 covjson-pydantic~=0.2.0
