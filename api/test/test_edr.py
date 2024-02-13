@@ -11,7 +11,7 @@ client = TestClient(app)
 
 
 def test_get_locations_id_with_single_parameter_query_without_format():
-    with patch("routers.edr.getObsRequest") as mock_getObsRequest:
+    with patch("routers.edr.getObsRequest") as mock_getObsRequest:  # noqa: N806
         test_data = load_json("test/test_data/test_single_proto.json")
         compare_data = load_json("test/test_data/test_single_covjson.json")
 
@@ -37,13 +37,13 @@ def test_get_locations_id_with_single_parameter_query_without_format():
 
 
 def test_get_locations_id_without_parameter_names_query():
-    with patch("routers.edr.getObsRequest") as mock_getObsRequest:
+    with patch("routers.edr.getObsRequest") as mock_getObsRequest:  # noqa: N806
         test_data = load_json("test/test_data/test_multiple_proto.json")
         compare_data = load_json("test/test_data/test_multiple_covjson.json")
 
         mock_getObsRequest.return_value = create_mock_obs_response(test_data)
 
-        response = client.get("/collections/observations/locations/06260?f=covjson")
+        response = client.get("/collections/observations/locations/06260?f=CoverageJSON")
 
         # Check that getObsRequest gets called with correct arguments when no parameter names are given
         # in query
@@ -73,19 +73,19 @@ def test_get_locations_id_with_incorrect_datetime_range():
 
 
 def test_get_locations_id_with_empty_response():
-    with patch("routers.edr.getObsRequest") as mock_getObsRequest:
+    with patch("routers.edr.getObsRequest") as mock_getObsRequest:  # noqa: N806
         test_data = load_json("test/test_data/test_empty_proto.json")
 
         mock_getObsRequest.return_value = create_mock_obs_response(test_data)
 
-        response = client.get("/collections/observations/locations/10000?f=covjson")
+        response = client.get("/collections/observations/locations/10000?f=CoverageJSON")
 
         assert response.status_code == 404
         assert response.json() == {"detail": "No data found"}
 
 
 def test_get_area_with_normal_query():
-    with patch("routers.edr.getObsRequest") as mock_getObsRequest:
+    with patch("routers.edr.getObsRequest") as mock_getObsRequest:  # noqa: N806
         test_data = load_json("test/test_data/test_coverages_proto.json")
         compare_data = load_json("test/test_data/test_coverages_covjson.json")
 
@@ -112,7 +112,7 @@ def test_get_area_with_normal_query():
 
 
 def test_get_area_with_without_parameter_names_query():
-    with patch("routers.edr.getObsRequest") as mock_getObsRequest:
+    with patch("routers.edr.getObsRequest") as mock_getObsRequest:  # noqa: N806
         test_data = load_json("test/test_data/test_coverages_proto.json")
         compare_data = load_json("test/test_data/test_coverages_covjson.json")
 
@@ -151,7 +151,7 @@ def test_get_position_with_normal_query():
     # Wrap the original get_data_area to a mock so we can assert against the call values
     with patch("routers.edr.get_data_area", wraps=edr.get_data_area) as mock_get_data_area, patch(
         "routers.edr.getObsRequest"
-    ) as mock_getObsRequest:
+    ) as mock_getObsRequest:  # noqa: N806
         test_data = load_json("test/test_data/test_coverages_proto.json")
         compare_data = load_json("test/test_data/test_coverages_covjson.json")
 
@@ -168,7 +168,7 @@ def test_get_position_with_normal_query():
             "5.179705 52.09892180000001, 5.179805 52.0988218))",
             "TA_P1D_AVG",
             "2022-12-31T00:00Z/2022-12-31T00:00Z",
-            "covjson",
+            "CoverageJSON",
         )
 
         assert response.status_code == 200
