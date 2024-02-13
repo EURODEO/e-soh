@@ -56,7 +56,7 @@ async def get_locations(
     ts_response = await getObsRequest(ts_request)
 
     platform_parameters: DefaultDict[str, Set[str]] = defaultdict(set)
-    platform_coordinates: Dict[str, Tuple[float, float]] = {}
+    platform_coordinates: Dict[str, Set[Tuple[float, float]]] = defaultdict(set)
     all_parameters: Dict[str, Parameter] = {}
     for obs in ts_response.observations:
         parameter = Parameter(
@@ -68,10 +68,32 @@ async def get_locations(
             unit=Unit(label={"en": obs.ts_mdata.unit}),
         )
         platform_parameters[obs.ts_mdata.platform].add(obs.ts_mdata.instrument)
-        # HACK
-        platform_coordinates[obs.ts_mdata.platform] = (obs.obs_mdata[0].geo_point.lon, obs.obs_mdata[0].geo_point.lat)
-        # TODO: Check for overwrites?
+        # Take last point
+        platform_coordinates[obs.ts_mdata.platform].add(
+            (obs.obs_mdata[-1].geo_point.lon, obs.obs_mdata[-1].geo_point.lat)
+        )
+        # Check for inconsistent parameter definitions between stations
+        # TODO: How to handle those?
+        if obs.ts_mdata.instrument in all_parameters and all_parameters[obs.ts_mdata.instrument] != parameter:
+            raise HTTPException(
+                status_code=500,
+                detail={
+                    "parameter": f"Parameter with name {obs.ts_mdata.instrument} "
+                    f"has multiple definitions:\n{all_parameters[obs.ts_mdata.instrument]}\n{parameter}"
+                },
+            )
         all_parameters[obs.ts_mdata.instrument] = parameter
+
+    # Check for multiple coordinates on one station
+    for station_id in platform_parameters.keys():
+        if len(platform_coordinates[station_id]) > 1:
+            raise HTTPException(
+                status_code=500,
+                detail={
+                    "coordinates": f"Station with id `{station_id} "
+                    f"has multiple coordinates: {platform_coordinates[station_id]}"
+                },
+            )
 
     features = [
         Feature(
@@ -80,12 +102,12 @@ async def get_locations(
             properties={"parameter-name": sorted(platform_parameters[station_id])},
             geometry=Point(
                 type="Point",
-                coordinates=platform_coordinates[station_id],
+                coordinates=list(platform_coordinates[station_id])[0],
             ),
         )
         for station_id in sorted(platform_parameters.keys())  # Sort by station_id
     ]
-    parameters = {id: all_parameters[id] for id in sorted(all_parameters)}
+    parameters = {parameter_id: all_parameters[parameter_id] for parameter_id in sorted(all_parameters)}
 
     return EDRFeatureCollection(features=features, type="FeatureCollection", parameters=parameters)
 
