@@ -22,8 +22,6 @@ from shapely.errors import GEOSException
 
 router = APIRouter(prefix="/collections/observations")
 
-edr_formatter = formatters.get_EDR_formatters()
-
 
 @router.get(
     "/locations",
@@ -74,7 +72,7 @@ async def get_data_location_id(
         str | None, Query(alias="parameter-name", example="dd,ff,rh,pp,tn")
     ] = None,
     datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
-    f: Annotated[str, Query(description="Specify return format.")] = "covjson",
+    f: Annotated[formatters.Formats, Query(description="Specify return format.")] = formatters.Formats.covjson,
 ):
     # TODO: There is no error handling of any kind at the moment!
     #  This is just a quick and dirty demo
@@ -86,7 +84,7 @@ async def get_data_location_id(
         interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
     response = await getObsRequest(get_obs_request)
-    return edr_formatter[f].convert(response)
+    return formatters.formatters[f](response)
 
 
 @router.get(
@@ -101,7 +99,7 @@ async def get_data_position(
         str | None, Query(alias="parameter-name", example="dd,ff,rh,pp,tn")
     ] = None,
     datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
-    f: Annotated[str, Query(description="Specify return format.")] = "covjson",
+    f: Annotated[formatters.Formats, Query(description="Specify return format.")] = formatters.Formats.covjson,
 ):
     try:
         point = wkt.loads(coords)
@@ -139,7 +137,7 @@ async def get_data_area(
         str | None, Query(alias="parameter-name", example="dd,ff,rh,pp,tn")
     ] = None,
     datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
-    f: Annotated[str, Query(description="Specify return format.")] = "covjson",
+    f: Annotated[formatters.Formats, Query(description="Specify return format.")] = formatters.Formats.covjson,
 ):
     try:
         poly = wkt.loads(coords)
@@ -169,5 +167,5 @@ async def get_data_area(
         interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
     coverages = await getObsRequest(get_obs_request)
-    coverages = edr_formatter[f].convert(coverages)
+    coverages = formatters.formatters[f](coverages)
     return coverages
