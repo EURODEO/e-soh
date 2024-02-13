@@ -1,11 +1,18 @@
 # For developing:    uvicorn main:app --reload
-from typing import Annotated
 from collections import defaultdict
+from typing import Annotated
+from typing import DefaultDict
+from typing import Dict
+from typing import Set
+from typing import Tuple
 
 import datastore_pb2 as dstore
 import formatters
 from covjson_pydantic.coverage import Coverage
 from covjson_pydantic.coverage import CoverageCollection
+from covjson_pydantic.observed_property import ObservedProperty
+from covjson_pydantic.parameter import Parameter
+from covjson_pydantic.unit import Unit
 from custom_geo_json.edr_feature_collection import EDRFeatureCollection
 from dependencies import get_datetime_range
 from fastapi import APIRouter
@@ -44,50 +51,41 @@ async def get_locations(
             points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
         ),
     )
-    # TODO: It is not possible to request all of the locations, because the request is too large for gRPC.
-    #  Thus it is necessary to update the datastore.
 
     # TODO: Add flag to protobuf so that it only retrieves the latest observations from the datastore.
-    # TODO: Simulate retrieval of last obs by setting a recent timestamp
     ts_response = await getObsRequest(ts_request)
 
-    platform_standard_names = defaultdict(set)
-    for obs in sorted(ts_response.observations, key=lambda obs: obs.ts_mdata.platform):
-        platform_standard_names[obs.ts_mdata.platform].add(obs.ts_mdata.instrument)
+    platform_parameters: DefaultDict[str, Set[str]] = defaultdict(set)
+    platform_coordinates: Dict[str, Tuple[float, float]] = {}
+    all_parameters: Dict[str, Parameter] = {}
+    for obs in ts_response.observations:
+        parameter = Parameter(
+            description={"en": obs.ts_mdata.title},
+            observedProperty=ObservedProperty(
+                id=f"https://vocab.nerc.ac.uk/standard_name/{obs.ts_mdata.standard_name}",
+                label={"en": obs.ts_mdata.instrument},
+            ),
+            unit=Unit(label={"en": obs.ts_mdata.unit}),
+        )
+        platform_parameters[obs.ts_mdata.platform].add(obs.ts_mdata.instrument)
+        # HACK
+        platform_coordinates[obs.ts_mdata.platform] = (obs.obs_mdata[0].geo_point.lon, obs.obs_mdata[0].geo_point.lat)
+        # TODO: Check for overwrites?
+        all_parameters[obs.ts_mdata.instrument] = parameter
 
     features = [
         Feature(
             type="Feature",
-            id=ts.ts_mdata.platform,
-            properties={"parameter-name": platform_standard_names[ts.ts_mdata.platform]},
+            id=station_id,
+            properties={"parameter-name": sorted(platform_parameters[station_id])},
             geometry=Point(
                 type="Point",
-                coordinates=(
-                    ts.obs_mdata[0].geo_point.lon,
-                    ts.obs_mdata[0].geo_point.lat,
-                ),
+                coordinates=platform_coordinates[station_id],
             ),
-        )  # HACK: Assume loc the same
-        for ts in sorted(ts_response.observations, key=lambda ts: ts.ts_mdata.platform)
+        )
+        for station_id in sorted(platform_parameters.keys())  # Sort by station_id
     ]
-
-    # TODO: Did a local hack to make the labels work, changed in the edr_pydantic library,
-    #  both the observedProperty, parameter and unit their label and description from string to i18n
-    parameters = {
-        "dd_10": {
-            "type": "Parameter",
-            "id": "<standard_name>_<level>_<function>_<period>",
-            "description": {"en": "Wind, direction, average, height sensor, 10'"},
-            "observedProperty": {
-                "id": "https://vocab.nerc.ac.uk/standard_name/wind_from_direction/",
-                "label": {"en": "Wind from direction"},
-            },
-            "unit": {
-                "label": {"en": "degree"},
-                "symbol": {"value": "°", "type": "http://www.opengis.net/def/uom/UCUM/"},
-            },
-        }
-    }
+    parameters = {id: all_parameters[id] for id in sorted(all_parameters)}
 
     return EDRFeatureCollection(features=features, type="FeatureCollection", parameters=parameters)
 
