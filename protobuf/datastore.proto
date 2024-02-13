@@ -99,6 +99,10 @@ message TSMetadata {
   string unit = 21;
   string instrument = 22;
   string instrument_vocabulary = 23 [json_name = "instrument_vocabulary"];
+  string level = 24;
+  string period = 25;
+  string function = 26;
+  string parameter_name = 27;
   // --- END string metadata -----------------
 }
 
