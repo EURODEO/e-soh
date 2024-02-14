@@ -1,5 +1,6 @@
 # For developing:    uvicorn main:app --reload
 from collections import defaultdict
+from datetime import datetime
 from typing import Annotated
 from typing import DefaultDict
 from typing import Dict
@@ -21,7 +22,8 @@ from fastapi import Path
 from fastapi import Query
 from geojson_pydantic import Feature
 from geojson_pydantic import Point
-from grpc_getter import getObsRequest
+from google.protobuf.timestamp_pb2 import Timestamp
+from grpc_getter import get_obs_request
 from shapely import buffer
 from shapely import geometry
 from shapely import wkt
@@ -46,14 +48,17 @@ async def get_locations(
     left, bottom, right, top = map(str.strip, bbox.split(","))
     poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
 
+    start_datetime = Timestamp()
+    start_datetime.FromDatetime(datetime(2022, 12, 31, 23, 50))  # HACK: Force only one point for test data
     ts_request = dstore.GetObsRequest(
         spatial_area=dstore.Polygon(
-            points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
+            points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords],
         ),
+        temporal_interval=dstore.TimeInterval(start=start_datetime),  # HACK
     )
 
     # TODO: Add flag to protobuf so that it only retrieves the latest observations from the datastore.
-    ts_response = await getObsRequest(ts_request)
+    ts_response = await get_obs_request(ts_request)
 
     platform_parameters: DefaultDict[str, Set[str]] = defaultdict(set)
     platform_coordinates: Dict[str, Set[Tuple[float, float]]] = defaultdict(set)
@@ -141,14 +146,14 @@ async def get_data_location_id(
         parameter_name = parameter_name.split(",")
         parameter_name = list(map(lambda x: x.strip(), parameter_name))
     # parameter_name = verify_parameter_names(parameter_name) # should the api verify that the parameter name is valid?
-    get_obs_request = dstore.GetObsRequest(
+    request = dstore.GetObsRequest(
         filter=dict(
             parameter_name=dstore.Strings(values=parameter_name),
             platform=dstore.Strings(values=[location_id]),
         ),
         temporal_interval=(dstore.TimeInterval(start=range[0], end=range[1]) if range else None),
     )
-    response = await getObsRequest(get_obs_request)
+    response = await get_obs_request(request)
     return formatters.formatters[f](response)
 
 
@@ -247,8 +252,8 @@ async def get_data_area(
         spatial_area=dstore.Polygon(
             points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
         ),
-        temporal_interval=(dstore.TimeInterval(start=range[0], end=range[1]) if range else None),
+        temporal_interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
-    coverages = await getObsRequest(get_obs_request)
+    coverages = await get_obs_request(get_obs_request)
     coverages = formatters.formatters[f](coverages)
     return coverages

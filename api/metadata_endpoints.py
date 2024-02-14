@@ -1,4 +1,7 @@
-# from dependencies import get_current_parameter_names
+from datetime import datetime
+from typing import Dict
+
+import datastore_pb2 as dstore
 from edr_pydantic.capabilities import Contact
 from edr_pydantic.capabilities import LandingPageModel
 from edr_pydantic.capabilities import Provider
@@ -10,7 +13,13 @@ from edr_pydantic.extent import Extent
 from edr_pydantic.extent import Spatial
 from edr_pydantic.link import EDRQueryLink
 from edr_pydantic.link import Link
+from edr_pydantic.observed_property import ObservedProperty
+from edr_pydantic.parameter import Parameter
+from edr_pydantic.unit import Unit
 from edr_pydantic.variables import Variables
+from fastapi import HTTPException
+from google.protobuf.timestamp_pb2 import Timestamp
+from grpc_getter import get_obs_request
 
 
 def get_landing_page(request):
@@ -30,7 +39,40 @@ def get_landing_page(request):
     )
 
 
-def get_collection_metadata(request) -> Collection:
+async def get_collection_metadata(request) -> Collection:
+    # TODO: Try to remove/lower duplication with /locations endpoint
+    start_datetime = Timestamp()
+    start_datetime.FromDatetime(datetime(2022, 12, 31, 23, 50))  # HACK: Force only one point for test data
+    ts_request = dstore.GetObsRequest(
+        temporal_interval=dstore.TimeInterval(start=start_datetime),  # HACK
+    )
+    ts_response = await get_obs_request(ts_request)
+
+    # Sadly, this is a different parameter as in the /locations endpoint, due to an error in the EDR spec
+    # See: https://github.com/opengeospatial/ogcapi-environmental-data-retrieval/issues/427
+    all_parameters: Dict[str, Parameter] = {}
+
+    for obs in ts_response.observations:
+        parameter = Parameter(
+            description=obs.ts_mdata.title,
+            observedProperty=ObservedProperty(
+                id=f"https://vocab.nerc.ac.uk/standard_name/{obs.ts_mdata.standard_name}",
+                label=obs.ts_mdata.instrument,
+            ),
+            unit=Unit(label=obs.ts_mdata.unit),
+        )
+        # Check for inconsistent parameter definitions between stations
+        # TODO: How to handle those?
+        if obs.ts_mdata.instrument in all_parameters and all_parameters[obs.ts_mdata.instrument] != parameter:
+            raise HTTPException(
+                status_code=500,
+                detail={
+                    "parameter": f"Parameter with name {obs.ts_mdata.instrument} "
+                    f"has multiple definitions:\n{all_parameters[obs.ts_mdata.instrument]}\n{parameter}"
+                },
+            )
+        all_parameters[obs.ts_mdata.instrument] = parameter
+
     collection = Collection(
         id="observations",
         links=[
@@ -62,15 +104,15 @@ def get_collection_metadata(request) -> Collection:
         ),
         crs=["WGS84"],
         output_formats=["CoverageJSON"],
-        parameter_names={},  # TODO: Get these from database
+        parameter_names={parameter_id: all_parameters[parameter_id] for parameter_id in sorted(all_parameters)},
     )
     return collection
 
 
-def get_collections(request) -> Collections:
+async def get_collections(request) -> Collections:
     return Collections(
         links=[
             Link(href=f"{request.url}", rel="self"),
         ],
-        collections=[get_collection_metadata(request)],
+        collections=[await get_collection_metadata(request)],
     )
