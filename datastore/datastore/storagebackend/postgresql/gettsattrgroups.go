@@ -79,12 +79,11 @@ func getTSMdata(colVals map[string]interface{}) (*datastore.TSMetadata, error) {
 		switch field.Kind() {
 		case reflect.String:
 			val0, ok := val.(string)
-			if !ok {
-				return nil, fmt.Errorf(
-					"value not string: %v (type: %T; goName: %s, pbName: %s",
-					val, val, goName, pbName)
+			if ok { // NOTE: !ok in this case would typically mean a nil value resulting from a
+				// NULL in the corresponding database column
+				field.SetString(val0)
 			}
-			field.SetString(val0)
+
 		default:
 			return nil, fmt.Errorf(
 				"unsupported type: %v (val: %v; type: %T; goName: %s; pbName: %s)",
