@@ -1,7 +1,7 @@
 # For developing:    uvicorn main:app --reload
 from typing import Annotated
 
-import datastore_pb2 as dstore
+import protobuf.datastore_pb2 as dstore
 import formatters
 from covjson_pydantic.coverage import Coverage
 from covjson_pydantic.coverage import CoverageCollection
@@ -68,9 +68,7 @@ async def get_locations(
 )
 async def get_data_location_id(
     location_id: Annotated[str, Path(example="06260")],
-    parameter_name: Annotated[
-        str | None, Query(alias="parameter-name", example="dd,ff,rh,pp,tn")
-    ] = None,
+    parameter_name: Annotated[str | None, Query(alias="parameter-name", example="dd,ff,rh,pp,tn")] = None,
     datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
     f: Annotated[formatters.Formats, Query(description="Specify return format.")] = formatters.Formats.covjson,
 ):
@@ -95,9 +93,7 @@ async def get_data_location_id(
 )
 async def get_data_position(
     coords: Annotated[str, Query(example="POINT(5.179705 52.0988218)")],
-    parameter_name: Annotated[
-        str | None, Query(alias="parameter-name", example="dd,ff,rh,pp,tn")
-    ] = None,
+    parameter_name: Annotated[str | None, Query(alias="parameter-name", example="dd,ff,rh,pp,tn")] = None,
     datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
     f: Annotated[formatters.Formats, Query(description="Specify return format.")] = formatters.Formats.covjson,
 ):
@@ -107,13 +103,9 @@ async def get_data_position(
             raise TypeError
         poly = buffer(point, 0.0001, quad_segs=1)  # Roughly 10 meters around the point
     except GEOSException:
-        raise HTTPException(
-            status_code=400, detail={"coords": f"Invalid or unparseable wkt provided: {coords}"}
-        )
+        raise HTTPException(status_code=400, detail={"coords": f"Invalid or unparseable wkt provided: {coords}"})
     except TypeError:
-        raise HTTPException(
-            status_code=400, detail={"coords": f"Invalid geometric type: {point.geom_type}"}
-        )
+        raise HTTPException(status_code=400, detail={"coords": f"Invalid geometric type: {point.geom_type}"})
     except Exception:
         raise HTTPException(
             status_code=400,
@@ -130,12 +122,8 @@ async def get_data_position(
     response_model_exclude_none=True,
 )
 async def get_data_area(
-    coords: Annotated[
-        str, Query(example="POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))")
-    ],
-    parameter_name: Annotated[
-        str | None, Query(alias="parameter-name", example="dd,ff,rh,pp,tn")
-    ] = None,
+    coords: Annotated[str, Query(example="POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))")],
+    parameter_name: Annotated[str | None, Query(alias="parameter-name", example="dd,ff,rh,pp,tn")] = None,
     datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
     f: Annotated[formatters.Formats, Query(description="Specify return format.")] = formatters.Formats.covjson,
 ):
@@ -144,13 +132,9 @@ async def get_data_area(
         if poly.geom_type != "Polygon":
             raise TypeError
     except GEOSException:
-        raise HTTPException(
-            status_code=400, detail={"coords": f"Invalid or unparseable wkt provided: {coords}"}
-        )
+        raise HTTPException(status_code=400, detail={"coords": f"Invalid or unparseable wkt provided: {coords}"})
     except TypeError:
-        raise HTTPException(
-            status_code=400, detail={"coords": f"Invalid geometric type: {poly.geom_type}"}
-        )
+        raise HTTPException(status_code=400, detail={"coords": f"Invalid geometric type: {poly.geom_type}"})
     except Exception:
         raise HTTPException(
             status_code=400,
@@ -158,13 +142,13 @@ async def get_data_area(
         )
 
     range = get_datetime_range(datetime)
-    verify_parameter_names(parameter_name)
+    # await verify_parameter_names(parameter_name)
     get_obs_request = dstore.GetObsRequest(
         filter=dict(parameter_name=dstore.Strings(values=parameter_name.split(","))),
-        inside=dstore.Polygon(
+        spatial_area=dstore.Polygon(
             points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
         ),
-        interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
+        temporal_interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
     coverages = await getObsRequest(get_obs_request)
     coverages = formatters.formatters[f](coverages)

@@ -3,7 +3,7 @@ import requests
 import json
 import isodate
 
-import datastore_pb2 as dstore
+import protobuf.datastore_pb2 as dstore
 
 from datetime import datetime
 from datetime import timedelta
@@ -15,8 +15,6 @@ from google.protobuf.timestamp_pb2 import Timestamp
 from grpc_getter import getTSAGRequest
 from pydantic import AwareDatetime
 from pydantic import TypeAdapter
-
-
 
 
 def get_datetime_range(datetime_string: str | None) -> Tuple[Timestamp, Timestamp] | None:
@@ -37,7 +35,9 @@ def get_datetime_range(datetime_string: str | None) -> Tuple[Timestamp, Timestam
             )  # HACK: Add one second so we get some data, as the store returns [start, end)
         else:
             if datetimes[0] != "..":
-                start_datetime.FromDatetime(aware_datetime_type_adapter.validate_python(datetimes[0]))
+                start_datetime.FromDatetime(
+                    aware_datetime_type_adapter.validate_python(datetimes[0])
+                )
             else:
                 start_datetime.FromDatetime(datetime.min)
             if datetimes[1] != "..":
@@ -59,6 +59,7 @@ def get_datetime_range(datetime_string: str | None) -> Tuple[Timestamp, Timestam
 
     return start_datetime, end_datetime
 
+
 async def get_current_parameter_names(ttl_hash=None):
     """
     This function get a set of standard_names currently in the datastore
@@ -68,7 +69,7 @@ async def get_current_parameter_names(ttl_hash=None):
 
     @lru_cache(maxsize=1)
     async def async_helper(ttl_hash):
-        del ttl_hash # make linter think we used this value
+        del ttl_hash  # make linter think we used this value
         unique_parameter_names = dstore.GetTSAGRequest(attrs=["parameter_name"])
         unique_parameter_names = await getTSAGRequest(unique_parameter_names)
 
