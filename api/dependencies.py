@@ -1,8 +1,3 @@
-import asyncio
-import requests
-import json
-import isodate
-
 import protobuf.datastore_pb2 as dstore
 
 from datetime import datetime
@@ -35,9 +30,7 @@ def get_datetime_range(datetime_string: str | None) -> Tuple[Timestamp, Timestam
             )  # HACK: Add one second so we get some data, as the store returns [start, end)
         else:
             if datetimes[0] != "..":
-                start_datetime.FromDatetime(
-                    aware_datetime_type_adapter.validate_python(datetimes[0])
-                )
+                start_datetime.FromDatetime(aware_datetime_type_adapter.validate_python(datetimes[0]))
             else:
                 start_datetime.FromDatetime(datetime.min)
             if datetimes[1] != "..":
