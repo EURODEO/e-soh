@@ -162,8 +162,19 @@ message Strings {
 message GetObsRequest {
   // --- BEGIN non-string metadata -------------------------
 
-  // temporal filter
+  // temporal mode
+  string temporal_mode = 4; // use 'interval' (the default) or 'latest'
+
+  // temporal spec applicable when temporal_mode = 'interval'
   TimeInterval temporal_interval = 1; // only observations in this time range may be returned
+
+  // temporal spec applicable when temporal_mode = 'latest'
+  int32 latest_limit = 5; // only this many of the latest observations may be returned per time
+  // series; default: 1
+  string latest_maxage = 6; // ISO 8601 period (like 'PT1H') that limits the time window (ending
+  // at the current time) from which the latest observations may be retrieved (use case: specify
+  // PT1H if you're not interested in observations older than one hour!); default: entire valid
+  // time range of the data store, typically PT24H
 
   // spatial filter
   Polygon spatial_area = 2; // if specified, only observations in this area may be returned
