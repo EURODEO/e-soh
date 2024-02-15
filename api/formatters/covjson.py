@@ -1,4 +1,5 @@
 import math
+from collections import namedtuple
 from datetime import timezone
 from itertools import groupby
 
@@ -20,6 +21,9 @@ from pydantic import AwareDatetime
 
 # mime_type = "application/prs.coverage+json"
 
+Dom = namedtuple("Dom", ["lat", "lon", "times"])
+Data = namedtuple("Data", ["dom", "param_id", "standard_name", "title", "unit", "values"])
+
 
 def convert_to_covjson(response):
     # Collect data
@@ -27,10 +31,8 @@ def convert_to_covjson(response):
     data = [_collect_data(md.ts_mdata, md.obs_mdata) for md in response.observations]
 
     # Need to sort before using groupBy. Also sort on param_id to get consistently sorted output
-    data.sort(key=lambda x: (x[0], x[1]))
-    # The multiple coverage logic is not needed for this endpoint,
-    # but we want to share this code between endpoints
-    for (lat, lon, times), group in groupby(data, lambda x: x[0]):
+    data.sort(key=lambda x: (x.dom, x.param_id))
+    for (lat, lon, times), group in groupby(data, lambda x: x.dom):
         referencing = [
             ReferenceSystemConnectionObject(
                 coordinates=["y", "x"],
@@ -53,16 +55,21 @@ def convert_to_covjson(response):
 
         parameters = {}
         ranges = {}
-        for (_, _, _), param_id, unit, values in group:
-            if all(math.isnan(v) for v in values):
+        for data in group:
+            if all(math.isnan(v) for v in data.values):
                 continue  # Drop ranges if completely nan.
                 # TODO: Drop the whole coverage if it becomes empty?
-            values_no_nan = [v if not math.isnan(v) else None for v in values]
-            # TODO: Improve this based on "standard name", etc.
-            parameters[param_id] = Parameter(
-                observedProperty=ObservedProperty(label={"en": param_id}), unit=Unit(label={"en": unit})
-            )  # TODO: Also fill symbol?
-            ranges[param_id] = NdArray(
+            values_no_nan = [v if not math.isnan(v) else None for v in data.values]
+
+            parameters[data.param_id] = Parameter(
+                description={"en": data.title},
+                observedProperty=ObservedProperty(
+                    id=f"https://vocab.nerc.ac.uk/standard_name/{data.standard_name}", label={"en": data.param_id}
+                ),
+                unit=Unit(label={"en": data.unit}),
+            )
+
+            ranges[data.param_id] = NdArray(
                 values=values_no_nan, axisNames=["t", "y", "x"], shape=[len(values_no_nan), 1, 1]
             )
 
@@ -86,6 +93,8 @@ def _collect_data(ts_mdata, obs_mdata):
     )  # HACK: str -> float
     (times, values) = zip(*tuples)
     param_id = ts_mdata.parameter_name
+    standard_name = ts_mdata.standard_name
+    title = ts_mdata.title
     unit = ts_mdata.unit
 
-    return (lat, lon, times), param_id, unit, values
+    return Data(Dom(lat, lon, times), param_id, standard_name, title, unit, values)
