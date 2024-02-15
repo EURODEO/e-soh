@@ -1,7 +1,7 @@
 # For developing:    uvicorn main:app --reload
 from typing import Annotated
 
-import protobuf.datastore_pb2 as dstore
+import datastore_pb2 as dstore
 import formatters
 from covjson_pydantic.coverage import Coverage
 from covjson_pydantic.coverage import CoverageCollection
