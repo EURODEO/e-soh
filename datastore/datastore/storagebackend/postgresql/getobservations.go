@@ -323,7 +323,7 @@ func getStringMdataFilter(
 // otherwise (..., ..., ..., error).
 func createObsQueryVals(
 	request *datastore.GetObsRequest, tspec common.TemporalSpec, phVals *[]interface{}) (
-		string, string, string, error) {
+	string, string, string, error) {
 
 	timeFilter := getTimeFilter(tspec)
 
@@ -435,7 +435,7 @@ func getObs(
 
 	// set oldest allowable obs time when in 'latest' mode
 	oldestTime := time.Time{}
-	if (!tspec.IntervalMode) {
+	if !tspec.IntervalMode {
 		loTime, hiTime := common.GetValidTimeRange()
 		if tspec.LatestMaxage < 0 {
 			oldestTime = loTime
@@ -453,7 +453,7 @@ func getObs(
 
 		includeObs := true // by default include obs in this time series (in particular in
 		// 'interval' mode, since filtering for that has been done already)
-		if (!tspec.IntervalMode) { // 'latest' mode
+		if !tspec.IntervalMode { // 'latest' mode
 			switch {
 			case len(obsMdatas[tsID]) >= tspec.LatestLimit:
 				includeObs = false // reject, since not room for this obs

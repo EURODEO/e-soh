@@ -170,9 +170,10 @@ func ToSnakeCase(s string) string {
 }
 
 type TemporalSpec struct {
-	IntervalMode bool // whether temporal mode is 'interval' (true) or 'latest' (false)
-	Interval *datastore.TimeInterval // interval in 'interval' mode
-	LatestLimit  int // max number of observations retrievable in 'latest' mode
-	LatestMaxage time.Duration // interval, defined as [now - LatestMaxage, now], within which
-	// observations may be retrieved in 'latest' mode
+	IntervalMode bool // whether temporal mode is 'interval' (true) or 'latest'
+	// (false)
+	Interval     *datastore.TimeInterval // interval in 'interval' mode
+	LatestLimit  int                     // max number of observations retrievable in 'latest' mode
+	LatestMaxage time.Duration           // interval, defined as [now - LatestMaxage, now], within
+	// which observations may be retrieved in 'latest' mode
 }
