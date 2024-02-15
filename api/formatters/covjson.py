@@ -25,6 +25,18 @@ Dom = namedtuple("Dom", ["lat", "lon", "times"])
 Data = namedtuple("Data", ["dom", "values", "ts_mdata"])
 
 
+def make_parameter(ts_mdata):
+    parameter_id = ts_mdata.instrument
+    return Parameter(
+        description={"en": ts_mdata.title},
+        observedProperty=ObservedProperty(
+            id=f"https://vocab.nerc.ac.uk/standard_name/{ts_mdata.standard_name}",
+            label={"en": parameter_id},
+        ),
+        unit=Unit(label={"en": ts_mdata.unit}),
+    )
+
+
 def convert_to_covjson(response):
     # Collect data
     coverages = []
@@ -62,14 +74,7 @@ def convert_to_covjson(response):
             values_no_nan = [v if not math.isnan(v) else None for v in data.values]
 
             parameter_id = data.ts_mdata.instrument
-            parameters[parameter_id] = Parameter(
-                description={"en": data.ts_mdata.title},
-                observedProperty=ObservedProperty(
-                    id=f"https://vocab.nerc.ac.uk/standard_name/{data.ts_mdata.standard_name}",
-                    label={"en": parameter_id},
-                ),
-                unit=Unit(label={"en": data.ts_mdata.unit}),
-            )
+            parameters[parameter_id] = make_parameter(data.ts_mdata)
 
             ranges[parameter_id] = NdArray(
                 values=values_no_nan, axisNames=["t", "y", "x"], shape=[len(values_no_nan), 1, 1]

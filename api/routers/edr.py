@@ -11,15 +11,14 @@ import datastore_pb2 as dstore
 import formatters
 from covjson_pydantic.coverage import Coverage
 from covjson_pydantic.coverage import CoverageCollection
-from covjson_pydantic.observed_property import ObservedProperty
 from covjson_pydantic.parameter import Parameter
-from covjson_pydantic.unit import Unit
 from custom_geo_json.edr_feature_collection import EDRFeatureCollection
 from dependencies import get_datetime_range
 from fastapi import APIRouter
 from fastapi import HTTPException
 from fastapi import Path
 from fastapi import Query
+from formatters.covjson import make_parameter
 from geojson_pydantic import Feature
 from geojson_pydantic import Point
 from google.protobuf.timestamp_pb2 import Timestamp
@@ -64,14 +63,7 @@ async def get_locations(
     platform_coordinates: Dict[str, Set[Tuple[float, float]]] = defaultdict(set)
     all_parameters: Dict[str, Parameter] = {}
     for obs in ts_response.observations:
-        parameter = Parameter(
-            description={"en": obs.ts_mdata.title},
-            observedProperty=ObservedProperty(
-                id=f"https://vocab.nerc.ac.uk/standard_name/{obs.ts_mdata.standard_name}",
-                label={"en": obs.ts_mdata.instrument},
-            ),
-            unit=Unit(label={"en": obs.ts_mdata.unit}),
-        )
+        parameter = make_parameter(obs.ts_mdata)
         platform_parameters[obs.ts_mdata.platform].add(obs.ts_mdata.instrument)
         # Take last point
         platform_coordinates[obs.ts_mdata.platform].add(
