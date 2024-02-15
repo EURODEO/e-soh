@@ -44,7 +44,7 @@ async def get_collections(request: Request) -> Collections:
     response_model_exclude_none=True,
 )
 async def get_collection_metadata(request: Request) -> Collection:
-    return await metadata_endpoints.get_collection_metadata(request)
+    return await metadata_endpoints.get_collection_metadata(request, is_self=True)
 
 
 # Include all routes

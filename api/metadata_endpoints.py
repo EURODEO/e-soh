@@ -39,7 +39,7 @@ def get_landing_page(request):
     )
 
 
-async def get_collection_metadata(request) -> Collection:
+async def get_collection_metadata(request, is_self) -> Collection:
     # TODO: Try to remove/lower duplication with /locations endpoint
     start_datetime = Timestamp()
     start_datetime.FromDatetime(datetime(2022, 12, 31, 23, 50))  # HACK: Force only one point for test data
@@ -76,7 +76,7 @@ async def get_collection_metadata(request) -> Collection:
     collection = Collection(
         id="observations",
         links=[
-            Link(href=f"{request.url}/observations", rel="self"),
+            Link(href=f"{request.url}/observations", rel="self" if is_self else "data"),
         ],
         extent=Extent(spatial=Spatial(bbox=[[3.0, 50.0, 8.0, 55.0]], crs="WGS84")),  # TODO: Get this from database
         data_queries=DataQueries(
@@ -114,5 +114,5 @@ async def get_collections(request) -> Collections:
         links=[
             Link(href=f"{request.url}", rel="self"),
         ],
-        collections=[await get_collection_metadata(request)],
+        collections=[await get_collection_metadata(request, is_self=False)],
     )
