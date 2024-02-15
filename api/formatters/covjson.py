@@ -22,7 +22,7 @@ from pydantic import AwareDatetime
 # mime_type = "application/prs.coverage+json"
 
 Dom = namedtuple("Dom", ["lat", "lon", "times"])
-Data = namedtuple("Data", ["dom", "param_id", "standard_name", "title", "unit", "values"])
+Data = namedtuple("Data", ["dom", "values", "ts_mdata"])
 
 
 def convert_to_covjson(response):
@@ -30,8 +30,8 @@ def convert_to_covjson(response):
     coverages = []
     data = [_collect_data(md.ts_mdata, md.obs_mdata) for md in response.observations]
 
-    # Need to sort before using groupBy. Also sort on param_id to get consistently sorted output
-    data.sort(key=lambda x: (x.dom, x.param_id))
+    # Need to sort before using groupBy. Also sort on instrument to get consistently sorted output
+    data.sort(key=lambda x: (x.dom, x.ts_mdata.instrument))
     for (lat, lon, times), group in groupby(data, lambda x: x.dom):
         referencing = [
             ReferenceSystemConnectionObject(
@@ -61,15 +61,17 @@ def convert_to_covjson(response):
                 # TODO: Drop the whole coverage if it becomes empty?
             values_no_nan = [v if not math.isnan(v) else None for v in data.values]
 
-            parameters[data.param_id] = Parameter(
-                description={"en": data.title},
+            parameter_id = data.ts_mdata.instrument
+            parameters[parameter_id] = Parameter(
+                description={"en": data.ts_mdata.title},
                 observedProperty=ObservedProperty(
-                    id=f"https://vocab.nerc.ac.uk/standard_name/{data.standard_name}", label={"en": data.param_id}
+                    id=f"https://vocab.nerc.ac.uk/standard_name/{data.ts_mdata.standard_name}",
+                    label={"en": parameter_id},
                 ),
-                unit=Unit(label={"en": data.unit}),
+                unit=Unit(label={"en": data.ts_mdata.unit}),
             )
 
-            ranges[data.param_id] = NdArray(
+            ranges[parameter_id] = NdArray(
                 values=values_no_nan, axisNames=["t", "y", "x"], shape=[len(values_no_nan), 1, 1]
             )
 
@@ -92,9 +94,9 @@ def _collect_data(ts_mdata, obs_mdata):
         (o.obstime_instant.ToDatetime(tzinfo=timezone.utc), float(o.value)) for o in obs_mdata
     )  # HACK: str -> float
     (times, values) = zip(*tuples)
-    param_id = ts_mdata.parameter_name
-    standard_name = ts_mdata.standard_name
-    title = ts_mdata.title
-    unit = ts_mdata.unit
+    # param_id = ts_mdata.parameter_name
+    # standard_name = ts_mdata.standard_name
+    # title = ts_mdata.title
+    # unit = ts_mdata.unit
 
-    return Data(Dom(lat, lon, times), param_id, standard_name, title, unit, values)
+    return Data(Dom(lat, lon, times), values, ts_mdata)
