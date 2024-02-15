@@ -1,4 +1,4 @@
-import protobuf.datastore_pb2 as dstore
+import datastore_pb2 as dstore
 
 from datetime import datetime
 from datetime import timedelta
