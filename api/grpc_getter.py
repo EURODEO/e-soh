@@ -1,6 +1,6 @@
 import os
 
-import protobuf.datastore_pb2_grpc as dstore_grpc
+import datastore_pb2_grpc as dstore_grpc
 import grpc
 
 # Functions in this file should be made async,
