@@ -11,7 +11,6 @@ import (
 
 	"github.com/cridenour/go-postgis"
 	"github.com/lib/pq"
-	_ "github.com/lib/pq"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -145,23 +144,32 @@ func getTSMetadata(db *sql.DB, tsIDs []string, tsMdatas map[int64]*datastore.TSM
 	return nil
 }
 
-// getTimeFilter derives from ti the expression used in a WHERE clause for filtering on obs time.
+// getTimeFilter derives from tspec the expression used in a WHERE clause for overall
+// (i.e. not time series specific) filtering on obs time.
+//
 // Returns expression.
-func getTimeFilter(ti *datastore.TimeInterval) string {
+func getTimeFilter(tspec common.TemporalSpec) string {
+
 	timeExpr := "TRUE" // by default, don't filter on obs time at all
 
-	if ti != nil {
-		timeExprs := []string{}
-		if start := ti.GetStart(); start != nil {
-			timeExprs = append(timeExprs, fmt.Sprintf(
-				"obstime_instant >= to_timestamp(%f)", common.Tstamp2float64Secs(start)))
-		}
-		if end := ti.GetEnd(); end != nil {
-			timeExprs = append(timeExprs, fmt.Sprintf(
-				"obstime_instant < to_timestamp(%f)", common.Tstamp2float64Secs(end)))
-		}
-		if len(timeExprs) > 0 {
-			timeExpr = fmt.Sprintf("(%s)", strings.Join(timeExprs, " AND "))
+	if tspec.IntervalMode {
+		// the 'interval' filter is applied in the same way to all time series and can thus be
+		// part of the WHERE clause (this is contrast to the 'latest' filter which must be applied
+		// individually to each time series at a later stage)
+		ti := tspec.Interval
+		if ti != nil {
+			timeExprs := []string{}
+			if start := ti.GetStart(); start != nil {
+				timeExprs = append(timeExprs, fmt.Sprintf(
+					"obstime_instant >= to_timestamp(%f)", common.Tstamp2float64Secs(start)))
+			}
+			if end := ti.GetEnd(); end != nil {
+				timeExprs = append(timeExprs, fmt.Sprintf(
+					"obstime_instant < to_timestamp(%f)", common.Tstamp2float64Secs(end)))
+			}
+			if len(timeExprs) > 0 {
+				timeExpr = fmt.Sprintf("(%s)", strings.Join(timeExprs, " AND "))
+			}
 		}
 	}
 
@@ -303,7 +311,7 @@ func getStringMdataFilter(
 	return getMdataFilter(stringFilterInfos, phVals), nil
 }
 
-// createObsQueryVals creates from 'request' values used for querying observations.
+// createObsQueryVals creates from request and tspec values used for querying observations.
 //
 // Values to be used for query placeholders are appended to phVals.
 //
@@ -314,9 +322,10 @@ func getStringMdataFilter(
 // - nil,
 // otherwise (..., ..., ..., error).
 func createObsQueryVals(
-	request *datastore.GetObsRequest, phVals *[]interface{}) (string, string, string, error) {
+	request *datastore.GetObsRequest, tspec common.TemporalSpec, phVals *[]interface{}) (
+		string, string, string, error) {
 
-	timeFilter := getTimeFilter(request.GetTemporalInterval())
+	timeFilter := getTimeFilter(tspec)
 
 	geoFilter, err := getGeoFilter(request.GetSpatialArea(), phVals)
 	if err != nil {
@@ -389,11 +398,13 @@ func scanObsRow(rows *sql.Rows) (*datastore.ObsMetadata, int64, error) {
 
 // getObs gets into obs all observations that match request.
 // Returns nil upon success, otherwise error.
-func getObs(db *sql.DB, request *datastore.GetObsRequest, obs *[]*datastore.Metadata2) (retErr error) {
+func getObs(
+	db *sql.DB, request *datastore.GetObsRequest, tspec common.TemporalSpec,
+	obs *[]*datastore.Metadata2) (retErr error) {
 
 	// get values needed for query
 	phVals := []interface{}{} // placeholder values
-	timeFilter, geoFilter, stringMdataFilter, err := createObsQueryVals(request, &phVals)
+	timeFilter, geoFilter, stringMdataFilter, err := createObsQueryVals(request, tspec, &phVals)
 	if err != nil {
 		return fmt.Errorf("createQueryVals() failed: %v", err)
 	}
@@ -411,7 +422,7 @@ func getObs(db *sql.DB, request *datastore.GetObsRequest, obs *[]*datastore.Meta
 		JOIN time_series on time_series.id = observation.ts_id
 		JOIN geo_point ON observation.geo_point_id = geo_point.id
 		WHERE %s AND %s AND %s
-		ORDER BY ts_id, obstime_instant
+		ORDER BY ts_id, obstime_instant DESC
 	`, strings.Join(obsStringMdataCols, ","), timeFilter, geoFilter, stringMdataFilter)
 
 	rows, err := db.Query(query, phVals...)
@@ -422,6 +433,17 @@ func getObs(db *sql.DB, request *datastore.GetObsRequest, obs *[]*datastore.Meta
 
 	obsMdatas := make(map[int64][]*datastore.ObsMetadata) // observations per time series ID
 
+	// set oldest allowable obs time when in 'latest' mode
+	oldestTime := time.Time{}
+	if (!tspec.IntervalMode) {
+		loTime, hiTime := common.GetValidTimeRange()
+		if tspec.LatestMaxage < 0 {
+			oldestTime = loTime
+		} else {
+			oldestTime = hiTime.Add(-tspec.LatestMaxage)
+		}
+	}
+
 	// scan rows
 	for rows.Next() {
 		obsMdata, tsID, err := scanObsRow(rows)
@@ -429,7 +451,20 @@ func getObs(db *sql.DB, request *datastore.GetObsRequest, obs *[]*datastore.Meta
 			return fmt.Errorf("scanObsRow() failed: %v", err)
 		}
 
-		obsMdatas[tsID] = append(obsMdatas[tsID], obsMdata)
+		includeObs := true // by default include obs in this time series (in particular in
+		// 'interval' mode, since filtering for that has been done already)
+		if (!tspec.IntervalMode) { // 'latest' mode
+			switch {
+			case len(obsMdatas[tsID]) >= tspec.LatestLimit:
+				includeObs = false // reject, since not room for this obs
+			case obsMdata.GetObstimeInstant().AsTime().Before(oldestTime):
+				includeObs = false // reject, since obs too old
+			}
+		}
+
+		if includeObs { // prepend obs to time series to get chronological order
+			obsMdatas[tsID] = append([]*datastore.ObsMetadata{obsMdata}, obsMdatas[tsID]...)
+		}
 	}
 
 	// get time series
@@ -454,14 +489,15 @@ func getObs(db *sql.DB, request *datastore.GetObsRequest, obs *[]*datastore.Meta
 }
 
 // GetObservations ... (see documentation in StorageBackend interface)
-func (sbe *PostgreSQL) GetObservations(request *datastore.GetObsRequest) (
+func (sbe *PostgreSQL) GetObservations(
+	request *datastore.GetObsRequest, tspec common.TemporalSpec) (
 	*datastore.GetObsResponse, error) {
 
 	var err error
 
 	obs := []*datastore.Metadata2{}
 	if err = getObs(
-		sbe.Db, request, &obs); err != nil {
+		sbe.Db, request, tspec, &obs); err != nil {
 		return nil, fmt.Errorf("getObs() failed: %v", err)
 	}
 

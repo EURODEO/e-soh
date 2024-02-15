@@ -169,7 +169,7 @@ message GetObsRequest {
   TimeInterval temporal_interval = 1; // only observations in this time range may be returned
 
   // temporal spec applicable when temporal_mode = 'latest'
-  int32 latest_limit = 5; // only this many of the latest observations may be returned per time
+  string latest_limit = 5; // only this many of the latest observations may be returned per time
   // series; default: 1
   string latest_maxage = 6; // ISO 8601 period (like 'PT1H') that limits the time window (ending
   // at the current time) from which the latest observations may be retrieved (use case: specify
