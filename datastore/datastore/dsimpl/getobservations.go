@@ -74,7 +74,8 @@ func getTemporalSpec(request *datastore.GetObsRequest) (common.TemporalSpec, err
 			// tspec.LatestMaxage)
 			return common.TemporalSpec{}, fmt.Errorf("latest_maxage unimplemented")
 		} else {
-			// by default don't consider any observation as too old
+			// by default disable filtering on maxage, i.e. don't consider any observation as too
+			// old
 			tspec.LatestMaxage = time.Duration(-1)
 		}
 	}

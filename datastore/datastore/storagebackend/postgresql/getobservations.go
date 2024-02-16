@@ -437,7 +437,7 @@ func getObs(
 	oldestTime := time.Time{}
 	if !tspec.IntervalMode {
 		loTime, hiTime := common.GetValidTimeRange()
-		if tspec.LatestMaxage < 0 {
+		if tspec.LatestMaxage < 0 { // i.e. filtering on maxage is disabled
 			oldestTime = loTime
 		} else {
 			oldestTime = hiTime.Add(-tspec.LatestMaxage)
