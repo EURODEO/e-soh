@@ -170,6 +170,7 @@ func ToSnakeCase(s string) string {
 }
 
 type TemporalSpec struct {
-	IntervalMode bool // whether temporal mode is 'interval' (true) or 'latest' (false)
-	Interval     *datastore.TimeInterval // interval in 'interval' mode
+	IntervalMode bool // whether temporal mode is 'interval' (true) or 'latest'
+	// (false)
+	Interval *datastore.TimeInterval // interval in 'interval' mode
 }

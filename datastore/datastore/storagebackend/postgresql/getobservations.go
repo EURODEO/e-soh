@@ -316,7 +316,7 @@ func getStringMdataFilter(
 // Values to be used for query placeholders are appended to phVals.
 //
 // Upon success the function returns five values:
-// - distinct spec, possibly just ''
+// - distinct spec, possibly just an empty string
 // - time filter used in a 'WHERE ... AND ...' clause (possibly just 'TRUE')
 // - geo filter ... ditto
 // - string metadata ... ditto
