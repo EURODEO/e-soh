@@ -3,9 +3,7 @@ package dsimpl
 import (
 	"context"
 	"fmt"
-	"strconv"
 	"strings"
-	"time"
 
 	"datastore/common"
 	"datastore/datastore"
@@ -32,7 +30,6 @@ func getTemporalSpec(request *datastore.GetObsRequest) (common.TemporalSpec, err
 	}
 
 	if tspec.IntervalMode { // validate and initialize for 'interval' mode
-
 		ti := request.GetTemporalInterval()
 
 		// do general validation of interval
@@ -45,39 +42,6 @@ func getTemporalSpec(request *datastore.GetObsRequest) (common.TemporalSpec, err
 		}
 
 		tspec.Interval = ti // valid (but possibly nil to specify a fully open interval!)
-
-	} else { // validate and initialize for 'latest' mode
-
-		// latest_limit ...
-		if limit0 := request.GetLatestLimit(); limit0 != "" {
-			limit, err := strconv.Atoi(limit0)
-			if err != nil {
-				return common.TemporalSpec{},
-					fmt.Errorf("failed to convert latest_limit to an int: %v", limit0)
-			}
-
-			if limit < 0 {
-				return common.TemporalSpec{},
-					fmt.Errorf("latest_limit cannot be negative: %d", limit)
-			}
-
-			tspec.LatestLimit = limit // valid
-
-		} else {
-			// by default return the single latest obs for a time series
-			tspec.LatestLimit = 1 // default
-		}
-
-		// latest_maxage ...
-		if maxage0 := request.GetLatestMaxage(); maxage0 != "" {
-			// ### TODO! (convert maxage0 (an ISO-8601 period) into a time.Duration and assign to
-			// tspec.LatestMaxage)
-			return common.TemporalSpec{}, fmt.Errorf("latest_maxage unimplemented")
-		} else {
-			// by default disable filtering on maxage, i.e. don't consider any observation as too
-			// old
-			tspec.LatestMaxage = time.Duration(-1)
-		}
 	}
 
 	return tspec, nil

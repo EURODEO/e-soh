@@ -315,7 +315,8 @@ func getStringMdataFilter(
 //
 // Values to be used for query placeholders are appended to phVals.
 //
-// Upon success the function returns four values:
+// Upon success the function returns five values:
+// - distinct spec, possibly just ''
 // - time filter used in a 'WHERE ... AND ...' clause (possibly just 'TRUE')
 // - geo filter ... ditto
 // - string metadata ... ditto
@@ -323,21 +324,28 @@ func getStringMdataFilter(
 // otherwise (..., ..., ..., error).
 func createObsQueryVals(
 	request *datastore.GetObsRequest, tspec common.TemporalSpec, phVals *[]interface{}) (
-	string, string, string, error) {
+	string, string, string, string, error) {
+
+	distinctSpec := ""
+	if !tspec.IntervalMode {
+		// 'latest' mode, so ensure that we select only one observation per time series
+		// (which will be the most recent one thanks to '... ORDER BY ts_id, obstime_instant DESC')
+		distinctSpec = "DISTINCT ON (ts_id)"
+	}
 
 	timeFilter := getTimeFilter(tspec)
 
 	geoFilter, err := getGeoFilter(request.GetSpatialArea(), phVals)
 	if err != nil {
-		return "", "", "", fmt.Errorf("getGeoFilter() failed: %v", err)
+		return "", "", "", "", fmt.Errorf("getGeoFilter() failed: %v", err)
 	}
 
 	stringMdataFilter, err := getStringMdataFilter(request, phVals)
 	if err != nil {
-		return "", "", "", fmt.Errorf("getStringMdataFilter() failed: %v", err)
+		return "", "", "", "", fmt.Errorf("getStringMdataFilter() failed: %v", err)
 	}
 
-	return timeFilter, geoFilter, stringMdataFilter, nil
+	return distinctSpec, timeFilter, geoFilter, stringMdataFilter, nil
 }
 
 // scanObsRow scans all columns from the current result row in rows and converts to an ObsMetadata
@@ -396,7 +404,7 @@ func scanObsRow(rows *sql.Rows) (*datastore.ObsMetadata, int64, error) {
 	return &obsMdata, tsID, nil
 }
 
-// getObs gets into obs all observations that match request.
+// getObs gets into obs all observations that match request and tspec.
 // Returns nil upon success, otherwise error.
 func getObs(
 	db *sql.DB, request *datastore.GetObsRequest, tspec common.TemporalSpec,
@@ -404,14 +412,15 @@ func getObs(
 
 	// get values needed for query
 	phVals := []interface{}{} // placeholder values
-	timeFilter, geoFilter, stringMdataFilter, err := createObsQueryVals(request, tspec, &phVals)
+	distinctSpec, timeFilter, geoFilter, stringMdataFilter, err := createObsQueryVals(
+		request, tspec, &phVals)
 	if err != nil {
 		return fmt.Errorf("createQueryVals() failed: %v", err)
 	}
 
 	// define and execute query
 	query := fmt.Sprintf(`
-		SELECT
+		SELECT %s
 		    ts_id,
 			obstime_instant,
 			pubtime,
@@ -423,7 +432,8 @@ func getObs(
 		JOIN geo_point ON observation.geo_point_id = geo_point.id
 		WHERE %s AND %s AND %s
 		ORDER BY ts_id, obstime_instant DESC
-	`, strings.Join(obsStringMdataCols, ","), timeFilter, geoFilter, stringMdataFilter)
+		`, distinctSpec, strings.Join(obsStringMdataCols, ","), timeFilter, geoFilter,
+		stringMdataFilter)
 
 	rows, err := db.Query(query, phVals...)
 	if err != nil {
@@ -433,17 +443,6 @@ func getObs(
 
 	obsMdatas := make(map[int64][]*datastore.ObsMetadata) // observations per time series ID
 
-	// set oldest allowable obs time when in 'latest' mode
-	oldestTime := time.Time{}
-	if !tspec.IntervalMode {
-		loTime, hiTime := common.GetValidTimeRange()
-		if tspec.LatestMaxage < 0 { // i.e. filtering on maxage is disabled
-			oldestTime = loTime
-		} else {
-			oldestTime = hiTime.Add(-tspec.LatestMaxage)
-		}
-	}
-
 	// scan rows
 	for rows.Next() {
 		obsMdata, tsID, err := scanObsRow(rows)
@@ -451,20 +450,8 @@ func getObs(
 			return fmt.Errorf("scanObsRow() failed: %v", err)
 		}
 
-		includeObs := true // by default include obs in this time series (in particular in
-		// 'interval' mode, since filtering for that has been done already)
-		if !tspec.IntervalMode { // 'latest' mode
-			switch {
-			case len(obsMdatas[tsID]) >= tspec.LatestLimit:
-				includeObs = false // reject, since not room for this obs
-			case obsMdata.GetObstimeInstant().AsTime().Before(oldestTime):
-				includeObs = false // reject, since obs too old
-			}
-		}
-
-		if includeObs { // prepend obs to time series to get chronological order
-			obsMdatas[tsID] = append([]*datastore.ObsMetadata{obsMdata}, obsMdatas[tsID]...)
-		}
+		// prepend obs to time series to get chronological order
+		obsMdatas[tsID] = append([]*datastore.ObsMetadata{obsMdata}, obsMdatas[tsID]...)
 	}
 
 	// get time series
