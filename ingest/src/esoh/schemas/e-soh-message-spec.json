@@ -36,11 +36,15 @@
                             ]
                         },
                         "coordinates": {
-                            "type": "array",
-                            "minItems": 2,
-                            "items": {
-                                "type": "number"
+                            "lat":{
+                                "type": "number",
+                                "description": "Latitude"
+                            },
+                            "lon":{
+                                "type": "number",
+                                "description": "Latitude"
                             }
+                                                        
                         }
                     }
                 },
@@ -63,10 +67,13 @@
                                 "type": "array",
                                 "minItems": 4,
                                 "items": {
-                                    "type": "array",
-                                    "minItems": 2,
-                                    "items": {
-                                        "type": "number"
+                                    "lat":{
+                                        "type": "number",
+                                        "description": "Latitude"
+                                    },
+                                    "lon":{
+                                        "type": "number",
+                                        "description": "Latitude"
                                     }
                                 }
                             }

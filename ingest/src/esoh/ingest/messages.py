@@ -11,16 +11,21 @@ from esoh.ingest.netCDF.extract_metadata_netcdf import (
     build_all_json_payloads_from_netcdf,
 )
 from jsonschema import ValidationError
+import json
 
 logger = logging.getLogger(__name__)
 
 
-def build_message(file: [object], input_type: str, uuid_prefix: str, schema_path: str, validator: object):
+def build_message(file: object, input_type: str, uuid_prefix: str, schema_path: str, validator: object):
     match input_type:
         case "netCDF":
             unfinished_messages = build_all_json_payloads_from_netcdf(file, schema_path=schema_path)
         case "bufr":
             unfinished_messages = build_all_json_payloads_from_bufr(file)
+        case "json":
+            unfinished_messages = []
+            unfinished_messages.append(file)
+            
 
     # Set message publication time in RFC3339 format
     # Create UUID for the message, and state message format version
@@ -52,6 +57,10 @@ def load_files(file: str, input_type: str, uuid_prefix: str):
 
 def messages(message, input_type, uuid_prefix, schema_path, validator):
     if input_type == "bufr":
+        return build_message(
+            message, input_type=input_type, uuid_prefix=uuid_prefix, schema_path=schema_path, validator=validator
+        )
+    elif input_type == "json":
         return build_message(
             message, input_type=input_type, uuid_prefix=uuid_prefix, schema_path=schema_path, validator=validator
         )

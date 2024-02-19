@@ -5,6 +5,7 @@ import re
 
 import grpc
 import pkg_resources
+from typing import Union
 from esoh.ingest.datastore import DatastoreConnection
 from esoh.ingest.messages import messages
 from esoh.ingest.send_mqtt import MQTTConnection
@@ -55,7 +56,7 @@ class IngestToPipeline:
         else:
             self.mqtt = MQTTConnection(mqtt_conf["host"], mqtt_conf["topic"])
 
-    def ingest(self, message: [str, object], input_type: str = None):
+    def ingest(self, message: Union[str, object], input_type: str = None):
         """
         Method designed to be main interaction point with this package.
         Will interpret call all methods for deciding input type, build the mqtt messages, and
@@ -63,7 +64,7 @@ class IngestToPipeline:
 
         """
         if not input_type:
-            input_type = self.decide_input_type(message)
+            input_type = self._decide_input_type(message)
 
         self.publish_messages(self._build_messages(message, input_type))
 
@@ -99,7 +100,7 @@ class IngestToPipeline:
                 logger.critical(f"Unknown filetype provided. Got {message.split('.')[-1]}")
                 raise ValueError(f"Unknown filetype provided. Got {message.split('.')[-1]}")
 
-    def _build_messages(self, message: [str, object], input_type: str = None) -> list:
+    def _build_messages(self, message:Union[str, object], input_type: str = None) -> list:
         """
         Internal method for calling the message building.
         """
@@ -110,3 +111,4 @@ class IngestToPipeline:
                 logger.critical("Illegal usage, not allowed to input" + "objects without specifying input type")
                 raise TypeError("Illegal usage, not allowed to input" + "objects without specifying input type")
         return messages(message, input_type, self.uuid_prefix, self.schema_path, self.schema_validator)
+
