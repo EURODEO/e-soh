@@ -1,12 +1,11 @@
 import io
-from typing import Union
 
 import xarray as xr
 from esoh.ingest.main import IngestToPipeline
 from fastapi import FastAPI
 from fastapi import UploadFile
-from pydantic import BaseModel
 from model import JsonMessageSchema
+from pydantic import BaseModel
 
 
 class Item(BaseModel):
