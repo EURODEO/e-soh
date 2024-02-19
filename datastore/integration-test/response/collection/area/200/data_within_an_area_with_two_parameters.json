@@ -52,24 +52,11 @@
                 ]
             },
             "parameters": {
-                "ff": {
+                "relative_humidity_2.0_mean_PT1M": {
                     "type": "Parameter",
                     "observedProperty": {
                         "label": {
-                            "en": "ff"
-                        }
-                    },
-                    "unit": {
-                        "label": {
-                            "en": "m s-1"
-                        }
-                    }
-                },
-                "rh": {
-                    "type": "Parameter",
-                    "observedProperty": {
-                        "label": {
-                            "en": "rh"
+                            "en": "relative_humidity_2.0_mean_PT1M"
                         }
                     },
                     "unit": {
@@ -77,10 +64,46 @@
                             "en": "%"
                         }
                     }
+                },
+                "wind_speed_2.0_mean_PT10M": {
+                    "type": "Parameter",
+                    "observedProperty": {
+                        "label": {
+                            "en": "wind_speed_2.0_mean_PT10M"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "m s-1"
+                        }
+                    }
                 }
             },
             "ranges": {
-                "ff": {
+                "relative_humidity_2.0_mean_PT1M": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        7,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        56.0,
+                        56.0,
+                        55.0,
+                        58.0,
+                        56.0,
+                        56.0,
+                        57.0
+                    ]
+                },
+                "wind_speed_2.0_mean_PT10M": {
                     "type": "NdArray",
                     "dataType": "float",
                     "axisNames": [
@@ -101,29 +124,6 @@
                         8.72,
                         9.59,
                         10.7
-                    ]
-                },
-                "rh": {
-                    "type": "NdArray",
-                    "dataType": "float",
-                    "axisNames": [
-                        "t",
-                        "y",
-                        "x"
-                    ],
-                    "shape": [
-                        7,
-                        1,
-                        1
-                    ],
-                    "values": [
-                        56,
-                        56,
-                        55,
-                        58,
-                        56,
-                        56,
-                        57
                     ]
                 }
             }
@@ -179,24 +179,11 @@
                 ]
             },
             "parameters": {
-                "ff": {
+                "relative_humidity_2.0_mean_PT1M": {
                     "type": "Parameter",
                     "observedProperty": {
                         "label": {
-                            "en": "ff"
-                        }
-                    },
-                    "unit": {
-                        "label": {
-                            "en": "m s-1"
-                        }
-                    }
-                },
-                "rh": {
-                    "type": "Parameter",
-                    "observedProperty": {
-                        "label": {
-                            "en": "rh"
+                            "en": "relative_humidity_2.0_mean_PT1M"
                         }
                     },
                     "unit": {
@@ -204,10 +191,46 @@
                             "en": "%"
                         }
                     }
+                },
+                "wind_speed_2.0_mean_PT10M": {
+                    "type": "Parameter",
+                    "observedProperty": {
+                        "label": {
+                            "en": "wind_speed_2.0_mean_PT10M"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "m s-1"
+                        }
+                    }
                 }
             },
             "ranges": {
-                "ff": {
+                "relative_humidity_2.0_mean_PT1M": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        7,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        58.0,
+                        58.0,
+                        58.0,
+                        58.0,
+                        58.0,
+                        58.0,
+                        59.0
+                    ]
+                },
+                "wind_speed_2.0_mean_PT10M": {
                     "type": "NdArray",
                     "dataType": "float",
                     "axisNames": [
@@ -229,57 +252,34 @@
                         9.17,
                         9.4
                     ]
-                },
-                "rh": {
-                    "type": "NdArray",
-                    "dataType": "float",
-                    "axisNames": [
-                        "t",
-                        "y",
-                        "x"
-                    ],
-                    "shape": [
-                        7,
-                        1,
-                        1
-                    ],
-                    "values": [
-                        58,
-                        58,
-                        58,
-                        58,
-                        58,
-                        58,
-                        59
-                    ]
                 }
             }
         }
     ],
     "parameters": {
-        "ff": {
+        "relative_humidity_2.0_mean_PT1M": {
             "type": "Parameter",
             "observedProperty": {
                 "label": {
-                    "en": "ff"
-                }
-            },
-            "unit": {
-                "label": {
-                    "en": "m s-1"
-                }
-            }
-        },
-        "rh": {
-            "type": "Parameter",
-            "observedProperty": {
-                "label": {
-                    "en": "rh"
+                    "en": "relative_humidity_2.0_mean_PT1M"
                 }
             },
             "unit": {
                 "label": {
                     "en": "%"
+                }
+            }
+        },
+        "wind_speed_2.0_mean_PT10M": {
+            "type": "Parameter",
+            "observedProperty": {
+                "label": {
+                    "en": "wind_speed_2.0_mean_PT10M"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "m s-1"
                 }
             }
         }

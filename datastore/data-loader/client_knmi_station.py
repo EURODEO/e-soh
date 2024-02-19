@@ -4,6 +4,7 @@ import concurrent
 import math
 import os
 import uuid
+import re
 from multiprocessing import cpu_count
 from pathlib import Path
 from time import perf_counter
@@ -41,6 +42,15 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                     title=param_file.long_name,
                     standard_name=param_file.standard_name if "standard_name" in param_file.attrs else None,
                     unit=param_file.units if "units" in param_file.attrs else None,
+                    level="2.0",
+                    period="PT10M",
+                    function="mean",
+                    parameter_name=generate_parameter_name(
+                        param_file.standard_name if "standard_name" in param_file.attrs else "placeholder",
+                        "2.0",
+                        param_file.long_name,
+                        param_id,
+                    ),
                 )
 
                 for time, obs_value in zip(pd.to_datetime(param_file["time"].data).to_pydatetime(), param_file.data):
@@ -59,6 +69,32 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                 observation_request_messages.append(dstore.PutObsRequest(observations=observations))
 
     return observation_request_messages
+
+
+def generate_parameter_name(standard_name, level, long_name, instrument):
+    if "Minimum" in long_name:
+        function = "minimum"
+    elif "Maximum" in long_name:
+        function = "maximum"
+    elif "Average" in long_name:
+        function = "mean"
+    else:
+        function = "point"
+
+    if period_raw := re.findall(r"(\d+) (Hours|Min)", long_name):
+        if len(period_raw) == 1:
+            period_raw = period_raw[0]
+        else:
+            raise Exception(f"{period_raw}, {long_name}")
+        time, scale = period_raw
+        if scale == "Hours":
+            period = f"PT{time}H"
+        elif scale == "Min":
+            period = f"PT{time}M"
+    else:
+        period = "PT0S"
+
+    return "_".join([standard_name, level, function, period])
 
 
 def insert_data(observation_request_messages: List):

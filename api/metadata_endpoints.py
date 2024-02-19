@@ -62,7 +62,7 @@ def get_collection_metadata(request) -> Collection:
         ),
         crs=["WGS84"],
         output_formats=["CoverageJSON"],
-        parameter_names={get_current_parameter_names()},  # TODO: Get these from database
+        parameter_names={},  # TODO: Get these from database
     )
     return collection
 

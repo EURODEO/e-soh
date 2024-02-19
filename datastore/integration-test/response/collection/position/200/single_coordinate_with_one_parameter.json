@@ -51,11 +51,11 @@
         ]
     },
     "parameters": {
-        "tn": {
+        "air_temperature_2.0_maximum_PT10M": {
             "type": "Parameter",
             "observedProperty": {
                 "label": {
-                    "en": "tn"
+                    "en": "air_temperature_2.0_maximum_PT10M"
                 }
             },
             "unit": {
@@ -66,7 +66,7 @@
         }
     },
     "ranges": {
-        "tn": {
+        "air_temperature_2.0_maximum_PT10M": {
             "type": "NdArray",
             "dataType": "float",
             "axisNames": [
@@ -81,14 +81,14 @@
             ],
             "values": [
                 12.1,
-                12,
-                12,
+                12.1,
+                12.0,
+                12.0,
+                11.9,
                 11.9,
                 11.9,
                 11.8,
-                11.8,
-                11.7,
-                11.7
+                11.8
             ]
         }
     }

@@ -38,7 +38,7 @@ async def get_locations(
     print("bbox: {}".format(bbox))
     poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
     ts_request = dstore.GetObsRequest(
-        filter=dict(instrument=dstore.Strings(values=["tn"])),  # Hack
+        filter=dict(parameter_name=dstore.Strings(values=["air_temperature_2.0_maximum_PT10M"])),  # Hack
         spatial_area=dstore.Polygon(
             points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
         ),
@@ -75,12 +75,17 @@ async def get_data_location_id(
     # TODO: There is no error handling of any kind at the moment!
     #  This is just a quick and dirty demo
     range = get_datetime_range(datetime)
-    parameter_name = parameter_name.split(",")
-    parameter_name = verify_parameter_names(parameter_name)
+    if parameter_name:
+        parameter_name = parameter_name.split(",")
+        parameter_name = list(map(lambda x: x.strip(), parameter_name))
+    # parameter_name = verify_parameter_names(parameter_name) # should the api verify that the parameter name is valid?
     get_obs_request = dstore.GetObsRequest(
-        filter=dict(parameter_name=dstore.Strings(values=parameter_name)),
-        interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
+        filter=dict(
+            parameter_name=dstore.Strings(values=parameter_name), platform=dstore.Strings(values=[location_id])
+        ),
+        temporal_interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
+    print(get_obs_request)
     response = await getObsRequest(get_obs_request)
     return formatters.formatters[f](response)
 
@@ -112,7 +117,7 @@ async def get_data_position(
             detail={"coords": f"Unexpected error occurred during wkt parsing: {coords}"},
         )
 
-    return await get_data_area(poly.wkt, parameter_name, datetime, f)
+    return await get_data_area(coords=poly.wkt, parameter_name=parameter_name, datetime=datetime, f=f)
 
 
 @router.get(
@@ -141,10 +146,11 @@ async def get_data_area(
             detail={"coords": f"Unexpected error occurred during wkt parsing: {coords}"},
         )
 
+    print(parameter_name)
     range = get_datetime_range(datetime)
     # await verify_parameter_names(parameter_name)
     get_obs_request = dstore.GetObsRequest(
-        filter=dict(parameter_name=dstore.Strings(values=parameter_name.split(","))),
+        filter=dict(parameter_name=dstore.Strings(values=parameter_name.split(",") if parameter_name else None)),
         spatial_area=dstore.Polygon(
             points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
         ),
