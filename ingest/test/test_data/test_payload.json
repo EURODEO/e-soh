@@ -35,12 +35,12 @@
     ],
     "geometry": {
         "type": "Point",
-        "coordinates": [
-            70.9394,
-            -8.669
-        ]
+        "coordinates": {
+            "lat":"70.9394",
+            "lon":"-8.669"
+        }
+       
     },
     "type": "Feature",
-    "version": "v4.0",
-    "id": "urn:x-wmo:md:norway:no.met:bb8c10a1-ba20-4676-a193-1e1929de9d13"
+    "version": "v4.0"
 }
