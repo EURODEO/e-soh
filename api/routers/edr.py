@@ -35,7 +35,6 @@ async def get_locations(
     bbox: Annotated[str, Query(example="5.0,52.0,6.0,52.1")]
 ) -> FeatureCollection:  # Hack to use string
     left, bottom, right, top = map(str.strip, bbox.split(","))
-    print("bbox: {}".format(bbox))
     poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
     ts_request = dstore.GetObsRequest(
         filter=dict(parameter_name=dstore.Strings(values=["air_temperature_2.0_maximum_PT10M"])),  # Hack
@@ -85,7 +84,6 @@ async def get_data_location_id(
         ),
         temporal_interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
-    print(get_obs_request)
     response = await getObsRequest(get_obs_request)
     return formatters.formatters[f](response)
 
@@ -146,7 +144,6 @@ async def get_data_area(
             detail={"coords": f"Unexpected error occurred during wkt parsing: {coords}"},
         )
 
-    print(parameter_name)
     range = get_datetime_range(datetime)
     # await verify_parameter_names(parameter_name)
     get_obs_request = dstore.GetObsRequest(
