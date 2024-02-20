@@ -102,7 +102,7 @@ message TSMetadata {
   string level = 24;
   string period = 25;
   string function = 26;
-  string parameter_name = 27;
+  string parameter_name = 27 [json_name = "parameter_name"];
   // --- END string metadata -----------------
 }
 
