@@ -6,7 +6,6 @@ import formatters
 from covjson_pydantic.coverage import Coverage
 from covjson_pydantic.coverage import CoverageCollection
 from dependencies import get_datetime_range
-from dependencies import verify_parameter_names
 from fastapi import APIRouter
 from fastapi import HTTPException
 from fastapi import Path
@@ -19,6 +18,8 @@ from shapely import buffer
 from shapely import geometry
 from shapely import wkt
 from shapely.errors import GEOSException
+
+# from dependencies import verify_parameter_names
 
 router = APIRouter(prefix="/collections/observations")
 

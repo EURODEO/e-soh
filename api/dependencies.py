@@ -1,10 +1,9 @@
-import datastore_pb2 as dstore
-
 from datetime import datetime
 from datetime import timedelta
-from typing import Tuple
 from functools import lru_cache
+from typing import Tuple
 
+import datastore_pb2 as dstore
 from fastapi import HTTPException
 from google.protobuf.timestamp_pb2 import Timestamp
 from grpc_getter import getTSAGRequest

@@ -3,8 +3,8 @@
 import concurrent
 import math
 import os
-import uuid
 import re
+import uuid
 from multiprocessing import cpu_count
 from pathlib import Path
 from time import perf_counter
