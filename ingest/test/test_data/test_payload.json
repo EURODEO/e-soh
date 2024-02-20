@@ -36,10 +36,9 @@
     "geometry": {
         "type": "Point",
         "coordinates": {
-            "lat":"70.9394",
-            "lon":"-8.669"
+            "lat": "70.9394",
+            "lon": "-8.669"
         }
-       
     },
     "type": "Feature",
     "version": "v4.0"

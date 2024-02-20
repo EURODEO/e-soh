@@ -2,10 +2,10 @@ import json
 import logging
 import os
 import re
+from typing import Union
 
 import grpc
 import pkg_resources
-from typing import Union
 from esoh.ingest.datastore import DatastoreConnection
 from esoh.ingest.messages import messages
 from esoh.ingest.send_mqtt import MQTTConnection
@@ -100,7 +100,7 @@ class IngestToPipeline:
                 logger.critical(f"Unknown filetype provided. Got {message.split('.')[-1]}")
                 raise ValueError(f"Unknown filetype provided. Got {message.split('.')[-1]}")
 
-    def _build_messages(self, message:Union[str, object], input_type: str = None) -> list:
+    def _build_messages(self, message: Union[str, object], input_type: str = None) -> list:
         """
         Internal method for calling the message building.
         """
@@ -111,4 +111,3 @@ class IngestToPipeline:
                 logger.critical("Illegal usage, not allowed to input" + "objects without specifying input type")
                 raise TypeError("Illegal usage, not allowed to input" + "objects without specifying input type")
         return messages(message, input_type, self.uuid_prefix, self.schema_path, self.schema_validator)
-

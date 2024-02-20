@@ -36,15 +36,14 @@
                             ]
                         },
                         "coordinates": {
-                            "lat":{
+                            "lat": {
                                 "type": "number",
                                 "description": "Latitude"
                             },
-                            "lon":{
+                            "lon": {
                                 "type": "number",
                                 "description": "Latitude"
                             }
-                                                        
                         }
                     }
                 },
@@ -67,11 +66,11 @@
                                 "type": "array",
                                 "minItems": 4,
                                 "items": {
-                                    "lat":{
+                                    "lat": {
                                         "type": "number",
                                         "description": "Latitude"
                                     },
-                                    "lon":{
+                                    "lon": {
                                         "type": "number",
                                         "description": "Latitude"
                                     }
