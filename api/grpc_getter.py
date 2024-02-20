@@ -8,17 +8,20 @@ import grpc
 # dependent on external services.
 
 
-async def getObsRequest(get_obs_request):
-    channel = grpc.aio.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}")
-    grpc_stub = dstore_grpc.DatastoreStub(channel)
-    response = await grpc_stub.GetObservations(get_obs_request)
+class gRPCRequest:
+    """
+    Class for keeping a gRPC channel and stub alive for a workers entire
+    lifespan.
+    """
 
-    return response
+    def __init__(self):
+        self.channel = grpc.aio.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}")
+        self.grpc_stub = dstore_grpc.DatastoreStub(self.channel)
 
+    async def getObsRequest(self, get_obs_request):
+        response = await self.grpc_stub.GetObservations(get_obs_request)
+        return response
 
-async def getTSAGRequest(get_tsag_request):
-    channel = grpc.aio.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}")
-    grpc_stub = dstore_grpc.DatastoreStub(channel)
-    response = await grpc_stub.GetTSAttrGroups(get_tsag_request)
-
-    return response
+    async def getTSAGRequest(self, get_tsag_request):
+        response = await self.grpc_stub.GetTSAttrGroups(get_tsag_request)
+        return response
