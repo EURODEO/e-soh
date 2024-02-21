@@ -88,6 +88,7 @@ def generate_parameter_name(standard_name, level, long_name, instrument):
     else:
         function = "point"
 
+    period = "PT0S"
     if period_raw := re.findall(r"(\d+) (Hours|Min)", long_name):
         if len(period_raw) == 1:
             period_raw = period_raw[0]
@@ -98,8 +99,6 @@ def generate_parameter_name(standard_name, level, long_name, instrument):
             period = f"PT{time}H"
         elif scale == "Min":
             period = f"PT{time}M"
-    else:
-        period = "PT0S"
 
     return standard_name, level, function, period
 
