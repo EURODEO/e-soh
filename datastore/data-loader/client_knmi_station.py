@@ -36,24 +36,31 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
             for param_id in knmi_parameter_names:
                 # print(station_id, param_id)
                 param_file = station_slice[param_id]
-                ts_mdata = dstore.TSMetadata(
-                    platform=station_id,
-                    instrument=param_id,
-                    title=param_file.long_name,
-                    standard_name=param_file.standard_name if "standard_name" in param_file.attrs else None,
-                    unit=param_file.units if "units" in param_file.attrs else None,
-                    level="2.0",
-                    period="PT10M",
-                    function="mean",
-                    parameter_name=generate_parameter_name(
-                        param_file.standard_name if "standard_name" in param_file.attrs else "placeholder",
+                standard_name, level, function, period = (
+                    generate_parameter_name(
+                        (param_file.standard_name if "standard_name" in param_file.attrs else "placeholder"),
                         "2.0",
                         param_file.long_name,
                         param_id,
                     ),
                 )
 
-                for time, obs_value in zip(pd.to_datetime(param_file["time"].data).to_pydatetime(), param_file.data):
+                ts_mdata = dstore.TSMetadata(
+                    platform=station_id,
+                    instrument=param_id,
+                    title=param_file.long_name,
+                    standard_name=standard_name,
+                    unit=param_file.units if "units" in param_file.attrs else None,
+                    level=level,
+                    period=period,
+                    function=function,
+                    parameter_name="_".join([standard_name, level, function, period]),
+                )
+
+                for time, obs_value in zip(
+                    pd.to_datetime(param_file["time"].data).to_pydatetime(),
+                    param_file.data,
+                ):
                     ts = Timestamp()
                     ts.FromDatetime(time)
                     if not math.isnan(obs_value):  # Stations that don't have a parameter give them all as nan
@@ -94,7 +101,7 @@ def generate_parameter_name(standard_name, level, long_name, instrument):
     else:
         period = "PT0S"
 
-    return "_".join([standard_name, level, function, period])
+    return standard_name, level, function, period
 
 
 def insert_data(observation_request_messages: List):
