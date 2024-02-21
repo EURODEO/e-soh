@@ -40,7 +40,6 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                         (param_file.standard_name if "standard_name" in param_file.attrs else "placeholder"),
                         "2.0",
                         param_file.long_name,
-                        param_id,
                 )
 
                 ts_mdata = dstore.TSMetadata(
@@ -76,7 +75,7 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
     return observation_request_messages
 
 
-def generate_parameter_name(standard_name, level, long_name, instrument):
+def generate_parameter_name(standard_name, level, long_name):
     if "Minimum" in long_name:
         function = "minimum"
     elif "Maximum" in long_name:
