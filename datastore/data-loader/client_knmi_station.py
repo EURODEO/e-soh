@@ -37,9 +37,9 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                 # print(station_id, param_id)
                 param_file = station_slice[param_id]
                 standard_name, level, function, period = generate_parameter_name(
-                        (param_file.standard_name if "standard_name" in param_file.attrs else "placeholder"),
-                        "2.0",
-                        param_file.long_name,
+                    (param_file.standard_name if "standard_name" in param_file.attrs else "placeholder"),
+                    "2.0",
+                    param_file.long_name,
                 )
 
                 ts_mdata = dstore.TSMetadata(
