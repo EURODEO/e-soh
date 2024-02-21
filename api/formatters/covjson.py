@@ -85,7 +85,7 @@ def _collect_data(ts_mdata, obs_mdata):
         (o.obstime_instant.ToDatetime(tzinfo=timezone.utc), float(o.value)) for o in obs_mdata
     )  # HACK: str -> float
     (times, values) = zip(*tuples)
-    param_id = ts_mdata.instrument
+    param_id = ts_mdata.parameter_name
     unit = ts_mdata.unit
 
     return (lat, lon, times), param_id, unit, values

@@ -20,7 +20,10 @@ def grpc_stub():
 
 def test_find_series_single_station_single_parameter(grpc_stub):
     request = dstore.GetObsRequest(
-        filter=dict(platform=dstore.Strings(values=["06260"]), instrument=dstore.Strings(values=["rh"]))
+        filter=dict(
+            platform=dstore.Strings(values=["06260"]),
+            parameter_name=dstore.Strings(values=["relative_humidity_2.0_mean_PT1M"]),
+        )
     )
     response = grpc_stub.GetObservations(request)
 
@@ -31,7 +34,9 @@ def test_find_series_single_station_single_parameter(grpc_stub):
 
 
 def test_find_series_all_stations_single_parameter(grpc_stub):
-    request = dstore.GetObsRequest(filter=dict(instrument=dstore.Strings(values=["rh"])))
+    request = dstore.GetObsRequest(
+        filter=dict(parameter_name=dstore.Strings(values=["relative_humidity_2.0_mean_PT1M"]))
+    )
     response = grpc_stub.GetObservations(request)
 
     assert len(response.observations) == 46  # Not all station have RH
@@ -46,7 +51,10 @@ def test_find_series_single_station_all_parameters(grpc_stub):
 
 def test_get_values_single_station_single_parameter(grpc_stub):
     ts_request = dstore.GetObsRequest(
-        filter=dict(platform=dstore.Strings(values=["06260"]), instrument=dstore.Strings(values=["rh"]))
+        filter=dict(
+            platform=dstore.Strings(values=["06260"]),
+            parameter_name=dstore.Strings(values=["relative_humidity_2.0_mean_PT1M"]),
+        )
     )
     response = grpc_stub.GetObservations(ts_request)
 
@@ -63,7 +71,10 @@ def test_get_values_single_station_single_parameter_one_hour(grpc_stub):
     end_datetime.FromDatetime(datetime(2022, 12, 31, 12))
 
     ts_request = dstore.GetObsRequest(
-        filter=dict(platform=dstore.Strings(values=["06260"]), instrument=dstore.Strings(values=["rh"])),
+        filter=dict(
+            platform=dstore.Strings(values=["06260"]),
+            parameter_name=dstore.Strings(values=["relative_humidity_2.0_mean_PT1M"]),
+        ),
         temporal_interval=dstore.TimeInterval(start=start_datetime, end=end_datetime),
     )
     response = grpc_stub.GetObservations(ts_request)
@@ -77,44 +88,44 @@ input_params_polygon = [
     (
         # Multiple stations within
         ((52.15, 4.90), (52.15, 5.37), (51.66, 5.37), (51.66, 4.90)),
-        ["rh"],
+        ["relative_humidity_2.0_mean_PT1M"],
         ["06260", "06348", "06356"],
     ),
     (
         # Multiple stations with a single parameter
         ((52.15, 4.90), (52.15, 5.37), (51.66, 5.37), (51.66, 4.90)),
-        ["rh"],
+        ["relative_humidity_2.0_mean_PT1M"],
         ["06260", "06348", "06356"],
     ),
     (
         # Multiple stations with multiple parameters
         ((52.15, 4.90), (52.15, 5.37), (51.66, 5.37), (51.66, 4.90)),
-        ["dd", "rh", "tx"],
+        ["wind_from_direction_2.0_mean_PT10M", "relative_humidity_2.0_mean_PT1M", "air_temperature_2.0_mean_PT1M"],
         ["06260", "06348", "06356"],
     ),
     (
         # One station within
         ((52.11, 5.15), (52.11, 5.204), (52.08, 5.204), (52.08, 5.15)),
-        ["rh"],
+        ["relative_humidity_2.0_mean_PT1M"],
         ["06260"],
     ),
     (
         # Nothing within
         ((51.82, 5.07), (51.82, 5.41), (51.73, 5.41), (51.73, 5.07)),
-        ["rh"],
+        ["relative_humidity_2.0_mean_PT1M"],
         [],
     ),
     (
         # Middle top
         ((52.0989, 4.17), (52.0989, 6.18), (52.09, 6.18), (52.09, 4.17)),
-        ["rh"],
+        ["relative_humidity_2.0_mean_PT1M"],
         ["06260"],
     ),
     (
         # Middle bottom, should fall outside since polygon is curved,
         # because the earth is round (postgres geography).
         ((52.1, 4.17), (52.1, 6.18), (52.0989, 6.18), (52.0989, 4.17)),
-        ["rh"],
+        ["relative_humidity_2.0_mean_PT1M"],
         [],
     ),
     (
@@ -128,13 +139,13 @@ input_params_polygon = [
             (52.18, 5.30),
             (51.75, 3.68),
         ),
-        ["rh"],
+        ["relative_humidity_2.0_mean_PT1M"],
         ["06260", "06310", "06323", "06340", "06348", "06350", "06356"],
     ),
     (
         # All stations in the Netherlands which have RH
         ((56.00, 2.85), (56.00, 7.22), (50.75, 7.22), (50.75, 2.85)),
-        ["rh"],
+        ["relative_humidity_2.0_mean_PT1M"],
         # fmt: off
         [
             "06203", "06204", "06205", "06207", "06208", "06211", "06214", "06215",
@@ -153,7 +164,7 @@ input_params_polygon = [
 def test_get_observations_with_polygon(grpc_stub, coords, param_ids, expected_station_ids):
     polygon = dstore.Polygon(points=[dstore.Point(lat=lat, lon=lon) for lat, lon in coords])
     get_obs_request = dstore.GetObsRequest(
-        spatial_area=polygon, filter=dict(instrument=dstore.Strings(values=param_ids))
+        spatial_area=polygon, filter=dict(parameter_name=dstore.Strings(values=param_ids))
     )
     get_obs_response = grpc_stub.GetObservations(get_obs_request)
 

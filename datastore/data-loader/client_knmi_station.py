@@ -3,6 +3,7 @@
 import concurrent
 import math
 import os
+import re
 import uuid
 from multiprocessing import cpu_count
 from pathlib import Path
@@ -35,15 +36,28 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
             for param_id in knmi_parameter_names:
                 # print(station_id, param_id)
                 param_file = station_slice[param_id]
+                standard_name, level, function, period = generate_parameter_name(
+                    (param_file.standard_name if "standard_name" in param_file.attrs else "placeholder"),
+                    "2.0",
+                    param_file.long_name,
+                )
+
                 ts_mdata = dstore.TSMetadata(
                     platform=station_id,
                     instrument=param_id,
                     title=param_file.long_name,
-                    standard_name=param_file.standard_name if "standard_name" in param_file.attrs else None,
+                    standard_name=standard_name,
                     unit=param_file.units if "units" in param_file.attrs else None,
+                    level=level,
+                    period=period,
+                    function=function,
+                    parameter_name="_".join([standard_name, level, function, period]),
                 )
 
-                for time, obs_value in zip(pd.to_datetime(param_file["time"].data).to_pydatetime(), param_file.data):
+                for time, obs_value in zip(
+                    pd.to_datetime(param_file["time"].data).to_pydatetime(),
+                    param_file.data,
+                ):
                     ts = Timestamp()
                     ts.FromDatetime(time)
                     if not math.isnan(obs_value):  # Stations that don't have a parameter give them all as nan
@@ -59,6 +73,31 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                 observation_request_messages.append(dstore.PutObsRequest(observations=observations))
 
     return observation_request_messages
+
+
+def generate_parameter_name(standard_name, level, long_name):
+    if "Minimum" in long_name:
+        function = "minimum"
+    elif "Maximum" in long_name:
+        function = "maximum"
+    elif "Average" in long_name:
+        function = "mean"
+    else:
+        function = "point"
+
+    period = "PT0S"
+    if period_raw := re.findall(r"(\d+) (Hours|Min)", long_name):
+        if len(period_raw) == 1:
+            period_raw = period_raw[0]
+        else:
+            raise Exception(f"{period_raw}, {long_name}")
+        time, scale = period_raw
+        if scale == "Hours":
+            period = f"PT{time}H"
+        elif scale == "Min":
+            period = f"PT{time}M"
+
+    return standard_name, level, function, period
 
 
 def insert_data(observation_request_messages: List):
