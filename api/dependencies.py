@@ -63,8 +63,7 @@ async def get_current_parameter_names(ttl_hash=None):
     """
 
     @lru_cache(maxsize=1)
-    async def async_helper(ttl_hash):
-        del ttl_hash  # make linter think we used this value
+    async def async_helper(ttl_hash): # pylint: disable=unused-arguement
         unique_parameter_names = dstore.GetTSAGRequest(attrs=["parameter_name"])
         unique_parameter_names = await grpc_request.getTSAGRequest(unique_parameter_names)
 
