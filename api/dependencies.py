@@ -6,12 +6,9 @@ from typing import Tuple
 import datastore_pb2 as dstore
 from fastapi import HTTPException
 from google.protobuf.timestamp_pb2 import Timestamp
-from grpc_getter import gRPCRequest
+from grpc_getter import getTSAGRequest
 from pydantic import AwareDatetime
 from pydantic import TypeAdapter
-
-
-grpc_request = gRPCRequest()
 
 
 def get_datetime_range(datetime_string: str | None) -> Tuple[Timestamp, Timestamp] | None:
@@ -65,7 +62,7 @@ async def get_current_parameter_names(ttl_hash=None):
     @lru_cache(maxsize=1)
     async def async_helper(ttl_hash):  # pylint: disable=unused-arguement
         unique_parameter_names = dstore.GetTSAGRequest(attrs=["parameter_name"])
-        unique_parameter_names = await grpc_request.getTSAGRequest(unique_parameter_names)
+        unique_parameter_names = await getTSAGRequest(unique_parameter_names)
 
         return set([i.combo.standard_name for i in unique_parameter_names.groups])
 

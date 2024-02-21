@@ -13,7 +13,7 @@ from fastapi import Query
 from geojson_pydantic import Feature
 from geojson_pydantic import FeatureCollection
 from geojson_pydantic import Point
-from grpc_getter import gRPCRequest
+from grpc_getter import getObsRequest
 from shapely import buffer
 from shapely import geometry
 from shapely import wkt
@@ -22,9 +22,6 @@ from shapely.errors import GEOSException
 # from dependencies import verify_parameter_names
 
 router = APIRouter(prefix="/collections/observations")
-
-
-grpc_request = gRPCRequest()
 
 
 @router.get(
@@ -47,7 +44,7 @@ async def get_locations(
         ),
     )
 
-    ts_response = await grpc_request.getObsRequest(ts_request)
+    ts_response = await getObsRequest(ts_request)
     features = [
         Feature(
             type="Feature",
@@ -88,7 +85,7 @@ async def get_data_location_id(
         ),
         temporal_interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
-    response = await grpc_request.getObsRequest(get_obs_request)
+    response = await getObsRequest(get_obs_request)
     return formatters.formatters[f](response)
 
 
@@ -157,6 +154,6 @@ async def get_data_area(
         ),
         temporal_interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
-    coverages = await grpc_request.getObsRequest(get_obs_request)
+    coverages = await getObsRequest(get_obs_request)
     coverages = formatters.formatters[f](coverages)
     return coverages
