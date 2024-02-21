@@ -43,7 +43,7 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                         param_file.long_name,
                         param_id,
                     ),
-                )
+                )[0]
 
                 ts_mdata = dstore.TSMetadata(
                     platform=station_id,
