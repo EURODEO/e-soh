@@ -64,22 +64,22 @@ async def get_locations(
     all_parameters: Dict[str, Parameter] = {}
     for obs in ts_response.observations:
         parameter = make_parameter(obs.ts_mdata)
-        platform_parameters[obs.ts_mdata.platform].add(obs.ts_mdata.instrument)
+        platform_parameters[obs.ts_mdata.platform].add(obs.ts_mdata.parameter_name)
         # Take last point
         platform_coordinates[obs.ts_mdata.platform].add(
             (obs.obs_mdata[-1].geo_point.lon, obs.obs_mdata[-1].geo_point.lat)
         )
         # Check for inconsistent parameter definitions between stations
         # TODO: How to handle those?
-        if obs.ts_mdata.instrument in all_parameters and all_parameters[obs.ts_mdata.instrument] != parameter:
+        if obs.ts_mdata.parameter_name in all_parameters and all_parameters[obs.ts_mdata.parameter_name] != parameter:
             raise HTTPException(
                 status_code=500,
                 detail={
-                    "parameter": f"Parameter with name {obs.ts_mdata.instrument} "
-                    f"has multiple definitions:\n{all_parameters[obs.ts_mdata.instrument]}\n{parameter}"
+                    "parameter": f"Parameter with name {obs.ts_mdata.parameter_name} "
+                    f"has multiple definitions:\n{all_parameters[obs.ts_mdata.parameter_name]}\n{parameter}"
                 },
             )
-        all_parameters[obs.ts_mdata.instrument] = parameter
+        all_parameters[obs.ts_mdata.parameter_name] = parameter
 
     # Check for multiple coordinates on one station
     for station_id in platform_parameters.keys():

@@ -57,21 +57,21 @@ async def get_collection_metadata(request, is_self) -> Collection:
             description=obs.ts_mdata.title,
             observedProperty=ObservedProperty(
                 id=f"https://vocab.nerc.ac.uk/standard_name/{obs.ts_mdata.standard_name}",
-                label=obs.ts_mdata.instrument,
+                label=obs.ts_mdata.parameter_name,
             ),
             unit=Unit(label=obs.ts_mdata.unit),
         )
         # Check for inconsistent parameter definitions between stations
         # TODO: How to handle those?
-        if obs.ts_mdata.instrument in all_parameters and all_parameters[obs.ts_mdata.instrument] != parameter:
+        if obs.ts_mdata.parameter_name in all_parameters and all_parameters[obs.ts_mdata.parameter_name] != parameter:
             raise HTTPException(
                 status_code=500,
                 detail={
-                    "parameter": f"Parameter with name {obs.ts_mdata.instrument} "
-                    f"has multiple definitions:\n{all_parameters[obs.ts_mdata.instrument]}\n{parameter}"
+                    "parameter": f"Parameter with name {obs.ts_mdata.parameter_name} "
+                    f"has multiple definitions:\n{all_parameters[obs.ts_mdata.parameter_name]}\n{parameter}"
                 },
             )
-        all_parameters[obs.ts_mdata.instrument] = parameter
+        all_parameters[obs.ts_mdata.parameter_name] = parameter
 
     collection = Collection(
         id="observations",
