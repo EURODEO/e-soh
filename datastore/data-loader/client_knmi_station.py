@@ -19,6 +19,7 @@ import xarray as xr
 from google.protobuf.timestamp_pb2 import Timestamp
 from parameters import knmi_parameter_names
 
+regex_level = re.compile(r"first|second|third|grass|[0-9]+(\.[0-9]+)?(?=m)|(Level )[0-9]+|(?<=\()[ A-z]+(?=\))", re.IGNORECASE)
 
 def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
     observation_request_messages = []
@@ -38,7 +39,6 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                 param_file = station_slice[param_id]
                 standard_name, level, function, period = generate_parameter_name(
                     (param_file.standard_name if "standard_name" in param_file.attrs else "placeholder"),
-                    "2.0",
                     param_file.long_name,
                 )
 
@@ -75,7 +75,19 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
     return observation_request_messages
 
 
-def generate_parameter_name(standard_name, level, long_name):
+def generate_parameter_name(standard_name, long_name):
+    # TODO: HACK To let the loader have a unique parameter ID and make the parameters distinguishable.
+    level = "2.0"
+    if level_raw := re.search(regex_level, long_name):
+        level = level_raw[0]
+    elif "wawa" in long_name:
+        # WMO table 4680. Note: The sensor is not installed at equal heights at all types of measurement sites:
+        # At 'AWS' sites the device is installed at 1.80m. At 'AWS/Aerodrome' and 'Mistpost'
+        # (note that this includes site Voorschoten (06215) which is 'AWS/Mistpost')
+        # the device is installed at 2.50m elevation. Exceptions are Berkhout AWS (06249),
+        # De Bilt AWS (06260) and Twenthe AWS (06290) where the sensor is installed at 2.50m.
+        level = "1.80/2.50m"
+
     if "Minimum" in long_name:
         function = "minimum"
     elif "Maximum" in long_name:
