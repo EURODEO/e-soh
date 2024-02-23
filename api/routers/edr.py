@@ -47,16 +47,13 @@ async def get_locations(
     left, bottom, right, top = map(str.strip, bbox.split(","))
     poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
 
-    start_datetime = Timestamp()
-    start_datetime.FromDatetime(datetime(2022, 12, 31, 23, 50))  # HACK: Force only one point for test data
     ts_request = dstore.GetObsRequest(
         spatial_area=dstore.Polygon(
             points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords],
         ),
-        temporal_interval=dstore.TimeInterval(start=start_datetime),  # HACK
+        temporal_mode="latest"
     )
 
-    # TODO: Add flag to protobuf so that it only retrieves the latest observations from the datastore.
     ts_response = await get_obs_request(ts_request)
 
     platform_parameters: DefaultDict[str, Set[str]] = defaultdict(set)

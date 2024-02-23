@@ -41,11 +41,7 @@ def get_landing_page(request):
 
 async def get_collection_metadata(request, is_self) -> Collection:
     # TODO: Try to remove/lower duplication with /locations endpoint
-    start_datetime = Timestamp()
-    start_datetime.FromDatetime(datetime(2022, 12, 31, 23, 50))  # HACK: Force only one point for test data
-    ts_request = dstore.GetObsRequest(
-        temporal_interval=dstore.TimeInterval(start=start_datetime),  # HACK
-    )
+    ts_request = dstore.GetObsRequest(temporal_mode="latest")
     ts_response = await get_obs_request(ts_request)
 
     # Sadly, this is a different parameter as in the /locations endpoint, due to an error in the EDR spec
