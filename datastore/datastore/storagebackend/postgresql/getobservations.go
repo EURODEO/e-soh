@@ -153,9 +153,6 @@ func getTimeFilter(tspec common.TemporalSpec) string {
 	timeExpr := "TRUE" // by default, don't filter on obs time at all
 
 	if tspec.IntervalMode {
-		// the 'interval' filter is applied in the same way to all time series and can thus be
-		// part of the WHERE clause (this is contrast to the 'latest' filter which must be applied
-		// individually to each time series at a later stage)
 		ti := tspec.Interval
 		if ti != nil {
 			timeExprs := []string{}
