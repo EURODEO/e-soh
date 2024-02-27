@@ -21,8 +21,8 @@ var (
 
 	tsStructFields []reflect.StructField // applicable time series metadata struct fields
 
-	tsStringMdataGoNames []string // Go names for time series metadata of type string
-	tsStringMdataPBNames []string // protobuf names for time series metadata of type string
+	tsStringMdataGoNames       []string // Go names for time series metadata of type string
+	tsStringMdataPBNames       []string // protobuf names for time series metadata of type string
 	tsStringMdataPBNamesUnique []string // column names of constraint unique_main in table
 	// time_series
 

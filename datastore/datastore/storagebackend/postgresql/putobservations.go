@@ -153,7 +153,6 @@ func upsertTS(
 		return -1, fmt.Errorf("getTSColValsUnique() failed: %v", err)
 	}
 
-
 	err = tx.QueryRow(upsertTSSelectCmd, colValsUnique...).Scan(&id)
 	if err != nil {
 		return -1, fmt.Errorf("tx.QueryRow() failed: %v", err)

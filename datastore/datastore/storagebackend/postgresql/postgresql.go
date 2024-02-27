@@ -48,7 +48,7 @@ func (sbe *PostgreSQL) setTSUniqueMainCols() error {
 	pattern := `\((.*)\)`
 	re := regexp.MustCompile(pattern)
 	matches := re.FindStringSubmatch(result)
-	if (len(matches) != 2) {
+	if len(matches) != 2 {
 		return fmt.Errorf("'%s' didn't match regexp pattern '%s'", result, pattern)
 	}
 
