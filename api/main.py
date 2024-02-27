@@ -9,7 +9,8 @@ from edr_pydantic.collections import Collection
 from edr_pydantic.collections import Collections
 from fastapi import FastAPI
 from fastapi import Request
-from routers import edr  # , records
+from routers import edr
+from routers import records
 
 logger = logging.getLogger(__name__)
 
@@ -49,4 +50,4 @@ async def get_collection_metadata(request: Request) -> Collection:
 
 # Include all routes
 app.include_router(edr.router)
-# app.include(records.router)
+app.include_router(records.router)
