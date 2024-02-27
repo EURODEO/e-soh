@@ -146,3 +146,73 @@ def test_from_a_single_collection_get_an_area_with_two_parameters():
     actual_response_is_expected_response(
         actual_response, "response/collection/area/200/data_within_an_area_with_two_parameters.json"
     )
+
+
+def test_items_get_area():
+    collection_id = "observations"
+    coords = "POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))"
+    actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items" f"?coords={coords}")
+
+    assert actual_response.status_code == 200
+    actual_response_is_expected_response(actual_response, "response/collection/items/200/metadata_within_area")
+
+
+def test_items_get_id():
+    collection_id = "observations"
+    metadata_id = "placeholder"  # TODO: find a correct metadata_ID
+    actual_response = requests.get(
+        url=BASE_URL + f"/collections/{collection_id}/items"  # TODO: create response file
+        f"{metadata_id}"
+    )
+
+    assert actual_response.status_code == 200
+    actual_response_is_expected_response(
+        actual_response, "response/collection/items/200/metadata_single_id"  # TODO: create response file
+    )
+
+
+def test_items_get_area_with_one_parameter_name():
+    collection_id = "observations"
+    coords = "POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))"
+    parameter_name = "placeholder"  # TODO: find appropriate parameter_name
+    actual_response = requests.get(
+        url=BASE_URL + f"/collections/{collection_id}/items" f"?coords={coords}&parameter-name={parameter_name}"
+    )
+
+    assert actual_response.status_code == 200
+    actual_response_is_expected_response(
+        actual_response,
+        "response/collection/items/200/metadata_area_with_one_parameter_name",  # TODO: create response file
+    )
+
+
+def test_items_get_one_platform():
+    collection_id = "observations"
+    platform = "placeholder"  # TODO: find appropriate platform
+    actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items" f"?platform={platform}")
+
+    assert actual_response.status_code == 200
+    actual_response_is_expected_response(
+        actual_response, "response/collection/items/200/metadata_area_with_one_platform"  # TODO: create response file
+    )
+
+
+def test_items_get_within_datetime():
+    collection_id = "observations"
+    datetime = "2022-12-31T00:50:00Z/2022-12-31T02:10:00Z"
+    actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items" f"?datetime={datetime}")
+
+    assert actual_response.status_code == 200
+    actual_response_is_expected_response(
+        actual_response, "response/collection/items/200/metadata_in_datetime_range"  # TODO: create response file
+    )
+
+
+def test_items_get_empty_request():
+    collection_id = "observations"
+    parameter_name = "this_parameter_name_does_not_exist"
+    actual_response = requests.get(
+        url=BASE_URL + f"/collections/{collection_id}/items" f"?parameter-name={parameter_name}"
+    )
+
+    assert actual_response.status_code == 404
