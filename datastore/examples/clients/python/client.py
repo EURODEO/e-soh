@@ -19,7 +19,9 @@ def dtime2tstamp(dtime):
 
 
 # callPutObs demonstrates how to insert observations in the datastore.
-def call_put_obs(stub, version, type, standard_name, unit, value, title, instrument, level, function, period, parameter_name):
+def call_put_obs(
+    stub, version, type, standard_name, unit, value, title, instrument, level, function, period, parameter_name
+):
     ts_mdata = dstore.TSMetadata(
         version=version,
         type=type,
@@ -105,7 +107,9 @@ if __name__ == "__main__":
         period = "PT0S"
         parameter_name = "_".join([standard_name, level, function, period])
 
-        response = call_put_obs(stub, version, type, standard_name, unit, value, title, instrument, level, function, period, parameter_name)
+        response = call_put_obs(
+            stub, version, type, standard_name, unit, value, title, instrument, level, function, period, parameter_name
+        )
         print("response from call_put_obs: {}".format(response))
 
         response = call_get_obs_in_time_range(stub)

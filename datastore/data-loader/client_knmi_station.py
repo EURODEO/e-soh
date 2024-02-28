@@ -19,7 +19,10 @@ import xarray as xr
 from google.protobuf.timestamp_pb2 import Timestamp
 from parameters import knmi_parameter_names
 
-regex_level = re.compile(r"first|second|third|grass|[0-9]+(\.[0-9]+)?(?=m)|(Level )[0-9]+|(?<=\()[ A-z]+(?=\))", re.IGNORECASE)
+regex_level = re.compile(
+    r"first|second|third|grass|[0-9]+(\.[0-9]+)?(?=m)|(Level )[0-9]+|(?<=\()[ A-z]+(?=\))", re.IGNORECASE
+)
+
 
 def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
     observation_request_messages = []

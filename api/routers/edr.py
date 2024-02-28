@@ -1,6 +1,5 @@
 # For developing:    uvicorn main:app --reload
 from collections import defaultdict
-from datetime import datetime
 from typing import Annotated
 from typing import DefaultDict
 from typing import Dict
@@ -21,7 +20,6 @@ from fastapi import Query
 from formatters.covjson import make_parameter
 from geojson_pydantic import Feature
 from geojson_pydantic import Point
-from google.protobuf.timestamp_pb2 import Timestamp
 from grpc_getter import get_obs_request
 from shapely import buffer
 from shapely import geometry
@@ -51,7 +49,7 @@ async def get_locations(
         spatial_area=dstore.Polygon(
             points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords],
         ),
-        temporal_mode="latest"
+        temporal_mode="latest",
     )
 
     ts_response = await get_obs_request(ts_request)
