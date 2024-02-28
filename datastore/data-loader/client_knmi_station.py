@@ -52,6 +52,16 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                     period=period,
                     function=function,
                     parameter_name="_".join([standard_name, level, function, period]),
+                    naming_autority="nl.knmi",
+                    keywords=file["iso_dataset"].attrs["keyword"],
+                    keywords_vocabulary=file.attrs["references"],
+                    source=file.attrs["source"],
+                    title=file.attrs["title"],
+                    creator_name="KNMI",
+                    creator_email=file["iso_dataset"].attrs["email_dataset"],
+                    creator_url=file["iso_dataset"].attrs["url_metadata"],
+                    creator_type="Institution",
+                    institution=file.attrs["institution"],
                 )
 
                 for time, obs_value in zip(
