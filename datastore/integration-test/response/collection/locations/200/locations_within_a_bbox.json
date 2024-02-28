@@ -13,8 +13,8 @@
             "properties": {
                 "parameter-name": [
                     "air_pressure_at_sea_level_Level 1_mean_PT1M",
-                    "air_temperature_1.5m_maximum_PT10M",
-                    "air_temperature_1.5m_minimum_PT10M",
+                    "air_temperature_1.5_maximum_PT10M",
+                    "air_temperature_1.5_minimum_PT10M",
                     "air_temperature_2.0_maximum_PT12H",
                     "air_temperature_2.0_maximum_PT24H",
                     "air_temperature_2.0_maximum_PT6H",
@@ -34,7 +34,7 @@
                     "cloud_cover_First_point_PT0S",
                     "cloud_cover_Second_point_PT0S",
                     "cloud_cover_Third_point_PT0S",
-                    "dew_point_temperature_1.5m_mean_PT1M",
+                    "dew_point_temperature_1.5_mean_PT1M",
                     "duration_of_sunshine_2.0_point_PT0S",
                     "lwe_precipitation_rate_PWS_mean_PT10M",
                     "placeholder_1.80/2.50m_point_PT0S",
@@ -52,8 +52,8 @@
                     "total_downwelling_shortwave_flux_in_air_2.0_mean_PT10M",
                     "visibility_in_air_2.0_mean_PT10M",
                     "wind_from_direction_2.0_mean_PT10M",
-                    "wind_speed_10m_mean_PT10M",
-                    "wind_speed_of_gust_10m_maximum_PT10M"
+                    "wind_speed_10_mean_PT10M",
+                    "wind_speed_of_gust_10_maximum_PT10M"
                 ]
             },
             "id": "06260"
@@ -70,8 +70,8 @@
             "properties": {
                 "parameter-name": [
                     "air_pressure_at_sea_level_Level 1_mean_PT1M",
-                    "air_temperature_1.5m_maximum_PT10M",
-                    "air_temperature_1.5m_minimum_PT10M",
+                    "air_temperature_1.5_maximum_PT10M",
+                    "air_temperature_1.5_minimum_PT10M",
                     "air_temperature_2.0_maximum_PT12H",
                     "air_temperature_2.0_maximum_PT24H",
                     "air_temperature_2.0_maximum_PT6H",
@@ -91,7 +91,7 @@
                     "cloud_cover_First_point_PT0S",
                     "cloud_cover_Second_point_PT0S",
                     "cloud_cover_Third_point_PT0S",
-                    "dew_point_temperature_1.5m_mean_PT1M",
+                    "dew_point_temperature_1.5_mean_PT1M",
                     "duration_of_sunshine_2.0_point_PT0S",
                     "lwe_precipitation_rate_PWS_mean_PT10M",
                     "placeholder_1.80/2.50m_point_PT0S",
@@ -109,8 +109,8 @@
                     "total_downwelling_shortwave_flux_in_air_2.0_mean_PT10M",
                     "visibility_in_air_2.0_mean_PT10M",
                     "wind_from_direction_2.0_mean_PT10M",
-                    "wind_speed_10m_mean_PT10M",
-                    "wind_speed_of_gust_10m_maximum_PT10M"
+                    "wind_speed_10_mean_PT10M",
+                    "wind_speed_of_gust_10_maximum_PT10M"
                 ]
             },
             "id": "06275"
@@ -125,7 +125,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_pressure_at_sea_level",
                 "label": {
-                    "en": "pp"
+                    "en": "air_pressure_at_sea_level_Level 1_mean_PT1M"
                 }
             },
             "unit": {
@@ -134,7 +134,7 @@
                 }
             }
         },
-        "air_temperature_1.5m_maximum_PT10M": {
+        "air_temperature_1.5_maximum_PT10M": {
             "type": "Parameter",
             "description": {
                 "en": "Ambient Temperature 1.5m 10 Min Maximum"
@@ -142,7 +142,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "tx"
+                    "en": "air_temperature_1.5_maximum_PT10M"
                 }
             },
             "unit": {
@@ -151,7 +151,7 @@
                 }
             }
         },
-        "air_temperature_1.5m_minimum_PT10M": {
+        "air_temperature_1.5_minimum_PT10M": {
             "type": "Parameter",
             "description": {
                 "en": "Ambient Temperature 1.5m 10 Min Minimum"
@@ -159,7 +159,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "tn"
+                    "en": "air_temperature_1.5_minimum_PT10M"
                 }
             },
             "unit": {
@@ -176,7 +176,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "Tx12"
+                    "en": "air_temperature_2.0_maximum_PT12H"
                 }
             },
             "unit": {
@@ -193,7 +193,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "Tx24"
+                    "en": "air_temperature_2.0_maximum_PT24H"
                 }
             },
             "unit": {
@@ -210,7 +210,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "Tx6"
+                    "en": "air_temperature_2.0_maximum_PT6H"
                 }
             },
             "unit": {
@@ -227,7 +227,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "ta"
+                    "en": "air_temperature_2.0_mean_PT1M"
                 }
             },
             "unit": {
@@ -244,7 +244,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "Tn12"
+                    "en": "air_temperature_2.0_minimum_PT12H"
                 }
             },
             "unit": {
@@ -261,7 +261,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "Tn14"
+                    "en": "air_temperature_2.0_minimum_PT14H"
                 }
             },
             "unit": {
@@ -278,7 +278,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "Tn6"
+                    "en": "air_temperature_2.0_minimum_PT6H"
                 }
             },
             "unit": {
@@ -295,7 +295,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "tgn"
+                    "en": "air_temperature_Grass_minimum_PT10M"
                 }
             },
             "unit": {
@@ -312,7 +312,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "Tgn12"
+                    "en": "air_temperature_Grass_minimum_PT12H"
                 }
             },
             "unit": {
@@ -329,7 +329,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "Tgn14"
+                    "en": "air_temperature_Grass_minimum_PT14H"
                 }
             },
             "unit": {
@@ -346,7 +346,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "Tgn6"
+                    "en": "air_temperature_Grass_minimum_PT6H"
                 }
             },
             "unit": {
@@ -363,7 +363,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/cloud_base_altitude",
                 "label": {
-                    "en": "hc"
+                    "en": "cloud_base_altitude_2.0_point_PT0S"
                 }
             },
             "unit": {
@@ -380,7 +380,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/cloud_base_altitude",
                 "label": {
-                    "en": "hc1"
+                    "en": "cloud_base_altitude_First_point_PT0S"
                 }
             },
             "unit": {
@@ -397,7 +397,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/cloud_base_altitude",
                 "label": {
-                    "en": "hc2"
+                    "en": "cloud_base_altitude_Second_point_PT0S"
                 }
             },
             "unit": {
@@ -414,7 +414,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/cloud_base_altitude",
                 "label": {
-                    "en": "hc3"
+                    "en": "cloud_base_altitude_Third_point_PT0S"
                 }
             },
             "unit": {
@@ -431,7 +431,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/cloud_cover",
                 "label": {
-                    "en": "nc"
+                    "en": "cloud_cover_2.0_point_PT0S"
                 }
             },
             "unit": {
@@ -448,7 +448,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/cloud_cover",
                 "label": {
-                    "en": "nc1"
+                    "en": "cloud_cover_First_point_PT0S"
                 }
             },
             "unit": {
@@ -465,7 +465,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/cloud_cover",
                 "label": {
-                    "en": "nc2"
+                    "en": "cloud_cover_Second_point_PT0S"
                 }
             },
             "unit": {
@@ -482,7 +482,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/cloud_cover",
                 "label": {
-                    "en": "nc3"
+                    "en": "cloud_cover_Third_point_PT0S"
                 }
             },
             "unit": {
@@ -491,7 +491,7 @@
                 }
             }
         },
-        "dew_point_temperature_1.5m_mean_PT1M": {
+        "dew_point_temperature_1.5_mean_PT1M": {
             "type": "Parameter",
             "description": {
                 "en": "Dew Point Temperature 1.5m 1 Min Average"
@@ -499,7 +499,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/dew_point_temperature",
                 "label": {
-                    "en": "td"
+                    "en": "dew_point_temperature_1.5_mean_PT1M"
                 }
             },
             "unit": {
@@ -516,7 +516,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/duration_of_sunshine",
                 "label": {
-                    "en": "ss"
+                    "en": "duration_of_sunshine_2.0_point_PT0S"
                 }
             },
             "unit": {
@@ -533,7 +533,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/lwe_precipitation_rate",
                 "label": {
-                    "en": "pg"
+                    "en": "lwe_precipitation_rate_PWS_mean_PT10M"
                 }
             },
             "unit": {
@@ -550,7 +550,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/placeholder",
                 "label": {
-                    "en": "ww"
+                    "en": "placeholder_1.80/2.50m_point_PT0S"
                 }
             },
             "unit": {
@@ -567,7 +567,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/placeholder",
                 "label": {
-                    "en": "ww-10"
+                    "en": "placeholder_1.80/2.50m_point_PT10M"
                 }
             },
             "unit": {
@@ -584,7 +584,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/placeholder",
                 "label": {
-                    "en": "pwc"
+                    "en": "placeholder_2.0_point_PT0S"
                 }
             },
             "unit": {
@@ -601,7 +601,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/precipitation_duration",
                 "label": {
-                    "en": "pr"
+                    "en": "precipitation_duration_PWS_point_PT10M"
                 }
             },
             "unit": {
@@ -618,7 +618,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/precipitation_duration",
                 "label": {
-                    "en": "dr"
+                    "en": "precipitation_duration_Rain Gauge_point_PT10M"
                 }
             },
             "unit": {
@@ -635,7 +635,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/precipitation_rate",
                 "label": {
-                    "en": "rg"
+                    "en": "precipitation_rate_Rain Gauge_mean_PT10M"
                 }
             },
             "unit": {
@@ -652,7 +652,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/rainfall_amount",
                 "label": {
-                    "en": "R1H"
+                    "en": "rainfall_amount_2.0_point_PT0S"
                 }
             },
             "unit": {
@@ -669,7 +669,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/rainfall_amount",
                 "label": {
-                    "en": "R12H"
+                    "en": "rainfall_amount_2.0_point_PT12H"
                 }
             },
             "unit": {
@@ -686,7 +686,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/rainfall_amount",
                 "label": {
-                    "en": "R24H"
+                    "en": "rainfall_amount_2.0_point_PT24H"
                 }
             },
             "unit": {
@@ -703,7 +703,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/rainfall_amount",
                 "label": {
-                    "en": "R6H"
+                    "en": "rainfall_amount_2.0_point_PT6H"
                 }
             },
             "unit": {
@@ -720,7 +720,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/rainfall_duration",
                 "label": {
-                    "en": "D1H"
+                    "en": "rainfall_duration_2.0_point_PT0S"
                 }
             },
             "unit": {
@@ -737,7 +737,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/relative_humidity",
                 "label": {
-                    "en": "rh"
+                    "en": "relative_humidity_2.0_mean_PT1M"
                 }
             },
             "unit": {
@@ -754,7 +754,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/total_downwelling_shortwave_flux_in_air",
                 "label": {
-                    "en": "qg"
+                    "en": "total_downwelling_shortwave_flux_in_air_2.0_mean_PT10M"
                 }
             },
             "unit": {
@@ -771,7 +771,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/visibility_in_air",
                 "label": {
-                    "en": "zm"
+                    "en": "visibility_in_air_2.0_mean_PT10M"
                 }
             },
             "unit": {
@@ -788,7 +788,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/wind_from_direction",
                 "label": {
-                    "en": "dd"
+                    "en": "wind_from_direction_2.0_mean_PT10M"
                 }
             },
             "unit": {
@@ -797,7 +797,7 @@
                 }
             }
         },
-        "wind_speed_10m_mean_PT10M": {
+        "wind_speed_10_mean_PT10M": {
             "type": "Parameter",
             "description": {
                 "en": "Wind Speed at 10m 10 Min Average"
@@ -805,7 +805,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed",
                 "label": {
-                    "en": "ff"
+                    "en": "wind_speed_10_mean_PT10M"
                 }
             },
             "unit": {
@@ -814,7 +814,7 @@
                 }
             }
         },
-        "wind_speed_of_gust_10m_maximum_PT10M": {
+        "wind_speed_of_gust_10_maximum_PT10M": {
             "type": "Parameter",
             "description": {
                 "en": "Wind Gust at 10m 10 Min Maximum"
@@ -822,7 +822,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed_of_gust",
                 "label": {
-                    "en": "gff"
+                    "en": "wind_speed_of_gust_10_maximum_PT10M"
                 }
             },
             "unit": {

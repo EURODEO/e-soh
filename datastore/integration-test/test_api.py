@@ -65,7 +65,7 @@ def test_from_a_single_collection_get_a_single_location():
     collection_id = "observations"
     location_id = "06260"
     parameters = (
-        "air_temperature_2.0_maximum_PT10M , wind_from_direction_2.0_mean_PT10M,relative_humidity_2.0_mean_PT1M"
+        "air_temperature_1.5_maximum_PT10M , wind_from_direction_2.0_mean_PT10M,relative_humidity_2.0_mean_PT1M"
     )
     datetime = "../2022-12-31T01:10:00Z"
     actual_response = requests.get(
@@ -86,13 +86,13 @@ def test_that_the_order_of_the_parameters_in_the_response_is_always_the_same():
     """
     collection_id = "observations"
     location_id = "06260"
-    parameters = " wind_from_direction_2.0_mean_PT10M,wind_speed_2.0_mean_PT10M ,  relative_humidity_2.0_mean_PT10M"
+    parameters = " wind_from_direction_2.0_mean_PT10M,wind_speed_10_mean_PT10M ,  relative_humidity_2.0_mean_PT1M"
     first_response = requests.get(
         url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}" f"?parameter-name={parameters}"
     )
 
     parameters_2 = (
-        " relative_humidity_2.0_mean_PT10M, wind_speed_2.0_mean_PT10M,   wind_from_direction_2.0_mean_PT10M    "
+        " relative_humidity_2.0_mean_PT1M, wind_speed_10_mean_PT10M,   wind_from_direction_2.0_mean_PT10M    "
     )
     second_response = requests.get(
         url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}" f"?parameter-name={parameters_2}"
@@ -119,7 +119,7 @@ def test_from_a_single_collection_get_a_single_location_which_does_not_exist():
 def test_from_a_single_collection_get_a_single_position_with_one_parameter():
     collection_id = "observations"
     coords = "POINT(5.179705 52.0988218)"
-    parameters = "air_temperature_2.0_maximum_PT10M"
+    parameters = "air_temperature_1.5_maximum_PT10M"
     datetime = "2022-12-31T00:50:00Z/2022-12-31T02:10:00Z"
     actual_response = requests.get(
         url=BASE_URL + f"/collections/{collection_id}/position"
@@ -135,7 +135,7 @@ def test_from_a_single_collection_get_a_single_position_with_one_parameter():
 def test_from_a_single_collection_get_an_area_with_two_parameters():
     collection_id = "observations"
     coords = "POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))"
-    parameters = "relative_humidity_2.0_mean_PT1M,wind_speed_2.0_mean_PT10M"
+    parameters = "relative_humidity_2.0_mean_PT1M,wind_speed_10_mean_PT10M"
     datetime = "2022-12-31T22:50:00Z/.."
     actual_response = requests.get(
         url=BASE_URL + f"/collections/{collection_id}/area"

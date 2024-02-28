@@ -26,7 +26,7 @@ Data = namedtuple("Data", ["dom", "values", "ts_mdata"])
 
 
 def make_parameter(ts_mdata):
-    parameter_id = ts_mdata.instrument
+    parameter_id = ts_mdata.parameter_name
     return Parameter(
         description={"en": ts_mdata.title},
         observedProperty=ObservedProperty(
@@ -73,7 +73,7 @@ def convert_to_covjson(response):
                 # TODO: Drop the whole coverage if it becomes empty?
             values_no_nan = [v if not math.isnan(v) else None for v in data.values]
 
-            parameter_id = data.ts_mdata.instrument
+            parameter_id = data.ts_mdata.parameter_name
             parameters[parameter_id] = make_parameter(data.ts_mdata)
 
             ranges[parameter_id] = NdArray(

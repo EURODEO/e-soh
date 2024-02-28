@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Dict
 
+from formatters.covjson import make_parameter
 import datastore_pb2 as dstore
 from edr_pydantic.capabilities import Contact
 from edr_pydantic.capabilities import LandingPageModel
@@ -14,7 +15,7 @@ from edr_pydantic.extent import Spatial
 from edr_pydantic.link import EDRQueryLink
 from edr_pydantic.link import Link
 from edr_pydantic.observed_property import ObservedProperty
-from edr_pydantic.parameter import Parameter
+from edr_pydantic.parameter import Parameter, Parameters
 from edr_pydantic.unit import Unit
 from edr_pydantic.variables import Variables
 from fastapi import HTTPException

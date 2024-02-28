@@ -50,7 +50,7 @@
         ]
     },
     "parameters": {
-        "dd": {
+        "wind_from_direction_2.0_mean_PT10M": {
             "type": "Parameter",
             "description": {
                 "en": "Wind Direction 10 Min Average"
@@ -58,7 +58,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/wind_from_direction",
                 "label": {
-                    "en": "dd"
+                    "en": "wind_from_direction_2.0_mean_PT10M"
                 }
             },
             "unit": {
@@ -67,7 +67,7 @@
                 }
             }
         },
-        "rh": {
+        "relative_humidity_2.0_mean_PT1M": {
             "type": "Parameter",
             "description": {
                 "en": "Relative Humidity 1 Min Average"
@@ -75,7 +75,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/relative_humidity",
                 "label": {
-                    "en": "rh"
+                    "en": "relative_humidity_2.0_mean_PT1M"
                 }
             },
             "unit": {
@@ -83,10 +83,27 @@
                     "en": "%"
                 }
             }
+        },
+        "air_temperature_1.5_maximum_PT10M": {
+            "type": "Parameter",
+            "description": {
+                "en": "Ambient Temperature 1.5m 10 Min Maximum"
+            },
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
+                "label": {
+                    "en": "air_temperature_1.5_maximum_PT10M"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "degrees Celsius"
+                }
+            }
         }
     },
     "ranges": {
-        "dd": {
+        "wind_from_direction_2.0_mean_PT10M": {
             "type": "NdArray",
             "dataType": "float",
             "axisNames": [
@@ -110,7 +127,7 @@
                 240.0
             ]
         },
-        "rh": {
+        "relative_humidity_2.0_mean_PT1M": {
             "type": "NdArray",
             "dataType": "float",
             "axisNames": [
@@ -132,6 +149,30 @@
                 95.0,
                 94.0,
                 94.0
+            ]
+        },
+        "air_temperature_1.5_maximum_PT10M": {
+            "type": "NdArray",
+            "dataType": "float",
+            "axisNames": [
+                "t",
+                "y",
+                "x"
+            ],
+            "shape": [
+                8,
+                1,
+                1
+            ],
+            "values": [
+                12.1,
+                12.1,
+                12.2,
+                12.1,
+                12.1,
+                12.1,
+                12.1,
+                12.0
             ]
         }
     }
