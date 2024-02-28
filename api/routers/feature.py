@@ -2,15 +2,14 @@ from typing import Annotated
 
 import datastore_pb2 as dstore
 import formatters
-from dependencies import get_datetime_range
 from fastapi import APIRouter
-from fastapi import HTTPException
 from fastapi import Path
 from fastapi import Query
 from geojson_pydantic import Feature
 from geojson_pydantic import FeatureCollection
 from grpc_getter import getObsRequest
 from shapely import geometry
+from utilities import get_datetime_range
 
 router = APIRouter(prefix="/collections/observations")
 
@@ -19,7 +18,7 @@ router = APIRouter(prefix="/collections/observations")
     "/items", tags=["Collection items"], response_model=Feature | FeatureCollection, response_model_exclude_none=True
 )
 async def search_timeseries(
-    bbox: Annotated[str | None, Query(example="5.0,52.0,6.0,52.1")],
+    bbox: Annotated[str | None, Query(example="5.0,52.0,6.0,52.1")] = None,
     datetime: Annotated[
         str | None,
         Query(
@@ -59,9 +58,11 @@ async def search_timeseries(
         formatters.Metadata_Formats, Query(description="Specify return format")
     ] = formatters.Metadata_Formats.geojson,
 ):
-    left, bottom, right, top = map(str.strip, bbox.split(","))
-    poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
-    range = get_datetime_range(datetime)
+    if bbox:
+        left, bottom, right, top = map(str.strip, bbox.split(","))
+        poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
+    if datetime:
+        range = get_datetime_range(datetime)
 
     get_obs_request = dstore.GetObsRequest(
         filter=dict(
@@ -77,16 +78,16 @@ async def search_timeseries(
             period=dstore.Strings(values=period.split(",") if period else None),
             function=dstore.Strings(values=function.split(",") if function else None),
         ),
-        spatial_area=dstore.Polygon(
-            points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
+        spatial_area=(
+            dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords])
+            if bbox
+            else None
         ),
-        temporal_interval=(dstore.TimeInterval(start=range[0], end=range[1]) if range else None),
+        temporal_interval=(dstore.TimeInterval(start=range[0], end=range[1]) if datetime else None),
         temporal_mode="latest",
     )
 
     time_series = await getObsRequest(get_obs_request)
-    if not time_series:
-        raise HTTPException(404, detail="Query did not return any time series.")
 
     return formatters.metadata_formatters[f](time_series)
 
@@ -100,4 +101,5 @@ async def get_time_series_by_id(
 ):
     get_obs_request = dstore.GetObsRequest(filter=dict(metadata_id=dstore.Strings(values=[item_id])))
     time_series = await getObsRequest(get_obs_request)
+
     return formatters.metadata_formatters[f](time_series)

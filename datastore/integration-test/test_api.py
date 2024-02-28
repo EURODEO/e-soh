@@ -150,8 +150,8 @@ def test_from_a_single_collection_get_an_area_with_two_parameters():
 
 def test_items_get_area():
     collection_id = "observations"
-    coords = "POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))"
-    actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items" f"?coords={coords}")
+    bbox = "5.0,52.0,6.0,52.1"
+    actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items" f"?bbox={bbox}")
 
     assert actual_response.status_code == 200
     actual_response_is_expected_response(actual_response, "response/collection/items/200/metadata_within_area")
@@ -208,7 +208,7 @@ def test_items_get_within_datetime():
     )
 
 
-def test_items_get_empty_request():
+def test_items_get_empty_response():
     collection_id = "observations"
     parameter_name = "this_parameter_name_does_not_exist"
     actual_response = requests.get(

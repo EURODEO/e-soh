@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from geojson_pydantic import Feature
 from geojson_pydantic import FeatureCollection
 from geojson_pydantic import Point
@@ -51,6 +52,8 @@ def convert_to_geojson(response):
                 ),
             ),
         )
-        for ts in sorted(response.observations, key=lambda ts: ts.ts_mdata.platform)
+        for ts in sorted(response.observations, key=lambda ts: ts.obs_mdata[0].metadata_id)
     ]
+    if not features:
+        raise HTTPException(404, detail="Query did not return any time series.")
     return FeatureCollection(features=features, type="FeatureCollection") if len(features) > 1 else features[0]
