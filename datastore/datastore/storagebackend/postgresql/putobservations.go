@@ -15,13 +15,13 @@ import (
 )
 
 // getTSColVals gets the time series metadata column values from tsMdata.
-// The column values are returned both as a map in the colVals2 out-parameter and as
-// an array.
 //
-// Returns (column values, nil) upon success, otherwise (..., error).
-func getTSColVals(
-	tsMdata *datastore.TSMetadata, colVals2 map[string]interface{}) ([]interface{}, error) {
+// Returns (column values, map of column name to value, nil) upon success,
+// otherwise (..., ..., error).
+func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, map[string]interface{}, error) {
+
 	colVals := []interface{}{}
+	colName2Val := map[string]interface{}{}
 
 	// --- BEGIN non-string metadata ---------------------------
 
@@ -50,10 +50,10 @@ func getTSColVals(
 
 	for _, key := range []string{"href", "rel", "type", "hreflang", "title"} {
 		if linkVals, err := getLinkVals(key); err != nil {
-			return nil, fmt.Errorf("getLinkVals() failed: %v", err)
+			return nil, nil, fmt.Errorf("getLinkVals() failed: %v", err)
 		} else {
 			vals := pq.StringArray(linkVals)
-			colVals2[common.ToSnakeCase(key)] = vals
+			colName2Val[common.ToSnakeCase(key)] = vals
 			colVals = append(colVals, vals)
 		}
 	}
@@ -69,33 +69,34 @@ func getTSColVals(
 		if method.IsValid() {
 			val, ok := method.Call([]reflect.Value{})[0].Interface().(string)
 			if !ok {
-				return nil, fmt.Errorf(
+				return nil, nil, fmt.Errorf(
 					"method.Call() failed for method %s; failed to return string", methodName)
 			}
-			colVals2[common.ToSnakeCase(field.Name)] = val
+			colName2Val[common.ToSnakeCase(field.Name)] = val
 			colVals = append(colVals, val)
 		}
 	}
 
 	// --- END string metadata ---------------------------
 
-	return colVals, nil
+	return colVals, colName2Val, nil
 }
 
-// getTSColValsUnique gets the subset of colVals that correspond to the fields defined by
+// getTSColValsUnique gets the subset of colName2Val that correspond to the fields defined by
 // constraint unique_main.
 //
 // The order in the returned array is consistent with the array returned by getTSMdataColsUnique().
 //
 // Returns (column values, nil) upon success, otherwise (..., error).
-func getTSColValsUnique(colVals map[string]interface{}) ([]interface{}, error) {
+func getTSColValsUnique(colName2Val map[string]interface{}) ([]interface{}, error) {
 
 	result := []interface{}{}
 
 	for _, col := range getTSMdataColsUnique() {
-		colVal, found := colVals[col]
+		colVal, found := colName2Val[col]
 		if !found {
-			return []interface{}{}, fmt.Errorf("column '%s' not found in colVals: %v", col, colVals)
+			return []interface{}{},
+				fmt.Errorf("column '%s' not found in colName2Val: %v", col, colName2Val)
 		}
 		result = append(result, colVal)
 	}
@@ -119,8 +120,7 @@ func getTSColValsUnique(colVals map[string]interface{}) ([]interface{}, error) {
 func upsertTS(
 	db *sql.DB, tsMdata *datastore.TSMetadata, cache map[string]int64) (int64, error) {
 
-	colVals2 := map[string]interface{}{}
-	colVals, err := getTSColVals(tsMdata, colVals2) // column values for U+UC
+	colVals, colName2Val, err := getTSColVals(tsMdata) // column values for U+UC
 	if err != nil {
 		return -1, fmt.Errorf("getTSColVals() failed: %v", err)
 	}
@@ -151,7 +151,7 @@ func upsertTS(
 
 	// STEP 2: retrieve ID of upserted row
 
-	colValsUnique, err := getTSColValsUnique(colVals2) // column values for U
+	colValsUnique, err := getTSColValsUnique(colName2Val) // column values for U
 	if err != nil {
 		return -1, fmt.Errorf("getTSColValsUnique() failed: %v", err)
 	}
