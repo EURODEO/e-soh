@@ -162,7 +162,12 @@ message Strings {
 message GetObsRequest {
   // --- BEGIN non-string metadata -------------------------
 
-  // temporal filter
+  // temporal mode
+  string temporal_mode = 4; // use 'interval' (the default) to retrieve observations in
+  // an interval (defined by temporal) or 'latest' to retrieve the most recent observation
+  // of otherwise matching time series
+
+  // temporal spec applicable when temporal_mode = 'interval'
   TimeInterval temporal_interval = 1; // only observations in this time range may be returned
 
   // spatial filter

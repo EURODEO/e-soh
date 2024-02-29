@@ -50,37 +50,24 @@
         ]
     },
     "parameters": {
-        "dd": {
+        "air_temperature_2.0_maximum_PT10M": {
             "type": "Parameter",
             "observedProperty": {
                 "label": {
-                    "en": "dd"
+                    "en": "air_temperature_2.0_maximum_PT10M"
                 }
             },
             "unit": {
                 "label": {
-                    "en": "degree"
+                    "en": "degrees Celsius"
                 }
             }
         },
-        "ff": {
+        "relative_humidity_2.0_mean_PT1M": {
             "type": "Parameter",
             "observedProperty": {
                 "label": {
-                    "en": "ff"
-                }
-            },
-            "unit": {
-                "label": {
-                    "en": "m s-1"
-                }
-            }
-        },
-        "rh": {
-            "type": "Parameter",
-            "observedProperty": {
-                "label": {
-                    "en": "rh"
+                    "en": "relative_humidity_2.0_mean_PT1M"
                 }
             },
             "unit": {
@@ -88,10 +75,71 @@
                     "en": "%"
                 }
             }
+        },
+        "wind_from_direction_2.0_mean_PT10M": {
+            "type": "Parameter",
+            "observedProperty": {
+                "label": {
+                    "en": "wind_from_direction_2.0_mean_PT10M"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "degree"
+                }
+            }
         }
     },
     "ranges": {
-        "dd": {
+        "air_temperature_2.0_maximum_PT10M": {
+            "type": "NdArray",
+            "dataType": "float",
+            "axisNames": [
+                "t",
+                "y",
+                "x"
+            ],
+            "shape": [
+                8,
+                1,
+                1
+            ],
+            "values": [
+                12.1,
+                12.1,
+                12.2,
+                12.1,
+                12.1,
+                12.1,
+                12.1,
+                12.0
+            ]
+        },
+        "relative_humidity_2.0_mean_PT1M": {
+            "type": "NdArray",
+            "dataType": "float",
+            "axisNames": [
+                "t",
+                "y",
+                "x"
+            ],
+            "shape": [
+                8,
+                1,
+                1
+            ],
+            "values": [
+                95.0,
+                94.0,
+                95.0,
+                95.0,
+                95.0,
+                95.0,
+                94.0,
+                94.0
+            ]
+        },
+        "wind_from_direction_2.0_mean_PT10M": {
             "type": "NdArray",
             "dataType": "float",
             "axisNames": [
@@ -106,61 +154,13 @@
             ],
             "values": [
                 224.3,
-                226,
+                226.0,
                 228.3,
                 230.3,
                 234.9,
                 237.9,
                 235.4,
-                240
-            ]
-        },
-        "ff": {
-            "type": "NdArray",
-            "dataType": "float",
-            "axisNames": [
-                "t",
-                "y",
-                "x"
-            ],
-            "shape": [
-                8,
-                1,
-                1
-            ],
-            "values": [
-                4.95,
-                4.43,
-                4.35,
-                3.77,
-                4.2,
-                4.26,
-                4.72,
-                4.1
-            ]
-        },
-        "rh": {
-            "type": "NdArray",
-            "dataType": "float",
-            "axisNames": [
-                "t",
-                "y",
-                "x"
-            ],
-            "shape": [
-                8,
-                1,
-                1
-            ],
-            "values": [
-                95,
-                94,
-                95,
-                95,
-                95,
-                95,
-                94,
-                94
+                240.0
             ]
         }
     }

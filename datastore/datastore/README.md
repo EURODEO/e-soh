@@ -241,6 +241,18 @@ $ grpcurl -d '{"filter": {"standard_name": {"values": ["wind_speed", "air_temper
 ...
 ```
 
+### Retrieve all wind speed observations for platform 78990
+```text
+$ grpcurl -d '{"filter": {"standard_name": {"values": ["wind_speed"]}, "platform": {"values": ["78990"]}}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
+...
+```
+
+### Retrieve the most recent wind speed observation for platform 78990
+```text
+$ grpcurl -d '{"filter": {"standard_name": {"values": ["wind_speed"]}, "platform": {"values": ["78990"]}}, "temporal_mode": "latest"}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
+...
+```
+
 ### List unique occurrences of time series metadata attribute 'standard_name'
 
 ```text
