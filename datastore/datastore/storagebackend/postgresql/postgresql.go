@@ -184,7 +184,7 @@ func getTSMdataColsUniqueCompl() []string {
 		delete(colSet, col)
 	}
 
-	// return remaining columns as a string
+	// return remaining columns
 
 	result := make([]string, len(colSet))
 	i := 0
