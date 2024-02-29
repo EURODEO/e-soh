@@ -1,6 +1,7 @@
 package common
 
 import (
+	"datastore/datastore"
 	"fmt"
 	"log"
 	"os"
@@ -166,4 +167,10 @@ func GetValidTimeRangeSettings() string {
 // ToSnakeCase returns the snake case version of s.
 func ToSnakeCase(s string) string {
 	return strings.ToLower(snakeCaseRE.ReplaceAllString(s, "${1}_${2}"))
+}
+
+type TemporalSpec struct {
+	IntervalMode bool // whether temporal mode is 'interval' (true) or 'latest'
+	// (false)
+	Interval *datastore.TimeInterval // interval in 'interval' mode
 }

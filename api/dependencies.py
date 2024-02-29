@@ -1,9 +1,12 @@
 from datetime import datetime
 from datetime import timedelta
+from functools import lru_cache
 from typing import Tuple
 
+import datastore_pb2 as dstore
 from fastapi import HTTPException
 from google.protobuf.timestamp_pb2 import Timestamp
+from grpc_getter import getTSAGRequest
 from pydantic import AwareDatetime
 from pydantic import TypeAdapter
 
@@ -47,3 +50,35 @@ def get_datetime_range(datetime_string: str | None) -> Tuple[Timestamp, Timestam
         raise HTTPException(status_code=400, detail=errors)
 
     return start_datetime, end_datetime
+
+
+async def get_current_parameter_names(ttl_hash=None):
+    """
+    This function get a set of standard_names currently in the datastore
+    The ttl_hash should be a value that is updated at the same frequency
+    we want the lru_cache to be valid for.
+    """
+
+    @lru_cache(maxsize=1)
+    async def async_helper(ttl_hash):  # pylint: disable=unused-arguement
+        unique_parameter_names = dstore.GetTSAGRequest(attrs=["parameter_name"])
+        unique_parameter_names = await getTSAGRequest(unique_parameter_names)
+
+        return set([i.combo.standard_name for i in unique_parameter_names.groups])
+
+    return await async_helper(ttl_hash)
+
+
+async def verify_parameter_names(parameter_names: list) -> None:
+    """
+    Function for verifying that the given parameter names are valid.
+    Raises error with unknown names if any are found.
+    """
+    unknown_parameter_names = []
+
+    for i in parameter_names:
+        if i not in await get_current_parameter_names(datetime.now().hour):
+            unknown_parameter_names.append(i)
+
+    if unknown_parameter_names:
+        raise HTTPException(400, detail=f"Unknown parameter-name {unknown_parameter_names}")
