@@ -121,8 +121,6 @@ func upsertTS(
 		return -1, fmt.Errorf("getTSColVals() failed: %v", err)
 	}
 
-	var id int64 = -1
-
 	// derive colVals from colName2Vals
 	colVals := []interface{}{}
 	for _, colVal := range colName2Val {
@@ -157,6 +155,8 @@ func upsertTS(
 	if err != nil {
 		return -1, fmt.Errorf("getTSColValsUnique() failed: %v", err)
 	}
+
+	var id int64
 
 	err = tx.QueryRow(upsertTSSelectCmd, colValsUnique...).Scan(&id)
 	if err != nil {
