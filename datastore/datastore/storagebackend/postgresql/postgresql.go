@@ -40,15 +40,15 @@ func (sbe *PostgreSQL) setTSUniqueMainCols() error {
 	/* typical example of running the above query:
 
 	$ PGPASSWORD=mysecretpassword psql -h localhost -p 5433 -U postgres -d data -c \
-    > "SELECT pg_get_constraintdef(c.oid) FROM pg_constraint c JOIN pg_namespace n
-    > ON n.oid = c.connamespace WHERE conrelid::regclass::text = 'time_series'
-    > AND conname = 'unique_main' AND contype = 'u'"
-                                                pg_get_constraintdef
-    -----------------------------------------------------------------------------------------------
+	> "SELECT pg_get_constraintdef(c.oid) FROM pg_constraint c JOIN pg_namespace n
+	> ON n.oid = c.connamespace WHERE conrelid::regclass::text = 'time_series'
+	> AND conname = 'unique_main' AND contype = 'u'"
+									              pg_get_constraintdef
+	-----------------------------------------------------------------------------------------------
 	-------------
-     UNIQUE NULLS NOT DISTINCT (naming_authority, platform, standard_name, level, function, period,
-	instrument)
-    (1 row)
+	UNIQUE NULLS NOT DISTINCT (naming_authority, platform, standard_name, level, function, period,
+		instrument)
+		(1 row)
 
 	*/
 
