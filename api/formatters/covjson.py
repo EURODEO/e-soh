@@ -26,12 +26,11 @@ Data = namedtuple("Data", ["dom", "values", "ts_mdata"])
 
 
 def make_parameter(ts_mdata):
-    parameter_id = ts_mdata.parameter_name
     return Parameter(
         description={"en": ts_mdata.title},
         observedProperty=ObservedProperty(
             id=f"https://vocab.nerc.ac.uk/standard_name/{ts_mdata.standard_name}",
-            label={"en": parameter_id},
+            label={"en": ts_mdata.instrument},
         ),
         unit=Unit(label={"en": ts_mdata.unit}),
     )

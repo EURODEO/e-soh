@@ -58,7 +58,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/wind_from_direction",
                 "label": {
-                    "en": "wind_from_direction_2.0_mean_PT10M"
+                    "en": "dd"
                 }
             },
             "unit": {
@@ -75,7 +75,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/relative_humidity",
                 "label": {
-                    "en": "relative_humidity_2.0_mean_PT1M"
+                    "en": "rh"
                 }
             },
             "unit": {
@@ -92,7 +92,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature_1.5_maximum_PT10M"
+                    "en": "tx"
                 }
             },
             "unit": {

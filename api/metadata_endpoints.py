@@ -51,7 +51,7 @@ async def get_collection_metadata(request, is_self) -> Collection:
             description=obs.ts_mdata.title,
             observedProperty=ObservedProperty(
                 id=f"https://vocab.nerc.ac.uk/standard_name/{obs.ts_mdata.standard_name}",
-                label=obs.ts_mdata.parameter_name,
+                label=obs.ts_mdata.instrument,
             ),
             unit=Unit(label=obs.ts_mdata.unit),
         )

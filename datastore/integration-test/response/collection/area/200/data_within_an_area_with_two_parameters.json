@@ -60,7 +60,7 @@
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed",
                         "label": {
-                            "en": "wind_speed_10_mean_PT10M"
+                            "en": "ff"
                         }
                     },
                     "unit": {
@@ -77,7 +77,7 @@
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/relative_humidity",
                         "label": {
-                            "en": "relative_humidity_2.0_mean_PT1M"
+                            "en": "rh"
                         }
                     },
                     "unit": {
@@ -195,7 +195,7 @@
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed",
                         "label": {
-                            "en": "wind_speed_10_mean_PT10M"
+                            "en": "ff"
                         }
                     },
                     "unit": {
@@ -212,7 +212,7 @@
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/relative_humidity",
                         "label": {
-                            "en": "relative_humidity_2.0_mean_PT1M"
+                            "en": "rh"
                         }
                     },
                     "unit": {
@@ -281,7 +281,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed",
                 "label": {
-                    "en": "wind_speed_10_mean_PT10M"
+                    "en": "ff"
                 }
             },
             "unit": {
@@ -298,7 +298,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/relative_humidity",
                 "label": {
-                    "en": "relative_humidity_2.0_mean_PT1M"
+                    "en": "rh"
                 }
             },
             "unit": {

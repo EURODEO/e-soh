@@ -59,7 +59,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature_1.5_maximum_PT10M"
+                    "en": "tx"
                 }
             },
             "unit": {
