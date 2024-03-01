@@ -16,11 +16,9 @@ import (
 
 // getTSColVals gets the time series metadata column values from tsMdata.
 //
-// Returns (column values, map of column name to value, nil) upon success,
-// otherwise (..., ..., error).
-func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, map[string]interface{}, error) {
+// Returns (map of column name to value, nil) upon success, otherwise (..., error).
+func getTSColVals(tsMdata *datastore.TSMetadata) (map[string]interface{}, error) {
 
-	colVals := []interface{}{}
 	colName2Val := map[string]interface{}{}
 
 	// --- BEGIN non-string metadata ---------------------------
@@ -50,11 +48,10 @@ func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, map[string]inte
 
 	for _, key := range []string{"href", "rel", "type", "hreflang", "title"} {
 		if linkVals, err := getLinkVals(key); err != nil {
-			return nil, nil, fmt.Errorf("getLinkVals() failed: %v", err)
+			return nil, fmt.Errorf("getLinkVals() failed: %v", err)
 		} else {
 			vals := pq.StringArray(linkVals)
 			colName2Val[common.ToSnakeCase(key)] = vals
-			colVals = append(colVals, vals)
 		}
 	}
 
@@ -69,17 +66,16 @@ func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, map[string]inte
 		if method.IsValid() {
 			val, ok := method.Call([]reflect.Value{})[0].Interface().(string)
 			if !ok {
-				return nil, nil, fmt.Errorf(
+				return nil, fmt.Errorf(
 					"method.Call() failed for method %s; failed to return string", methodName)
 			}
 			colName2Val[common.ToSnakeCase(field.Name)] = val
-			colVals = append(colVals, val)
 		}
 	}
 
 	// --- END string metadata ---------------------------
 
-	return colVals, colName2Val, nil
+	return colName2Val, nil
 }
 
 // getTSColValsUnique gets the subset of colName2Val that correspond to the fields defined by
@@ -120,12 +116,18 @@ func getTSColValsUnique(colName2Val map[string]interface{}) ([]interface{}, erro
 func upsertTS(
 	db *sql.DB, tsMdata *datastore.TSMetadata, cache map[string]int64) (int64, error) {
 
-	colVals, colName2Val, err := getTSColVals(tsMdata) // column values for U+UC
+	colName2Val, err := getTSColVals(tsMdata) // column values for U+UC
 	if err != nil {
 		return -1, fmt.Errorf("getTSColVals() failed: %v", err)
 	}
 
 	var id int64 = -1
+
+	// derive colVals from colName2Vals
+	colVals := []interface{}{}
+	for _, colVal := range colName2Val {
+		colVals = append(colVals, colVal)
+	}
 
 	// first try a cache lookup
 	cacheKey := fmt.Sprintf("%v", colVals)
