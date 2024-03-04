@@ -1,19 +1,26 @@
 # For developing:    uvicorn main:app --reload
+from collections import defaultdict
 from typing import Annotated
+from typing import DefaultDict
+from typing import Dict
+from typing import Set
+from typing import Tuple
 
 import datastore_pb2 as dstore
 import formatters
 from covjson_pydantic.coverage import Coverage
 from covjson_pydantic.coverage import CoverageCollection
+from covjson_pydantic.parameter import Parameter
+from custom_geo_json.edr_feature_collection import EDRFeatureCollection
 from dependencies import get_datetime_range
 from fastapi import APIRouter
 from fastapi import HTTPException
 from fastapi import Path
 from fastapi import Query
+from formatters.covjson import make_parameter
 from geojson_pydantic import Feature
-from geojson_pydantic import FeatureCollection
 from geojson_pydantic import Point
-from grpc_getter import getObsRequest
+from grpc_getter import get_obs_request
 from shapely import buffer
 from shapely import geometry
 from shapely import wkt
@@ -27,40 +34,74 @@ router = APIRouter(prefix="/collections/observations")
 @router.get(
     "/locations",
     tags=["Collection data queries"],
-    response_model=FeatureCollection,
+    response_model=EDRFeatureCollection,
     response_model_exclude_none=True,
 )
 # We can currently only query data, even if we only need metadata like for this endpoint
 # Maybe it would be better to only query a limited set of data instead of everything (meaning 24 hours)
 async def get_locations(
     bbox: Annotated[str, Query(example="5.0,52.0,6.0,52.1")]
-) -> FeatureCollection:  # Hack to use string
+) -> EDRFeatureCollection:  # Hack to use string
     left, bottom, right, top = map(str.strip, bbox.split(","))
     poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
+
     ts_request = dstore.GetObsRequest(
-        filter=dict(parameter_name=dstore.Strings(values=["air_temperature_2.0_maximum_PT10M"])),  # Hack
         spatial_area=dstore.Polygon(
-            points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
+            points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords],
         ),
+        temporal_mode="latest",
     )
 
-    ts_response = await getObsRequest(ts_request)
+    ts_response = await get_obs_request(ts_request)
+
+    platform_parameters: DefaultDict[str, Set[str]] = defaultdict(set)
+    platform_coordinates: Dict[str, Set[Tuple[float, float]]] = defaultdict(set)
+    all_parameters: Dict[str, Parameter] = {}
+    for obs in ts_response.observations:
+        parameter = make_parameter(obs.ts_mdata)
+        platform_parameters[obs.ts_mdata.platform].add(obs.ts_mdata.parameter_name)
+        # Take last point
+        platform_coordinates[obs.ts_mdata.platform].add(
+            (obs.obs_mdata[-1].geo_point.lon, obs.obs_mdata[-1].geo_point.lat)
+        )
+        # Check for inconsistent parameter definitions between stations
+        # TODO: How to handle those?
+        if obs.ts_mdata.parameter_name in all_parameters and all_parameters[obs.ts_mdata.parameter_name] != parameter:
+            raise HTTPException(
+                status_code=500,
+                detail={
+                    "parameter": f"Parameter with name {obs.ts_mdata.parameter_name} "
+                    f"has multiple definitions:\n{all_parameters[obs.ts_mdata.parameter_name]}\n{parameter}"
+                },
+            )
+        all_parameters[obs.ts_mdata.parameter_name] = parameter
+
+    # Check for multiple coordinates on one station
+    for station_id in platform_parameters.keys():
+        if len(platform_coordinates[station_id]) > 1:
+            raise HTTPException(
+                status_code=500,
+                detail={
+                    "coordinates": f"Station with id `{station_id} "
+                    f"has multiple coordinates: {platform_coordinates[station_id]}"
+                },
+            )
+
     features = [
         Feature(
             type="Feature",
-            id=ts.ts_mdata.platform,
-            properties=None,
+            id=station_id,
+            properties={"parameter-name": sorted(platform_parameters[station_id])},
             geometry=Point(
                 type="Point",
-                coordinates=(
-                    ts.obs_mdata[0].geo_point.lon,
-                    ts.obs_mdata[0].geo_point.lat,
-                ),
+                coordinates=list(platform_coordinates[station_id])[0],
             ),
-        )  # HACK: Assume loc the same
-        for ts in sorted(ts_response.observations, key=lambda ts: ts.ts_mdata.platform)
+        )
+        for station_id in sorted(platform_parameters.keys())  # Sort by station_id
     ]
-    return FeatureCollection(features=features, type="FeatureCollection")
+    parameters = {parameter_id: all_parameters[parameter_id] for parameter_id in sorted(all_parameters)}
+
+    return EDRFeatureCollection(features=features, type="FeatureCollection", parameters=parameters)
 
 
 @router.get(
@@ -92,14 +133,14 @@ async def get_data_location_id(
         parameter_name = parameter_name.split(",")
         parameter_name = list(map(lambda x: x.strip(), parameter_name))
     # parameter_name = verify_parameter_names(parameter_name) # should the api verify that the parameter name is valid?
-    get_obs_request = dstore.GetObsRequest(
+    request = dstore.GetObsRequest(
         filter=dict(
             parameter_name=dstore.Strings(values=parameter_name),
             platform=dstore.Strings(values=[location_id]),
         ),
         temporal_interval=(dstore.TimeInterval(start=range[0], end=range[1]) if range else None),
     )
-    response = await getObsRequest(get_obs_request)
+    response = await get_obs_request(request)
     return formatters.formatters[f](response)
 
 
@@ -193,13 +234,13 @@ async def get_data_area(
 
     range = get_datetime_range(datetime)
     # await verify_parameter_names(parameter_name)
-    get_obs_request = dstore.GetObsRequest(
+    request = dstore.GetObsRequest(
         filter=dict(parameter_name=dstore.Strings(values=parameter_name.split(",") if parameter_name else None)),
         spatial_area=dstore.Polygon(
             points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
         ),
-        temporal_interval=(dstore.TimeInterval(start=range[0], end=range[1]) if range else None),
+        temporal_interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
     )
-    coverages = await getObsRequest(get_obs_request)
+    coverages = await get_obs_request(request)
     coverages = formatters.formatters[f](coverages)
     return coverages
