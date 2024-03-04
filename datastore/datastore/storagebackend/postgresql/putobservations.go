@@ -16,9 +16,11 @@ import (
 
 // getTSColVals gets the time series metadata column values from tsMdata.
 //
-// Returns (map of column name to value, nil) upon success, otherwise (..., error).
-func getTSColVals(tsMdata *datastore.TSMetadata) (map[string]interface{}, error) {
+// Returns (column values, map of column name to value, nil) upon success,
+// otherwise (..., ..., error).
+func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, map[string]interface{}, error) {
 
+	colVals := []interface{}{}
 	colName2Val := map[string]interface{}{}
 
 	// --- BEGIN non-string metadata ---------------------------
@@ -28,15 +30,15 @@ func getTSColVals(tsMdata *datastore.TSMetadata) (map[string]interface{}, error)
 		for _, link := range tsMdata.GetLinks() {
 			var val string
 			switch key {
-			case "href":
+			case "link_href":
 				val = link.GetHref()
-			case "rel":
+			case "link_rel":
 				val = link.GetRel()
-			case "type":
+			case "link_type":
 				val = link.GetType()
-			case "hreflang":
+			case "link_hreflang":
 				val = link.GetHreflang()
-			case "title":
+			case "link_title":
 				val = link.GetTitle()
 			default:
 				return nil, fmt.Errorf("unsupported link key: >%s<", key)
@@ -46,11 +48,13 @@ func getTSColVals(tsMdata *datastore.TSMetadata) (map[string]interface{}, error)
 		return linkVals, nil
 	}
 
-	for _, key := range []string{"href", "rel", "type", "hreflang", "title"} {
+	for _, key := range []string{
+		"link_href", "link_rel", "link_type", "link_hreflang", "link_title"} {
 		if linkVals, err := getLinkVals(key); err != nil {
-			return nil, fmt.Errorf("getLinkVals() failed: %v", err)
+			return nil, nil, fmt.Errorf("getLinkVals() failed: %v", err)
 		} else {
 			vals := pq.StringArray(linkVals)
+			colVals = append(colVals, vals)
 			colName2Val[common.ToSnakeCase(key)] = vals
 		}
 	}
@@ -66,16 +70,17 @@ func getTSColVals(tsMdata *datastore.TSMetadata) (map[string]interface{}, error)
 		if method.IsValid() {
 			val, ok := method.Call([]reflect.Value{})[0].Interface().(string)
 			if !ok {
-				return nil, fmt.Errorf(
+				return nil, nil, fmt.Errorf(
 					"method.Call() failed for method %s; failed to return string", methodName)
 			}
+			colVals = append(colVals, val)
 			colName2Val[common.ToSnakeCase(field.Name)] = val
 		}
 	}
 
 	// --- END string metadata ---------------------------
 
-	return colName2Val, nil
+	return colVals, colName2Val, nil
 }
 
 // getTSColValsUnique gets the subset of colName2Val that correspond to the fields defined by
@@ -116,15 +121,9 @@ func getTSColValsUnique(colName2Val map[string]interface{}) ([]interface{}, erro
 func upsertTS(
 	db *sql.DB, tsMdata *datastore.TSMetadata, cache map[string]int64) (int64, error) {
 
-	colName2Val, err := getTSColVals(tsMdata) // column values for U+UC
+	colVals, colName2Val, err := getTSColVals(tsMdata) // column values for U+UC
 	if err != nil {
 		return -1, fmt.Errorf("getTSColVals() failed: %v", err)
-	}
-
-	// derive colVals from colName2Vals
-	colVals := []interface{}{}
-	for _, colVal := range colName2Val {
-		colVals = append(colVals, colVal)
 	}
 
 	// first try a cache lookup
