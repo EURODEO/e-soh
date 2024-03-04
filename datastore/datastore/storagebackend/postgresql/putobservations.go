@@ -16,9 +16,9 @@ import (
 
 // getTSColVals gets the time series metadata column values from tsMdata.
 //
-// Returns (column values, map of column name to value, nil) upon success,
+// Returns (all column values, column values of constraint unique_main, nil) upon success,
 // otherwise (..., ..., error).
-func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, map[string]interface{}, error) {
+func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, []interface{}, error) {
 
 	colVals := []interface{}{}
 	colName2Val := map[string]interface{}{}
@@ -80,7 +80,13 @@ func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, map[string]inte
 
 	// --- END string metadata ---------------------------
 
-	return colVals, colName2Val, nil
+	// derive colValsUnique from colName2Val
+	colValsUnique, err := getTSColValsUnique(colName2Val)
+	if err != nil {
+		return nil, nil, fmt.Errorf("getTSColValsUnique() failed: %v", err)
+	}
+
+	return colVals, colValsUnique, nil
 }
 
 // getTSColValsUnique gets the subset of colName2Val that correspond to the fields defined by
@@ -121,7 +127,7 @@ func getTSColValsUnique(colName2Val map[string]interface{}) ([]interface{}, erro
 func upsertTS(
 	db *sql.DB, tsMdata *datastore.TSMetadata, cache map[string]int64) (int64, error) {
 
-	colVals, colName2Val, err := getTSColVals(tsMdata) // column values for U+UC
+	colVals, colValsUnique, err := getTSColVals(tsMdata)
 	if err != nil {
 		return -1, fmt.Errorf("getTSColVals() failed: %v", err)
 	}
@@ -149,11 +155,6 @@ func upsertTS(
 	}
 
 	// STEP 2: retrieve ID of upserted row
-
-	colValsUnique, err := getTSColValsUnique(colName2Val) // column values for U
-	if err != nil {
-		return -1, fmt.Errorf("getTSColValsUnique() failed: %v", err)
-	}
 
 	var id int64
 
