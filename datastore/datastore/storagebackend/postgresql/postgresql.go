@@ -79,7 +79,7 @@ func (sbe *PostgreSQL) setTSUniqueMainCols() error {
 // setUpsertTSInsertCmd sets upsertTSInsertCmd to be used by upsertTS.
 func setUpsertTSInsertCmd() {
 
-	cols := getTSMdataCols()
+	cols := getTSColNames()
 
 	formats := make([]string, len(cols))
 	for i := 0; i < len(cols); i++ {
@@ -87,7 +87,7 @@ func setUpsertTSInsertCmd() {
 	}
 
 	updateExpr := []string{}
-	for _, col := range getTSMdataColsUniqueCompl() {
+	for _, col := range getTSColNamesUniqueCompl() {
 		updateExpr = append(updateExpr, fmt.Sprintf("%s = EXCLUDED.%s", col, col))
 	}
 
@@ -105,7 +105,7 @@ func setUpsertTSInsertCmd() {
 func setUpsertTSSelectCmd() {
 
 	whereExpr := []string{}
-	for i, col := range getTSMdataColsUnique() {
+	for i, col := range getTSColNamesUnique() {
 		whereExpr = append(whereExpr, fmt.Sprintf("%s=$%d", col, i+1))
 	}
 
@@ -161,8 +161,8 @@ func NewPostgreSQL() (*PostgreSQL, error) {
 	return sbe, nil
 }
 
-// getTSMdataCols returns time series metadata column names.
-func getTSMdataCols() []string {
+// getTSColNames returns time series metadata column names.
+func getTSColNames() []string {
 
 	// initialize cols with non-string metadata
 	cols := []string{
@@ -179,23 +179,23 @@ func getTSMdataCols() []string {
 	return cols
 }
 
-// getTSMdataColsUnique returns the fields defined in constraint unique_main in table
+// getTSColNamesUnique returns the fields defined in constraint unique_main in table
 // time_series.
-func getTSMdataColsUnique() []string {
+func getTSColNamesUnique() []string {
 	return tsStringMdataPBNamesUnique
 }
 
-// getTSMdataColsUniqueCompl returns the complement of the set of fields defined in constraint
-// unique_main in table time_series, i.e. getTSMdataCols() - getTSMdataColsUnique().
-func getTSMdataColsUniqueCompl() []string {
+// getTSColNamesUniqueCompl returns the complement of the set of fields defined in constraint
+// unique_main in table time_series, i.e. getTSColNames() - getTSColNamesUnique().
+func getTSColNamesUniqueCompl() []string {
 
 	colSet := map[string]struct{}{}
 
-	for _, col := range getTSMdataCols() { // start with all columns
+	for _, col := range getTSColNames() { // start with all columns
 		colSet[col] = struct{}{}
 	}
 
-	for _, col := range getTSMdataColsUnique() { // remove columns of the unique_main constraint
+	for _, col := range getTSColNamesUnique() { // remove columns of the unique_main constraint
 		delete(colSet, col)
 	}
 

@@ -122,7 +122,7 @@ func scanTSRow(rows *sql.Rows) (*datastore.TSMetadata, int64, error) {
 func getTSMetadata(db *sql.DB, tsIDs []string, tsMdatas map[int64]*datastore.TSMetadata) error {
 	query := fmt.Sprintf(
 		`SELECT id, %s FROM time_series WHERE %s`,
-		strings.Join(getTSMdataCols(), ","),
+		strings.Join(getTSColNames(), ","),
 		createSetFilter("id", tsIDs),
 	)
 

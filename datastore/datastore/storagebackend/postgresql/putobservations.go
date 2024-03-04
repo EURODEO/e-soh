@@ -86,14 +86,14 @@ func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, map[string]inte
 // getTSColValsUnique gets the subset of colName2Val that correspond to the fields defined by
 // constraint unique_main.
 //
-// The order in the returned array is consistent with the array returned by getTSMdataColsUnique().
+// The order in the returned array is consistent with the array returned by getTSColNamesUnique().
 //
 // Returns (column values, nil) upon success, otherwise (..., error).
 func getTSColValsUnique(colName2Val map[string]interface{}) ([]interface{}, error) {
 
 	result := []interface{}{}
 
-	for _, col := range getTSMdataColsUnique() {
+	for _, col := range getTSColNamesUnique() {
 		colVal, found := colName2Val[col]
 		if !found {
 			return []interface{}{},
