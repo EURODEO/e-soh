@@ -1,23 +1,29 @@
 import os
+from functools import cache
 
 import datastore_pb2_grpc as dstore_grpc
 import grpc
 
-# Functions in this file should be made async,
+# Functions in this file should be async,
 # These functions should be the only components that are
 # dependent on external services.
 
 
-async def getObsRequest(get_obs_request):
+# Reuse channel and stub as much as possible, see https://grpc.io/docs/guides/performance/
+@cache
+def get_grpc_stub():
     channel = grpc.aio.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}")
-    grpc_stub = dstore_grpc.DatastoreStub(channel)
-    response = await grpc_stub.GetObservations(get_obs_request)
-    print(response)
+    return dstore_grpc.DatastoreStub(channel)
+
+
+async def get_obs_request(request):
+    grpc_stub = get_grpc_stub()
+    response = await grpc_stub.GetObservations(request)
+
     return response
 
 
-async def getTSAGRequest(get_tsag_request):
-    channel = grpc.aio.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}")
-    grpc_stub = dstore_grpc.DatastoreStub(channel)
-    response = await grpc_stub.GetTSAttrGroups(get_tsag_request)
+async def getTSAGRequest(request):
+    grpc_stub = get_grpc_stub()
+    response = await grpc_stub.GetTSAttrGroups(request)
     return response
