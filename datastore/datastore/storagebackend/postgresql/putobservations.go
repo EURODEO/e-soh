@@ -15,9 +15,13 @@ import (
 )
 
 // getTSColVals gets the time series metadata column values from tsMdata.
-// Returns (column values, nil) upon success, otherwise (..., error).
-func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, error) {
+//
+// Returns (all column values, column values of constraint unique_main, nil) upon success,
+// otherwise (..., ..., error).
+func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, []interface{}, error) {
+
 	colVals := []interface{}{}
+	colName2Val := map[string]interface{}{}
 
 	// --- BEGIN non-string metadata ---------------------------
 
@@ -26,15 +30,15 @@ func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, error) {
 		for _, link := range tsMdata.GetLinks() {
 			var val string
 			switch key {
-			case "href":
+			case "link_href":
 				val = link.GetHref()
-			case "rel":
+			case "link_rel":
 				val = link.GetRel()
-			case "type":
+			case "link_type":
 				val = link.GetType()
-			case "hreflang":
+			case "link_hreflang":
 				val = link.GetHreflang()
-			case "title":
+			case "link_title":
 				val = link.GetTitle()
 			default:
 				return nil, fmt.Errorf("unsupported link key: >%s<", key)
@@ -44,11 +48,14 @@ func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, error) {
 		return linkVals, nil
 	}
 
-	for _, key := range []string{"href", "rel", "type", "hreflang", "title"} {
+	for _, key := range []string{
+		"link_href", "link_rel", "link_type", "link_hreflang", "link_title"} {
 		if linkVals, err := getLinkVals(key); err != nil {
-			return nil, fmt.Errorf("getLinkVals() failed: %v", err)
+			return nil, nil, fmt.Errorf("getLinkVals() failed: %v", err)
 		} else {
-			colVals = append(colVals, pq.StringArray(linkVals))
+			vals := pq.StringArray(linkVals)
+			colVals = append(colVals, vals)
+			colName2Val[common.ToSnakeCase(key)] = vals
 		}
 	}
 
@@ -63,31 +70,67 @@ func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, error) {
 		if method.IsValid() {
 			val, ok := method.Call([]reflect.Value{})[0].Interface().(string)
 			if !ok {
-				return nil, fmt.Errorf(
+				return nil, nil, fmt.Errorf(
 					"method.Call() failed for method %s; failed to return string", methodName)
 			}
 			colVals = append(colVals, val)
+			colName2Val[common.ToSnakeCase(field.Name)] = val
 		}
 	}
 
 	// --- END string metadata ---------------------------
 
-	return colVals, nil
+	// derive colValsUnique from colName2Val
+	colValsUnique, err := getTSColValsUnique(colName2Val)
+	if err != nil {
+		return nil, nil, fmt.Errorf("getTSColValsUnique() failed: %v", err)
+	}
+
+	return colVals, colValsUnique, nil
 }
 
-// getTimeSeriesID retrieves the ID of the row in table time_series that matches tsMdata,
-// inserting a new row if necessary. The ID is first looked up in a cache in order to save
-// unnecessary database access.
+// getTSColValsUnique gets the subset of colName2Val that correspond to the fields defined by
+// constraint unique_main.
+//
+// The order in the returned array is consistent with the array returned by getTSColNamesUnique().
+//
+// Returns (column values, nil) upon success, otherwise (..., error).
+func getTSColValsUnique(colName2Val map[string]interface{}) ([]interface{}, error) {
+
+	result := []interface{}{}
+
+	for _, col := range getTSColNamesUnique() {
+		colVal, found := colName2Val[col]
+		if !found {
+			return []interface{}{},
+				fmt.Errorf("column '%s' not found in colName2Val: %v", col, colName2Val)
+		}
+		result = append(result, colVal)
+	}
+
+	return result, nil
+}
+
+// upsertTS retrieves the ID of the row in table time_series that matches tsMdata wrt.
+// the fields - U - defined by constraint unique_main, inserting a new row if necessary.
+//
+// If the row already existed, the function ensures that the row is updated with the tsMdata
+// fields - UC - that are not in U (i.e. the complement of U).
+//
+// The ID is first looked up in a cache (where the key consists of all fields (U + UC)) in order to
+// save unnecessary database access. In other words, a cache hit means that the row for
+// time series not only existed, but was also already fully updated according to tsMdata.
+// And vice versa: a cache hit means the row either didn't exist at all or wasn't fully updated
+// according to tsMdata.
+//
 // Returns (ID, nil) upon success, otherwise (..., error).
-func getTimeSeriesID(
+func upsertTS(
 	db *sql.DB, tsMdata *datastore.TSMetadata, cache map[string]int64) (int64, error) {
 
-	colVals, err := getTSColVals(tsMdata)
+	colVals, colValsUnique, err := getTSColVals(tsMdata)
 	if err != nil {
 		return -1, fmt.Errorf("getTSColVals() failed: %v", err)
 	}
-
-	var id int64 = -1
 
 	// first try a cache lookup
 	cacheKey := fmt.Sprintf("%v", colVals)
@@ -97,52 +140,30 @@ func getTimeSeriesID(
 
 	// then access database ...
 
-	cols := getTSMdataCols()
-
-	formats := make([]string, len(colVals))
-	for i := 0; i < len(colVals); i++ {
-		formats[i] = "$%d"
-	}
-
-	// Get a Tx for making transaction requests.
+	// start transaction
 	tx, err := db.Begin()
 	if err != nil {
 		return -1, fmt.Errorf("db.Begin() failed: %v", err)
 	}
-	// Defer a rollback in case anything fails.
 	defer tx.Rollback()
 
-	// NOTE: the 'WHERE false' is a feature that ensures that another transaction cannot
-	// delete the row
-	insertCmd := fmt.Sprintf(`
-		INSERT INTO time_series (%s) VALUES (%s)
-		ON CONFLICT ON CONSTRAINT unique_main DO UPDATE SET %s = EXCLUDED.%s WHERE false
-		`,
-		strings.Join(cols, ","),
-		strings.Join(createPlaceholders(formats), ","),
-		cols[0],
-		cols[0],
-	)
-	fmt.Printf("insertCmd: %s; len(cols): %d; len(phs): %d\n",
-		insertCmd, len(cols), len(createPlaceholders(formats)))
+	// STEP 1: upsert row
 
-	_, err = tx.Exec(insertCmd, colVals...)
+	_, err = tx.Exec(upsertTSInsertCmd, colVals...)
 	if err != nil {
 		return -1, fmt.Errorf("tx.Exec() failed: %v", err)
 	}
 
-	whereExpr := []string{}
-	for i, col := range getTSMdataCols() {
-		whereExpr = append(whereExpr, fmt.Sprintf("%s=$%d", col, i+1))
-	}
+	// STEP 2: retrieve ID of upserted row
 
-	selectCmd := fmt.Sprintf(`SELECT id FROM time_series WHERE %s`, strings.Join(whereExpr, " AND "))
-	err = tx.QueryRow(selectCmd, colVals...).Scan(&id)
+	var id int64
+
+	err = tx.QueryRow(upsertTSSelectCmd, colValsUnique...).Scan(&id)
 	if err != nil {
 		return -1, fmt.Errorf("tx.QueryRow() failed: %v", err)
 	}
 
-	// Commit the transaction.
+	// commit transaction
 	if err = tx.Commit(); err != nil {
 		return -1, fmt.Errorf("tx.Commit() failed: %v", err)
 	}
@@ -203,20 +224,17 @@ func getGeoPointID(db *sql.DB, point *datastore.Point, cache map[string]int64) (
 
 	// NOTE: the 'WHERE false' is a feature that ensures that another transaction cannot
 	// delete the row
-	insertCmd := fmt.Sprintf(`
+	insertCmd := `
 		INSERT INTO geo_point (point) VALUES (ST_MakePoint($1, $2)::geography)
-		ON CONFLICT (point) DO UPDATE SET point = EXCLUDED.point WHERE false`,
-	)
+		ON CONFLICT (point) DO UPDATE SET point = EXCLUDED.point WHERE false
+	`
 
 	_, err = tx.Exec(insertCmd, point.GetLon(), point.GetLat())
 	if err != nil {
 		return -1, fmt.Errorf("tx.Exec() failed: %v", err)
 	}
 
-	selectCmd := fmt.Sprintf(`
-		SELECT id FROM geo_point WHERE point = ST_MakePoint($1, $2)::geography
-		`,
-	)
+	selectCmd := "SELECT id FROM geo_point WHERE point = ST_MakePoint($1, $2)::geography"
 
 	err = tx.QueryRow(selectCmd, point.GetLon(), point.GetLat()).Scan(&id)
 	if err != nil {
@@ -289,9 +307,10 @@ func createInsertVals(
 	}
 }
 
-// upsertObsForTS inserts new observations and/or updates existing ones.
+// upsertObs inserts new observations and/or updates existing ones.
+//
 // Returns nil upon success, otherwise error.
-func upsertObsForTS(
+func upsertObs(
 	db *sql.DB, tsID int64, obsTimes *[]*timestamppb.Timestamp, gpIDs *[]int64,
 	omds *[]*datastore.ObsMetadata) error {
 
@@ -387,9 +406,9 @@ func (sbe *PostgreSQL) PutObservations(request *datastore.PutObsRequest) error {
 				obsTime.AsTime(), hiTime, loTime, common.GetValidTimeRangeSettings())
 		}
 
-		tsID, err := getTimeSeriesID(sbe.Db, obs.GetTsMdata(), tsIDCache)
+		tsID, err := upsertTS(sbe.Db, obs.GetTsMdata(), tsIDCache)
 		if err != nil {
-			return fmt.Errorf("getTimeSeriesID() failed: %v", err)
+			return fmt.Errorf("upsertTS() failed: %v", err)
 		}
 
 		gpID, err := getGeoPointID(sbe.Db, obs.GetObsMdata().GetGeoPoint(), gpIDCache)
@@ -421,9 +440,9 @@ func (sbe *PostgreSQL) PutObservations(request *datastore.PutObsRequest) error {
 
 	// insert/update observations for each time series
 	for tsID, tsInfo := range tsInfos {
-		if err := upsertObsForTS(
+		if err := upsertObs(
 			sbe.Db, tsID, tsInfo.obsTimes, tsInfo.gpIDs, tsInfo.omds); err != nil {
-			return fmt.Errorf("upsertObsForTS()) failed: %v", err)
+			return fmt.Errorf("upsertObs() failed: %v", err)
 		}
 	}
 
