@@ -21,7 +21,26 @@ def actual_response_is_expected_response(actual_response, expected_path, **kwarg
 
     diff = DeepDiff(expected_json, actual_response.json(), **kwargs)
     assert diff == {}
+    # TODO: maybe this check should be a unit test instead of integration.
+    # Deep diff does not check dict keys for order, manually validate if the order is correct.
+    validate_if_the_parameters_are_in_alphabetic_order(actual_response=actual_response, expected_path=expected_path)
 
+def validate_if_the_parameters_are_in_alphabetic_order(actual_response, expected_path):
+    """Python dictionaries used to be unordered. Resulting that the keys of dictionaries are not checked for the right
+    order. Therefore dictionaries where the parameter names are the keys are checked manually for the correct sequence
+    in this function."""
+    actual_json = actual_response.json()
+    file_path = Path(Path(__file__).parent, expected_path).resolve()
+    with open(file_path) as file:
+        expected_json = json.load(file)
+
+        if (actual_parameters := actual_json.get("parameters")) and (expected_parameters := expected_json.get("parameters")):
+            assert list(actual_parameters.keys()) == sorted(expected_parameters.keys())
+        elif (actual_coverages := actual_json.get("coverages")) and (expected_coverages := expected_json.get("coverages")):
+            for actual_covjson, expected_covjson in zip(actual_coverages, expected_coverages):
+                actual_parameters = actual_covjson["parameters"].keys()
+                expected_parameters = expected_covjson["parameters"].keys()
+                assert list(actual_parameters) == sorted(expected_parameters)
 
 def test_get_all_collections():
     actual_response = requests.get(url=BASE_URL + "/collections")
