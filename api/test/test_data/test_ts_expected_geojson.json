@@ -1,0 +1,122 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.8723225499118,
+                    52.0548617826
+                ]
+            },
+            "properties": {
+                "version": "",
+                "type": "",
+                "summary": "",
+                "keywords": "temperature, pressure, relative humidity, visibility, wind speed, wind direction, wind gust",
+                "keywords_vocabulary": "http://data.knmi.nl",
+                "conventions": "",
+                "naming_authority": "nl.knmi",
+                "creator_type": "Institution",
+                "creator_name": "KNMI",
+                "creator_email": "datacentrum@knmi.nl",
+                "creator_url": "http://data.knmi.nl",
+                "institution": "Royal Netherlands Meteorological Institute (KNMI)",
+                "project": "",
+                "source": "Royal Netherlands Meteorological Institute (KNMI)",
+                "platform": "06275",
+                "platform_vocabulary": "",
+                "standard_name": "total_downwelling_shortwave_flux_in_air",
+                "unit": "W m-2",
+                "instrument": "qg",
+                "instrument_vocabulary": "",
+                "level": "2.0",
+                "period": "PT10M",
+                "function": "mean",
+                "parameter_name": "total_downwelling_shortwave_flux_in_air_2.0_mean_PT10M",
+                "history": "",
+                "processing_level": ""
+            },
+            "id": "7756b084048394dbe46255f1a409b18d"
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.8723225499118,
+                    52.0548617826
+                ]
+            },
+            "properties": {
+                "version": "",
+                "type": "",
+                "summary": "",
+                "keywords": "temperature, pressure, relative humidity, visibility, wind speed, wind direction, wind gust",
+                "keywords_vocabulary": "http://data.knmi.nl",
+                "conventions": "",
+                "naming_authority": "nl.knmi",
+                "creator_type": "Institution",
+                "creator_name": "KNMI",
+                "creator_email": "datacentrum@knmi.nl",
+                "creator_url": "http://data.knmi.nl",
+                "institution": "Royal Netherlands Meteorological Institute (KNMI)",
+                "project": "",
+                "source": "Royal Netherlands Meteorological Institute (KNMI)",
+                "platform": "06275",
+                "platform_vocabulary": "",
+                "standard_name": "rainfall_amount",
+                "unit": "mm",
+                "instrument": "R24H",
+                "instrument_vocabulary": "",
+                "level": "2.0",
+                "period": "PT24H",
+                "function": "point",
+                "parameter_name": "rainfall_amount_2.0_point_PT24H",
+                "history": "",
+                "processing_level": ""
+            },
+            "id": "94dd23dfd75e4b780a94f0d19a2bcbe9"
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.8723225499118,
+                    52.0548617826
+                ]
+            },
+            "properties": {
+                "version": "",
+                "type": "",
+                "summary": "",
+                "keywords": "temperature, pressure, relative humidity, visibility, wind speed, wind direction, wind gust",
+                "keywords_vocabulary": "http://data.knmi.nl",
+                "conventions": "",
+                "naming_authority": "nl.knmi",
+                "creator_type": "Institution",
+                "creator_name": "KNMI",
+                "creator_email": "datacentrum@knmi.nl",
+                "creator_url": "http://data.knmi.nl",
+                "institution": "Royal Netherlands Meteorological Institute (KNMI)",
+                "project": "",
+                "source": "Royal Netherlands Meteorological Institute (KNMI)",
+                "platform": "06275",
+                "platform_vocabulary": "",
+                "standard_name": "air_temperature",
+                "unit": "degrees Celsius",
+                "instrument": "tx",
+                "instrument_vocabulary": "",
+                "level": "2.0",
+                "period": "PT10M",
+                "function": "maximum",
+                "parameter_name": "air_temperature_2.0_maximum_PT10M",
+                "history": "",
+                "processing_level": ""
+            },
+            "id": "d036b10ac4f6e62049b9a496f04e0a81"
+        }
+    ]
+}

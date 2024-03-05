@@ -1,0 +1,109 @@
+{
+    "observations": [
+        {
+            "ts_mdata": {
+                "title": "Global Solar Radiation 10 Min Average",
+                "keywords": "temperature, pressure, relative humidity, visibility, wind speed, wind direction, wind gust",
+                "keywords_vocabulary": "http://data.knmi.nl",
+                "naming_authority": "nl.knmi",
+                "creator_name": "KNMI",
+                "creator_email": "datacentrum@knmi.nl",
+                "creator_url": "http://data.knmi.nl",
+                "institution": "Royal Netherlands Meteorological Institute (KNMI)",
+                "source": "Royal Netherlands Meteorological Institute (KNMI)",
+                "platform": "06275",
+                "standard_name": "total_downwelling_shortwave_flux_in_air",
+                "unit": "W m-2",
+                "instrument": "qg",
+                "level": "2.0",
+                "period": "PT10M",
+                "function": "mean",
+                "parameter_name": "total_downwelling_shortwave_flux_in_air_2.0_mean_PT10M",
+                "creator_type": "Institution"
+            },
+            "obs_mdata": [
+                {
+                    "geo_point": {
+                        "lat": 52.0548617826,
+                        "lon": 5.8723225499118
+                    },
+                    "obstime_instant": "2022-12-31T23:50:00Z",
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "id": "9983aa0b-3238-4eef-ada3-f139c5774255",
+                    "metadata_id": "7756b084048394dbe46255f1a409b18d",
+                    "value": "1.0"
+                }
+            ]
+        },
+        {
+            "ts_mdata": {
+                "title": "Rainfall in last 24 Hours",
+                "keywords": "temperature, pressure, relative humidity, visibility, wind speed, wind direction, wind gust",
+                "keywords_vocabulary": "http://data.knmi.nl",
+                "naming_authority": "nl.knmi",
+                "creator_name": "KNMI",
+                "creator_email": "datacentrum@knmi.nl",
+                "creator_url": "http://data.knmi.nl",
+                "institution": "Royal Netherlands Meteorological Institute (KNMI)",
+                "source": "Royal Netherlands Meteorological Institute (KNMI)",
+                "platform": "06275",
+                "standard_name": "rainfall_amount",
+                "unit": "mm",
+                "instrument": "R24H",
+                "level": "2.0",
+                "period": "PT24H",
+                "function": "point",
+                "parameter_name": "rainfall_amount_2.0_point_PT24H",
+                "creator_type": "Institution"
+            },
+            "obs_mdata": [
+                {
+                    "geo_point": {
+                        "lat": 52.0548617826,
+                        "lon": 5.8723225499118
+                    },
+                    "obstime_instant": "2022-12-31T23:50:00Z",
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "id": "aaac0654-2018-4aa6-90bd-fdf813e7d88e",
+                    "metadata_id": "94dd23dfd75e4b780a94f0d19a2bcbe9",
+                    "value": "25.8043"
+                }
+            ]
+        },
+        {
+            "ts_mdata": {
+                "title": "Ambient Temperature 1.5m 10 Min Maximum",
+                "keywords": "temperature, pressure, relative humidity, visibility, wind speed, wind direction, wind gust",
+                "keywords_vocabulary": "http://data.knmi.nl",
+                "naming_authority": "nl.knmi",
+                "creator_name": "KNMI",
+                "creator_email": "datacentrum@knmi.nl",
+                "creator_url": "http://data.knmi.nl",
+                "institution": "Royal Netherlands Meteorological Institute (KNMI)",
+                "source": "Royal Netherlands Meteorological Institute (KNMI)",
+                "platform": "06275",
+                "standard_name": "air_temperature",
+                "unit": "degrees Celsius",
+                "instrument": "tx",
+                "level": "2.0",
+                "period": "PT10M",
+                "function": "maximum",
+                "parameter_name": "air_temperature_2.0_maximum_PT10M",
+                "creator_type": "Institution"
+            },
+            "obs_mdata": [
+                {
+                    "geo_point": {
+                        "lat": 52.0548617826,
+                        "lon": 5.8723225499118
+                    },
+                    "obstime_instant": "2022-12-31T23:50:00Z",
+                    "pubtime": "1970-01-01T00:00:00Z",
+                    "id": "8f70bb07-95df-4406-9094-863a55b290b1",
+                    "metadata_id": "d036b10ac4f6e62049b9a496f04e0a81",
+                    "value": "15.8"
+                }
+            ]
+        }
+    ]
+}
