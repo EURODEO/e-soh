@@ -52,23 +52,6 @@
                 ]
             },
             "parameters": {
-                "wind_speed_10_mean_PT10M": {
-                    "type": "Parameter",
-                    "description": {
-                        "en": "Wind Speed at 10m 10 Min Average"
-                    },
-                    "observedProperty": {
-                        "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed",
-                        "label": {
-                            "en": "ff"
-                        }
-                    },
-                    "unit": {
-                        "label": {
-                            "en": "m s-1"
-                        }
-                    }
-                },
                 "relative_humidity_2.0_mean_PT1M": {
                     "type": "Parameter",
                     "description": {
@@ -83,6 +66,23 @@
                     "unit": {
                         "label": {
                             "en": "%"
+                        }
+                    }
+                },
+                "wind_speed_10_mean_PT10M": {
+                    "type": "Parameter",
+                    "description": {
+                        "en": "Wind Speed at 10m 10 Min Average"
+                    },
+                    "observedProperty": {
+                        "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed",
+                        "label": {
+                            "en": "ff"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "m s-1"
                         }
                     }
                 }
@@ -187,23 +187,6 @@
                 ]
             },
             "parameters": {
-                "wind_speed_10_mean_PT10M": {
-                    "type": "Parameter",
-                    "description": {
-                        "en": "Wind Speed at 10m 10 Min Average"
-                    },
-                    "observedProperty": {
-                        "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed",
-                        "label": {
-                            "en": "ff"
-                        }
-                    },
-                    "unit": {
-                        "label": {
-                            "en": "m s-1"
-                        }
-                    }
-                },
                 "relative_humidity_2.0_mean_PT1M": {
                     "type": "Parameter",
                     "description": {
@@ -218,6 +201,23 @@
                     "unit": {
                         "label": {
                             "en": "%"
+                        }
+                    }
+                },
+                "wind_speed_10_mean_PT10M": {
+                    "type": "Parameter",
+                    "description": {
+                        "en": "Wind Speed at 10m 10 Min Average"
+                    },
+                    "observedProperty": {
+                        "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed",
+                        "label": {
+                            "en": "ff"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "m s-1"
                         }
                     }
                 }
@@ -273,23 +273,6 @@
         }
     ],
     "parameters": {
-        "wind_speed_10_mean_PT10M": {
-            "type": "Parameter",
-            "description": {
-                "en": "Wind Speed at 10m 10 Min Average"
-            },
-            "observedProperty": {
-                "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed",
-                "label": {
-                    "en": "ff"
-                }
-            },
-            "unit": {
-                "label": {
-                    "en": "m s-1"
-                }
-            }
-        },
         "relative_humidity_2.0_mean_PT1M": {
             "type": "Parameter",
             "description": {
@@ -304,6 +287,23 @@
             "unit": {
                 "label": {
                     "en": "%"
+                }
+            }
+        },
+        "wind_speed_10_mean_PT10M": {
+            "type": "Parameter",
+            "description": {
+                "en": "Wind Speed at 10m 10 Min Average"
+            },
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed",
+                "label": {
+                    "en": "ff"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "m s-1"
                 }
             }
         }
