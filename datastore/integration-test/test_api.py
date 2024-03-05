@@ -154,7 +154,7 @@ def test_items_get_area():
     actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items" f"?bbox={bbox}")
 
     assert actual_response.status_code == 200
-    actual_response_is_expected_response(actual_response, "response/collection/items/200/metadata_within_area")
+    actual_response_is_expected_response(actual_response, "response/collection/items/200/items_within_area.json")
 
 
 def test_items_get_id():
@@ -167,7 +167,7 @@ def test_items_get_id():
 
     assert actual_response.status_code == 200
     actual_response_is_expected_response(
-        actual_response, "response/collection/items/200/metadata_single_id"  # TODO: create response file
+        actual_response, "response/metadata/200/items_single_id.json"  # TODO: fill response file
     )
 
 
@@ -182,7 +182,7 @@ def test_items_get_area_with_one_parameter_name():
     assert actual_response.status_code == 200
     actual_response_is_expected_response(
         actual_response,
-        "response/collection/items/200/metadata_area_with_one_parameter_name",  # TODO: create response file
+        "response/collection/items/200/items_area_with_one_parameter_name.json",  # TODO: create response file
     )
 
 
@@ -197,15 +197,17 @@ def test_items_get_one_platform():
     )
 
 
-def test_items_get_within_datetime():
-    collection_id = "observations"
-    datetime = "2022-12-31T00:50:00Z/2022-12-31T02:10:00Z"
-    actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items" f"?datetime={datetime}")
+# This test can not be made at the moment. Datetime have to limitation on the number
+# ts that is returned due to how temporal_mode latest is implemented.
+# def test_items_get_within_datetime():
+#     collection_id = "observations"
+#     datetime = "2022-12-31T00:50:00Z/2022-12-31T02:10:00Z"
+#     actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items" f"?datetime={datetime}")
 
-    assert actual_response.status_code == 200
-    actual_response_is_expected_response(
-        actual_response, "response/collection/items/200/metadata_in_datetime_range"  # TODO: create response file
-    )
+#     assert actual_response.status_code == 200
+#     actual_response_is_expected_response(
+#         actual_response, "response/collection/items/200/metadata_in_datetime_range"  # TODO: create response file
+#     )
 
 
 def test_items_get_empty_response():
@@ -216,3 +218,4 @@ def test_items_get_empty_response():
     )
 
     assert actual_response.status_code == 404
+    actual_response_is_expected_response(actual_response, "response/metadata/404/empty_response.json")
