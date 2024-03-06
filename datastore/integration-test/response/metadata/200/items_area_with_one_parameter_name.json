@@ -1,1 +1,39 @@
-{}
+{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            5.8723225499118,
+            52.0548617826
+        ]
+    },
+    "properties": {
+        "version": "",
+        "type": "",
+        "summary": "",
+        "keywords": "temperature, pressure, relative humidity, visibility, wind speed, wind direction, wind gust",
+        "keywords_vocabulary": "http://data.knmi.nl",
+        "conventions": "",
+        "naming_authority": "nl.knmi",
+        "creator_type": "Institution",
+        "creator_name": "KNMI",
+        "creator_email": "datacentrum@knmi.nl",
+        "creator_url": "http://data.knmi.nl",
+        "institution": "Royal Netherlands Meteorological Institute (KNMI)",
+        "project": "",
+        "source": "Royal Netherlands Meteorological Institute (KNMI)",
+        "platform": "06275",
+        "platform_vocabulary": "",
+        "standard_name": "air_temperature",
+        "unit": "degrees Celsius",
+        "instrument": "Tn12",
+        "instrument_vocabulary": "",
+        "level": "2.0",
+        "period": "PT12H",
+        "function": "minimum",
+        "parameter_name": "air_temperature_2.0_minimum_PT12H",
+        "history": "",
+        "processing_level": ""
+    },
+    "id": "9785b0eb4316635ca9625b9beef17246"
+}

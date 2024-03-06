@@ -7,7 +7,7 @@ from fastapi import Path
 from fastapi import Query
 from geojson_pydantic import Feature
 from geojson_pydantic import FeatureCollection
-from grpc_getter import getObsRequest
+from grpc_getter import get_obs_request
 from shapely import geometry
 from utilities import get_datetime_range
 
@@ -64,7 +64,7 @@ async def search_timeseries(
     if datetime:
         range = get_datetime_range(datetime)
 
-    get_obs_request = dstore.GetObsRequest(
+    obs_request = dstore.GetObsRequest(
         filter=dict(
             metadata_id=dstore.Strings(values=ids.split(",") if ids else ids),
             parameter_name=dstore.Strings(values=parameter_name.split(",") if parameter_name else None),
@@ -87,7 +87,7 @@ async def search_timeseries(
         temporal_mode="latest",
     )
 
-    time_series = await getObsRequest(get_obs_request)
+    time_series = await get_obs_request(obs_request)
 
     return formatters.metadata_formatters[f](time_series)
 
@@ -99,7 +99,7 @@ async def get_time_series_by_id(
         formatters.Metadata_Formats, Query(description="Specify return format")
     ] = formatters.Metadata_Formats.geojson,
 ):
-    get_obs_request = dstore.GetObsRequest(filter=dict(metadata_id=dstore.Strings(values=[item_id])))
-    time_series = await getObsRequest(get_obs_request)
+    obs_request = dstore.GetObsRequest(filter=dict(metadata_id=dstore.Strings(values=[item_id])))
+    time_series = await get_obs_request(obs_request)
 
     return formatters.metadata_formatters[f](time_series)
