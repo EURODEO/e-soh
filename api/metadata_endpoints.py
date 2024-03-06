@@ -48,7 +48,7 @@ async def get_collection_metadata(request, is_self) -> Collection:
 
     for obs in ts_response.observations:
         parameter = Parameter(
-            description=obs.ts_mdata.title,
+            description="For detailed description see observedProperty id",
             observedProperty=ObservedProperty(
                 id=f"https://vocab.nerc.ac.uk/standard_name/{obs.ts_mdata.standard_name}",
                 label=obs.ts_mdata.instrument,
