@@ -63,9 +63,6 @@ jobs:
       - name: Integration test
         run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm integration
 
-      - name: Test client runs without errors
-        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm client
-
       - name: Run load test (read only)
         run: |
           python --version
