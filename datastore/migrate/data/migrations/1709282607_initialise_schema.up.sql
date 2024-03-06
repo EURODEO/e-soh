@@ -14,15 +14,27 @@ CREATE TABLE time_series (
 	-- --- END non-string metadata -----------------
 
 	-- --- BEGIN string metadata (handleable with reflection) -----------------
-	version TEXT NOT NULL, -- required
-	type TEXT NOT NULL, -- required
+
+	-- --- BEGIN unique_main constraint ------
+	naming_authority TEXT NOT NULL,
+	platform TEXT NOT NULL,
+	platform_vocabulary TEXT NOT NULL,
+	standard_name TEXT NOT NULL,
+	level TEXT NOT NULL,
+	function TEXT NOT NULL,
+	period TEXT NOT NULL,
+	instrument TEXT NOT NULL,
+	instrument_vocabulary TEXT NOT NULL,
+	-- --- END unique_main constraint ------
+
+	version TEXT NOT NULL,
+	type TEXT NOT NULL,
 	title TEXT,
-	summary TEXT NOT NULL, -- required
-	keywords TEXT NOT NULL, -- required
-	keywords_vocabulary TEXT NOT NULL, -- required
-	license TEXT NOT NULL, -- required
-	conventions TEXT NOT NULL, -- required
-	naming_authority TEXT NOT NULL, -- required
+	summary TEXT NOT NULL,
+	keywords TEXT NOT NULL,
+	keywords_vocabulary TEXT NOT NULL,
+	license TEXT NOT NULL,
+	conventions TEXT NOT NULL,
 	creator_type TEXT,
 	creator_name TEXT,
 	creator_email TEXT,
@@ -30,21 +42,15 @@ CREATE TABLE time_series (
 	institution TEXT,
 	project TEXT,
 	source TEXT,
-	platform TEXT NOT NULL, -- required
-	platform_vocabulary TEXT NOT NULL, -- required
-	standard_name TEXT,
 	unit TEXT,
-	instrument TEXT NOT NULL,
-	instrument_vocabulary TEXT NOT NULL,
+	parameter_name TEXT NOT NULL,
+
 	-- --- END string metadata -----------------
 
 	-- --- END metadata fields that usually don't vary with obs time ---
 
-	CONSTRAINT unique_main UNIQUE NULLS NOT DISTINCT (version, type, title, summary, keywords,
-	keywords_vocabulary, license, conventions, naming_authority, creator_type, creator_name,
-	creator_email, creator_url, institution, project, source, platform, platform_vocabulary,
-	standard_name, unit, instrument, instrument_vocabulary, link_href, link_rel, link_type,
-	link_hreflang, link_title)
+	CONSTRAINT unique_main UNIQUE NULLS NOT DISTINCT (naming_authority, platform, standard_name,
+		level, function, period, instrument)
 );
 
 CREATE TABLE geo_point (

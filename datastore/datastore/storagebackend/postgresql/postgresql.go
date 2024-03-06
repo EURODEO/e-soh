@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"datastore/common"
 	"fmt"
+	"regexp"
 	"strings"
 	"time"
 
@@ -19,6 +20,97 @@ type PostgreSQL struct {
 // Description ... (see documentation in StorageBackend interface)
 func (sbe *PostgreSQL) Description() string {
 	return "PostgreSQL database"
+}
+
+// setTSUniqueMainCols extracts into tsStringMdataPBNamesUnique the columns comprising constraint
+// unique_main in table time_series.
+//
+// Returns nil upon success, otherwise error.
+func (sbe *PostgreSQL) setTSUniqueMainCols() error {
+
+	query := `
+		SELECT pg_get_constraintdef(c.oid)
+		FROM pg_constraint c
+		JOIN pg_namespace n ON n.oid = c.connamespace
+		WHERE conrelid::regclass::text = 'time_series'
+			AND conname = 'unique_main'
+			AND contype = 'u'
+	`
+
+	/* typical example of running the above query:
+
+	$ PGPASSWORD=mysecretpassword psql -h localhost -p 5433 -U postgres -d data -c \
+	> "SELECT pg_get_constraintdef(c.oid) FROM pg_constraint c JOIN pg_namespace n
+	> ON n.oid = c.connamespace WHERE conrelid::regclass::text = 'time_series'
+	> AND conname = 'unique_main' AND contype = 'u'"
+									              pg_get_constraintdef
+	-----------------------------------------------------------------------------------------------
+	-------------
+	UNIQUE NULLS NOT DISTINCT (naming_authority, platform, standard_name, level, function, period,
+		instrument)
+		(1 row)
+
+	*/
+
+	row := sbe.Db.QueryRow(query)
+
+	var result string
+	err := row.Scan(&result)
+	if err != nil {
+		return fmt.Errorf("row.Scan() failed: %v", err)
+	}
+
+	pattern := `\((.*)\)`
+	re := regexp.MustCompile(pattern)
+	matches := re.FindStringSubmatch(result)
+	if len(matches) != 2 {
+		return fmt.Errorf("'%s' didn't match regexp pattern '%s'", result, pattern)
+	}
+
+	// create tsStringMdataPBNamesUnique
+	tsStringMdataPBNamesUnique = strings.Split(matches[1], ",")
+	for i := 0; i < len(tsStringMdataPBNamesUnique); i++ {
+		tsStringMdataPBNamesUnique[i] = strings.TrimSpace(tsStringMdataPBNamesUnique[i])
+	}
+
+	return nil
+}
+
+// setUpsertTSInsertCmd sets upsertTSInsertCmd to be used by upsertTS.
+func setUpsertTSInsertCmd() {
+
+	cols := getTSColNames()
+
+	formats := make([]string, len(cols))
+	for i := 0; i < len(cols); i++ {
+		formats[i] = "$%d"
+	}
+
+	updateExpr := []string{}
+	for _, col := range getTSColNamesUniqueCompl() {
+		updateExpr = append(updateExpr, fmt.Sprintf("%s = EXCLUDED.%s", col, col))
+	}
+
+	upsertTSInsertCmd = fmt.Sprintf(`
+		INSERT INTO time_series (%s) VALUES (%s)
+		ON CONFLICT ON CONSTRAINT unique_main DO UPDATE SET %s
+		`,
+		strings.Join(cols, ","),
+		strings.Join(createPlaceholders(formats), ","),
+		strings.Join(updateExpr, ","),
+	)
+}
+
+// setUpsertTSSelectCmd sets upsertTSSelectCmd to be used by upsertTS.
+func setUpsertTSSelectCmd() {
+
+	whereExpr := []string{}
+	for i, col := range getTSColNamesUnique() {
+		whereExpr = append(whereExpr, fmt.Sprintf("%s=$%d", col, i+1))
+	}
+
+	upsertTSSelectCmd = fmt.Sprintf(
+		`SELECT id FROM time_series WHERE %s`, strings.Join(whereExpr, " AND "))
 }
 
 // openDB opens database identified by host/port/user/password/dbname.
@@ -58,11 +150,19 @@ func NewPostgreSQL() (*PostgreSQL, error) {
 		return nil, fmt.Errorf("sbe.Db.Ping() failed: %v", err)
 	}
 
+	err = sbe.setTSUniqueMainCols()
+	if err != nil {
+		return nil, fmt.Errorf("sbe.setTSUniqueMainCols() failed: %v", err)
+	}
+
+	setUpsertTSInsertCmd()
+	setUpsertTSSelectCmd()
+
 	return sbe, nil
 }
 
-// getTSMdataCols returns time series metadata column names.
-func getTSMdataCols() []string {
+// getTSColNames returns time series metadata column names.
+func getTSColNames() []string {
 
 	// initialize cols with non-string metadata
 	cols := []string{
@@ -77,6 +177,38 @@ func getTSMdataCols() []string {
 	cols = append(cols, tsStringMdataPBNames...)
 
 	return cols
+}
+
+// getTSColNamesUnique returns the fields defined in constraint unique_main in table
+// time_series.
+func getTSColNamesUnique() []string {
+	return tsStringMdataPBNamesUnique
+}
+
+// getTSColNamesUniqueCompl returns the complement of the set of fields defined in constraint
+// unique_main in table time_series, i.e. getTSColNames() - getTSColNamesUnique().
+func getTSColNamesUniqueCompl() []string {
+
+	colSet := map[string]struct{}{}
+
+	for _, col := range getTSColNames() { // start with all columns
+		colSet[col] = struct{}{}
+	}
+
+	for _, col := range getTSColNamesUnique() { // remove columns of the unique_main constraint
+		delete(colSet, col)
+	}
+
+	// return remaining columns
+
+	result := make([]string, len(colSet))
+	i := 0
+	for col := range colSet {
+		result[i] = col
+		i++
+	}
+
+	return result
 }
 
 // createPlaceholders returns the list of n placeholder strings for
@@ -143,7 +275,7 @@ func cleanup(db *sql.DB) error {
 // considerCleanup considers if cleanup() should be called.
 func considerCleanup(db *sql.DB) error {
 	// call cleanup() if at least cleanupInterval has passed since the last time it was called
-	if time.Duration(time.Now().Sub(lastCleanupTime)) > cleanupInterval {
+	if time.Since(lastCleanupTime) > cleanupInterval {
 		if err := cleanup(db); err != nil {
 			return fmt.Errorf("cleanup() failed: %v", err)
 		}
