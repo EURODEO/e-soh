@@ -40,14 +40,19 @@ router = APIRouter(prefix="/collections/observations")
 # We can currently only query data, even if we only need metadata like for this endpoint
 # Maybe it would be better to only query a limited set of data instead of everything (meaning 24 hours)
 async def get_locations(
-    bbox: Annotated[str, Query(example="5.0,52.0,6.0,52.1")]
+    bbox: Annotated[str | None, Query(example="5.0,52.0,6.0,52.1")] = None
 ) -> EDRFeatureCollection:  # Hack to use string
-    left, bottom, right, top = map(str.strip, bbox.split(","))
-    poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
+    if bbox:
+        left, bottom, right, top = map(str.strip, bbox.split(","))
+        poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
 
     ts_request = dstore.GetObsRequest(
-        spatial_area=dstore.Polygon(
-            points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords],
+        spatial_area=(
+            dstore.Polygon(
+                points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords],
+            )
+            if bbox
+            else None
         ),
         temporal_mode="latest",
     )
