@@ -3,10 +3,10 @@ import os
 from enum import Enum
 
 import xarray as xr
+from esoh.api.model import JsonMessageSchema
 from esoh.ingest.main import IngestToPipeline
 from fastapi import FastAPI
 from fastapi import UploadFile
-from model import JsonMessageSchema
 from pydantic import BaseModel
 
 

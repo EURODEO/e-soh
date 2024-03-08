@@ -36,7 +36,7 @@ class IngestToPipeline:
         else:
             self.schema_path = schema_path
         if not schema_file:
-            self.schema_file = "e-soh-message-spec.json"
+            self.schema_file = "e-soh-ingest-spec.json"
         else:
             self.schema_file = schema_file
 
