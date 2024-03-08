@@ -74,7 +74,7 @@
             "parameter_names": {
                 "air_pressure_at_sea_level_1_mean_PT1M": {
                     "type": "Parameter",
-                    "description": "Air Pressure at Sea Level 1 Min Average",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "hPa"
                     },
@@ -85,7 +85,7 @@
                 },
                 "air_temperature_0.1_minimum_PT10M": {
                     "type": "Parameter",
-                    "description": "Grass Temperature 10cm 10 Min Minimum",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "degrees Celsius"
                     },
@@ -96,7 +96,7 @@
                 },
                 "air_temperature_0_minimum_PT12H": {
                     "type": "Parameter",
-                    "description": "Grass Temperature Minimum last 12 Hours",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "degrees Celsius"
                     },
@@ -107,7 +107,7 @@
                 },
                 "air_temperature_0_minimum_PT14H": {
                     "type": "Parameter",
-                    "description": "Grass Temperature Minimum last 14 Hours",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "degrees Celsius"
                     },
@@ -118,7 +118,7 @@
                 },
                 "air_temperature_0_minimum_PT6H": {
                     "type": "Parameter",
-                    "description": "Grass Temperature Minimum last 6 Hours",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "degrees Celsius"
                     },
@@ -129,7 +129,7 @@
                 },
                 "air_temperature_1.5_maximum_PT10M": {
                     "type": "Parameter",
-                    "description": "Ambient Temperature 1.5m 10 Min Maximum",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "degrees Celsius"
                     },
@@ -140,7 +140,7 @@
                 },
                 "air_temperature_1.5_minimum_PT10M": {
                     "type": "Parameter",
-                    "description": "Ambient Temperature 1.5m 10 Min Minimum",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "degrees Celsius"
                     },
@@ -151,7 +151,7 @@
                 },
                 "air_temperature_2.0_maximum_PT12H": {
                     "type": "Parameter",
-                    "description": "Air Temperature Maximum last 12 Hours",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "degrees Celsius"
                     },
@@ -162,7 +162,7 @@
                 },
                 "air_temperature_2.0_maximum_PT24H": {
                     "type": "Parameter",
-                    "description": "Air Temperature Maximum last 24 Hours",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "degrees Celsius"
                     },
@@ -173,7 +173,7 @@
                 },
                 "air_temperature_2.0_maximum_PT6H": {
                     "type": "Parameter",
-                    "description": "Air Temperature Maximum last 6 Hours",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "degrees Celsius"
                     },
@@ -184,7 +184,7 @@
                 },
                 "air_temperature_2.0_mean_PT1M": {
                     "type": "Parameter",
-                    "description": "Air Temperature 1 Min Average",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "degrees Celsius"
                     },
@@ -195,7 +195,7 @@
                 },
                 "air_temperature_2.0_minimum_PT12H": {
                     "type": "Parameter",
-                    "description": "Air Temperature Minimum last 12 Hours",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "degrees Celsius"
                     },
@@ -206,7 +206,7 @@
                 },
                 "air_temperature_2.0_minimum_PT14H": {
                     "type": "Parameter",
-                    "description": "Air Temperature Minimum last 14 Hours",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "degrees Celsius"
                     },
@@ -217,7 +217,7 @@
                 },
                 "air_temperature_2.0_minimum_PT6H": {
                     "type": "Parameter",
-                    "description": "Air Temperature Minimum last 6 Hours",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "degrees Celsius"
                     },
@@ -228,7 +228,7 @@
                 },
                 "air_temperature_2.0_point_PT0S": {
                     "type": "Parameter",
-                    "description": "Air Temperature",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "celsius"
                     },
@@ -239,7 +239,7 @@
                 },
                 "cloud_base_altitude_2.0_point_PT0S": {
                     "type": "Parameter",
-                    "description": "Cloud Base",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "ft"
                     },
@@ -250,7 +250,7 @@
                 },
                 "cloud_base_altitude_first_point_PT0S": {
                     "type": "Parameter",
-                    "description": "Cloud Base First Layer",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "ft"
                     },
@@ -261,7 +261,7 @@
                 },
                 "cloud_base_altitude_second_point_PT0S": {
                     "type": "Parameter",
-                    "description": "Cloud Base Second Layer",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "ft"
                     },
@@ -272,7 +272,7 @@
                 },
                 "cloud_base_altitude_third_point_PT0S": {
                     "type": "Parameter",
-                    "description": "Cloud Base Third Layer",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "ft"
                     },
@@ -283,7 +283,7 @@
                 },
                 "cloud_cover_2.0_point_PT0S": {
                     "type": "Parameter",
-                    "description": "Total cloud cover",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "octa"
                     },
@@ -294,7 +294,7 @@
                 },
                 "cloud_cover_first_point_PT0S": {
                     "type": "Parameter",
-                    "description": "Cloud Amount First Layer",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "octa"
                     },
@@ -305,7 +305,7 @@
                 },
                 "cloud_cover_second_point_PT0S": {
                     "type": "Parameter",
-                    "description": "Cloud Amount Second Layer",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "octa"
                     },
@@ -316,7 +316,7 @@
                 },
                 "cloud_cover_third_point_PT0S": {
                     "type": "Parameter",
-                    "description": "Cloud Amount Third Layer",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "octa"
                     },
@@ -327,7 +327,7 @@
                 },
                 "dew_point_temperature_1.5_mean_PT1M": {
                     "type": "Parameter",
-                    "description": "Dew Point Temperature 1.5m 1 Min Average",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "degrees Celsius"
                     },
@@ -338,7 +338,7 @@
                 },
                 "duration_of_sunshine_2.0_point_PT0S": {
                     "type": "Parameter",
-                    "description": "Sunshine Duration",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "min"
                     },
@@ -349,7 +349,7 @@
                 },
                 "lwe_precipitation_rate_1.80_mean_PT10M": {
                     "type": "Parameter",
-                    "description": "Precipitation Intensity (PWS) 10 Min Average",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "mm/h"
                     },
@@ -360,7 +360,7 @@
                 },
                 "lwe_precipitation_rate_2.50_mean_PT10M": {
                     "type": "Parameter",
-                    "description": "Precipitation Intensity (PWS) 10 Min Average",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "mm/h"
                     },
@@ -371,7 +371,7 @@
                 },
                 "placeholder_1.80_point_PT01H": {
                     "type": "Parameter",
-                    "description": "wawa Weather Code",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "code"
                     },
@@ -382,7 +382,7 @@
                 },
                 "placeholder_1.80_point_PT0S": {
                     "type": "Parameter",
-                    "description": "Present Weather",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "code"
                     },
@@ -393,7 +393,7 @@
                 },
                 "placeholder_1.80_point_PT10M": {
                     "type": "Parameter",
-                    "description": "wawa Weather Code for Previous 10 Min Interval",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "code"
                     },
@@ -404,7 +404,7 @@
                 },
                 "placeholder_2.50_point_PT01H": {
                     "type": "Parameter",
-                    "description": "wawa Weather Code",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "code"
                     },
@@ -415,7 +415,7 @@
                 },
                 "placeholder_2.50_point_PT0S": {
                     "type": "Parameter",
-                    "description": "Present Weather",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "code"
                     },
@@ -426,7 +426,7 @@
                 },
                 "placeholder_2.50_point_PT10M": {
                     "type": "Parameter",
-                    "description": "wawa Weather Code for Previous 10 Min Interval",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "code"
                     },
@@ -437,7 +437,7 @@
                 },
                 "precipitation_duration_1.80_point_PT10M": {
                     "type": "Parameter",
-                    "description": "Precipitation Duration (PWS) 10 Min Sum",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "sec"
                     },
@@ -448,7 +448,7 @@
                 },
                 "precipitation_duration_2.0_point_PT10M": {
                     "type": "Parameter",
-                    "description": "Precipitation Duration (Rain Gauge) 10 Min Sum",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "sec"
                     },
@@ -459,7 +459,7 @@
                 },
                 "precipitation_duration_2.50_point_PT10M": {
                     "type": "Parameter",
-                    "description": "Precipitation Duration (PWS) 10 Min Sum",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "sec"
                     },
@@ -470,7 +470,7 @@
                 },
                 "precipitation_rate_2.0_mean_PT10M": {
                     "type": "Parameter",
-                    "description": "Precipitation Intensity (Rain Gauge) 10 Min Average",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "mm/h"
                     },
@@ -481,7 +481,7 @@
                 },
                 "rainfall_amount_2.0_point_PT0S": {
                     "type": "Parameter",
-                    "description": "Rainfall in last Hour",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "mm"
                     },
@@ -492,7 +492,7 @@
                 },
                 "rainfall_amount_2.0_point_PT12H": {
                     "type": "Parameter",
-                    "description": "Rainfall in last 12 Hours",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "mm"
                     },
@@ -503,7 +503,7 @@
                 },
                 "rainfall_amount_2.0_point_PT24H": {
                     "type": "Parameter",
-                    "description": "Rainfall in last 24 Hours",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "mm"
                     },
@@ -514,7 +514,7 @@
                 },
                 "rainfall_amount_2.0_point_PT6H": {
                     "type": "Parameter",
-                    "description": "Rainfall in last 6 Hours",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "mm"
                     },
@@ -525,7 +525,7 @@
                 },
                 "rainfall_duration_2.0_point_PT0S": {
                     "type": "Parameter",
-                    "description": "Rainfall Duration in last Hour",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "min"
                     },
@@ -536,7 +536,7 @@
                 },
                 "relative_humidity_2.0_mean_PT1M": {
                     "type": "Parameter",
-                    "description": "Relative Humidity 1 Min Average",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "%"
                     },
@@ -547,7 +547,7 @@
                 },
                 "total_downwelling_shortwave_flux_in_air_2.0_mean_PT10M": {
                     "type": "Parameter",
-                    "description": "Global Solar Radiation 10 Min Average",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "W m-2"
                     },
@@ -558,7 +558,7 @@
                 },
                 "visibility_in_air_1.80_mean_PT10M": {
                     "type": "Parameter",
-                    "description": "Meteorological Optical Range 10 Min Average",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "m"
                     },
@@ -569,7 +569,7 @@
                 },
                 "visibility_in_air_2.50_mean_PT10M": {
                     "type": "Parameter",
-                    "description": "Meteorological Optical Range 10 Min Average",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "m"
                     },
@@ -580,7 +580,7 @@
                 },
                 "wind_from_direction_2.0_mean_PT10M": {
                     "type": "Parameter",
-                    "description": "Wind Direction 10 Min Average",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "degree"
                     },
@@ -591,7 +591,7 @@
                 },
                 "wind_speed_10_mean_PT10M": {
                     "type": "Parameter",
-                    "description": "Wind Speed at 10m 10 Min Average",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "m s-1"
                     },
@@ -602,7 +602,7 @@
                 },
                 "wind_speed_of_gust_10_maximum_PT10M": {
                     "type": "Parameter",
-                    "description": "Wind Gust at 10m 10 Min Maximum",
+                    "description": "For detailed description see observedProperty id",
                     "unit": {
                         "label": "m s-1"
                     },

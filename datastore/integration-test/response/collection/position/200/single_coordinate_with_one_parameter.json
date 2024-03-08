@@ -54,7 +54,7 @@
         "air_temperature_1.5_maximum_PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "Ambient Temperature 1.5m 10 Min Maximum"
+                "en": "For detailed description see observedProperty id"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",

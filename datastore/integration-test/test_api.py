@@ -150,20 +150,17 @@ def test_from_a_single_collection_get_an_area_with_two_parameters():
 
 def test_items_get_area():
     collection_id = "observations"
-    bbox = "5.0,52.0,6.0,52.1"
-    actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items" f"?bbox={bbox}")
+    bbox = "5.0,52.0,6.0,52.059"
+    actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items?bbox={bbox}")
 
     assert actual_response.status_code == 200
-    actual_response_is_expected_response(actual_response, "response/collection/items/200/items_within_area.json")
+    actual_response_is_expected_response(actual_response, "response/metadata/200/items_within_area.json")
 
 
 def test_items_get_id():
     collection_id = "observations"
-    metadata_id = "placeholder"  # TODO: find a correct metadata_ID
-    actual_response = requests.get(
-        url=BASE_URL + f"/collections/{collection_id}/items"  # TODO: create response file
-        f"{metadata_id}"
-    )
+    metadata_id = "0f997a725ebb373d7eb9588bc3b50160"
+    actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items/{metadata_id}")
 
     assert actual_response.status_code == 200
     actual_response_is_expected_response(
@@ -173,27 +170,27 @@ def test_items_get_id():
 
 def test_items_get_area_with_one_parameter_name():
     collection_id = "observations"
-    coords = "POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))"
-    parameter_name = "placeholder"  # TODO: find appropriate parameter_name
+    bbox = "5.7,52.0,6.0,52.059"
+    parameter_name = "air_temperature_2.0_minimum_PT12H"  # TODO: find appropriate parameter_name
     actual_response = requests.get(
-        url=BASE_URL + f"/collections/{collection_id}/items" f"?coords={coords}&parameter-name={parameter_name}"
+        url=BASE_URL + f"/collections/{collection_id}/items?bbox={bbox}&parameter-name={parameter_name}"
     )
 
     assert actual_response.status_code == 200
     actual_response_is_expected_response(
         actual_response,
-        "response/collection/items/200/items_area_with_one_parameter_name.json",  # TODO: create response file
+        "response/metadata/200/items_area_with_one_parameter_name.json",  # TODO: create response file
     )
 
 
 def test_items_get_one_platform():
     collection_id = "observations"
-    platform = "placeholder"  # TODO: find appropriate platform
-    actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items" f"?platform={platform}")
+    platform = "06275"
+    actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items?platform={platform}")
 
     assert actual_response.status_code == 200
     actual_response_is_expected_response(
-        actual_response, "response/collection/items/200/metadata_area_with_one_platform"  # TODO: create response file
+        actual_response, "response/metadata/200/items_get_single_platform.json"  # TODO: create response file
     )
 
 

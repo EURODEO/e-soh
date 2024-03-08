@@ -55,7 +55,7 @@
                 "wind_speed_10_mean_PT10M": {
                     "type": "Parameter",
                     "description": {
-                        "en": "Wind Speed at 10m 10 Min Average"
+                        "en": "For detailed description see observedProperty id"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed",
@@ -72,7 +72,7 @@
                 "relative_humidity_2.0_mean_PT1M": {
                     "type": "Parameter",
                     "description": {
-                        "en": "Relative Humidity 1 Min Average"
+                        "en": "For detailed description see observedProperty id"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/relative_humidity",
@@ -190,7 +190,7 @@
                 "wind_speed_10_mean_PT10M": {
                     "type": "Parameter",
                     "description": {
-                        "en": "Wind Speed at 10m 10 Min Average"
+                        "en": "For detailed description see observedProperty id"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed",
@@ -207,7 +207,7 @@
                 "relative_humidity_2.0_mean_PT1M": {
                     "type": "Parameter",
                     "description": {
-                        "en": "Relative Humidity 1 Min Average"
+                        "en": "For detailed description see observedProperty id"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/relative_humidity",
@@ -276,7 +276,7 @@
         "wind_speed_10_mean_PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "Wind Speed at 10m 10 Min Average"
+                "en": "For detailed description see observedProperty id"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed",
@@ -293,7 +293,7 @@
         "relative_humidity_2.0_mean_PT1M": {
             "type": "Parameter",
             "description": {
-                "en": "Relative Humidity 1 Min Average"
+                "en": "For detailed description see observedProperty id"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/relative_humidity",
