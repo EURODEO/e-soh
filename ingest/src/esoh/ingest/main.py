@@ -36,7 +36,7 @@ class IngestToPipeline:
         else:
             self.schema_path = schema_path
         if not schema_file:
-            self.schema_file = "e-soh-ingest-spec.json"
+            self.schema_file = "e-soh-message-spec.json"
         else:
             self.schema_file = schema_file
 
@@ -65,8 +65,12 @@ class IngestToPipeline:
         """
         if not input_type:
             input_type = self._decide_input_type(message)
-
-        self.publish_messages(self._build_messages(message, input_type))
+        messages = self._build_messages(message, input_type)
+        if isinstance(messages, list):
+            response, status = self.publish_messages(messages)
+            return response, status
+        else:
+            return messages, 400
 
     def publish_messages(self, messages: list):
         """
@@ -76,13 +80,15 @@ class IngestToPipeline:
         for msg in messages:
             if msg:
                 try:
+                    return "succesfully published", 200
                     self.dstore.ingest(msg)
                     self.mqtt.send_message(msg)
-                except grpc.RpcError:
-                    self.dstore.is_channel_ready()
-                    pass
-                except Exception:
-                    pass
+                except grpc.RpcError as v_error:
+                    # self.dstore.is_channel_ready()
+                    return "Failed to ingest" + "\n" + str(v_error.message), 500
+                except Exception as e:
+                    return "Failed to ingest" + "\n" + str(e.message), 500
+        return "succesfully published", 200
 
     def _decide_input_type(self, message) -> str:
         """

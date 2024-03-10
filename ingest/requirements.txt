@@ -6,3 +6,4 @@ jsonschema ~= 4.19.0
 pybind11 == 2.11.1
 protobuf ~= 4.24.3
 grpcio == 1.59.0
+fastapi == 0.108.0

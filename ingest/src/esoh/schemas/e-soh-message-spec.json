@@ -117,6 +117,18 @@
                     "type": "string",
                     "description": "Controlled vocabulary for the names used in the 'instrument' attribute."
                 },
+                "level": {
+                    "type": "number",
+                    "description": "Instrument level above ground in meters."
+                },
+                "period": {
+                    "type": "string",
+                    "description": "Aggregation period for the measurement. Must be provided in ISO8601 duration format. https://www.iso.org/iso-8601-date-and-time-format.html"
+                },
+                "function": {
+                    "type": "string",
+                    "description": "Function used on the data during the aggregation period. Must be one of the functions given in CF cell_methods table. https://cfconventions.org/Data/cf-conventions/cf-conventions-1.7/build/ape.html"
+                },
                 "license": {
                     "type": "string",
                     "description": "Provide the URL to a standard or specific license, enter 'Freely Distributed' or 'None', or describe any restrictions to data access and distribution in free text."
@@ -281,6 +293,9 @@
                 }
             },
             "required": [
+                "level",
+                "period",
+                "function",
                 "pubtime",
                 "data_id",
                 "metadata_id",

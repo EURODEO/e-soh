@@ -4,11 +4,6 @@
     "description": "E-SOH ingest schema, describes all fields available and required by data providers",
     "type": "object",
     "properties": {
-        "version": {
-            "type": "string",
-            "description": "Version of ingest specification.",
-            "const": "v4.0"
-        },
         "geometry": {
             "oneOf": [
                 {
@@ -25,10 +20,13 @@
                             ]
                         },
                         "coordinates": {
-                            "type": "array",
-                            "minItems": 2,
-                            "items": {
-                                "type": "number"
+                            "lat": {
+                                "type": "number",
+                                "description": "Latitude"
+                            },
+                            "lon": {
+                                "type": "number",
+                                "description": "Latitude"
                             }
                         }
                     }
@@ -52,10 +50,13 @@
                                 "type": "array",
                                 "minItems": 4,
                                 "items": {
-                                    "type": "array",
-                                    "minItems": 2,
-                                    "items": {
-                                        "type": "number"
+                                    "lat": {
+                                        "type": "number",
+                                        "description": "Latitude"
+                                    },
+                                    "lon": {
+                                        "type": "number",
+                                        "description": "Latitude"
                                     }
                                 }
                             }

@@ -32,15 +32,14 @@ def build_message(file: object, input_type: str, uuid_prefix: str, schema_path: 
         json_msg["id"] = message_uuid
         json_msg["properties"]["metadata_id"] = message_uuid
         json_msg["properties"]["data_id"] = message_uuid
-
         json_msg["properties"]["pubtime"] = datetime.now(timezone.utc).isoformat()
         try:
             validator.validate(json_msg)
-            logger.info("Message passed schema validation.")
+            logger.error("Message passed schema validation.")
         except ValidationError as v_error:
             logger.error("Message did not pass schema validation, " + "\n" + str(v_error.message))
-            json_msg = None
-            raise
+            json_msg = "Message did not pass schema validation, " + "\n" + str(v_error.message)
+            return json_msg
 
     return unfinished_messages  # now populated with timestamps and uuids
 

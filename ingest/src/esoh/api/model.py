@@ -181,6 +181,25 @@ class Properties(BaseModel):
         None,
         description="Controlled vocabulary for the names used in the 'instrument' attribute.",
     )
+    level: float = Field(
+        ...,
+        description=("Instrument level above ground in meters."),
+    )
+    period: str = Field(
+        ...,
+        description=(
+            "Aggregation period for the measurement. Must be provided in ISO8601 duration format."
+            "https://www.iso.org/iso-8601-date-and-time-format.html"
+        ),
+    )
+    function: str = Field(
+        ...,
+        description=(
+            "Function used on the data during the aggregation period."
+            "Must be one of the functions given in CF cell_methods table."
+            "https://cfconventions.org/Data/cf-conventions/cf-conventions-1.7/build/ape.html"
+        ),
+    )
     history: Optional[str] = Field(
         None,
         description=(

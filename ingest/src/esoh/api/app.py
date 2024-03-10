@@ -1,6 +1,6 @@
 import io
+import logging
 import os
-from enum import Enum
 
 import xarray as xr
 from esoh.api.model import JsonMessageSchema
@@ -10,18 +10,11 @@ from fastapi import UploadFile
 from pydantic import BaseModel
 
 
-class Status(Enum):
-    ERROR = "error"
-    SUCCESS = "success"
-
-
-class Message(BaseModel):
-    status: Status
-    detail: str
+logger = logging.getLogger(__name__)
 
 
 class Response(BaseModel):
-    content: dict
+    status_message: str
     status_code: int
 
 
@@ -43,14 +36,37 @@ datastore_configuration = {
 }
 
 
-@app.post("/uploadfile/")
-async def create_upload_file(files: UploadFile, input_type: str):
-    ingester = IngestToPipeline(
-        mqtt_conf=mqtt_configuration, dstore_conn=datastore_configuration, uuid_prefix="uuid", testing=True
-    )
-    contents = await files.read()
-    ds = xr.open_dataset(io.BytesIO(contents))
-    ingester.ingest(ds, input_type)
+@app.post("/upload/nc")
+async def upload_netcdf_file(files: UploadFile, input_type: str = "nc"):
+    try:
+        ingester = IngestToPipeline(
+            mqtt_conf=mqtt_configuration, dstore_conn=datastore_configuration, uuid_prefix="uuid", testing=True
+        )
+        contents = await files.read()
+        ds = xr.open_dataset(io.BytesIO(contents))
+        response, status = ingester.ingest(ds, input_type)
+        return Response(status_message=response, status_code=status)
+
+    except Exception as e:
+        # No specfic exceptions are thrown from ingest
+        # So catch all and send a generic response back
+        return Response(status_message=str(e), status_code=500)
+
+
+@app.post("/upload/bufr")
+async def upload_bufr_file(files: UploadFile, input_type: str = "bufr"):
+    try:
+        ingester = IngestToPipeline(
+            mqtt_conf=mqtt_configuration, dstore_conn=datastore_configuration, uuid_prefix="uuid", testing=True
+        )
+        contents = await files.read()
+        response, status = ingester.ingest(contents, input_type)
+        return Response(status_message=response, status_code=status)
+
+    except Exception as e:
+        # No specfic exceptions are thrown from ingest
+        # So catch all and send a generic response back
+        return Response(status_message=str(e), status_code=500)
 
 
 @app.post("/json")
@@ -59,12 +75,8 @@ async def post_json(request: JsonMessageSchema, input_type: str):
         ingester = IngestToPipeline(
             mqtt_conf=mqtt_configuration, dstore_conn=datastore_configuration, uuid_prefix="uuid", testing=True
         )
-        ingester.ingest(request.dict(exclude_none=True), input_type)
-        success_message = Message(status=Status.SUCCESS, detail="Operation successful")
-        return Response(content=success_message.dict(), status_code=200)
+        response, status = ingester.ingest(request.dict(exclude_none=True), input_type)
+        return Response(status_message=response, status_code=status)
 
     except Exception as e:
-        # No specfic exceptions are thrown from ingest
-        # So catch all and send a generic response back
-        error_message = Message(status=Status.ERROR, detail=str(e))
-        return Response(content=error_message.dict(), status_code=500)
+        return Response(status_message=str(e), status_code=500)

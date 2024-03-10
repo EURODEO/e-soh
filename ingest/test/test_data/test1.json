@@ -18,9 +18,10 @@
     },
     "geometry": {
         "type": "Point",
-        "coordinates": [
-            "59.412800"
-        ]
+        "coordinates": {
+            "lat": "70.9394",
+            "lon": "-8.669"
+        }
     },
     "type": "Feature"
 }
