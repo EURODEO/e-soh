@@ -35,7 +35,7 @@ def validate_if_the_parameters_are_in_alphabetic_order(actual_response, expected
         expected_json = json.load(file)
 
         if (actual_parameters := actual_json.get("parameters")) and (expected_parameters := expected_json.get("parameters")):
-            assert list(actual_parameters.keys()) == sorted(expected_parameters.keys())
+            assert list(actual_parameters.keys()) == list(expected_parameters.keys())
         elif (actual_coverages := actual_json.get("coverages")) and (expected_coverages := expected_json.get("coverages")):
             for actual_covjson, expected_covjson in zip(actual_coverages, expected_coverages):
                 actual_parameters = actual_covjson["parameters"].keys()
@@ -154,7 +154,7 @@ def test_from_a_single_collection_get_a_single_position_with_one_parameter():
 def test_from_a_single_collection_get_an_area_with_two_parameters():
     collection_id = "observations"
     coords = "POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))"
-    parameters = "relative_humidity_2.0_mean_PT1M,wind_speed_10_mean_PT10M"
+    parameters = "relative_humidity_2.0_mean_PT1M ,   wind_speed_10_mean_PT10M"
     datetime = "2022-12-31T22:50:00Z/.."
     actual_response = requests.get(
         url=BASE_URL + f"/collections/{collection_id}/area"

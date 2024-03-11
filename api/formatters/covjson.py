@@ -41,7 +41,7 @@ def convert_to_covjson(response):
     coverages = []
     data = [_collect_data(md.ts_mdata, md.obs_mdata) for md in response.observations]
 
-    # Need to sort before using groupBy. Also sort on instrument to get consistently sorted output
+    # Need to sort before using groupBy. Also sort on parameter_name to get consistently sorted output
     data.sort(key=lambda x: (x.dom, x.ts_mdata.parameter_name))
     for (lat, lon, times), group in groupby(data, lambda x: x.dom):
         referencing = [
