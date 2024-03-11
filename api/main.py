@@ -12,6 +12,18 @@ from fastapi import FastAPI
 from fastapi import Request
 from routers import edr  # , records
 
+
+def setup_logging():
+    logger = logging.getLogger()
+    syslog = logging.StreamHandler()
+    formatter = logging.Formatter("%(asctime)s ; e-soh-api ; %(process)s ; %(levelname)s ; %(name)s ; %(message)s")
+
+    syslog.setFormatter(formatter)
+    logger.addHandler(syslog)
+
+
+setup_logging()
+
 logger = logging.getLogger(__name__)
 
 app = FastAPI()
