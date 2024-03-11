@@ -71,7 +71,7 @@ services:
         condition: service_healthy
 
   client:
-    profiles: ["test"]
+    profiles: ["client"]
     build:
       context: datastore/examples/clients/python
     environment:
