@@ -25,6 +25,7 @@ def actual_response_is_expected_response(actual_response, expected_path, **kwarg
     # Deep diff does not check dict keys for order, manually validate if the order is correct.
     validate_if_the_dict_keys_are_in_alphabetic_order(actual_response=actual_response, expected_path=expected_path)
 
+
 def validate_if_the_dict_keys_are_in_alphabetic_order(actual_response, expected_path):
     """Python dictionaries used to be unordered. Resulting that the keys of dictionaries are not checked for the right
     order. Therefore dictionaries where the parameter names are the keys are checked manually for the correct sequence
@@ -47,6 +48,7 @@ def validate_if_the_dict_keys_are_in_alphabetic_order(actual_response, expected_
             expected_coverages = expected_json["coverages"]
             for actual_covjson, expected_covjson in zip(actual_coverages, expected_coverages):
                 assert list(actual_covjson["parameters"].keys()) == list(expected_covjson["parameters"].keys())
+
 
 def test_get_all_collections():
     actual_response = requests.get(url=BASE_URL + "/collections")
