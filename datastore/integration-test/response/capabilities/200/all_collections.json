@@ -72,7 +72,7 @@
                 "CoverageJSON"
             ],
             "parameter_names": {
-                "air_pressure_at_sea_level_1_mean_PT1M": {
+                "air_pressure_at_sea_level:1:mean:PT1M": {
                     "type": "Parameter",
                     "description": "Air Pressure at Sea Level 1 Min Average",
                     "unit": {
@@ -83,7 +83,7 @@
                         "label": "pp"
                     }
                 },
-                "air_temperature_0.1_minimum_PT10M": {
+                "air_temperature:0.1:minimum:PT10M": {
                     "type": "Parameter",
                     "description": "Grass Temperature 10cm 10 Min Minimum",
                     "unit": {
@@ -94,7 +94,7 @@
                         "label": "tgn"
                     }
                 },
-                "air_temperature_0_minimum_PT12H": {
+                "air_temperature:0:minimum:PT12H": {
                     "type": "Parameter",
                     "description": "Grass Temperature Minimum last 12 Hours",
                     "unit": {
@@ -105,7 +105,7 @@
                         "label": "Tgn12"
                     }
                 },
-                "air_temperature_0_minimum_PT14H": {
+                "air_temperature:0:minimum:PT14H": {
                     "type": "Parameter",
                     "description": "Grass Temperature Minimum last 14 Hours",
                     "unit": {
@@ -116,7 +116,7 @@
                         "label": "Tgn14"
                     }
                 },
-                "air_temperature_0_minimum_PT6H": {
+                "air_temperature:0:minimum:PT6H": {
                     "type": "Parameter",
                     "description": "Grass Temperature Minimum last 6 Hours",
                     "unit": {
@@ -127,7 +127,7 @@
                         "label": "Tgn6"
                     }
                 },
-                "air_temperature_1.5_maximum_PT10M": {
+                "air_temperature:1.5:maximum:PT10M": {
                     "type": "Parameter",
                     "description": "Ambient Temperature 1.5m 10 Min Maximum",
                     "unit": {
@@ -138,7 +138,7 @@
                         "label": "tx"
                     }
                 },
-                "air_temperature_1.5_minimum_PT10M": {
+                "air_temperature:1.5:minimum:PT10M": {
                     "type": "Parameter",
                     "description": "Ambient Temperature 1.5m 10 Min Minimum",
                     "unit": {
@@ -149,7 +149,7 @@
                         "label": "tn"
                     }
                 },
-                "air_temperature_2.0_maximum_PT12H": {
+                "air_temperature:2.0:maximum:PT12H": {
                     "type": "Parameter",
                     "description": "Air Temperature Maximum last 12 Hours",
                     "unit": {
@@ -160,7 +160,7 @@
                         "label": "Tx12"
                     }
                 },
-                "air_temperature_2.0_maximum_PT24H": {
+                "air_temperature:2.0:maximum:PT24H": {
                     "type": "Parameter",
                     "description": "Air Temperature Maximum last 24 Hours",
                     "unit": {
@@ -171,7 +171,7 @@
                         "label": "Tx24"
                     }
                 },
-                "air_temperature_2.0_maximum_PT6H": {
+                "air_temperature:2.0:maximum:PT6H": {
                     "type": "Parameter",
                     "description": "Air Temperature Maximum last 6 Hours",
                     "unit": {
@@ -182,7 +182,7 @@
                         "label": "Tx6"
                     }
                 },
-                "air_temperature_2.0_mean_PT1M": {
+                "air_temperature:2.0:mean:PT1M": {
                     "type": "Parameter",
                     "description": "Air Temperature 1 Min Average",
                     "unit": {
@@ -193,7 +193,7 @@
                         "label": "ta"
                     }
                 },
-                "air_temperature_2.0_minimum_PT12H": {
+                "air_temperature:2.0:minimum:PT12H": {
                     "type": "Parameter",
                     "description": "Air Temperature Minimum last 12 Hours",
                     "unit": {
@@ -204,7 +204,7 @@
                         "label": "Tn12"
                     }
                 },
-                "air_temperature_2.0_minimum_PT14H": {
+                "air_temperature:2.0:minimum:PT14H": {
                     "type": "Parameter",
                     "description": "Air Temperature Minimum last 14 Hours",
                     "unit": {
@@ -215,7 +215,7 @@
                         "label": "Tn14"
                     }
                 },
-                "air_temperature_2.0_minimum_PT6H": {
+                "air_temperature:2.0:minimum:PT6H": {
                     "type": "Parameter",
                     "description": "Air Temperature Minimum last 6 Hours",
                     "unit": {
@@ -226,7 +226,7 @@
                         "label": "Tn6"
                     }
                 },
-                "cloud_base_altitude_2.0_point_PT0S": {
+                "cloud_base_altitude:2.0:point:PT0S": {
                     "type": "Parameter",
                     "description": "Cloud Base",
                     "unit": {
@@ -237,7 +237,7 @@
                         "label": "hc"
                     }
                 },
-                "cloud_base_altitude_first_point_PT0S": {
+                "cloud_base_altitude:first:point:PT0S": {
                     "type": "Parameter",
                     "description": "Cloud Base First Layer",
                     "unit": {
@@ -248,7 +248,7 @@
                         "label": "hc1"
                     }
                 },
-                "cloud_base_altitude_second_point_PT0S": {
+                "cloud_base_altitude:second:point:PT0S": {
                     "type": "Parameter",
                     "description": "Cloud Base Second Layer",
                     "unit": {
@@ -259,7 +259,7 @@
                         "label": "hc2"
                     }
                 },
-                "cloud_base_altitude_third_point_PT0S": {
+                "cloud_base_altitude:third:point:PT0S": {
                     "type": "Parameter",
                     "description": "Cloud Base Third Layer",
                     "unit": {
@@ -270,7 +270,7 @@
                         "label": "hc3"
                     }
                 },
-                "cloud_cover_2.0_point_PT0S": {
+                "cloud_cover:2.0:point:PT0S": {
                     "type": "Parameter",
                     "description": "Total cloud cover",
                     "unit": {
@@ -281,7 +281,7 @@
                         "label": "nc"
                     }
                 },
-                "cloud_cover_first_point_PT0S": {
+                "cloud_cover:first:point:PT0S": {
                     "type": "Parameter",
                     "description": "Cloud Amount First Layer",
                     "unit": {
@@ -292,7 +292,7 @@
                         "label": "nc1"
                     }
                 },
-                "cloud_cover_second_point_PT0S": {
+                "cloud_cover:second:point:PT0S": {
                     "type": "Parameter",
                     "description": "Cloud Amount Second Layer",
                     "unit": {
@@ -303,7 +303,7 @@
                         "label": "nc2"
                     }
                 },
-                "cloud_cover_third_point_PT0S": {
+                "cloud_cover:third:point:PT0S": {
                     "type": "Parameter",
                     "description": "Cloud Amount Third Layer",
                     "unit": {
@@ -314,7 +314,7 @@
                         "label": "nc3"
                     }
                 },
-                "dew_point_temperature_1.5_mean_PT1M": {
+                "dew_point_temperature:1.5:mean:PT1M": {
                     "type": "Parameter",
                     "description": "Dew Point Temperature 1.5m 1 Min Average",
                     "unit": {
@@ -325,7 +325,7 @@
                         "label": "td"
                     }
                 },
-                "duration_of_sunshine_2.0_point_PT0S": {
+                "duration_of_sunshine:2.0:point:PT0S": {
                     "type": "Parameter",
                     "description": "Sunshine Duration",
                     "unit": {
@@ -336,7 +336,7 @@
                         "label": "ss"
                     }
                 },
-                "lwe_precipitation_rate_1.80_mean_PT10M": {
+                "lwe_precipitation_rate:1.80:mean:PT10M": {
                     "type": "Parameter",
                     "description": "Precipitation Intensity (PWS) 10 Min Average",
                     "unit": {
@@ -347,7 +347,7 @@
                         "label": "pg"
                     }
                 },
-                "lwe_precipitation_rate_2.50_mean_PT10M": {
+                "lwe_precipitation_rate:2.50:mean:PT10M": {
                     "type": "Parameter",
                     "description": "Precipitation Intensity (PWS) 10 Min Average",
                     "unit": {
@@ -358,7 +358,7 @@
                         "label": "pg"
                     }
                 },
-                "placeholder_1.80_point_PT01H": {
+                "placeholder:1.80:point:PT01H": {
                     "type": "Parameter",
                     "description": "wawa Weather Code",
                     "unit": {
@@ -369,7 +369,7 @@
                         "label": "ww"
                     }
                 },
-                "placeholder_1.80_point_PT0S": {
+                "placeholder:1.80:point:PT0S": {
                     "type": "Parameter",
                     "description": "Present Weather",
                     "unit": {
@@ -380,7 +380,7 @@
                         "label": "pwc"
                     }
                 },
-                "placeholder_1.80_point_PT10M": {
+                "placeholder:1.80:point:PT10M": {
                     "type": "Parameter",
                     "description": "wawa Weather Code for Previous 10 Min Interval",
                     "unit": {
@@ -391,7 +391,7 @@
                         "label": "ww-10"
                     }
                 },
-                "placeholder_2.50_point_PT01H": {
+                "placeholder:2.50:point:PT01H": {
                     "type": "Parameter",
                     "description": "wawa Weather Code",
                     "unit": {
@@ -402,7 +402,7 @@
                         "label": "ww"
                     }
                 },
-                "placeholder_2.50_point_PT0S": {
+                "placeholder:2.50:point:PT0S": {
                     "type": "Parameter",
                     "description": "Present Weather",
                     "unit": {
@@ -413,7 +413,7 @@
                         "label": "pwc"
                     }
                 },
-                "placeholder_2.50_point_PT10M": {
+                "placeholder:2.50:point:PT10M": {
                     "type": "Parameter",
                     "description": "wawa Weather Code for Previous 10 Min Interval",
                     "unit": {
@@ -424,7 +424,7 @@
                         "label": "ww-10"
                     }
                 },
-                "precipitation_duration_1.80_point_PT10M": {
+                "precipitation_duration:1.80:point:PT10M": {
                     "type": "Parameter",
                     "description": "Precipitation Duration (PWS) 10 Min Sum",
                     "unit": {
@@ -435,7 +435,7 @@
                         "label": "pr"
                     }
                 },
-                "precipitation_duration_2.0_point_PT10M": {
+                "precipitation_duration:2.0:point:PT10M": {
                     "type": "Parameter",
                     "description": "Precipitation Duration (Rain Gauge) 10 Min Sum",
                     "unit": {
@@ -446,7 +446,7 @@
                         "label": "dr"
                     }
                 },
-                "precipitation_duration_2.50_point_PT10M": {
+                "precipitation_duration:2.50:point:PT10M": {
                     "type": "Parameter",
                     "description": "Precipitation Duration (PWS) 10 Min Sum",
                     "unit": {
@@ -457,7 +457,7 @@
                         "label": "pr"
                     }
                 },
-                "precipitation_rate_2.0_mean_PT10M": {
+                "precipitation_rate:2.0:mean:PT10M": {
                     "type": "Parameter",
                     "description": "Precipitation Intensity (Rain Gauge) 10 Min Average",
                     "unit": {
@@ -468,7 +468,7 @@
                         "label": "rg"
                     }
                 },
-                "rainfall_amount_2.0_point_PT0S": {
+                "rainfall_amount:2.0:point:PT0S": {
                     "type": "Parameter",
                     "description": "Rainfall in last Hour",
                     "unit": {
@@ -479,7 +479,7 @@
                         "label": "R1H"
                     }
                 },
-                "rainfall_amount_2.0_point_PT12H": {
+                "rainfall_amount:2.0:point:PT12H": {
                     "type": "Parameter",
                     "description": "Rainfall in last 12 Hours",
                     "unit": {
@@ -490,7 +490,7 @@
                         "label": "R12H"
                     }
                 },
-                "rainfall_amount_2.0_point_PT24H": {
+                "rainfall_amount:2.0:point:PT24H": {
                     "type": "Parameter",
                     "description": "Rainfall in last 24 Hours",
                     "unit": {
@@ -501,7 +501,7 @@
                         "label": "R24H"
                     }
                 },
-                "rainfall_amount_2.0_point_PT6H": {
+                "rainfall_amount:2.0:point:PT6H": {
                     "type": "Parameter",
                     "description": "Rainfall in last 6 Hours",
                     "unit": {
@@ -512,7 +512,7 @@
                         "label": "R6H"
                     }
                 },
-                "rainfall_duration_2.0_point_PT0S": {
+                "rainfall_duration:2.0:point:PT0S": {
                     "type": "Parameter",
                     "description": "Rainfall Duration in last Hour",
                     "unit": {
@@ -523,7 +523,7 @@
                         "label": "D1H"
                     }
                 },
-                "relative_humidity_2.0_mean_PT1M": {
+                "relative_humidity:2.0:mean:PT1M": {
                     "type": "Parameter",
                     "description": "Relative Humidity 1 Min Average",
                     "unit": {
@@ -534,7 +534,7 @@
                         "label": "rh"
                     }
                 },
-                "total_downwelling_shortwave_flux_in_air_2.0_mean_PT10M": {
+                "total_downwelling_shortwave_flux_in_air:2.0:mean:PT10M": {
                     "type": "Parameter",
                     "description": "Global Solar Radiation 10 Min Average",
                     "unit": {
@@ -545,7 +545,7 @@
                         "label": "qg"
                     }
                 },
-                "visibility_in_air_1.80_mean_PT10M": {
+                "visibility_in_air:1.80:mean:PT10M": {
                     "type": "Parameter",
                     "description": "Meteorological Optical Range 10 Min Average",
                     "unit": {
@@ -556,7 +556,7 @@
                         "label": "zm"
                     }
                 },
-                "visibility_in_air_2.50_mean_PT10M": {
+                "visibility_in_air:2.50:mean:PT10M": {
                     "type": "Parameter",
                     "description": "Meteorological Optical Range 10 Min Average",
                     "unit": {
@@ -567,7 +567,7 @@
                         "label": "zm"
                     }
                 },
-                "wind_from_direction_2.0_mean_PT10M": {
+                "wind_from_direction:2.0:mean:PT10M": {
                     "type": "Parameter",
                     "description": "Wind Direction 10 Min Average",
                     "unit": {
@@ -578,7 +578,7 @@
                         "label": "dd"
                     }
                 },
-                "wind_speed_10_mean_PT10M": {
+                "wind_speed:10:mean:PT10M": {
                     "type": "Parameter",
                     "description": "Wind Speed at 10m 10 Min Average",
                     "unit": {
@@ -589,7 +589,7 @@
                         "label": "ff"
                     }
                 },
-                "wind_speed_of_gust_10_maximum_PT10M": {
+                "wind_speed_of_gust:10:maximum:PT10M": {
                     "type": "Parameter",
                     "description": "Wind Gust at 10m 10 Min Maximum",
                     "unit": {

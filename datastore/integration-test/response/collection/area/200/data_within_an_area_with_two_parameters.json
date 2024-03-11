@@ -52,7 +52,7 @@
                 ]
             },
             "parameters": {
-                "relative_humidity_2.0_mean_PT1M": {
+                "relative_humidity:2.0:mean:PT1M": {
                     "type": "Parameter",
                     "description": {
                         "en": "Relative Humidity 1 Min Average"
@@ -69,7 +69,7 @@
                         }
                     }
                 },
-                "wind_speed_10_mean_PT10M": {
+                "wind_speed:10:mean:PT10M": {
                     "type": "Parameter",
                     "description": {
                         "en": "Wind Speed at 10m 10 Min Average"
@@ -88,30 +88,7 @@
                 }
             },
             "ranges": {
-                "wind_speed_10_mean_PT10M": {
-                    "type": "NdArray",
-                    "dataType": "float",
-                    "axisNames": [
-                        "t",
-                        "y",
-                        "x"
-                    ],
-                    "shape": [
-                        7,
-                        1,
-                        1
-                    ],
-                    "values": [
-                        10.68,
-                        8.84,
-                        9.09,
-                        8.64,
-                        8.72,
-                        9.59,
-                        10.7
-                    ]
-                },
-                "relative_humidity_2.0_mean_PT1M": {
+                "relative_humidity:2.0:mean:PT1M": {
                     "type": "NdArray",
                     "dataType": "float",
                     "axisNames": [
@@ -132,6 +109,29 @@
                         56.0,
                         56.0,
                         57.0
+                    ]
+                },
+                "wind_speed:10:mean:PT10M": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        7,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        10.68,
+                        8.84,
+                        9.09,
+                        8.64,
+                        8.72,
+                        9.59,
+                        10.7
                     ]
                 }
             }
@@ -187,7 +187,7 @@
                 ]
             },
             "parameters": {
-                "relative_humidity_2.0_mean_PT1M": {
+                "relative_humidity:2.0:mean:PT1M": {
                     "type": "Parameter",
                     "description": {
                         "en": "Relative Humidity 1 Min Average"
@@ -204,7 +204,7 @@
                         }
                     }
                 },
-                "wind_speed_10_mean_PT10M": {
+                "wind_speed:10:mean:PT10M": {
                     "type": "Parameter",
                     "description": {
                         "en": "Wind Speed at 10m 10 Min Average"
@@ -223,30 +223,7 @@
                 }
             },
             "ranges": {
-                "wind_speed_10_mean_PT10M": {
-                    "type": "NdArray",
-                    "dataType": "float",
-                    "axisNames": [
-                        "t",
-                        "y",
-                        "x"
-                    ],
-                    "shape": [
-                        7,
-                        1,
-                        1
-                    ],
-                    "values": [
-                        8.37,
-                        7.71,
-                        8.35,
-                        8.45,
-                        8.95,
-                        9.17,
-                        9.4
-                    ]
-                },
-                "relative_humidity_2.0_mean_PT1M": {
+                "relative_humidity:2.0:mean:PT1M": {
                     "type": "NdArray",
                     "dataType": "float",
                     "axisNames": [
@@ -268,12 +245,35 @@
                         58.0,
                         59.0
                     ]
+                },
+                "wind_speed:10:mean:PT10M": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        7,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        8.37,
+                        7.71,
+                        8.35,
+                        8.45,
+                        8.95,
+                        9.17,
+                        9.4
+                    ]
                 }
             }
         }
     ],
     "parameters": {
-        "relative_humidity_2.0_mean_PT1M": {
+        "relative_humidity:2.0:mean:PT1M": {
             "type": "Parameter",
             "description": {
                 "en": "Relative Humidity 1 Min Average"
@@ -290,7 +290,7 @@
                 }
             }
         },
-        "wind_speed_10_mean_PT10M": {
+        "wind_speed:10:mean:PT10M": {
             "type": "Parameter",
             "description": {
                 "en": "Wind Speed at 10m 10 Min Average"

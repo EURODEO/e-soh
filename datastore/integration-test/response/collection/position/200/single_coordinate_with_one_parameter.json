@@ -51,7 +51,7 @@
         ]
     },
     "parameters": {
-        "air_temperature_1.5_maximum_PT10M": {
+        "air_temperature:1.5:maximum:PT10M": {
             "type": "Parameter",
             "description": {
                 "en": "Ambient Temperature 1.5m 10 Min Maximum"
@@ -70,7 +70,7 @@
         }
     },
     "ranges": {
-        "air_temperature_1.5_maximum_PT10M": {
+        "air_temperature:1.5:maximum:PT10M": {
             "type": "NdArray",
             "dataType": "float",
             "axisNames": [
