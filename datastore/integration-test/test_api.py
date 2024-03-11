@@ -47,6 +47,7 @@ def validate_if_the_dict_keys_are_in_alphabetic_order(actual_response, expected_
             actual_coverages = actual_json["coverages"]
             expected_coverages = expected_json["coverages"]
             for actual_covjson, expected_covjson in zip(actual_coverages, expected_coverages):
+                assert list(actual_covjson["ranges"].keys()) == list(expected_covjson["ranges"].keys())
                 assert list(actual_covjson["parameters"].keys()) == list(expected_covjson["parameters"].keys())
 
 
