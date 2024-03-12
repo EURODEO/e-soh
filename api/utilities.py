@@ -1,9 +1,9 @@
 from datetime import datetime
 from datetime import timedelta
-from functools import lru_cache
 from typing import Tuple
 
 import datastore_pb2 as dstore
+from aiocached import cached
 from fastapi import HTTPException
 from google.protobuf.timestamp_pb2 import Timestamp
 from grpc_getter import getTSAGRequest
@@ -52,6 +52,7 @@ def get_datetime_range(datetime_string: str | None) -> Tuple[Timestamp, Timestam
     return start_datetime, end_datetime
 
 
+@cached(ttl=600)
 async def get_current_parameter_names(ttl_hash=None):
     """
     This function get a set of standard_names currently in the datastore
@@ -59,14 +60,10 @@ async def get_current_parameter_names(ttl_hash=None):
     we want the lru_cache to be valid for.
     """
 
-    @lru_cache(maxsize=1)
-    async def async_helper(ttl_hash):  # pylint: disable=unused-arguement
-        unique_parameter_names = dstore.GetTSAGRequest(attrs=["parameter_name"])
-        unique_parameter_names = await getTSAGRequest(unique_parameter_names)
+    unique_parameter_names = dstore.GetTSAGRequest(attrs=["parameter_name"])
+    unique_parameter_names = await getTSAGRequest(unique_parameter_names)
 
-        return set([i.combo.parameter_name for i in unique_parameter_names.groups])
-
-    return await async_helper(ttl_hash)
+    return set([i.combo.parameter_name for i in unique_parameter_names.groups])
 
 
 async def verify_parameter_names(parameter_names: list) -> None:
