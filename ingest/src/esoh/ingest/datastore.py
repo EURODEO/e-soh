@@ -92,11 +92,20 @@ class DatastoreConnection:
             "unit",
             "instrument",
             "instrument_vocabulary",
+            "level",
+            "period",
+            "function",
         ]:
             if i in msg["properties"]:
                 setattr(ts_metadata, i, msg["properties"][i])
             elif i in msg["properties"]["content"]:
                 setattr(ts_metadata, i, msg["properties"]["content"][i])
+        level = str(ts_metadata.level)
+        period = ts_metadata.period
+        function = ts_metadata.function
+        standard_name = ts_metadata.standard_name
+        parameter_name = ":".join([standard_name, level, period, function])
+        setattr(ts_metadata, "parameter_name", parameter_name)
 
         observation_data = dstore.ObsMetadata(
             pubtime=dtime2tstamp(datetime.strptime(msg["properties"]["pubtime"], "%Y-%m-%dT%H:%M:%S.%f%z")),

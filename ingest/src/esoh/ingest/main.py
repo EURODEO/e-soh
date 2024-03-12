@@ -80,14 +80,13 @@ class IngestToPipeline:
         for msg in messages:
             if msg:
                 try:
-                    return "succesfully published", 200
                     self.dstore.ingest(msg)
                     self.mqtt.send_message(msg)
                 except grpc.RpcError as v_error:
                     # self.dstore.is_channel_ready()
-                    return "Failed to ingest" + "\n" + str(v_error.message), 500
+                    return "Failed to ingest" + "\n" + str(v_error), 500
                 except Exception as e:
-                    return "Failed to ingest" + "\n" + str(e.message), 500
+                    return "Failed to ingest" + "\n" + str(e), 500
         return "succesfully published", 200
 
     def _decide_input_type(self, message) -> str:

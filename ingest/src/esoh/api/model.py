@@ -45,6 +45,42 @@ class CreatorType(Enum):
     position = "position"
 
 
+class Encoding(str, Enum):
+    utf_8 = ("utf-8",)
+    base64 = ("base64",)
+    gzip = "gzip"
+
+
+class Method(str, Enum):
+    sha256 = ("sha256",)
+    sha512 = ("sha512",)
+    sha3_256 = ("sha3-256",)
+    sha384 = ("sha384",)
+    sha3_384 = ("sha3-384",)
+    sha3_512 = "sha3-512"
+
+
+class Integrity(BaseModel):
+    method: Method = Field(..., description="A specific set of methods for calculating the checksum algorithms")
+    value: str = Field(..., description="Checksum value.")
+
+
+class Content(BaseModel):
+    encoding: Encoding = Field(..., description="Encoding of content")
+    size: int = Field(
+        ...,
+        description=(
+            "Number of bytes contained in the file. Together with the ``integrity`` property,"
+            " it provides additional assurance that file content was accurately received."
+            "Note that the limit takes into account the data encoding used, "
+            "including data compression (for example `gzip`)."
+        ),
+    )
+    value: str = Field(..., description="The inline content of the file.")
+    standard_name: str = Field(..., description="CF standard for the data included in this message.")
+    unit: str = Field(..., description="Unit for the data")
+
+
 class Properties(BaseModel):
     data_id: str = Field(
         ...,
@@ -226,6 +262,10 @@ class Properties(BaseModel):
     processing_level: Optional[str] = Field(
         None,
         description="A textual description of the processing (or quality control) level of the data.",
+    )
+    content: Optional[Content] = Field(None, description="Actual data content")
+    integrity: Optional[Integrity] = Field(
+        None, description="Specifies a checksum to be applied to the data to ensure that the download is accurate."
     )
 
 
