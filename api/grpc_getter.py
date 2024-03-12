@@ -30,3 +30,9 @@ async def getTSAGRequest(request):
     grpc_stub = get_grpc_stub()
     response = await grpc_stub.GetTSAttrGroups(request)
     return response
+
+
+async def get_spatial_extent(request):
+    grpc_stub = get_grpc_stub()
+    response = await grpc_stub.GetExtents(request)
+    return response
