@@ -8,6 +8,7 @@ from fastapi import Query
 from geojson_pydantic import Feature
 from geojson_pydantic import FeatureCollection
 from grpc_getter import get_obs_request
+from grpc_getter import get_spatial_extent
 from shapely import geometry
 from utilities import get_datetime_range
 
@@ -92,7 +93,7 @@ async def search_timeseries(
     return formatters.metadata_formatters[f](time_series)
 
 
-@router.get("items/{item_id}", tags=["Collection items"], response_model=Feature, response_model_exclude_none=True)
+@router.get("/items/{item_id}", tags=["Collection items"], response_model=Feature, response_model_exclude_none=True)
 async def get_time_series_by_id(
     item_id: Annotated[str, Path()],
     f: Annotated[
@@ -103,3 +104,97 @@ async def get_time_series_by_id(
     time_series = await get_obs_request(obs_request)
 
     return formatters.metadata_formatters[f](time_series)
+
+
+@router.get("/dataset", tags=["E-SOH dataset"], include_in_schema=False)
+async def get_dataset_metadata():
+    # need to get spatial extent.
+    spatial_request = dstore.GetExtentsRequest()
+    extent = await get_spatial_extent(spatial_request)
+    print(extent.temporal_extent.start)
+    dataset_metadata = {
+        "id": "what is E-SOH data set ID?",
+        "conformsTo": ["http://wis.wmo.int/spec/wcmp/2/conf/core"],
+        "type": "Feature",
+        "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+                [extent.spatial_extent.left, extent.spatial_extent.bottom],
+                [extent.spatial_extent.right, extent.spatial_extent.bottom],
+                [extent.spatial_extent.right, extent.spatial_extent.top],
+                [extent.spatial_extent.left, extent.spatial_extent.top],
+            ],
+        },
+        "time": {
+            "interval": [
+                extent.temporal_extent.start.ToDatetime(),
+                extent.temporal_extent.end.ToDatetime(),
+            ],
+            "resolution": "PT10M",
+        },
+        "properties": {
+            "title": "Meteo data - actual synoptic observations KNMI the Netherlands per 10 minutes",
+            "description": "KNMI collects observations from the automatic weather stations situated in the Netherlands"
+            " and BES islands on locations such as aerodromes and North Sea platforms."
+            " In addition, wind data from KNMI wind poles are included. The weather stations report every 10 minutes"
+            " meteorological parameters such as temperature, relative humidity, wind, air pressure, visibility,"
+            " precipitation, and cloud cover. The number of parameters differs per station."
+            " The file for the past 10 minutes is available a few minutes later and contains a timestamp denoting the"
+            " end of the observation period in UTC. It is possible that a station's observations may not be immediately"
+            " available. Files are updated with missing data up to 4 hours later. For more technical documentation,"
+            " you can go to https://english.knmidata.nl/open-data/actuele10mindataknmistations"
+            " For archived 10-min data, the data is split per variable"
+            " https://dataplatform.knmi.nl/dataset/?tags=Archive For validated history of climatological time series,"
+            " you can go to https://www.knmi.nl/nederland-nu/klimatologie-metingen-en-waarnemingen",
+            "themes": [
+                {
+                    "concepts": [{"id": "meteorology"}],
+                    "scheme": "http://wis.wmo.int/2012/codelists/WMOCodeLists#WMO_CategoryCode",
+                },
+                {
+                    "concepts": [
+                        {"id": "Surface observations"},
+                    ],
+                    "scheme": "https://github.com/wmo-im/"
+                    "topic-hierarchy/earth-system-discipline/weather/surface-based-observations/index.csv",
+                },
+                {
+                    "concepts": [{"id": "weather"}],
+                    "scheme": "https://github.com/wmo-im/"
+                    "wis2-topic-hierarchy/blob/main/topic-hierarchy/earth-system-discipline/index.csv",
+                },
+                {
+                    "concepts": [{"id": "continual"}],
+                    "scheme": "https://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_FrequencyCode",
+                },
+            ],
+        },
+        "links": [
+            {
+                "rel": "items",
+                "href": "E-SOH dataset mqtt stream",
+                "title": "E-SOH dataset data notifications",
+                "type": "application/json",
+            },
+            {"rel": "items", "href": "E-SOH time series mqtt stream", "title": "E-SOH time series data notifications"},
+            {
+                "rel": "data",
+                "href": "E-SOH API landing page",
+                "title": "E-SOH EDR API landing page",
+                "type": "application/json",
+            },
+            {
+                "rel": "related",
+                "href": "E-SOH API documentation",
+                "title": "E-SOH API documentation",
+                "type": "application/json",
+            },
+            {
+                "rel": "license",
+                "href": "need to agree on a license",
+                "title": "need to agree on license",
+                "type": "text/html",
+            },
+        ],
+    }
+    return dataset_metadata
