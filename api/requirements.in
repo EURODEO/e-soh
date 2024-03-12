@@ -12,3 +12,4 @@ covjson-pydantic~=0.2.0
 edr-pydantic~=0.2.0
 shapely~=2.0
 geojson-pydantic~=1.0
+aiocached~=0.3
