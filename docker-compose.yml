@@ -74,7 +74,7 @@ services:
     build:
       context: ingest
     ports:
-      - "8000:8001"
+      - "8009:8001"
     environment:
       - DSHOST=${DSHOST:-store}
       - DSPORT=${DSPORT:-50050}
