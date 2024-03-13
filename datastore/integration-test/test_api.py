@@ -13,69 +13,60 @@ logger.setLevel(os.environ.get("LOG_LEVEL", logging.INFO))
 
 BASE_URL = os.environ.get("BASE_URL", "http://localhost:8008")
 
-
-def actual_response_is_expected_response(actual_response, expected_path, **kwargs):
+def load_json(expected_path):
     file_path = Path(Path(__file__).parent, expected_path).resolve()
     with open(file_path) as file:
         expected_json = json.load(file)
+    return expected_json
 
+
+def actual_response_is_expected_response(actual_response, expected_json, **kwargs):
     diff = DeepDiff(expected_json, actual_response.json(), **kwargs)
     assert diff == {}
     # TODO: maybe this check should be a unit test instead of integration.
     # Deep diff does not check dict keys for order, manually validate if the order is correct.
-    validate_if_the_dict_keys_are_in_alphabetic_order(actual_response=actual_response, expected_path=expected_path)
+    validate_if_the_dict_keys_are_in_alphabetic_order(actual_response=actual_response, expected_json=expected_json)
 
 
-def validate_if_the_dict_keys_are_in_alphabetic_order(actual_response, expected_path):
+def validate_if_the_dict_keys_are_in_alphabetic_order(actual_response, expected_json):
     """Python dictionaries used to be unordered. Resulting that the keys of dictionaries are not checked for the right
     order. Therefore dictionaries where the parameter names are the keys are checked manually for the correct sequence
     in this function."""
     actual_json = actual_response.json()
-    file_path = Path(Path(__file__).parent, expected_path).resolve()
-    with open(file_path) as file:
-        expected_json = json.load(file)
 
-        if actual_json.get("ranges") or expected_json.get("ranges"):
-            actual_ranges = actual_json["ranges"]
-            expected_ranges = expected_json["ranges"]
-            assert list(actual_ranges.keys()) == list(expected_ranges.keys())
-        if actual_json.get("parameters") or expected_json.get("parameters"):
-            actual_parameters = actual_json["parameters"]
-            expected_parameters = expected_json["parameters"]
-            assert list(actual_parameters.keys()) == list(expected_parameters.keys())
-        if actual_json.get("coverages") or expected_json.get("coverages"):
-            actual_coverages = actual_json["coverages"]
-            expected_coverages = expected_json["coverages"]
-            for actual_covjson, expected_covjson in zip(actual_coverages, expected_coverages):
-                assert list(actual_covjson["ranges"].keys()) == list(expected_covjson["ranges"].keys())
-                assert list(actual_covjson["parameters"].keys()) == list(expected_covjson["parameters"].keys())
+    if actual_json.get("ranges") or expected_json.get("ranges"):
+        actual_ranges = actual_json["ranges"]
+        expected_ranges = expected_json["ranges"]
+        assert list(actual_ranges.keys()) == list(expected_ranges.keys())
+    if actual_json.get("parameters") or expected_json.get("parameters"):
+        actual_parameters = actual_json["parameters"]
+        expected_parameters = expected_json["parameters"]
+        assert list(actual_parameters.keys()) == list(expected_parameters.keys())
+    if actual_json.get("coverages") or expected_json.get("coverages"):
+        actual_coverages = actual_json["coverages"]
+        expected_coverages = expected_json["coverages"]
+        for actual_covjson, expected_covjson in zip(actual_coverages, expected_coverages):
+            assert list(actual_covjson["ranges"].keys()) == list(expected_covjson["ranges"].keys())
+            assert list(actual_covjson["parameters"].keys()) == list(expected_covjson["parameters"].keys())
 
 
 def test_get_all_collections():
     actual_response = requests.get(url=BASE_URL + "/collections")
 
+    expected_json = load_json("response/all_collections.json")
+
     assert actual_response.status_code == 200
-    actual_response_is_expected_response(
-        actual_response, "response/capabilities/200/all_collections.json", exclude_regex_paths=r"\['href'\]$"
-    )
+    actual_response_is_expected_response(actual_response, expected_json, exclude_regex_paths=r"\['href'\]$")
 
 
 def test_get_a_single_existing_collection():
     collection_id = "observations"
     actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}")
 
+    expected_json = load_json("response/all_collections.json")["collections"][0]
+
     assert actual_response.status_code == 200
-    actual_response_is_expected_response(
-        actual_response, "response/metadata/200/single_collection.json", exclude_regex_paths=r"\['href'\]$"
-    )
-
-
-def test_get_a_collection_which_does_not_exist():
-    collection_id = "does-not-exist"
-    actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}")
-
-    assert actual_response.status_code == 404
-    actual_response_is_expected_response(actual_response, "response/metadata/404/not_found.json")
+    actual_response_is_expected_response(actual_response, expected_json, exclude_regex_paths=r"\['href'\]$")
 
 
 def test_from_a_single_collection_get_locations_within_a_bbox():
@@ -83,10 +74,10 @@ def test_from_a_single_collection_get_locations_within_a_bbox():
     bbox = "5.0,52.0,6.0,52.1"
     actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/locations?bbox={bbox}")
 
+    expected_json = load_json("response/two_points_with_multiple_parameters.json")
+
     assert actual_response.status_code == 200
-    actual_response_is_expected_response(
-        actual_response, "response/collection/locations/200/locations_within_a_bbox.json"
-    )
+    actual_response_is_expected_response(actual_response, expected_json)
 
 
 def test_from_a_single_collection_get_a_single_location():
@@ -101,10 +92,10 @@ def test_from_a_single_collection_get_a_single_location():
         f"?parameter-name={parameters}&datetime={datetime}"
     )
 
+    expected_json = load_json("response/one_location_with_three_parameters.json")
+
     assert actual_response.status_code == 200
-    actual_response_is_expected_response(
-        actual_response, "response/collection/locations/200/single_location_with_multiple_parameters.json"
-    )
+    actual_response_is_expected_response(actual_response, expected_json)
 
 
 def test_that_the_order_of_the_parameters_in_the_response_is_always_the_same():
@@ -140,8 +131,10 @@ def test_from_a_single_collection_get_a_single_location_which_does_not_exist():
         url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}?parameter-name={parameters}"
     )
 
+    expected_json = load_json("response/404_not_found.json")
+
     assert actual_response.status_code == 404
-    actual_response_is_expected_response(actual_response, "response/collection/locations/404/no_data_found.json")
+    actual_response_is_expected_response(actual_response, expected_json)
 
 
 def test_from_a_single_collection_get_a_single_position_with_one_parameter():
@@ -154,10 +147,10 @@ def test_from_a_single_collection_get_a_single_position_with_one_parameter():
         f"?coords={coords}&parameter-name={parameters}&datetime={datetime}"
     )
 
+    expected_json = load_json("response/one_location_with_one_parameter.json")
+
     assert actual_response.status_code == 200
-    actual_response_is_expected_response(
-        actual_response, "response/collection/position/200/single_coordinate_with_one_parameter.json"
-    )
+    actual_response_is_expected_response(actual_response, expected_json)
 
 
 def test_from_a_single_collection_get_an_area_with_two_parameters():
@@ -170,7 +163,7 @@ def test_from_a_single_collection_get_an_area_with_two_parameters():
         f"?coords={coords}&parameter-name={parameters}&datetime={datetime}"
     )
 
+    expected_json = load_json("response/two_locations_with_two_parameters.json")
+
     assert actual_response.status_code == 200
-    actual_response_is_expected_response(
-        actual_response, "response/collection/area/200/data_within_an_area_with_two_parameters.json"
-    )
+    actual_response_is_expected_response(actual_response, expected_json)

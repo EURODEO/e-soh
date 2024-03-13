@@ -82,7 +82,7 @@ def convert_to_covjson(response):
         coverages.append(Coverage(domain=domain, parameters=parameters, ranges=ranges))
 
     if len(coverages) == 0:
-        raise HTTPException(status_code=404, detail="No data found")
+        raise HTTPException(status_code=404, detail="Requested data not found.")
     elif len(coverages) == 1:
         return coverages[0]
     else:
