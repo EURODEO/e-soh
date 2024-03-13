@@ -6,10 +6,11 @@ from typing import Union
 
 import grpc
 import pkg_resources
-from esoh.ingest.datastore import DatastoreConnection
-from esoh.ingest.messages import messages
-from esoh.ingest.send_mqtt import MQTTConnection
 from jsonschema import Draft202012Validator
+
+from ingest.datastore import DatastoreConnection
+from ingest.messages import messages
+from ingest.send_mqtt import MQTTConnection
 
 logger = logging.getLogger(__name__)
 

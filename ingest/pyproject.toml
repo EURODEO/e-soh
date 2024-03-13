@@ -13,10 +13,9 @@ dependencies = [
 	"protobuf ~= 4.24.3",
 	"grpcio == 1.59.0",
 ]
-name = "esoh"
+name = "esoh-ingest"
 description = "This project is made for parsing and publishing metadata to the E-SOH project."
 version = "0.0.2"
-readme = "README.md"
 requires-python = ">=3.10"
 classifiers = ["Programming Language :: Python :: 3"]
 
@@ -25,7 +24,7 @@ classifiers = ["Programming Language :: Python :: 3"]
 where = ["src"]
 
 [tool.setuptools.package-data]
-"esoh.schemas" = ["*.json"]
+"ingest.schemas" = ["schemas/*.json"]
 
 [tool.pytest.ini_options]
 pythonpath = "."

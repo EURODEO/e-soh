@@ -3,7 +3,8 @@ import json
 
 import numpy as np
 import xarray as xr
-from esoh.ingest.netCDF.mapper import Mapper
+
+from ingest.netCDF.mapper import Mapper
 
 
 def get_attrs(ds: xr.Dataset, var: str):

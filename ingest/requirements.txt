@@ -2,6 +2,7 @@ xarray == 2023.7.0
 netCDF4 ~= 1.6.4
 numpy ~= 1.25.2
 paho-mqtt ~= 1.6.1
+gunicorn~=21.2
 jsonschema ~= 4.19.0
 pybind11 == 2.11.1
 protobuf ~= 4.24.3

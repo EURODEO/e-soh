@@ -3,11 +3,12 @@ import logging
 import os
 
 import xarray as xr
-from esoh.api.model import JsonMessageSchema
-from esoh.ingest.main import IngestToPipeline
 from fastapi import FastAPI
 from fastapi import UploadFile
 from pydantic import BaseModel
+
+from api.model import JsonMessageSchema
+from ingest.main import IngestToPipeline
 
 
 logger = logging.getLogger(__name__)

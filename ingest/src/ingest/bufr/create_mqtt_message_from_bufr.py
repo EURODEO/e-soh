@@ -3,12 +3,12 @@ import json
 import os
 import sys
 
-from esoh.ingest.bufr.bufresohmsg_py import bufresohmsg_py
-from esoh.ingest.bufr.bufresohmsg_py import bufrlog_clear_py
-from esoh.ingest.bufr.bufresohmsg_py import bufrlog_py
-from esoh.ingest.bufr.bufresohmsg_py import init_bufr_schema_py
-from esoh.ingest.bufr.bufresohmsg_py import init_bufrtables_py
-from esoh.ingest.bufr.bufresohmsg_py import init_oscar_py
+from bufr.bufresohmsg_py import bufresohmsg_py
+from bufr.bufresohmsg_py import bufrlog_clear_py
+from bufr.bufresohmsg_py import bufrlog_py
+from bufr.bufresohmsg_py import init_bufr_schema_py
+from bufr.bufresohmsg_py import init_bufrtables_py
+from bufr.bufresohmsg_py import init_oscar_py
 
 
 def build_all_json_payloads_from_bufr(bufr_file_path: str) -> list[str]:

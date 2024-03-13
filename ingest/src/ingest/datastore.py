@@ -2,8 +2,8 @@ import logging
 import re
 from datetime import datetime
 
-import esoh.datastore_pb2 as dstore
-import esoh.datastore_pb2_grpc as dstore_grpc
+import datastore_pb2 as dstore
+import datastore_pb2_grpc as dstore_grpc
 import grpc
 from google.protobuf.timestamp_pb2 import Timestamp
 
