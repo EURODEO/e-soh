@@ -9,6 +9,7 @@ from typing import Union
 
 from pydantic import BaseModel
 from pydantic import Field
+from pydantic import model_validator
 
 
 class Type(Enum):
@@ -79,6 +80,14 @@ class Content(BaseModel):
     value: str = Field(..., description="The inline content of the file.")
     standard_name: str = Field(..., description="CF standard for the data included in this message.")
     unit: str = Field(..., description="Unit for the data")
+
+    @model_validator(mode="after")
+    def check_standard_name_match(self) -> "Content":
+        with open("cf_standard_names_v84.txt", "r") as file:
+            standard_names = {line.strip() for line in file}
+        if self.standard_name not in standard_names:
+            raise ValueError(f"{self.standard_name} not a CF Standard name")
+        return self
 
 
 class Properties(BaseModel):
