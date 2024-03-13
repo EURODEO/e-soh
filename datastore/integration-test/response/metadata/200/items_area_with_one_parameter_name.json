@@ -9,7 +9,6 @@
     },
     "properties": {
         "version": "",
-        "type": "",
         "summary": "",
         "keywords": "temperature, pressure, relative humidity, visibility, wind speed, wind direction, wind gust",
         "keywords_vocabulary": "http://data.knmi.nl",
