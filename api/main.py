@@ -34,7 +34,7 @@ async def landing_page(request: Request) -> LandingPageModel:
     response_model_exclude_none=True,
 )
 async def get_collections(request: Request) -> Collections:
-    return await metadata_endpoints.get_collections(request)
+    return await metadata_endpoints.get_collections(str(request.url))
 
 
 @app.get(
@@ -44,7 +44,9 @@ async def get_collections(request: Request) -> Collections:
     response_model_exclude_none=True,
 )
 async def get_collection_metadata(request: Request) -> Collection:
-    return await metadata_endpoints.get_collection_metadata(request, is_self=True)
+    return await metadata_endpoints.get_collection_metadata(
+        str(request.url).removesuffix("/observations"), is_self=True
+    )
 
 
 # Include all routes
