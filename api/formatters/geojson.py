@@ -7,7 +7,6 @@ from geojson_pydantic import Point
 def _make_properties(ts):
     return {
         "version": ts.ts_mdata.version,
-        "type": ts.ts_mdata.type,
         "summary": ts.ts_mdata.summary,
         "keywords": ts.ts_mdata.keywords,
         "keywords_vocabulary": ts.ts_mdata.keywords_vocabulary,

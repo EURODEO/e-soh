@@ -176,7 +176,12 @@ async def get_dataset_metadata():
                 "title": "E-SOH dataset data notifications",
                 "type": "application/json",
             },
-            {"rel": "items", "href": "E-SOH time series mqtt stream", "title": "E-SOH time series data notifications"},
+            {
+                "rel": "items",
+                "href": "E-SOH time series mqtt stream",
+                "title": "E-SOH time series data notifications",
+                "type": "application/json",
+            },
             {
                 "rel": "data",
                 "href": "E-SOH API landing page",
