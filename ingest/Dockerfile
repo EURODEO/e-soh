@@ -1,4 +1,4 @@
-FROM python:3.11-slim-bookworm
+FROM python:3.10-slim-bookworm
 
 SHELL ["/bin/bash", "-eux", "-o", "pipefail", "-c"]
 
@@ -15,12 +15,14 @@ RUN apt-get update \
 	&& rm -rf /var/lib/apt/lists/*
 
 COPY "./protobuf/datastore.proto" "/protobuf/datastore.proto"
-COPY "./api" "${DOCKER_PATH}/"
+COPY "./api" "${DOCKER_PATH}/api/"
 COPY "requirements.txt" "${DOCKER_PATH}/"
 COPY "./src/" "/ingest/src"
 COPY "./pyproject.toml" "/ingest/pyproject.toml"
+COPY "./setup.py" "/ingest/"
 
 RUN pip install --no-cache-dir --upgrade -r "${DOCKER_PATH}/requirements.txt"
+RUN pip install --no-cache-dir --upgrade pybind11
 
 # hadolint ignore=DL3013
 WORKDIR /ingest/src/ingest/bufr/
@@ -39,4 +41,4 @@ RUN python -m grpc_tools.protoc  \
 
 
 WORKDIR "${DOCKER_PATH}"
-CMD ["gunicorn", "main:app", "--workers=4", "--worker-class=uvicorn.workers.UvicornWorker", "--bind=0.0.0.0:8000"]
+CMD ["gunicorn", "api.main:app", "--workers=4", "--worker-class=uvicorn.workers.UvicornWorker", "--bind=0.0.0.0:8001"]
