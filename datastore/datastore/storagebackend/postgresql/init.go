@@ -60,7 +60,7 @@ var (
 	upsertTSInsertCmd, upsertTSSelectCmd string
 
 	// fields allowable in included_response_fields
-	supIncRespFields common.StringSet
+	supIncRespFields    common.StringSet
 	supIncRespFieldsCSV string
 )
 

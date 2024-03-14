@@ -194,5 +194,5 @@ func (sset *StringSet) Values() []string {
 	for k := range *sset {
 		values = append(values, k)
 	}
-    return values
+	return values
 }

@@ -384,7 +384,7 @@ func scanObsRow(rows *sql.Rows) (*datastore.ObsMetadata, int64, error) {
 	var (
 		tsID            int64
 		obsTimeInstant0 time.Time
-		pubTime0		sql.NullTime
+		pubTime0        sql.NullTime
 		value           sql.NullString
 		point           postgis.PointS
 	)
@@ -420,7 +420,7 @@ func scanObsRow(rows *sql.Rows) (*datastore.ObsMetadata, int64, error) {
 		Obstime: &datastore.ObsMetadata_ObstimeInstant{
 			ObstimeInstant: timestamppb.New(obsTimeInstant0),
 		},
-		Value:   value.String,
+		Value: value.String,
 	}
 	if pubTime0.Valid {
 		obsMdata.Pubtime = timestamppb.New(pubTime0.Time)
@@ -441,7 +441,7 @@ func scanObsRow(rows *sql.Rows) (*datastore.ObsMetadata, int64, error) {
 func getIncRespFields(request *datastore.GetObsRequest) (common.StringSet, error) {
 
 	fields := common.StringSet{}
-    for _, field := range request.GetIncludedResponseFields() {
+	for _, field := range request.GetIncludedResponseFields() {
 		if !supIncRespFields.Contains(field) {
 			return nil, fmt.Errorf(
 				"'%s' not among supported fields: %s",
