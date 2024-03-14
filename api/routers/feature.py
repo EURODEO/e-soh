@@ -130,17 +130,17 @@ async def get_dataset_metadata():
             "resolution": "PT10M",
         },
         "properties": {
-            "title": "Aditional and subhourly observations from European area,"
-            " including synoptic observations distrinuted over GTS",
+            "title": "Additional and sub-hourly observations from European area,"
+            " including synoptic observations distributed over GTS",
             "description": "collection of observations from weather stations situated in European countries."
-            " Data from synoptic stations and additional stations from 3. party station holders is distributed"
+            " Data from synoptic stations and additional stations from 3rd party station holders is distributed"
             " with best possible time resolution.  All parameters resolved in the CF-standards could be distributed."
             " The number of parameters differs pr station. Observations from the last 24hours is available for"
             " download from EDR-api. Timestamp for each observations is based on observation time, or the end of a"
             " aggregation period. Depending om the method used to produce the parameter. "
             "All timestamps is given as UTC. Timeliness of the data depends on when it is distributed from the NMS."
-            " Timeliness within the system is 1 minute after receprion time at the E-soh ingestor."
-            " Observations in E-soh is initialy received at one of the NWS'es."
+            " Timeliness within the system is 1 minute after reception time at the E-soh ingestor."
+            " Observations in E-soh is initial received at one of the NWS'es."
             " The NMS is responsible for checking the quality of the observations. "
             "The NMS is also responsible for collection and distribution of metadata compliant to E-soh and WIS-2.0."
             " E-soh also include all global observations distributed over the Global Transition System (GTS)"
