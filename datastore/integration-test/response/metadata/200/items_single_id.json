@@ -22,7 +22,7 @@
         "project": "",
         "source": "Royal Netherlands Meteorological Institute (KNMI)",
         "platform": "06275",
-        "platform_vocabulary": "",
+        "platform_vocabulary": "https://oscar.wmo.int/surface/#/search/station/stationReportDetails/06275",
         "standard_name": "wind_from_direction",
         "unit": "degree",
         "instrument": "dd",
