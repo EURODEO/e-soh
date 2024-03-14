@@ -19,6 +19,9 @@ def actual_response_is_expected_response(actual_response, expected_path, **kwarg
     with open(file_path) as file:
         expected_json = json.load(file)
 
+    print('\n\nexpected_json: {}'.format(expected_json))
+    print('\n\nactual_response.json(): {}'.format(actual_response.json()))
+
     diff = DeepDiff(expected_json, actual_response.json(), **kwargs)
     assert diff == {}
 
@@ -27,7 +30,7 @@ def test_get_all_collections():
     actual_response = requests.get(url=BASE_URL + "/collections")
 
     assert actual_response.status_code == 200
-    actual_response_is_expected_response(
+    actual_response_is_expected_response( # fails here
         actual_response, "response/capabilities/200/all_collections.json", exclude_regex_paths=r"\['href'\]$"
     )
 
