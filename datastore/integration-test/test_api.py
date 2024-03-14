@@ -13,6 +13,7 @@ logger.setLevel(os.environ.get("LOG_LEVEL", logging.INFO))
 
 BASE_URL = os.environ.get("BASE_URL", "http://localhost:8008")
 
+
 def load_json(expected_path):
     file_path = Path(Path(__file__).parent, expected_path).resolve()
     with open(file_path) as file:
@@ -63,7 +64,9 @@ def test_get_a_single_existing_collection():
     collection_id = "observations"
     actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}")
 
+    # Use all_collections to reduce duplication.
     expected_json = load_json("response/all_collections.json")["collections"][0]
+    expected_json["links"][0]["rel"] = "self"
 
     assert actual_response.status_code == 200
     actual_response_is_expected_response(actual_response, expected_json, exclude_regex_paths=r"\['href'\]$")
