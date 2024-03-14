@@ -126,26 +126,26 @@ async def get_dataset_metadata():
             ],
         },
         "time": {
-            "interval": [
-                extent.temporal_extent.start.ToDatetime(),
-                extent.temporal_extent.end.ToDatetime(),
-            ],
+            "interval": [extent.temporal_extent.start.ToDatetime(), extent.temporal_extent.end.ToDatetime()],
             "resolution": "PT10M",
         },
         "properties": {
-            "title": "Meteo data - actual synoptic observations KNMI the Netherlands per 10 minutes",
-            "description": "KNMI collects observations from the automatic weather stations situated in the Netherlands"
-            " and BES islands on locations such as aerodromes and North Sea platforms."
-            " In addition, wind data from KNMI wind poles are included. The weather stations report every 10 minutes"
-            " meteorological parameters such as temperature, relative humidity, wind, air pressure, visibility,"
-            " precipitation, and cloud cover. The number of parameters differs per station."
-            " The file for the past 10 minutes is available a few minutes later and contains a timestamp denoting the"
-            " end of the observation period in UTC. It is possible that a station's observations may not be immediately"
-            " available. Files are updated with missing data up to 4 hours later. For more technical documentation,"
-            " you can go to https://english.knmidata.nl/open-data/actuele10mindataknmistations"
-            " For archived 10-min data, the data is split per variable"
-            " https://dataplatform.knmi.nl/dataset/?tags=Archive For validated history of climatological time series,"
-            " you can go to https://www.knmi.nl/nederland-nu/klimatologie-metingen-en-waarnemingen",
+            "title": "Aditional and subhourly observations from European area,"
+            " including synoptic observations distrinuted over GTS",
+            "description": "collection of observations from weather stations situated in European countries."
+            " Data from synoptic stations and additional stations from 3. party station holders is distributed"
+            " with best possible time resolution.  All parameters resolved in the CF-standards could be distributed."
+            " The number of parameters differs pr station. Observations from the last 24hours is available for"
+            " download from EDR-api. Timestamp for each observations is based on observation time, or the end of a"
+            " aggregation period. Depending om the method used to produce the parameter. "
+            "All timestamps is given as UTC. Timeliness of the data depends on when it is distributed from the NMS."
+            " Timeliness within the system is 1 minute after receprion time at the E-soh ingestor."
+            " Observations in E-soh is initialy received at one of the NWS'es."
+            " The NMS is responsible for checking the quality of the observations. "
+            "The NMS is also responsible for collection and distribution of metadata compliant to E-soh and WIS-2.0."
+            " E-soh also include all global observations distributed over the Global Transition System (GTS)"
+            " that is considered as open and free for use. E-soh aims to serve all data according to FAIR principles."
+            " For questions or technical documentation, you can go to https://?????????",
             "themes": [
                 {
                     "concepts": [{"id": "meteorology"}],
