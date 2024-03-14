@@ -54,7 +54,7 @@ def validate_if_the_dict_keys_are_in_alphabetic_order(actual_response, expected_
 def test_get_all_collections():
     actual_response = requests.get(url=BASE_URL + "/collections")
 
-    expected_json = load_json("response/all_collections.json")
+    expected_json = load_json("response/metadata_collections_all_collections.json")
 
     assert actual_response.status_code == 200
     actual_response_is_expected_response(actual_response, expected_json, exclude_regex_paths=r"\['href'\]$")
@@ -65,7 +65,7 @@ def test_get_a_single_existing_collection():
     actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}")
 
     # Use all_collections to reduce duplication.
-    expected_json = load_json("response/all_collections.json")["collections"][0]
+    expected_json = load_json("response/metadata_collections_all_collections.json")["collections"][0]
     expected_json["links"][0]["rel"] = "self"
 
     assert actual_response.status_code == 200
@@ -77,7 +77,7 @@ def test_from_a_single_collection_get_locations_within_a_bbox():
     bbox = "5.0,52.0,6.0,52.1"
     actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/locations?bbox={bbox}")
 
-    expected_json = load_json("response/two_points_with_multiple_parameters.json")
+    expected_json = load_json("response/data_locations_two_points_with_multiple_parameters.json")
 
     assert actual_response.status_code == 200
     actual_response_is_expected_response(actual_response, expected_json)
@@ -95,7 +95,7 @@ def test_from_a_single_collection_get_a_single_location():
         f"?parameter-name={parameters}&datetime={datetime}"
     )
 
-    expected_json = load_json("response/one_location_with_three_parameters.json")
+    expected_json = load_json("response/data_locations_one_location_with_three_parameters.json")
 
     assert actual_response.status_code == 200
     actual_response_is_expected_response(actual_response, expected_json)
@@ -150,7 +150,7 @@ def test_from_a_single_collection_get_a_single_position_with_one_parameter():
         f"?coords={coords}&parameter-name={parameters}&datetime={datetime}"
     )
 
-    expected_json = load_json("response/one_location_with_one_parameter.json")
+    expected_json = load_json("response/data_position_one_location_with_one_parameter.json")
 
     assert actual_response.status_code == 200
     actual_response_is_expected_response(actual_response, expected_json)
@@ -166,7 +166,7 @@ def test_from_a_single_collection_get_an_area_with_two_parameters():
         f"?coords={coords}&parameter-name={parameters}&datetime={datetime}"
     )
 
-    expected_json = load_json("response/two_locations_with_two_parameters.json")
+    expected_json = load_json("response/data_area_two_locations_with_two_parameters.json")
 
     assert actual_response.status_code == 200
     actual_response_is_expected_response(actual_response, expected_json)
