@@ -12,10 +12,7 @@ import grpc
 # Reuse channel and stub as much as possible, see https://grpc.io/docs/guides/performance/
 @cache
 def get_grpc_stub():
-    channel = grpc.aio.insecure_channel(
-        f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}",
-        options=[("grpc.max_receive_message_length", 85000000)],  # HACK: temp workarround grpc message size
-    )
+    channel = grpc.aio.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}")
     return dstore_grpc.DatastoreStub(channel)
 
 
