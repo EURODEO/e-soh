@@ -20,7 +20,12 @@ def _make_properties(ts):
         "project": ts.ts_mdata.project,
         "source": ts.ts_mdata.source,
         "platform": ts.ts_mdata.platform,
-        "platform_vocabulary": ts.ts_mdata.platform_vocabulary,
+        "name": ts.ts_mdata.platform,  # TODO: grab proper name when implemented in proto
+        "platform_vocabulary": (
+            "https://oscar.wmo.int/surface/#/search/station/stationReportDetails/" + ts.ts_mdata.platform
+            if not ts.ts_mdata.platform_vocabulary
+            else ts.ts_mdata.platform_vocabulary
+        ),
         "standard_name": ts.ts_mdata.standard_name,
         "unit": ts.ts_mdata.unit,
         "instrument": ts.ts_mdata.instrument,
@@ -36,7 +41,7 @@ def _make_properties(ts):
 
 def convert_to_geojson(response):
     """
-    Will only genereate geoJSON for stationary timeseries
+    Will only generate geoJSON for stationary timeseries
     """
     features = [
         Feature(
