@@ -1,6 +1,7 @@
 import pytest
 import xarray as xr
-from esoh.ingest.main import IngestToPipeline
+
+from api.ingest import IngestToPipeline
 
 
 def test_build_message_errors():

@@ -8,9 +8,9 @@ import grpc
 import pkg_resources
 from jsonschema import Draft202012Validator
 
-from ingest.datastore import DatastoreConnection
-from ingest.messages import messages
-from ingest.send_mqtt import MQTTConnection
+from api.datastore import DatastoreConnection
+from api.messages import messages
+from api.send_mqtt import MQTTConnection
 
 logger = logging.getLogger(__name__)
 
@@ -33,15 +33,15 @@ class IngestToPipeline:
         self.uuid_prefix = uuid_prefix
 
         if not schema_path:
-            self.schema_path = pkg_resources.resource_filename("esoh", "schemas")
+            self.schema_path = pkg_resources.resource_filename("src", "schemas")
         else:
             self.schema_path = schema_path
         if not schema_file:
             self.schema_file = "e-soh-message-spec.json"
         else:
             self.schema_file = schema_file
-
         esoh_mqtt_schema = os.path.join(self.schema_path, self.schema_file)
+
         with open(esoh_mqtt_schema, "r") as file:
             self.esoh_mqtt_schema = json.load(file)
         self.schema_validator = Draft202012Validator(self.esoh_mqtt_schema)

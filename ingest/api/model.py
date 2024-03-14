@@ -83,7 +83,7 @@ class Content(BaseModel):
 
     @model_validator(mode="after")
     def check_standard_name_match(self) -> "Content":
-        with open("cf_standard_names_v84.txt", "r") as file:
+        with open("api/cf_standard_names_v84.txt", "r") as file:
             standard_names = {line.strip() for line in file}
         if self.standard_name not in standard_names:
             raise ValueError(f"{self.standard_name} not a CF Standard name")

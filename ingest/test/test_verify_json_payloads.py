@@ -3,24 +3,25 @@ import json
 
 import pytest
 import xarray as xr
-from esoh.ingest.bufr.bufresohmsg_py import init_bufr_schema_py
-from esoh.ingest.bufr.bufresohmsg_py import init_bufrtables_py
-from esoh.ingest.bufr.bufresohmsg_py import init_oscar_py
-from esoh.ingest.main import IngestToPipeline
 from jsonschema import Draft202012Validator
 from jsonschema import ValidationError
+
+from api.ingest import IngestToPipeline
+from ingest.bufr.bufresohmsg_py import init_bufr_schema_py
+from ingest.bufr.bufresohmsg_py import init_bufrtables_py
+from ingest.bufr.bufresohmsg_py import init_oscar_py
 
 
 @pytest.mark.timeout(1000)
 @pytest.mark.parametrize("bufr_file_path", glob.glob("test/test_data/bufr/*.buf*"))
 def test_verify_json_payload_bufr(bufr_file_path):
     # Load the schema
-    with open("src/esoh/schemas/e-soh-message-spec.json", "r") as file:
+    with open("src/schemas/e-soh-message-spec.json", "r") as file:
         e_soh_mqtt_message_schema = json.load(file)
 
     init_bufrtables_py("")
-    init_oscar_py("./src/esoh/ingest/bufr/oscar/oscar_stations_all.json")
-    init_bufr_schema_py("./src/esoh/schemas/bufr_to_e_soh_message.json")
+    init_oscar_py("./src/ingest/bufr/oscar/oscar_stations_all.json")
+    init_bufr_schema_py("./src/schemas/bufr_to_e_soh_message.json")
     msg_build = IngestToPipeline(None, None, "testing", testing=True)
 
     json_payloads = msg_build._build_messages(bufr_file_path, input_type="bufr")
@@ -36,7 +37,7 @@ def test_verify_json_payload_bufr(bufr_file_path):
 @pytest.mark.parametrize("netcdf_file_path", glob.glob("test/test_data/met_norway/*.nc"))
 def test_verify_json_payload_metno_netcdf(netcdf_file_path):
     # Load the schema
-    with open("src/esoh/schemas/e-soh-message-spec.json", "r") as file:
+    with open("src/schemas/e-soh-message-spec.json", "r") as file:
         e_soh_mqtt_message_schema = json.load(file)
 
     ds = xr.load_dataset(netcdf_file_path)
@@ -55,7 +56,7 @@ def test_verify_json_payload_metno_netcdf(netcdf_file_path):
 
 @pytest.mark.parametrize("netcdf_file_path", glob.glob("test/test_data/knmi/*.nc"))
 def test_verify_json_payload_knmi_netcdf(netcdf_file_path):
-    with open("src/esoh/schemas/e-soh-message-spec.json", "r") as file:
+    with open("src/schemas/e-soh-message-spec.json", "r") as file:
         e_soh_mqtt_message_schema = json.load(file)
 
     ds = xr.load_dataset(netcdf_file_path)

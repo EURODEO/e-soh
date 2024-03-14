@@ -1,6 +1,6 @@
 import json
 
-from esoh.ingest.datastore import DatastoreConnection
+from api.datastore import DatastoreConnection
 
 
 def test_datastore_ingest():

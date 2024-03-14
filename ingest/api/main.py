@@ -7,8 +7,8 @@ from fastapi import FastAPI
 from fastapi import UploadFile
 from pydantic import BaseModel
 
+from api.ingest import IngestToPipeline
 from api.model import JsonMessageSchema
-from ingest.main import IngestToPipeline
 
 
 logger = logging.getLogger(__name__)
@@ -37,7 +37,7 @@ datastore_configuration = {
 }
 
 
-@app.post("/upload/nc")
+@app.post("/nc")
 async def upload_netcdf_file(files: UploadFile, input_type: str = "nc"):
     try:
         ingester = IngestToPipeline(
@@ -54,7 +54,7 @@ async def upload_netcdf_file(files: UploadFile, input_type: str = "nc"):
         return Response(status_message=str(e), status_code=500)
 
 
-@app.post("/upload/bufr")
+@app.post("/bufr")
 async def upload_bufr_file(files: UploadFile, input_type: str = "bufr"):
     try:
         ingester = IngestToPipeline(

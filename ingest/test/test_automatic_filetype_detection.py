@@ -1,5 +1,6 @@
 import pytest
-from esoh.ingest.main import IngestToPipeline
+
+from api.ingest import IngestToPipeline
 
 
 @pytest.mark.parametrize(
