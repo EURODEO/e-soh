@@ -91,7 +91,12 @@ async def get_locations(
         Feature(
             type="Feature",
             id=station_id,
-            properties={"parameter-name": sorted(platform_parameters[station_id])},
+            properties={
+                # TODO: Change to platform_name to correct one when its available, this is only for geoweb demo
+                "name": f"platform-{station_id}",
+                "detail": f"https://oscar.wmo.int/surface/#/search/station/stationReportDetails/{station_id}",
+                "parameter-name": sorted(platform_parameters[station_id]),
+            },
             geometry=Point(
                 type="Point",
                 coordinates=list(platform_coordinates[station_id])[0],
