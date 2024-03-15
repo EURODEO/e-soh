@@ -13,6 +13,7 @@ from covjson_pydantic.coverage import CoverageCollection
 from covjson_pydantic.parameter import Parameter
 from custom_geo_json.edr_feature_collection import EDRFeatureCollection
 from dependencies import get_datetime_range
+from dependencies import validate_bbox
 from fastapi import APIRouter
 from fastapi import HTTPException
 from fastapi import Path
@@ -42,7 +43,7 @@ router = APIRouter(prefix="/collections/observations")
 async def get_locations(
     bbox: Annotated[str, Query(example="5.0,52.0,6.0,52.1")]
 ) -> EDRFeatureCollection:  # Hack to use string
-    left, bottom, right, top = map(str.strip, bbox.split(","))
+    left, bottom, right, top = validate_bbox(bbox)
     poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
 
     ts_request = dstore.GetObsRequest(

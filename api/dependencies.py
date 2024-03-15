@@ -82,3 +82,28 @@ async def verify_parameter_names(parameter_names: list) -> None:
 
     if unknown_parameter_names:
         raise HTTPException(400, detail=f"Unknown parameter-name {unknown_parameter_names}")
+
+
+def validate_bbox(bbox: str) -> Tuple[str, str, str, str]:
+    """
+    Function for validating the bbox parameter.
+    Raises error with invalid bbox if any are found.
+    """
+    errors = {}
+
+    try:
+        left, bottom, right, top = map(str.strip, bbox.split(","))
+    except ValueError:
+        errors["bbox"] = f"Invalid format: {bbox}"
+    else:
+        if left > right or bottom > top:
+            errors["range"] = f"Invalid bbox range: {bbox}"
+        if not -180 <= float(left) <= 180 or not -180 <= float(right) <= 180:
+            errors["longitude"] = f"Invalid longitude: {bbox}"
+        if not -90 <= float(bottom) <= 90 or not -90 <= float(top) <= 90:
+            errors["latitude"] = f"Invalid latitude: {bbox}"
+
+    if errors:
+        raise HTTPException(status_code=400, detail=errors)
+
+    return left, bottom, right, top
