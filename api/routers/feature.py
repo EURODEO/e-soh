@@ -67,7 +67,7 @@ async def search_timeseries(
 
     obs_request = dstore.GetObsRequest(
         filter=dict(
-            metadata_id=dstore.Strings(values=ids.split(",") if ids else ids),
+            metadata_id=dstore.Strings(values=ids.split(",") if ids else None),
             parameter_name=dstore.Strings(values=parameter_name.split(",") if parameter_name else None),
             naming_authority=dstore.Strings(values=naming_authority.split(",") if naming_authority else None),
             institution=dstore.Strings(values=institution.split(",") if institution else None),
