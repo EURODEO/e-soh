@@ -150,7 +150,7 @@ def test_from_a_single_collection_get_an_area_with_two_parameters():
 
 def test_items_get_area():
     collection_id = "observations"
-    bbox = "5.0,52.0,6.0,52.059"
+    bbox = "4.5,52.4,4.6,52.57"
     actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items?bbox={bbox}")
 
     assert actual_response.status_code == 200
@@ -185,7 +185,7 @@ def test_items_get_area_with_one_parameter_name():
 
 def test_items_get_one_platform():
     collection_id = "observations"
-    platform = "06275"
+    platform = "06225"
     actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items?platform={platform}")
 
     assert actual_response.status_code == 200
