@@ -37,7 +37,7 @@ def get_landing_page(request):
     )
 
 
-async def get_collection_metadata(request, is_self) -> Collection:
+async def get_collection_metadata(base_url: str, is_self) -> Collection:
     # TODO: Try to remove/lower duplication with /locations endpoint
     ts_request = dstore.GetObsRequest(temporal_mode="latest")
     ts_response = await get_obs_request(ts_request)
@@ -70,27 +70,27 @@ async def get_collection_metadata(request, is_self) -> Collection:
     collection = Collection(
         id="observations",
         links=[
-            Link(href=f"{request.url}/observations", rel="self" if is_self else "data"),
+            Link(href=f"{base_url}/observations", rel="self" if is_self else "data"),
         ],
         extent=Extent(spatial=Spatial(bbox=[[3.0, 50.0, 8.0, 55.0]], crs="WGS84")),  # TODO: Get this from database
         data_queries=DataQueries(
             position=EDRQuery(
                 link=EDRQueryLink(
-                    href=f"{request.url}/observations/position",
+                    href=f"{base_url}/observations/position",
                     rel="data",
                     variables=Variables(query_type="position", output_format=["CoverageJSON"]),
                 )
             ),
             locations=EDRQuery(
                 link=EDRQueryLink(
-                    href=f"{request.url}/observations/locations",
+                    href=f"{base_url}/observations/locations",
                     rel="data",
                     variables=Variables(query_type="locations", output_format=["CoverageJSON"]),
                 )
             ),
             area=EDRQuery(
                 link=EDRQueryLink(
-                    href=f"{request.url}/observations/area",
+                    href=f"{base_url}/observations/area",
                     rel="data",
                     variables=Variables(query_type="area", output_format=["CoverageJSON"]),
                 )
@@ -103,10 +103,10 @@ async def get_collection_metadata(request, is_self) -> Collection:
     return collection
 
 
-async def get_collections(request) -> Collections:
+async def get_collections(base_url: str) -> Collections:
     return Collections(
         links=[
-            Link(href=f"{request.url}", rel="self"),
+            Link(href=f"{base_url}", rel="self"),
         ],
-        collections=[await get_collection_metadata(request, is_self=False)],
+        collections=[await get_collection_metadata(base_url, is_self=False)],
     )

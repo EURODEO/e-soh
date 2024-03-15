@@ -51,6 +51,20 @@ def validate_if_the_dict_keys_are_in_alphabetic_order(actual_response, expected_
             assert list(actual_covjson["parameters"].keys()) == list(expected_covjson["parameters"].keys())
 
 
+def test_that_a_collection_of_all_collections_is_the_same_as_a_single_collection():
+    response_all_collections = requests.get(url=BASE_URL + "/collections")
+    response_single_collection = requests.get(url=BASE_URL + "/collections/observations")
+
+    assert response_all_collections.status_code == 200
+    assert response_single_collection.status_code == 200
+    diff = DeepDiff(
+        response_all_collections.json()["collections"][0],
+        response_single_collection.json(),
+        exclude_paths=["root['links'][0]['rel']"],
+    )
+    assert diff == {}
+
+
 def test_get_all_collections():
     actual_response = requests.get(url=BASE_URL + "/collections")
 
