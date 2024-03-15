@@ -33,7 +33,7 @@ class IngestToPipeline:
         self.uuid_prefix = uuid_prefix
 
         if not schema_path:
-            self.schema_path = pkg_resources.resource_filename("src", "schemas")
+            self.schema_path = pkg_resources.resource_filename("ingest", "schemas")
         else:
             self.schema_path = schema_path
         if not schema_file:
