@@ -96,7 +96,7 @@ def create_url_from_request(request):
     return f"{scheme}://{host}{base_path}/collections"
 
 
-def validate_bbox(bbox: str) -> Tuple[str, str, str, str]:
+def validate_bbox(bbox: str) -> Tuple[float, float, float, float]:
     """
     Function for validating the bbox parameter.
     Raises error with invalid bbox if any are found.
@@ -104,15 +104,15 @@ def validate_bbox(bbox: str) -> Tuple[str, str, str, str]:
     errors = {}
 
     try:
-        left, bottom, right, top = map(str.strip, bbox.split(","))
+        left, bottom, right, top = map(float, map(str.strip, bbox.split(",")))
     except ValueError:
         errors["bbox"] = f"Invalid format: {bbox}"
     else:
         if left > right or bottom > top:
             errors["range"] = f"Invalid bbox range: {bbox}"
-        if not -180 <= float(left) <= 180 or not -180 <= float(right) <= 180:
+        if not -180 <= left <= 180 or not -180 <= right <= 180:
             errors["longitude"] = f"Invalid longitude: {bbox}"
-        if not -90 <= float(bottom) <= 90 or not -90 <= float(top) <= 90:
+        if not -90 <= bottom <= 90 or not -90 <= top <= 90:
             errors["latitude"] = f"Invalid latitude: {bbox}"
 
     if errors:
