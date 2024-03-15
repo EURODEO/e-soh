@@ -53,7 +53,7 @@ def get_datetime_range(datetime_string: str | None) -> Tuple[Timestamp, Timestam
 
 
 @cached(ttl=600)
-async def get_current_parameter_names(ttl_hash=None):
+async def get_current_parameter_names():
     """
     This function get a set of standard_names currently in the datastore
     The ttl_hash should be a value that is updated at the same frequency
@@ -74,7 +74,7 @@ async def verify_parameter_names(parameter_names: list) -> None:
     unknown_parameter_names = []
 
     for i in [parameter_names] if isinstance(parameter_names, str) else parameter_names:
-        if i not in await get_current_parameter_names(datetime.now().minute):
+        if i not in await get_current_parameter_names():
             unknown_parameter_names.append(i)
 
     if unknown_parameter_names:
