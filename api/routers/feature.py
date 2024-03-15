@@ -19,7 +19,7 @@ router = APIRouter(prefix="/collections/observations")
     "/items", tags=["Collection items"], response_model=Feature | FeatureCollection, response_model_exclude_none=True
 )
 async def search_timeseries(
-    bbox: Annotated[str | None, Query(example="5.0,52.0,6.0,52.1")] = None,
+    bbox: Annotated[str | None, Query(example="5.0,52.0,6.0,52.1")],
     datetime: Annotated[
         str | None,
         Query(
