@@ -117,7 +117,7 @@ async def get_locations(
     response_model_exclude_none=True,
 )
 async def get_data_location_id(
-    location_id: Annotated[str, Path(example="06260")],
+    location_id: Annotated[str, Path(example="0-20000-0-06260")],
     parameter_name: Annotated[
         str | None,
         Query(
