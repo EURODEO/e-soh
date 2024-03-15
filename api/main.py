@@ -4,6 +4,7 @@ import logging
 
 import metadata_endpoints
 from brotli_asgi import BrotliMiddleware
+from dependencies import create_url_from_request
 from edr_pydantic.capabilities import LandingPageModel
 from edr_pydantic.collections import Collection
 from edr_pydantic.collections import Collections
@@ -34,7 +35,8 @@ async def landing_page(request: Request) -> LandingPageModel:
     response_model_exclude_none=True,
 )
 async def get_collections(request: Request) -> Collections:
-    return await metadata_endpoints.get_collections(request)
+    base_url = create_url_from_request(request)
+    return await metadata_endpoints.get_collections(base_url)
 
 
 @app.get(
@@ -44,7 +46,8 @@ async def get_collections(request: Request) -> Collections:
     response_model_exclude_none=True,
 )
 async def get_collection_metadata(request: Request) -> Collection:
-    return await metadata_endpoints.get_collection_metadata(request, is_self=True)
+    base_url = create_url_from_request(request)
+    return await metadata_endpoints.get_collection_metadata(base_url, is_self=True)
 
 
 # Include all routes

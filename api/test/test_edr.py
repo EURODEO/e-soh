@@ -81,7 +81,7 @@ def test_get_locations_id_with_empty_response():
         response = client.get("/collections/observations/locations/10000?f=CoverageJSON")
 
         assert response.status_code == 404
-        assert response.json() == {"detail": "No data found"}
+        assert response.json() == {"detail": "Requested data not found."}
 
 
 def test_get_area_with_normal_query():

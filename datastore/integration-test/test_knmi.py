@@ -22,7 +22,7 @@ def test_find_series_single_station_single_parameter(grpc_stub):
     request = dstore.GetObsRequest(
         filter=dict(
             platform=dstore.Strings(values=["06260"]),
-            parameter_name=dstore.Strings(values=["relative_humidity_2.0_mean_PT1M"]),
+            parameter_name=dstore.Strings(values=["relative_humidity:2.0:mean:PT1M"]),
         )
     )
     response = grpc_stub.GetObservations(request)
@@ -35,7 +35,7 @@ def test_find_series_single_station_single_parameter(grpc_stub):
 
 def test_find_series_all_stations_single_parameter(grpc_stub):
     request = dstore.GetObsRequest(
-        filter=dict(parameter_name=dstore.Strings(values=["relative_humidity_2.0_mean_PT1M"]))
+        filter=dict(parameter_name=dstore.Strings(values=["relative_humidity:2.0:mean:PT1M"]))
     )
     response = grpc_stub.GetObservations(request)
 
@@ -53,7 +53,7 @@ def test_get_values_single_station_single_parameter(grpc_stub):
     ts_request = dstore.GetObsRequest(
         filter=dict(
             platform=dstore.Strings(values=["06260"]),
-            parameter_name=dstore.Strings(values=["relative_humidity_2.0_mean_PT1M"]),
+            parameter_name=dstore.Strings(values=["relative_humidity:2.0:mean:PT1M"]),
         )
     )
     response = grpc_stub.GetObservations(ts_request)
@@ -73,7 +73,7 @@ def test_get_values_single_station_single_parameter_one_hour(grpc_stub):
     ts_request = dstore.GetObsRequest(
         filter=dict(
             platform=dstore.Strings(values=["06260"]),
-            parameter_name=dstore.Strings(values=["relative_humidity_2.0_mean_PT1M"]),
+            parameter_name=dstore.Strings(values=["relative_humidity:2.0:mean:PT1M"]),
         ),
         temporal_interval=dstore.TimeInterval(start=start_datetime, end=end_datetime),
     )
@@ -88,44 +88,44 @@ input_params_polygon = [
     (
         # Multiple stations within
         ((52.15, 4.90), (52.15, 5.37), (51.66, 5.37), (51.66, 4.90)),
-        ["relative_humidity_2.0_mean_PT1M"],
+        ["relative_humidity:2.0:mean:PT1M"],
         ["06260", "06348", "06356"],
     ),
     (
         # Multiple stations with a single parameter
         ((52.15, 4.90), (52.15, 5.37), (51.66, 5.37), (51.66, 4.90)),
-        ["relative_humidity_2.0_mean_PT1M"],
+        ["relative_humidity:2.0:mean:PT1M"],
         ["06260", "06348", "06356"],
     ),
     (
         # Multiple stations with multiple parameters
         ((52.15, 4.90), (52.15, 5.37), (51.66, 5.37), (51.66, 4.90)),
-        ["wind_from_direction_2.0_mean_PT10M", "relative_humidity_2.0_mean_PT1M", "air_temperature_2.0_mean_PT1M"],
+        ["wind_from_direction:2.0:mean:PT10M", "relative_humidity:2.0:mean:PT1M", "air_temperature:2.0:mean:PT1M"],
         ["06260", "06348", "06356"],
     ),
     (
         # One station within
         ((52.11, 5.15), (52.11, 5.204), (52.08, 5.204), (52.08, 5.15)),
-        ["relative_humidity_2.0_mean_PT1M"],
+        ["relative_humidity:2.0:mean:PT1M"],
         ["06260"],
     ),
     (
         # Nothing within
         ((51.82, 5.07), (51.82, 5.41), (51.73, 5.41), (51.73, 5.07)),
-        ["relative_humidity_2.0_mean_PT1M"],
+        ["relative_humidity:2.0:mean:PT1M"],
         [],
     ),
     (
         # Middle top
         ((52.0989, 4.17), (52.0989, 6.18), (52.09, 6.18), (52.09, 4.17)),
-        ["relative_humidity_2.0_mean_PT1M"],
+        ["relative_humidity:2.0:mean:PT1M"],
         ["06260"],
     ),
     (
         # Middle bottom, should fall outside since polygon is curved,
         # because the earth is round (postgres geography).
         ((52.1, 4.17), (52.1, 6.18), (52.0989, 6.18), (52.0989, 4.17)),
-        ["relative_humidity_2.0_mean_PT1M"],
+        ["relative_humidity:2.0:mean:PT1M"],
         [],
     ),
     (
@@ -139,13 +139,13 @@ input_params_polygon = [
             (52.18, 5.30),
             (51.75, 3.68),
         ),
-        ["relative_humidity_2.0_mean_PT1M"],
+        ["relative_humidity:2.0:mean:PT1M"],
         ["06260", "06310", "06323", "06340", "06348", "06350", "06356"],
     ),
     (
         # All stations in the Netherlands which have RH
         ((56.00, 2.85), (56.00, 7.22), (50.75, 7.22), (50.75, 2.85)),
-        ["relative_humidity_2.0_mean_PT1M"],
+        ["relative_humidity:2.0:mean:PT1M"],
         # fmt: off
         [
             "06203", "06204", "06205", "06207", "06208", "06211", "06214", "06215",

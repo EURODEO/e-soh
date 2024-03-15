@@ -84,6 +84,18 @@ async def verify_parameter_names(parameter_names: list) -> None:
         raise HTTPException(400, detail=f"Unknown parameter-name {unknown_parameter_names}")
 
 
+def create_url_from_request(request):
+    # The server root_path contains the path added by a reverse proxy
+    base_path = request.scope.get("root_path")
+
+    # The host will (should) be correctly set from X-Forwarded-Host and X-Forwarded-Scheme
+    # headers by any proxy in front of it
+    host = request.headers["host"]
+    scheme = request.url.scheme
+
+    return f"{scheme}://{host}{base_path}/collections"
+
+
 def validate_bbox(bbox: str) -> Tuple[str, str, str, str]:
     """
     Function for validating the bbox parameter.
