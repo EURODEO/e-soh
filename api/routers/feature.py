@@ -53,7 +53,7 @@ async def search_timeseries(
         str | None, Query(description="Duration of collection period in ISO8601", example="PT10M")
     ] = None,
     function: Annotated[
-        str | None, Query(description="Aggregation function used to sample obersved property", example="maximum")
+        str | None, Query(description="Aggregation function used to sample observed property", example="maximum")
     ] = None,
     f: Annotated[
         formatters.Metadata_Formats, Query(description="Specify return format")
