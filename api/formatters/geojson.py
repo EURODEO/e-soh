@@ -5,7 +5,7 @@ from geojson_pydantic import Point
 
 
 def _make_properties(ts):
-    ts_metadata = {key.name: value for key, value in ts.ts_mdata.ListFields()}
+    ts_metadata = {key.name: value for key, value in ts.ts_mdata.ListFields() if value}
 
     ts_metadata["platform_vocabulary"] = (
         "https://oscar.wmo.int/surface/#/search/station/stationReportDetails/" + ts.ts_mdata.platform
