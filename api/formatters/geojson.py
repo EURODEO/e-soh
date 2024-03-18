@@ -5,38 +5,18 @@ from geojson_pydantic import Point
 
 
 def _make_properties(ts):
-    return {
-        "version": ts.ts_mdata.version,
-        "summary": ts.ts_mdata.summary,
-        "keywords": ts.ts_mdata.keywords,
-        "keywords_vocabulary": ts.ts_mdata.keywords_vocabulary,
-        "conventions": ts.ts_mdata.conventions,
-        "naming_authority": ts.ts_mdata.naming_authority,
-        "creator_type": ts.ts_mdata.creator_type,
-        "creator_name": ts.ts_mdata.creator_name,
-        "creator_email": ts.ts_mdata.creator_email,
-        "creator_url": ts.ts_mdata.creator_url,
-        "institution": ts.ts_mdata.institution,
-        "project": ts.ts_mdata.project,
-        "source": ts.ts_mdata.source,
-        "platform": ts.ts_mdata.platform,
-        "name": ts.ts_mdata.platform,  # TODO: grab proper name when implemented in proto
-        "platform_vocabulary": (
-            "https://oscar.wmo.int/surface/#/search/station/stationReportDetails/" + ts.ts_mdata.platform
-            if not ts.ts_mdata.platform_vocabulary
-            else ts.ts_mdata.platform_vocabulary
-        ),
-        "standard_name": ts.ts_mdata.standard_name,
-        "unit": ts.ts_mdata.unit,
-        "instrument": ts.ts_mdata.instrument,
-        "instrument_vocabulary": ts.ts_mdata.instrument_vocabulary,
-        "level": ts.ts_mdata.level,
-        "period": ts.ts_mdata.period,
-        "function": ts.ts_mdata.function,
-        "parameter_name": ts.ts_mdata.parameter_name,
-        "history": ts.obs_mdata[0].history,
-        "processing_level": ts.obs_mdata[0].processing_level,
-    }
+    ts_metadata = {key.name: value for key, value in ts.ts_mdata.ListFields()}
+
+    ts_metadata["platform_vocabulary"] = (
+        "https://oscar.wmo.int/surface/#/search/station/stationReportDetails/" + ts.ts_mdata.platform
+        if not ts.ts_mdata.platform_vocabulary
+        else ts.ts_mdata.platform_vocabulary
+    )
+    # This should also be compatible with future when name is added to datastore
+    if "name" not in ts_metadata:
+        ts_metadata["name"] = ts.ts_mdata.platform  # TODO: grab proper name when implemented in proto
+
+    return ts_metadata
 
 
 def convert_to_geojson(response):
