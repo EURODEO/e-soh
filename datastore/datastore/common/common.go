@@ -174,3 +174,25 @@ type TemporalSpec struct {
 	// (false)
 	Interval *datastore.TimeInterval // interval in 'interval' mode
 }
+
+type StringSet map[string]struct{}
+
+// Contains returns true iff sset contains val.
+func (sset *StringSet) Contains(val string) bool {
+	_, found := (*sset)[val]
+	return found
+}
+
+// Set adds val to sset.
+func (sset *StringSet) Set(val string) {
+	(*sset)[val] = struct{}{}
+}
+
+// Returns the "values" (i.e. technically the keys!) of sset.
+func (sset *StringSet) Values() []string {
+	values := []string{}
+	for k := range *sset {
+		values = append(values, k)
+	}
+	return values
+}
