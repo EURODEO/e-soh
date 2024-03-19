@@ -409,7 +409,9 @@ std::list<std::string> ESOHBufr::msg() const {
           // 33: // Height of sensor above water
           if (v.y() == 31 || v.y() == 32 || v.y() == 33) {
             sensor_level = getValue(v, sensor_level);
-            sensor_level_active = 2;
+            if (getDataCategory() <= 1) {
+              sensor_level_active = 2;
+            }
           }
 
           break;
@@ -434,7 +436,7 @@ std::list<std::string> ESOHBufr::msg() const {
         {
           if (v.y() == 1 || v.y() == 2) // WIND SPEED, WIND DIRECTION
           {
-            if (!sensor_level_active) {
+            if (!sensor_level_active && getDataCategory() <= 1) {
               sensor_level_active = 1;
               sensor_level = 10.0;
             }
@@ -447,7 +449,7 @@ std::list<std::string> ESOHBufr::msg() const {
         case 12: // Temperature
         {
           if (v.y() == 1 || v.y() == 101 || v.y() == 3 || v.y() == 103) {
-            if (!sensor_level_active) {
+            if (!sensor_level_active && getDataCategory() <= 1) {
               sensor_level_active = 1;
               sensor_level = 2.0;
             }
@@ -461,7 +463,7 @@ std::list<std::string> ESOHBufr::msg() const {
         case 13: // Humidity
         {
           if (v.y() == 3) {
-            if (!sensor_level_active) {
+            if (!sensor_level_active && getDataCategory() <= 1) {
               sensor_level_active = 1;
               sensor_level = 10.0;
             }
