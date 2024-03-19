@@ -53,9 +53,9 @@ response_fields_needed_for_data_api = [
 # We can currently only query data, even if we only need metadata like for this endpoint
 # Maybe it would be better to only query a limited set of data instead of everything (meaning 24 hours)
 async def get_locations(
-    bbox: Annotated[str, Query(example="5.0,52.0,6.0,52.1")]
+    bbox: Annotated[str | None, Query(example="5.0,52.0,6.0,52.1")] = None
 ) -> EDRFeatureCollection:  # Hack to use string
-    left, bottom, right, top = validate_bbox(bbox)
+    left, bottom, right, top = validate_bbox(bbox) if bbox else -180, -90, 180, 90
     poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
 
     ts_request = dstore.GetObsRequest(
