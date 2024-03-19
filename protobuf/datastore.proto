@@ -86,7 +86,7 @@ message TSMetadata {
   string license = 8;
   string conventions = 9;
   string naming_authority = 10 [json_name = "naming_authority"];
-  string creator_type = 101 [json_name = "creator_type"];
+  string creator_type = 11 [json_name = "creator_type"];
   string creator_name = 12 [json_name = "creator_name"];
   string creator_email = 13 [json_name = "creator_email"];
   string creator_url = 14 [json_name = "creator_url"];
@@ -95,14 +95,15 @@ message TSMetadata {
   string source = 17;
   string platform = 18;
   string platform_vocabulary = 19 [json_name = "platform_vocabulary"];
-  string standard_name = 20 [json_name = "standard_name"];
-  string unit = 21;
-  string instrument = 22;
-  string instrument_vocabulary = 23 [json_name = "instrument_vocabulary"];
-  string level = 24;
+  string platform_name = 20 [json_name = "platform_name"];
+  string standard_name = 21 [json_name = "standard_name"];
+  string unit = 22;
+  string level = 23;
+  string function = 24;
   string period = 25;
-  string function = 26;
-  string parameter_name = 27 [json_name = "parameter_name"];
+  string instrument = 26;
+  string instrument_vocabulary = 27 [json_name = "instrument_vocabulary"];
+  string parameter_name = 28 [json_name = "parameter_name"];
   // --- END string metadata -----------------
 }
 
@@ -163,15 +164,15 @@ message GetObsRequest {
   // --- BEGIN non-string metadata -------------------------
 
   // temporal mode
-  string temporal_mode = 4; // use 'interval' (the default) to retrieve observations in
+  string temporal_mode = 1; // use 'interval' (the default) to retrieve observations in
   // an interval (defined by temporal) or 'latest' to retrieve the most recent observation
   // of otherwise matching time series
 
   // temporal spec applicable when temporal_mode = 'interval'
-  TimeInterval temporal_interval = 1; // only observations in this time range may be returned
+  TimeInterval temporal_interval = 2; // only observations in this time range may be returned
 
   // spatial filter
-  Polygon spatial_area = 2; // if specified, only observations in this area may be returned
+  Polygon spatial_area = 3; // if specified, only observations in this area may be returned
 
   // search wrt. TSMetadata.links
   // TODO - needs special handling
@@ -184,7 +185,7 @@ message GetObsRequest {
   // - map keys must correspond exactly with string field names in TSMetadata or ObsMetadata
   // - if map key F is specified (where F is for example 'platform'), only observations that match
   //   at least one of these values for F may be returned
-  map<string, Strings> filter = 3;
+  map<string, Strings> filter = 4;
 
   // --- END string metadata (handleable with reflection) -------------------------
 
