@@ -18,10 +18,20 @@ import (
 // stringMdataGoNames (value i corresponds to field i ...). The struct is represented by rv.
 // Returns nil upon success, otherwise error.
 func addStringMdata(rv reflect.Value, stringMdataGoNames []string, colVals []interface{}) error {
+
 	for i, goName := range stringMdataGoNames {
-		val, ok := colVals[i].(string)
-		if !ok {
-			return fmt.Errorf("colVals[%d] not string: %v (type: %T)", i, colVals[i], colVals[i])
+		var val string
+
+		switch v := colVals[i].(type) {
+		case string:
+			val = v
+		case sql.NullString:
+			val = v.String
+		case nil:
+			val = ""
+		default:
+			return fmt.Errorf("colVals[%d] neither string, sql.NullString, nor nil: %v (type: %T)",
+				i, colVals[i], colVals[i])
 		}
 
 		field := rv.Elem().FieldByName(goName)
@@ -116,13 +126,35 @@ func scanTSRow(rows *sql.Rows) (*datastore.TSMetadata, int64, error) {
 	return &tsMdata, tsID, nil
 }
 
+// includeField returns true iff ((incFields is empty) or (incFields contains field)).
+func includeField(incFields common.StringSet, field string) bool {
+	return (len(incFields) == 0) || incFields.Contains(field)
+}
+
 // getTSMetadata retrieves into tsMdatas metadata of time series in table time_series that match
-// tsIDs. The keys of tsMdatas are the time series IDs.
+// tsIDs. The keys of tsMdatas are the time series IDs. Fields to include (as non-NULL values) in
+// the final result are defined in incFields.
+//
 // Returns nil upon success, otherwise error
-func getTSMetadata(db *sql.DB, tsIDs []string, tsMdatas map[int64]*datastore.TSMetadata) error {
+func getTSMetadata(
+	db *sql.DB, tsIDs []string, tsMdatas map[int64]*datastore.TSMetadata,
+	incFields common.StringSet) error {
+
+	tsColNames := getTSColNames()
+
+	convTSCN := []string{}
+	for _, col := range tsColNames {
+		aliases := []string{}
+		if strings.HasPrefix(col, "link_") {
+			aliases = []string{"links"} // NOTE: 'links' is a "group" field, i.e. collectively
+			// representing all columns starting with 'link_'
+		}
+		convTSCN = append(convTSCN, convertSelectCol(incFields, col, "", aliases...))
+	}
+
 	query := fmt.Sprintf(
 		`SELECT id, %s FROM time_series WHERE %s`,
-		strings.Join(getTSColNames(), ","),
+		strings.Join(convTSCN, ","),
 		createSetFilter("id", tsIDs),
 	)
 
@@ -347,8 +379,8 @@ func scanObsRow(rows *sql.Rows) (*datastore.ObsMetadata, int64, error) {
 	var (
 		tsID            int64
 		obsTimeInstant0 time.Time
-		pubTime0        time.Time
-		value           string
+		pubTime0        sql.NullTime
+		value           sql.NullString
 		point           postgis.PointS
 	)
 
@@ -383,8 +415,10 @@ func scanObsRow(rows *sql.Rows) (*datastore.ObsMetadata, int64, error) {
 		Obstime: &datastore.ObsMetadata_ObstimeInstant{
 			ObstimeInstant: timestamppb.New(obsTimeInstant0),
 		},
-		Pubtime: timestamppb.New(pubTime0),
-		Value:   value,
+		Value: value.String,
+	}
+	if pubTime0.Valid {
+		obsMdata.Pubtime = timestamppb.New(pubTime0.Time)
 	}
 
 	// complete obsMdata with string metadata (handleable with reflection)
@@ -396,11 +430,49 @@ func scanObsRow(rows *sql.Rows) (*datastore.ObsMetadata, int64, error) {
 	return &obsMdata, tsID, nil
 }
 
-// getObs gets into obs all observations that match request and tspec.
+// getIncRespFields extracts the set of included response fields from request.
+//
+// Returns (set of included response fields, nil) upon success, otherwise (..., error)
+func getIncRespFields(request *datastore.GetObsRequest) (common.StringSet, error) {
+
+	fields := common.StringSet{}
+	for _, field := range request.GetIncludedResponseFields() {
+		if !supIncRespFields.Contains(field) {
+			return nil, fmt.Errorf(
+				"'%s' not among supported fields: %s",
+				field, supIncRespFieldsCSV)
+		}
+		fields[field] = struct{}{}
+	}
+
+	return fields, nil
+}
+
+// convertSelectCol decides what to extract from a column in a SELECT statement.
+//
+// Returns '<colName>' if colName (or one of its aliases) is defined - with prefix removed -
+// in incFields,
+// otherwise 'NULL' to indicate that we're not interested in the column value.
+func convertSelectCol(
+	incFields common.StringSet, colName, prefix string, aliases ...string) string {
+
+	aliases = append(aliases, colName)
+	for _, alias := range aliases {
+		if includeField(incFields, strings.TrimPrefix(alias, prefix)) {
+			return colName // colName included (either directly or through an alias)
+		}
+	}
+
+	return "NULL" // colName not included
+}
+
+// getObs gets into obs all observations that match request and tspec. Fields to include
+// (as non-NULL values) in the final result are defined in incFields.
+//
 // Returns nil upon success, otherwise error.
 func getObs(
 	db *sql.DB, request *datastore.GetObsRequest, tspec common.TemporalSpec,
-	obs *[]*datastore.Metadata2) (retErr error) {
+	obs *[]*datastore.Metadata2, incFields common.StringSet) error {
 
 	// get values needed for query
 	phVals := []interface{}{} // placeholder values
@@ -410,13 +482,19 @@ func getObs(
 		return fmt.Errorf("createQueryVals() failed: %v", err)
 	}
 
+	// convert obsStringMdataCols according to incFields
+	convOSMC := []string{}
+	for _, col := range obsStringMdataCols {
+		convOSMC = append(convOSMC, convertSelectCol(incFields, col, "observation."))
+	}
+
 	// define and execute query
 	query := fmt.Sprintf(`
 		SELECT %s
 		    ts_id,
 			obstime_instant,
-			pubtime,
-			value,
+			%s,
+			%s,
 			point,
 			%s
 		FROM observation
@@ -424,7 +502,13 @@ func getObs(
 		JOIN geo_point ON observation.geo_point_id = geo_point.id
 		WHERE %s AND %s AND %s
 		ORDER BY ts_id, obstime_instant DESC
-		`, distinctSpec, strings.Join(obsStringMdataCols, ","), timeFilter, geoFilter,
+		`,
+		distinctSpec,
+		convertSelectCol(incFields, "pubtime", "observation."),
+		convertSelectCol(incFields, "value", "observation."),
+		strings.Join(convOSMC, ","),
+		timeFilter,
+		geoFilter,
 		stringMdataFilter)
 
 	rows, err := db.Query(query, phVals...)
@@ -442,6 +526,20 @@ func getObs(
 			return fmt.Errorf("scanObsRow() failed: %v", err)
 		}
 
+		// Handle obstime_instant as a special case instead of using convertSelectCol. Its value is
+		// always loaded in the above SQL call since it is referred to in the 'ORDER BY' clause.
+		if !includeField(incFields, "obstime_instant") {
+			obsMdata.Obstime = nil
+		}
+
+		// Handle geo_point as a special case instead of using convertSelectCol. Its value is always
+		// loaded in the above SQL call, since the postgis package does not support a nullable type
+		// (such as postgis.NullPointS in addition to postgis.PointS). A NULL value (generated by
+		// convertSelectCol) would have caused rows.Scan() to fail in scanObsRow().
+		if !includeField(incFields, "geo_point") {
+			obsMdata.Geometry = nil
+		}
+
 		// prepend obs to time series to get chronological order
 		obsMdatas[tsID] = append([]*datastore.ObsMetadata{obsMdata}, obsMdatas[tsID]...)
 	}
@@ -452,7 +550,7 @@ func getObs(
 	for tsID := range obsMdatas {
 		tsIDs = append(tsIDs, fmt.Sprintf("%d", tsID))
 	}
-	if err = getTSMetadata(db, tsIDs, tsMdatas); err != nil {
+	if err = getTSMetadata(db, tsIDs, tsMdatas, incFields); err != nil {
 		return fmt.Errorf("getTSMetadata() failed: %v", err)
 	}
 
@@ -474,9 +572,14 @@ func (sbe *PostgreSQL) GetObservations(
 
 	var err error
 
+	incFields, err := getIncRespFields(request)
+	if err != nil {
+		return nil, fmt.Errorf("getIncRespFields() failed: %v", err)
+	}
+
 	obs := []*datastore.Metadata2{}
 	if err = getObs(
-		sbe.Db, request, tspec, &obs); err != nil {
+		sbe.Db, request, tspec, &obs, incFields); err != nil {
 		return nil, fmt.Errorf("getObs() failed: %v", err)
 	}
 

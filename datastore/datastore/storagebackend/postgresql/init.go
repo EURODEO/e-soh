@@ -58,6 +58,10 @@ var (
 
 	// used by upsertTS
 	upsertTSInsertCmd, upsertTSSelectCmd string
+
+	// fields allowable in included_response_fields
+	supIncRespFields    common.StringSet
+	supIncRespFieldsCSV string
 )
 
 // initCleanupInterval initializes cleanupInterval.
@@ -165,4 +169,25 @@ func init() { // automatically called once on program startup (on first import o
 			tspb2go[pbName] = goName
 		}
 	}
+
+	// create supIncRespFields and supIncRespFieldsValues
+	supIncRespFields = common.StringSet{}
+	// --- BEGIN TSMetadata fields -------------------
+	for _, f := range tsStringMdataPBNames {
+		supIncRespFields.Set(f)
+	}
+	supIncRespFields.Set("links")
+	// --- END TSMetadata fields -------------------
+	// --- BEGIN ObsMetadata fields -------------------
+	for _, f := range obsStringMdataCols {
+		supIncRespFields.Set(strings.TrimPrefix(f, "observation."))
+	}
+	supIncRespFields.Set("geo_point")
+	supIncRespFields.Set("obstime_instant")
+	supIncRespFields.Set("pubtime")
+	supIncRespFields.Set("value")
+	// --- END ObsMetadata fields -------------------
+	sIRFVals := supIncRespFields.Values()
+	sort.Strings(sIRFVals)
+	supIncRespFieldsCSV = strings.Join(sIRFVals, ", ")
 }

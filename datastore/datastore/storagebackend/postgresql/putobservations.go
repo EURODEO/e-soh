@@ -120,7 +120,7 @@ func getTSColValsUnique(colName2Val map[string]interface{}) ([]interface{}, erro
 // The ID is first looked up in a cache (where the key consists of all fields (U + UC)) in order to
 // save unnecessary database access. In other words, a cache hit means that the row for
 // time series not only existed, but was also already fully updated according to tsMdata.
-// And vice versa: a cache hit means the row either didn't exist at all or wasn't fully updated
+// And vice versa: a cache miss means the row either didn't exist at all or wasn't fully updated
 // according to tsMdata.
 //
 // Returns (ID, nil) upon success, otherwise (..., error).
