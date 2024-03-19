@@ -150,32 +150,27 @@ func getTSMetadata(db *sql.DB, tsIDs []string, tsMdatas map[int64]*datastore.TSM
 // Returns expression.
 func getTimeFilter(tspec common.TemporalSpec) string {
 
-	timeExpr := "TRUE" // by default, don't filter on obs time at all
+	// by default, restrict only to current valid time range
+	loTime, hiTime := common.GetValidTimeRange()
+	timeExprs := []string{
+		fmt.Sprintf("obstime_instant >= to_timestamp(%d)", loTime.Unix()),
+		fmt.Sprintf("obstime_instant <= to_timestamp(%d)", hiTime.Unix()),
+	}
 
-	if tspec.IntervalMode {
-		ti := tspec.Interval
-		if ti != nil {
-			timeExprs := []string{}
-			if start := ti.GetStart(); start != nil {
-				timeExprs = append(timeExprs, fmt.Sprintf(
-					"obstime_instant >= to_timestamp(%f)", common.Tstamp2float64Secs(start)))
-			}
-			if end := ti.GetEnd(); end != nil {
-				timeExprs = append(timeExprs, fmt.Sprintf(
-					"obstime_instant < to_timestamp(%f)", common.Tstamp2float64Secs(end)))
-			}
-			if len(timeExprs) > 0 {
-				timeExpr = fmt.Sprintf("(%s)", strings.Join(timeExprs, " AND "))
-			}
+	ti := tspec.Interval
+	if ti != nil { // restrict filter additionally to specified interval
+		// (note the open-ended [from,to> form)
+		if start := ti.GetStart(); start != nil {
+			timeExprs = append(timeExprs, fmt.Sprintf(
+				"obstime_instant >= to_timestamp(%f)", common.Tstamp2float64Secs(start)))
+		}
+		if end := ti.GetEnd(); end != nil {
+			timeExprs = append(timeExprs, fmt.Sprintf(
+				"obstime_instant < to_timestamp(%f)", common.Tstamp2float64Secs(end)))
 		}
 	}
 
-	// restrict to current valid time range
-	loTime, hiTime := common.GetValidTimeRange()
-	timeExpr += fmt.Sprintf(" AND (obstime_instant >= to_timestamp(%d))", loTime.Unix())
-	timeExpr += fmt.Sprintf(" AND (obstime_instant <= to_timestamp(%d))", hiTime.Unix())
-
-	return timeExpr
+	return fmt.Sprintf("(%s)", strings.Join(timeExprs, " AND "))
 }
 
 type stringFilterInfo struct {
@@ -324,9 +319,9 @@ func createObsQueryVals(
 	string, string, string, string, error) {
 
 	distinctSpec := ""
-	if !tspec.IntervalMode {
-		// 'latest' mode, so ensure that we select only one observation per time series
-		// (which will be the most recent one thanks to '... ORDER BY ts_id, obstime_instant DESC')
+	if tspec.Latest {
+		// ensure that we select only one observation per time series (which will be the most
+		// recent one thanks to '... ORDER BY ts_id, obstime_instant DESC')
 		distinctSpec = "DISTINCT ON (ts_id)"
 	}
 
