@@ -64,7 +64,7 @@ async def get_current_parameter_names():
     unique_parameter_names = dstore.GetTSAGRequest(attrs=["parameter_name"])
     unique_parameter_names = await getTSAGRequest(unique_parameter_names)
 
-    return set([i.combo.parameter_name for i in unique_parameter_names.groups])
+    return {i.combo.parameter_name for i in unique_parameter_names.groups}
 
 
 async def verify_parameter_names(parameter_names: list) -> None:
@@ -74,7 +74,7 @@ async def verify_parameter_names(parameter_names: list) -> None:
     """
     unknown_parameter_names = []
 
-    for i in [parameter_names] if isinstance(parameter_names, str) else parameter_names:
+    for i in parameter_names:
         if i not in await get_current_parameter_names():
             unknown_parameter_names.append(i)
 
