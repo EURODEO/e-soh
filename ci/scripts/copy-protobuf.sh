@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 declare -a destination_paths=(
   "./api"
@@ -6,6 +6,7 @@ declare -a destination_paths=(
   "./datastore/datastore"
   "./datastore/examples/clients/python"
   "./datastore/integration-test"
+  "./datastore/load-test"
   "./ingest"
 )
 
