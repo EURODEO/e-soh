@@ -21,7 +21,7 @@ COPY "./pyproject.toml" "${DOCKER_PATH}/pyproject.toml"
 COPY "./setup.py" "${DOCKER_PATH}/setup.py"
 
 RUN pip install --no-cache-dir --upgrade -r "${DOCKER_PATH}/api/requirements.txt"
-RUN pip install --no-cache-dir --upgrade pybind11
+RUN pip install --no-cache-dir --upgrade pybind11~="2.11.1"
 
 # hadolint ignore=DL3013
 WORKDIR "${DOCKER_PATH}"/src/ingest/bufr/
