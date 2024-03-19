@@ -170,7 +170,7 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@v4
       - name: Ubuntu setup
-        run: sudo apt update && sudo apt install libeccodes-data	rapidjson-dev	pybind11-dev libssl-dev
+        run: sudo apt update && sudo apt install libeccodes-data rapidjson-dev pybind11-dev libssl-dev
       - name: Python Setup
         uses: actions/setup-python@v5
         with:
