@@ -25,6 +25,7 @@ from shapely import geometry
 from shapely import wkt
 from shapely.errors import GEOSException
 from utilities import get_datetime_range
+from utilities import verify_parameter_names
 
 router = APIRouter(prefix="/collections/observations")
 
@@ -156,7 +157,7 @@ async def get_data_location_id(
     if parameter_name:
         parameter_name = parameter_name.split(",")
         parameter_name = list(map(lambda x: x.strip(), parameter_name))
-    # parameter_name = verify_parameter_names(parameter_name) # should the api verify that the parameter name is valid?
+        await verify_parameter_names(parameter_name)
     request = dstore.GetObsRequest(
         filter=dict(
             parameter_name=dstore.Strings(values=parameter_name),
@@ -258,10 +259,10 @@ async def get_data_area(
         )
 
     range = get_datetime_range(datetime)
-    # await verify_parameter_names(parameter_name)
     if parameter_name:
         parameter_name = parameter_name.split(",")
         parameter_name = list(map(lambda x: x.strip(), parameter_name))
+        await verify_parameter_names(parameter_name)
     request = dstore.GetObsRequest(
         filter=dict(parameter_name=dstore.Strings(values=parameter_name if parameter_name else None)),
         spatial_area=dstore.Polygon(
