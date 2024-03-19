@@ -4,6 +4,7 @@ from typing import Annotated
 import datastore_pb2 as dstore
 import formatters
 from fastapi import APIRouter
+from fastapi import HTTPException
 from fastapi import Path
 from fastapi import Query
 from geojson_pydantic import Feature
@@ -65,6 +66,8 @@ async def search_timeseries(
         formatters.Metadata_Formats, Query(description="Specify return format")
     ] = formatters.Metadata_Formats.geojson,
 ):
+    if not bbox and not platform:
+        raise HTTPException(400, detail="Have to set at least one of bbox or platform.")
     if bbox:
         left, bottom, right, top = map(str.strip, bbox.split(","))
         poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
