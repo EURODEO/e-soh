@@ -187,6 +187,21 @@ message GetObsRequest {
   map<string, Strings> filter = 3;
 
   // --- END string metadata (handleable with reflection) -------------------------
+
+  // Fields to include in GetObsResponse.
+  // Case 1: included_response_fields is omitted or empty=> implicitly include all available fields.
+  // Case 2: included_response_fields contains one or more fields =>
+  //   Each field must be one of the following:
+  //     * a reflection-handleable string field in TSMetadata (like 'keywords')
+  //       or ObsMetadata (like 'history')
+  //     * 'links' (non-string field in TSMedatata)
+  //     * 'geo_point' (non-string field in ObsMetadata)
+  //     * 'obstime_instant' (--- '' ---)
+  //     * 'pubtime' (--- '' ---)
+  //     * 'value' (non-reflection handleable string field in ObsMetadata)
+  repeated string included_response_fields = 5;
+
+  // repeated string excluded_response_fields = 6; // TODO
 }
 
 message GetObsResponse {
