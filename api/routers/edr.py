@@ -50,6 +50,15 @@ async def get_locations(
             points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords],
         ),
         temporal_mode="latest",
+        included_response_fields=[
+            "parameter_name",
+            "platform",
+            "geo_point",
+            "title",
+            "standard_name",
+            "instrument",
+            "unit",
+        ],
     )
 
     ts_response = await get_obs_request(ts_request)
@@ -139,6 +148,17 @@ async def get_data_location_id(
             platform=dstore.Strings(values=[location_id]),
         ),
         temporal_interval=(dstore.TimeInterval(start=range[0], end=range[1]) if range else None),
+        included_response_fields=[
+            "parameter_name",
+            "platform",
+            "geo_point",
+            "title",
+            "standard_name",
+            "instrument",
+            "unit",
+            "obstime_instant",
+            "value",
+        ],
     )
     response = await get_obs_request(request)
     return formatters.formatters[f](response)
@@ -243,6 +263,17 @@ async def get_data_area(
             points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
         ),
         temporal_interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
+        included_response_fields=[
+            "parameter_name",
+            "platform",
+            "geo_point",
+            "title",
+            "standard_name",
+            "instrument",
+            "unit",
+            "obstime_instant",
+            "value",
+        ],
     )
     coverages = await get_obs_request(request)
     coverages = formatters.formatters[f](coverages)
