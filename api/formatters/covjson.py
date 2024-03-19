@@ -28,7 +28,7 @@ Data = namedtuple("Data", ["dom", "values", "ts_mdata"])
 def make_parameter(ts_mdata):
     return Parameter(
         description={
-            "en": "For detailed description see observedProperty id"
+            "en": f"{ts_mdata.standard_name} at {ts_mdata.level}m {ts_mdata.period} {ts_mdata.function}",
         },  # ts_mdata.title}, # title is unique for each TS, and does not describe a parameter
         observedProperty=ObservedProperty(
             id=f"https://vocab.nerc.ac.uk/standard_name/{ts_mdata.standard_name}",
