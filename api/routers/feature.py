@@ -51,7 +51,7 @@ async def search_timeseries(parameters: Annotated[ItemsQueryParams, Depends()]):
             instrument=dstore.Strings(values=parameters.instrument.split(",") if parameters.instrument else None),
             level=dstore.Strings(values=parameters.level.split(",") if parameters.level else None),
             period=dstore.Strings(values=parameters.period.split(",") if parameters.period else None),
-            function=dstore.Strings(values=parameters.f.split(",") if parameters.f else None),
+            function=dstore.Strings(values=parameters.function.split(",") if parameters.function else None),
         ),
         spatial_area=(
             dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords])
