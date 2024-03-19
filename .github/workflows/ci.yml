@@ -184,6 +184,8 @@ jobs:
           pip install --upgrade pip
           pip install pytest-timeout
           pip install pytest-cov
+          pip install httpx
+          pip install -r ./ingest/requirements.txt
           pip install ./ingest
 
       - name: Copy Protobuf file to api directory and build
