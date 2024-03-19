@@ -19,13 +19,18 @@ import xarray as xr
 from google.protobuf.timestamp_pb2 import Timestamp
 from parameters import knmi_parameter_names
 
+regex_level = re.compile(r"first|second|third|[0-9]+(\.[0-9]+)?(?=m)|(?<=Level )[0-9]+", re.IGNORECASE)
+regex_level_centimeters = re.compile(r"[0-9]+(\.[0-9]+)?(?=cm)")
+regex_time_period = re.compile(r"(\d+) (Hours|Min)", re.IGNORECASE)
+
 
 def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
     observation_request_messages = []
 
     with xr.open_dataset(file_path, engine="netcdf4", chunks=None) as file:  # chunks=None to disable dask
-        for station_id, latitude, longitude, height in zip(
+        for station_id, station_name, latitude, longitude, height in zip(
             file["station"].values,
+            file["stationname"].values[0],
             file["lat"].values[0],
             file["lon"].values[0],
             file["height"].values[0],
@@ -38,8 +43,10 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                 param_file = station_slice[param_id]
                 standard_name, level, function, period = generate_parameter_name(
                     (param_file.standard_name if "standard_name" in param_file.attrs else "placeholder"),
-                    "2.0",
                     param_file.long_name,
+                    station_id,
+                    station_name,
+                    param_id,
                 )
 
                 ts_mdata = dstore.TSMetadata(
@@ -51,7 +58,7 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                     level=level,
                     period=period,
                     function=function,
-                    parameter_name="_".join([standard_name, level, function, period]),
+                    parameter_name=":".join([standard_name, level, function, period]),
                 )
 
                 for time, obs_value in zip(
@@ -75,27 +82,59 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
     return observation_request_messages
 
 
-def generate_parameter_name(standard_name, level, long_name):
-    if "Minimum" in long_name:
+def generate_parameter_name(standard_name, long_name, station_id, station_name, param_id):
+    # TODO: HACK To let the loader have a unique parameter ID and make the parameters distinguishable.
+    level = "2.0"
+    long_name = long_name.lower()
+    station_name = station_name.lower()
+    if level_raw := re.search(regex_level, long_name):
+        level = level_raw[0]
+    if level_raw := re.search(regex_level_centimeters, long_name):
+        level = str(float(level_raw[0]) / 100.0)
+    elif "grass" in long_name:
+        level = "0"
+    elif param_id in ["pg", "pr", "pwc", "vv", "W10", "W10-10", "ww", "ww-10", "za", "zm"]:
+        # https://english.knmidata.nl/open-data/actuele10mindataknmistations
+        # Comments code: 2, 3, 11
+        # Note: The sensor is not installed at equal heights at all types of measurement sites:
+        # At 'AWS' sites the device is installed at 1.80m. At 'AWS/Aerodrome' and 'Mistpost'
+        # (note that this includes site Voorschoten (06215) which is 'AWS/Mistpost')
+        # the device is installed at 2.50m elevation. Exceptions are Berkhout AWS (06249),
+        # De Bilt AWS (06260) and Twenthe AWS (06290) where the sensor is installed at 2.50m.
+        # Since WaWa is automatic detection I asssumed that the others stations are AWS, thus 1.80m
+        if (
+            station_id in ["06215", "06249", "06260", "06290"]
+            or "aerodrome" in station_name
+            or "mistpost" in station_name
+        ):
+            level = "2.50"
+        else:
+            level = "1.80"
+
+    if "minimum" in long_name:
         function = "minimum"
-    elif "Maximum" in long_name:
+    elif "maximum" in long_name:
         function = "maximum"
-    elif "Average" in long_name:
+    elif "average" in long_name:
         function = "mean"
     else:
         function = "point"
 
     period = "PT0S"
-    if period_raw := re.findall(r"(\d+) (Hours|Min)", long_name):
+    if period_raw := re.findall(regex_time_period, long_name):
         if len(period_raw) == 1:
             period_raw = period_raw[0]
         else:
             raise Exception(f"{period_raw}, {long_name}")
         time, scale = period_raw
-        if scale == "Hours":
+        if scale == "hours":
             period = f"PT{time}H"
-        elif scale == "Min":
+        elif scale == "min":
             period = f"PT{time}M"
+    elif param_id == "ww-10":
+        period = "PT10M"
+    elif param_id == "ww":
+        period = "PT01H"
 
     return standard_name, level, function, period
 

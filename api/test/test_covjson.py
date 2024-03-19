@@ -94,9 +94,9 @@ def test_empty_response_convert():
     response = create_mock_obs_response(test_data)
 
     # Expect to get an HTTPException with status code of 404 and detail of
-    # "No data found" when converting an empty response
+    # "Requested data not found." when converting an empty response
     with pytest.raises(HTTPException) as exception_info:
         convert_to_covjson(response)
 
-    assert exception_info.value.detail == "No data found"
+    assert exception_info.value.detail == "Requested data not found."
     assert exception_info.value.status_code == 404
