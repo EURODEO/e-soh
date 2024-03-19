@@ -12,48 +12,48 @@
             },
             "properties": {
                 "parameter-name": [
-                    "air_pressure_at_sea_level_1_mean_PT1M",
-                    "air_temperature_0.1_minimum_PT10M",
-                    "air_temperature_0_minimum_PT12H",
-                    "air_temperature_0_minimum_PT14H",
-                    "air_temperature_0_minimum_PT6H",
-                    "air_temperature_1.5_maximum_PT10M",
-                    "air_temperature_1.5_minimum_PT10M",
-                    "air_temperature_2.0_maximum_PT12H",
-                    "air_temperature_2.0_maximum_PT24H",
-                    "air_temperature_2.0_maximum_PT6H",
-                    "air_temperature_2.0_mean_PT1M",
-                    "air_temperature_2.0_minimum_PT12H",
-                    "air_temperature_2.0_minimum_PT14H",
-                    "air_temperature_2.0_minimum_PT6H",
-                    "cloud_base_altitude_2.0_point_PT0S",
-                    "cloud_base_altitude_first_point_PT0S",
-                    "cloud_base_altitude_second_point_PT0S",
-                    "cloud_base_altitude_third_point_PT0S",
-                    "cloud_cover_2.0_point_PT0S",
-                    "cloud_cover_first_point_PT0S",
-                    "cloud_cover_second_point_PT0S",
-                    "cloud_cover_third_point_PT0S",
-                    "dew_point_temperature_1.5_mean_PT1M",
-                    "duration_of_sunshine_2.0_point_PT0S",
-                    "lwe_precipitation_rate_2.50_mean_PT10M",
-                    "placeholder_2.50_point_PT01H",
-                    "placeholder_2.50_point_PT0S",
-                    "placeholder_2.50_point_PT10M",
-                    "precipitation_duration_2.0_point_PT10M",
-                    "precipitation_duration_2.50_point_PT10M",
-                    "precipitation_rate_2.0_mean_PT10M",
-                    "rainfall_amount_2.0_point_PT0S",
-                    "rainfall_amount_2.0_point_PT12H",
-                    "rainfall_amount_2.0_point_PT24H",
-                    "rainfall_amount_2.0_point_PT6H",
-                    "rainfall_duration_2.0_point_PT0S",
-                    "relative_humidity_2.0_mean_PT1M",
-                    "total_downwelling_shortwave_flux_in_air_2.0_mean_PT10M",
-                    "visibility_in_air_2.50_mean_PT10M",
-                    "wind_from_direction_2.0_mean_PT10M",
-                    "wind_speed_10_mean_PT10M",
-                    "wind_speed_of_gust_10_maximum_PT10M"
+                    "air_pressure_at_sea_level:1:mean:PT1M",
+                    "air_temperature:0.1:minimum:PT10M",
+                    "air_temperature:0:minimum:PT12H",
+                    "air_temperature:0:minimum:PT14H",
+                    "air_temperature:0:minimum:PT6H",
+                    "air_temperature:1.5:maximum:PT10M",
+                    "air_temperature:1.5:minimum:PT10M",
+                    "air_temperature:2.0:maximum:PT12H",
+                    "air_temperature:2.0:maximum:PT24H",
+                    "air_temperature:2.0:maximum:PT6H",
+                    "air_temperature:2.0:mean:PT1M",
+                    "air_temperature:2.0:minimum:PT12H",
+                    "air_temperature:2.0:minimum:PT14H",
+                    "air_temperature:2.0:minimum:PT6H",
+                    "cloud_base_altitude:2.0:point:PT0S",
+                    "cloud_base_altitude:first:point:PT0S",
+                    "cloud_base_altitude:second:point:PT0S",
+                    "cloud_base_altitude:third:point:PT0S",
+                    "cloud_cover:2.0:point:PT0S",
+                    "cloud_cover:first:point:PT0S",
+                    "cloud_cover:second:point:PT0S",
+                    "cloud_cover:third:point:PT0S",
+                    "dew_point_temperature:1.5:mean:PT1M",
+                    "duration_of_sunshine:2.0:point:PT0S",
+                    "lwe_precipitation_rate:2.50:mean:PT10M",
+                    "placeholder:2.50:point:PT01H",
+                    "placeholder:2.50:point:PT0S",
+                    "placeholder:2.50:point:PT10M",
+                    "precipitation_duration:2.0:point:PT10M",
+                    "precipitation_duration:2.50:point:PT10M",
+                    "precipitation_rate:2.0:mean:PT10M",
+                    "rainfall_amount:2.0:point:PT0S",
+                    "rainfall_amount:2.0:point:PT12H",
+                    "rainfall_amount:2.0:point:PT24H",
+                    "rainfall_amount:2.0:point:PT6H",
+                    "rainfall_duration:2.0:point:PT0S",
+                    "relative_humidity:2.0:mean:PT1M",
+                    "total_downwelling_shortwave_flux_in_air:2.0:mean:PT10M",
+                    "visibility_in_air:2.50:mean:PT10M",
+                    "wind_from_direction:2.0:mean:PT10M",
+                    "wind_speed:10:mean:PT10M",
+                    "wind_speed_of_gust:10:maximum:PT10M"
                 ]
             },
             "id": "06260"
@@ -69,55 +69,55 @@
             },
             "properties": {
                 "parameter-name": [
-                    "air_pressure_at_sea_level_1_mean_PT1M",
-                    "air_temperature_0.1_minimum_PT10M",
-                    "air_temperature_0_minimum_PT12H",
-                    "air_temperature_0_minimum_PT14H",
-                    "air_temperature_0_minimum_PT6H",
-                    "air_temperature_1.5_maximum_PT10M",
-                    "air_temperature_1.5_minimum_PT10M",
-                    "air_temperature_2.0_maximum_PT12H",
-                    "air_temperature_2.0_maximum_PT24H",
-                    "air_temperature_2.0_maximum_PT6H",
-                    "air_temperature_2.0_mean_PT1M",
-                    "air_temperature_2.0_minimum_PT12H",
-                    "air_temperature_2.0_minimum_PT14H",
-                    "air_temperature_2.0_minimum_PT6H",
-                    "cloud_base_altitude_2.0_point_PT0S",
-                    "cloud_base_altitude_first_point_PT0S",
-                    "cloud_base_altitude_second_point_PT0S",
-                    "cloud_base_altitude_third_point_PT0S",
-                    "cloud_cover_2.0_point_PT0S",
-                    "cloud_cover_first_point_PT0S",
-                    "cloud_cover_second_point_PT0S",
-                    "cloud_cover_third_point_PT0S",
-                    "dew_point_temperature_1.5_mean_PT1M",
-                    "duration_of_sunshine_2.0_point_PT0S",
-                    "lwe_precipitation_rate_1.80_mean_PT10M",
-                    "placeholder_1.80_point_PT01H",
-                    "placeholder_1.80_point_PT0S",
-                    "placeholder_1.80_point_PT10M",
-                    "precipitation_duration_1.80_point_PT10M",
-                    "precipitation_duration_2.0_point_PT10M",
-                    "precipitation_rate_2.0_mean_PT10M",
-                    "rainfall_amount_2.0_point_PT0S",
-                    "rainfall_amount_2.0_point_PT12H",
-                    "rainfall_amount_2.0_point_PT24H",
-                    "rainfall_amount_2.0_point_PT6H",
-                    "rainfall_duration_2.0_point_PT0S",
-                    "relative_humidity_2.0_mean_PT1M",
-                    "total_downwelling_shortwave_flux_in_air_2.0_mean_PT10M",
-                    "visibility_in_air_1.80_mean_PT10M",
-                    "wind_from_direction_2.0_mean_PT10M",
-                    "wind_speed_10_mean_PT10M",
-                    "wind_speed_of_gust_10_maximum_PT10M"
+                    "air_pressure_at_sea_level:1:mean:PT1M",
+                    "air_temperature:0.1:minimum:PT10M",
+                    "air_temperature:0:minimum:PT12H",
+                    "air_temperature:0:minimum:PT14H",
+                    "air_temperature:0:minimum:PT6H",
+                    "air_temperature:1.5:maximum:PT10M",
+                    "air_temperature:1.5:minimum:PT10M",
+                    "air_temperature:2.0:maximum:PT12H",
+                    "air_temperature:2.0:maximum:PT24H",
+                    "air_temperature:2.0:maximum:PT6H",
+                    "air_temperature:2.0:mean:PT1M",
+                    "air_temperature:2.0:minimum:PT12H",
+                    "air_temperature:2.0:minimum:PT14H",
+                    "air_temperature:2.0:minimum:PT6H",
+                    "cloud_base_altitude:2.0:point:PT0S",
+                    "cloud_base_altitude:first:point:PT0S",
+                    "cloud_base_altitude:second:point:PT0S",
+                    "cloud_base_altitude:third:point:PT0S",
+                    "cloud_cover:2.0:point:PT0S",
+                    "cloud_cover:first:point:PT0S",
+                    "cloud_cover:second:point:PT0S",
+                    "cloud_cover:third:point:PT0S",
+                    "dew_point_temperature:1.5:mean:PT1M",
+                    "duration_of_sunshine:2.0:point:PT0S",
+                    "lwe_precipitation_rate:1.80:mean:PT10M",
+                    "placeholder:1.80:point:PT01H",
+                    "placeholder:1.80:point:PT0S",
+                    "placeholder:1.80:point:PT10M",
+                    "precipitation_duration:1.80:point:PT10M",
+                    "precipitation_duration:2.0:point:PT10M",
+                    "precipitation_rate:2.0:mean:PT10M",
+                    "rainfall_amount:2.0:point:PT0S",
+                    "rainfall_amount:2.0:point:PT12H",
+                    "rainfall_amount:2.0:point:PT24H",
+                    "rainfall_amount:2.0:point:PT6H",
+                    "rainfall_duration:2.0:point:PT0S",
+                    "relative_humidity:2.0:mean:PT1M",
+                    "total_downwelling_shortwave_flux_in_air:2.0:mean:PT10M",
+                    "visibility_in_air:1.80:mean:PT10M",
+                    "wind_from_direction:2.0:mean:PT10M",
+                    "wind_speed:10:mean:PT10M",
+                    "wind_speed_of_gust:10:maximum:PT10M"
                 ]
             },
             "id": "06275"
         }
     ],
     "parameters": {
-        "air_pressure_at_sea_level_1_mean_PT1M": {
+        "air_pressure_at_sea_level:1:mean:PT1M": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -134,7 +134,7 @@
                 }
             }
         },
-        "air_temperature_0.1_minimum_PT10M": {
+        "air_temperature:0.1:minimum:PT10M": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -151,7 +151,7 @@
                 }
             }
         },
-        "air_temperature_0_minimum_PT12H": {
+        "air_temperature:0:minimum:PT12H": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -168,7 +168,7 @@
                 }
             }
         },
-        "air_temperature_0_minimum_PT14H": {
+        "air_temperature:0:minimum:PT14H": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -185,7 +185,7 @@
                 }
             }
         },
-        "air_temperature_0_minimum_PT6H": {
+        "air_temperature:0:minimum:PT6H": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -202,7 +202,7 @@
                 }
             }
         },
-        "air_temperature_1.5_maximum_PT10M": {
+        "air_temperature:1.5:maximum:PT10M": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -219,7 +219,7 @@
                 }
             }
         },
-        "air_temperature_1.5_minimum_PT10M": {
+        "air_temperature:1.5:minimum:PT10M": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -236,7 +236,7 @@
                 }
             }
         },
-        "air_temperature_2.0_maximum_PT12H": {
+        "air_temperature:2.0:maximum:PT12H": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -253,7 +253,7 @@
                 }
             }
         },
-        "air_temperature_2.0_maximum_PT24H": {
+        "air_temperature:2.0:maximum:PT24H": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -270,7 +270,7 @@
                 }
             }
         },
-        "air_temperature_2.0_maximum_PT6H": {
+        "air_temperature:2.0:maximum:PT6H": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -287,7 +287,7 @@
                 }
             }
         },
-        "air_temperature_2.0_mean_PT1M": {
+        "air_temperature:2.0:mean:PT1M": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -304,7 +304,7 @@
                 }
             }
         },
-        "air_temperature_2.0_minimum_PT12H": {
+        "air_temperature:2.0:minimum:PT12H": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -321,7 +321,7 @@
                 }
             }
         },
-        "air_temperature_2.0_minimum_PT14H": {
+        "air_temperature:2.0:minimum:PT14H": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -338,7 +338,7 @@
                 }
             }
         },
-        "air_temperature_2.0_minimum_PT6H": {
+        "air_temperature:2.0:minimum:PT6H": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -355,7 +355,7 @@
                 }
             }
         },
-        "cloud_base_altitude_2.0_point_PT0S": {
+        "cloud_base_altitude:2.0:point:PT0S": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -372,7 +372,7 @@
                 }
             }
         },
-        "cloud_base_altitude_first_point_PT0S": {
+        "cloud_base_altitude:first:point:PT0S": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -389,7 +389,7 @@
                 }
             }
         },
-        "cloud_base_altitude_second_point_PT0S": {
+        "cloud_base_altitude:second:point:PT0S": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -406,7 +406,7 @@
                 }
             }
         },
-        "cloud_base_altitude_third_point_PT0S": {
+        "cloud_base_altitude:third:point:PT0S": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -423,7 +423,7 @@
                 }
             }
         },
-        "cloud_cover_2.0_point_PT0S": {
+        "cloud_cover:2.0:point:PT0S": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -440,7 +440,7 @@
                 }
             }
         },
-        "cloud_cover_first_point_PT0S": {
+        "cloud_cover:first:point:PT0S": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -457,7 +457,7 @@
                 }
             }
         },
-        "cloud_cover_second_point_PT0S": {
+        "cloud_cover:second:point:PT0S": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -474,7 +474,7 @@
                 }
             }
         },
-        "cloud_cover_third_point_PT0S": {
+        "cloud_cover:third:point:PT0S": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -491,7 +491,7 @@
                 }
             }
         },
-        "dew_point_temperature_1.5_mean_PT1M": {
+        "dew_point_temperature:1.5:mean:PT1M": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -508,7 +508,7 @@
                 }
             }
         },
-        "duration_of_sunshine_2.0_point_PT0S": {
+        "duration_of_sunshine:2.0:point:PT0S": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -525,7 +525,7 @@
                 }
             }
         },
-        "lwe_precipitation_rate_1.80_mean_PT10M": {
+        "lwe_precipitation_rate:1.80:mean:PT10M": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -542,7 +542,7 @@
                 }
             }
         },
-        "lwe_precipitation_rate_2.50_mean_PT10M": {
+        "lwe_precipitation_rate:2.50:mean:PT10M": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -559,7 +559,7 @@
                 }
             }
         },
-        "placeholder_1.80_point_PT01H": {
+        "placeholder:1.80:point:PT01H": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -576,7 +576,7 @@
                 }
             }
         },
-        "placeholder_1.80_point_PT0S": {
+        "placeholder:1.80:point:PT0S": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -593,7 +593,7 @@
                 }
             }
         },
-        "placeholder_1.80_point_PT10M": {
+        "placeholder:1.80:point:PT10M": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -610,7 +610,7 @@
                 }
             }
         },
-        "placeholder_2.50_point_PT01H": {
+        "placeholder:2.50:point:PT01H": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -627,7 +627,7 @@
                 }
             }
         },
-        "placeholder_2.50_point_PT0S": {
+        "placeholder:2.50:point:PT0S": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -644,7 +644,7 @@
                 }
             }
         },
-        "placeholder_2.50_point_PT10M": {
+        "placeholder:2.50:point:PT10M": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -661,7 +661,7 @@
                 }
             }
         },
-        "precipitation_duration_1.80_point_PT10M": {
+        "precipitation_duration:1.80:point:PT10M": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -678,7 +678,7 @@
                 }
             }
         },
-        "precipitation_duration_2.0_point_PT10M": {
+        "precipitation_duration:2.0:point:PT10M": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -695,7 +695,7 @@
                 }
             }
         },
-        "precipitation_duration_2.50_point_PT10M": {
+        "precipitation_duration:2.50:point:PT10M": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -712,7 +712,7 @@
                 }
             }
         },
-        "precipitation_rate_2.0_mean_PT10M": {
+        "precipitation_rate:2.0:mean:PT10M": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -729,7 +729,7 @@
                 }
             }
         },
-        "rainfall_amount_2.0_point_PT0S": {
+        "rainfall_amount:2.0:point:PT0S": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -746,7 +746,7 @@
                 }
             }
         },
-        "rainfall_amount_2.0_point_PT12H": {
+        "rainfall_amount:2.0:point:PT12H": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -763,7 +763,7 @@
                 }
             }
         },
-        "rainfall_amount_2.0_point_PT24H": {
+        "rainfall_amount:2.0:point:PT24H": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -780,7 +780,7 @@
                 }
             }
         },
-        "rainfall_amount_2.0_point_PT6H": {
+        "rainfall_amount:2.0:point:PT6H": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -797,7 +797,7 @@
                 }
             }
         },
-        "rainfall_duration_2.0_point_PT0S": {
+        "rainfall_duration:2.0:point:PT0S": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -814,7 +814,7 @@
                 }
             }
         },
-        "relative_humidity_2.0_mean_PT1M": {
+        "relative_humidity:2.0:mean:PT1M": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -831,7 +831,7 @@
                 }
             }
         },
-        "total_downwelling_shortwave_flux_in_air_2.0_mean_PT10M": {
+        "total_downwelling_shortwave_flux_in_air:2.0:mean:PT10M": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -848,7 +848,7 @@
                 }
             }
         },
-        "visibility_in_air_1.80_mean_PT10M": {
+        "visibility_in_air:1.80:mean:PT10M": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -865,7 +865,7 @@
                 }
             }
         },
-        "visibility_in_air_2.50_mean_PT10M": {
+        "visibility_in_air:2.50:mean:PT10M": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -882,7 +882,7 @@
                 }
             }
         },
-        "wind_from_direction_2.0_mean_PT10M": {
+        "wind_from_direction:2.0:mean:PT10M": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -899,7 +899,7 @@
                 }
             }
         },
-        "wind_speed_10_mean_PT10M": {
+        "wind_speed:10:mean:PT10M": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"
@@ -916,7 +916,7 @@
                 }
             }
         },
-        "wind_speed_of_gust_10_maximum_PT10M": {
+        "wind_speed_of_gust:10:maximum:PT10M": {
             "type": "Parameter",
             "description": {
                 "en": "For detailed description see observedProperty id"

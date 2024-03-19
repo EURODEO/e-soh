@@ -59,7 +59,7 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                     level=level,
                     period=period,
                     function=function,
-                    parameter_name="_".join([standard_name, level, function, period]),
+                    parameter_name=":".join([standard_name, level, function, period]),
                     naming_authority="nl.knmi",
                     keywords=file["iso_dataset"].attrs["keyword"],
                     keywords_vocabulary=file.attrs["references"],

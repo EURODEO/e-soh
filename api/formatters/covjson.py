@@ -43,8 +43,8 @@ def convert_to_covjson(response):
     coverages = []
     data = [_collect_data(md.ts_mdata, md.obs_mdata) for md in response.observations]
 
-    # Need to sort before using groupBy. Also sort on instrument to get consistently sorted output
-    data.sort(key=lambda x: (x.dom, x.ts_mdata.instrument))
+    # Need to sort before using groupBy. Also sort on parameter_name to get consistently sorted output
+    data.sort(key=lambda x: (x.dom, x.ts_mdata.parameter_name))
     for (lat, lon, times), group in groupby(data, lambda x: x.dom):
         referencing = [
             ReferenceSystemConnectionObject(
@@ -84,7 +84,7 @@ def convert_to_covjson(response):
         coverages.append(Coverage(domain=domain, parameters=parameters, ranges=ranges))
 
     if len(coverages) == 0:
-        raise HTTPException(status_code=404, detail="No data found")
+        raise HTTPException(status_code=404, detail="Requested data not found.")
     elif len(coverages) == 1:
         return coverages[0]
     else:
@@ -100,9 +100,5 @@ def _collect_data(ts_mdata, obs_mdata):
         (o.obstime_instant.ToDatetime(tzinfo=timezone.utc), float(o.value)) for o in obs_mdata
     )  # HACK: str -> float
     (times, values) = zip(*tuples)
-    # param_id = ts_mdata.parameter_name
-    # standard_name = ts_mdata.standard_name
-    # title = ts_mdata.title
-    # unit = ts_mdata.unit
 
     return Data(Dom(lat, lon, times), values, ts_mdata)
