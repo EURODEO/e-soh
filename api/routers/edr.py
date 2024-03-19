@@ -13,6 +13,7 @@ from covjson_pydantic.coverage import CoverageCollection
 from covjson_pydantic.parameter import Parameter
 from custom_geo_json.edr_feature_collection import EDRFeatureCollection
 from dependencies import get_datetime_range
+from dependencies import validate_bbox
 from fastapi import APIRouter
 from fastapi import HTTPException
 from fastapi import Path
@@ -54,7 +55,7 @@ response_fields_needed_for_data_api = [
 async def get_locations(
     bbox: Annotated[str, Query(example="5.0,52.0,6.0,52.1")]
 ) -> EDRFeatureCollection:  # Hack to use string
-    left, bottom, right, top = map(str.strip, bbox.split(","))
+    left, bottom, right, top = validate_bbox(bbox)
     poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
 
     ts_request = dstore.GetObsRequest(
@@ -112,7 +113,12 @@ async def get_locations(
         Feature(
             type="Feature",
             id=station_id,
-            properties={"parameter-name": sorted(platform_parameters[station_id])},
+            properties={
+                # TODO: Change to platform_name to correct one when its available, this is only for geoweb demo
+                "name": f"platform-{station_id}",
+                "detail": f"https://oscar.wmo.int/surface/#/search/station/stationReportDetails/{station_id}",
+                "parameter-name": sorted(platform_parameters[station_id]),
+            },
             geometry=Point(
                 type="Point",
                 coordinates=list(platform_coordinates[station_id])[0],
@@ -132,7 +138,7 @@ async def get_locations(
     response_model_exclude_none=True,
 )
 async def get_data_location_id(
-    location_id: Annotated[str, Path(example="06260")],
+    location_id: Annotated[str, Path(example="0-20000-0-06260")],
     parameter_name: Annotated[
         str | None,
         Query(

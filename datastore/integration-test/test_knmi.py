@@ -21,7 +21,7 @@ def grpc_stub():
 def test_find_series_single_station_single_parameter(grpc_stub):
     request = dstore.GetObsRequest(
         filter=dict(
-            platform=dstore.Strings(values=["06260"]),
+            platform=dstore.Strings(values=["0-20000-0-06260"]),
             parameter_name=dstore.Strings(values=["relative_humidity:2.0:mean:PT1M"]),
         )
     )
@@ -43,7 +43,7 @@ def test_find_series_all_stations_single_parameter(grpc_stub):
 
 
 def test_find_series_single_station_all_parameters(grpc_stub):
-    request = dstore.GetObsRequest(filter=dict(platform=dstore.Strings(values=["06260"])))
+    request = dstore.GetObsRequest(filter=dict(platform=dstore.Strings(values=["0-20000-0-06260"])))
     response = grpc_stub.GetObservations(request)
 
     assert len(response.observations) == 42  # Station 06260 doesn't have all parameters
@@ -52,7 +52,7 @@ def test_find_series_single_station_all_parameters(grpc_stub):
 def test_get_values_single_station_single_parameter(grpc_stub):
     ts_request = dstore.GetObsRequest(
         filter=dict(
-            platform=dstore.Strings(values=["06260"]),
+            platform=dstore.Strings(values=["0-20000-0-06260"]),
             parameter_name=dstore.Strings(values=["relative_humidity:2.0:mean:PT1M"]),
         )
     )
@@ -72,7 +72,7 @@ def test_get_values_single_station_single_parameter_one_hour(grpc_stub):
 
     ts_request = dstore.GetObsRequest(
         filter=dict(
-            platform=dstore.Strings(values=["06260"]),
+            platform=dstore.Strings(values=["0-20000-0-06260"]),
             parameter_name=dstore.Strings(values=["relative_humidity:2.0:mean:PT1M"]),
         ),
         temporal_interval=dstore.TimeInterval(start=start_datetime, end=end_datetime),
@@ -89,25 +89,25 @@ input_params_polygon = [
         # Multiple stations within
         ((52.15, 4.90), (52.15, 5.37), (51.66, 5.37), (51.66, 4.90)),
         ["relative_humidity:2.0:mean:PT1M"],
-        ["06260", "06348", "06356"],
+        ["0-20000-0-06260", "0-20000-0-06348", "0-20000-0-06356"],
     ),
     (
         # Multiple stations with a single parameter
         ((52.15, 4.90), (52.15, 5.37), (51.66, 5.37), (51.66, 4.90)),
         ["relative_humidity:2.0:mean:PT1M"],
-        ["06260", "06348", "06356"],
+        ["0-20000-0-06260", "0-20000-0-06348", "0-20000-0-06356"],
     ),
     (
         # Multiple stations with multiple parameters
         ((52.15, 4.90), (52.15, 5.37), (51.66, 5.37), (51.66, 4.90)),
         ["wind_from_direction:2.0:mean:PT10M", "relative_humidity:2.0:mean:PT1M", "air_temperature:2.0:mean:PT1M"],
-        ["06260", "06348", "06356"],
+        ["0-20000-0-06260", "0-20000-0-06348", "0-20000-0-06356"],
     ),
     (
         # One station within
         ((52.11, 5.15), (52.11, 5.204), (52.08, 5.204), (52.08, 5.15)),
         ["relative_humidity:2.0:mean:PT1M"],
-        ["06260"],
+        ["0-20000-0-06260"],
     ),
     (
         # Nothing within
@@ -119,7 +119,7 @@ input_params_polygon = [
         # Middle top
         ((52.0989, 4.17), (52.0989, 6.18), (52.09, 6.18), (52.09, 4.17)),
         ["relative_humidity:2.0:mean:PT1M"],
-        ["06260"],
+        ["0-20000-0-06260"],
     ),
     (
         # Middle bottom, should fall outside since polygon is curved,
@@ -140,7 +140,15 @@ input_params_polygon = [
             (51.75, 3.68),
         ),
         ["relative_humidity:2.0:mean:PT1M"],
-        ["06260", "06310", "06323", "06340", "06348", "06350", "06356"],
+        [
+            "0-20000-0-06260",
+            "0-20000-0-06310",
+            "0-20000-0-06323",
+            "0-20000-0-06340",
+            "0-20000-0-06348",
+            "0-20000-0-06350",
+            "0-20000-0-06356",
+        ],
     ),
     (
         # All stations in the Netherlands which have RH
@@ -148,12 +156,15 @@ input_params_polygon = [
         ["relative_humidity:2.0:mean:PT1M"],
         # fmt: off
         [
-            "06203", "06204", "06205", "06207", "06208", "06211", "06214", "06215",
-            "06235", "06239", "06240", "06242", "06249", "06251",
-            "06257", "06260", "06267", "06269", "06270", "06273", "06275",
-            "06277", "06278", "06279", "06280", "06283", "06286", "06290", "06310", "06317",
-            "06319", "06323", "06330", "06340", "06344", "06348",
-            "06350", "06356", "06370", "06375", "06377", "06380", "06391"
+            "0-20000-0-06203", "0-20000-0-06204", "0-20000-0-06205", "0-20000-0-06207", "0-20000-0-06208",
+            "0-20000-0-06211", "0-20000-0-06214", "0-20000-0-06215", "0-20000-0-06235", "0-20000-0-06239",
+            "0-20000-0-06240", "0-20000-0-06242", "0-20000-0-06249", "0-20000-0-06251", "0-20000-0-06257",
+            "0-20000-0-06260", "0-20000-0-06267", "0-20000-0-06269", "0-20000-0-06270", "0-20000-0-06273",
+            "0-20000-0-06275", "0-20000-0-06277", "0-20000-0-06278", "0-20000-0-06279", "0-20000-0-06280",
+            "0-20000-0-06283", "0-20000-0-06286", "0-20000-0-06290", "0-20000-0-06310", "0-20000-0-06317",
+            "0-20000-0-06319", "0-20000-0-06323", "0-20000-0-06330", "0-20000-0-06340", "0-20000-0-06344",
+            "0-20000-0-06348", "0-20000-0-06350", "0-20000-0-06356", "0-20000-0-06370", "0-20000-0-06375",
+            "0-20000-0-06377", "0-20000-0-06380", "0-20000-0-06391"
         ],
         # fmt: on
     ),
