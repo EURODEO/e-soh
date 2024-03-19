@@ -290,13 +290,6 @@ func getGeoFilter(inside *datastore.Polygon, phVals *[]interface{}) (string, err
 	return whereExpr, nil
 }
 
-type stringFieldInfo struct {
-	field      reflect.StructField
-	tableName  string
-	method     reflect.Value
-	methodName string
-}
-
 // getTableNameFromField gets the database table name associated with fieldName.
 //
 // Returns (table name, nil) upon success, otherwise (..., error).
