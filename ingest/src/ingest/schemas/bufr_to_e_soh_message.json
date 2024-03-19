@@ -7,10 +7,10 @@
         "data_id": "data_id",
         "metadata_id": "metatata_id",
         "datetime": "null",
-        "Conventions": "Default BUFR Conventions",
-        "summary": "Default Summary",
+        "Conventions": "CF-1.8",
+        "summary": "Observation data from GTS network.",
         "license": "http//spdx.org/licenses/CC-BY-4.0(CC-BY-4.0)",
-        "naming_authority": "no.met",
+        "naming_authority": "naming_authority",
         "content": {
             "encoding": "utf-8",
             "standard_name": "",
@@ -21,7 +21,7 @@
     },
     "links": [
         {
-            "href": "Default BUFR links",
+            "href": "http://oscar.wmo.int",
             "rel": "canonical"
         }
     ]
