@@ -163,7 +163,7 @@ message GetObsRequest {
   // --- BEGIN non-string metadata -------------------------
 
   // --- BEGIN temporal spec ----------------------------------
-  bool temporal_latest = 5;
+  bool temporal_latest = 6;
   TimeInterval temporal_interval = 1;
 
   // combinations:
@@ -208,7 +208,7 @@ message GetObsRequest {
   //     * 'value' (non-reflection handleable string field in ObsMetadata)
   repeated string included_response_fields = 5;
 
-  // repeated string excluded_response_fields = 6; // TODO
+  // repeated string excluded_response_fields = 7; // TODO
 }
 
 message GetObsResponse {

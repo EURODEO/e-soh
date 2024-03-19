@@ -258,6 +258,7 @@ $ grpcurl -d '{"filter": {"standard_name": {"values": ["wind_speed"]}, "platform
 ```
 
 ### Retrieve the most recent wind speed observation for platform 78990 in a time range
+
 ```text
 $ grpcurl -d '{"filter": {"standard_name": {"values": ["wind_speed"]}, "platform": {"values": ["78990"]}}, "temporal_latest": true, "temporal_interval": {"start": "2022-12-31T23:10:00Z", "end": "2022-12-31T23:40:10Z"}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
 ...
