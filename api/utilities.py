@@ -3,12 +3,13 @@ from datetime import timedelta
 from typing import Tuple
 
 import datastore_pb2 as dstore
-from aiocached import cached
 from fastapi import HTTPException
 from google.protobuf.timestamp_pb2 import Timestamp
 from grpc_getter import getTSAGRequest
 from pydantic import AwareDatetime
 from pydantic import TypeAdapter
+
+# from aiocached import cached
 
 
 def get_datetime_range(datetime_string: str | None) -> Tuple[Timestamp, Timestamp] | None:
@@ -52,7 +53,7 @@ def get_datetime_range(datetime_string: str | None) -> Tuple[Timestamp, Timestam
     return start_datetime, end_datetime
 
 
-@cached(ttl=600)
+# @cached(ttl=600)
 async def get_current_parameter_names():
     """
     This function get a set of standard_names currently in the datastore
