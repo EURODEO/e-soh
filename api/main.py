@@ -4,7 +4,6 @@ import logging
 
 import metadata_endpoints
 from brotli_asgi import BrotliMiddleware
-from dependencies import create_url_from_request
 from edr_pydantic.capabilities import LandingPageModel
 from edr_pydantic.collections import Collection
 from edr_pydantic.collections import Collections
@@ -12,6 +11,7 @@ from fastapi import FastAPI
 from fastapi import Request
 from routers import edr
 from routers import feature
+from utilities import create_url_from_request
 
 
 def setup_logging():
