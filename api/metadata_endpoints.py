@@ -1,3 +1,4 @@
+import logging
 from typing import Dict
 
 import datastore_pb2 as dstore
@@ -17,7 +18,11 @@ from edr_pydantic.parameter import Parameter
 from edr_pydantic.unit import Unit
 from edr_pydantic.variables import Variables
 from fastapi import HTTPException
-from grpc_getter import get_obs_request
+from grpc_getter import getTSAGRequest
+
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 def get_landing_page(request):
@@ -37,60 +42,61 @@ def get_landing_page(request):
     )
 
 
-async def get_collection_metadata(request, is_self) -> Collection:
-    # TODO: Try to remove/lower duplication with /locations endpoint
-    ts_request = dstore.GetObsRequest(temporal_mode="latest")
-    ts_response = await get_obs_request(ts_request)
+async def get_collection_metadata(base_url: str, is_self) -> Collection:
+    ts_request = dstore.GetTSAGRequest(attrs=["parameter_name", "title", "standard_name", "instrument", "unit"])
+    ts_response = await getTSAGRequest(ts_request)
+    # logger.info(ts_response.ByteSize())
+    # logger.info(len(ts_response.groups))
 
     # Sadly, this is a different parameter as in the /locations endpoint, due to an error in the EDR spec
     # See: https://github.com/opengeospatial/ogcapi-environmental-data-retrieval/issues/427
     all_parameters: Dict[str, Parameter] = {}
 
-    for obs in ts_response.observations:
+    for group in ts_response.groups:
+        ts = group.combo
         parameter = Parameter(
-            description=obs.ts_mdata.title,
+            description=ts.title,
             observedProperty=ObservedProperty(
-                id=f"https://vocab.nerc.ac.uk/standard_name/{obs.ts_mdata.standard_name}",
-                label=obs.ts_mdata.instrument,
+                id=f"https://vocab.nerc.ac.uk/standard_name/{ts.standard_name}",
+                label=ts.instrument,
             ),
-            unit=Unit(label=obs.ts_mdata.unit),
+            unit=Unit(label=ts.unit),
         )
-        # Check for inconsistent parameter definitions between stations
-        # TODO: How to handle those?
-        if obs.ts_mdata.parameter_name in all_parameters and all_parameters[obs.ts_mdata.parameter_name] != parameter:
+        if ts.parameter_name in all_parameters:
             raise HTTPException(
                 status_code=500,
                 detail={
-                    "parameter": f"Parameter with name {obs.ts_mdata.parameter_name} "
-                    f"has multiple definitions:\n{all_parameters[obs.ts_mdata.parameter_name]}\n{parameter}"
+                    "parameter": f"Parameter with name {ts.parameter_name} "
+                    f"has multiple definitions:\n{all_parameters[ts.parameter_name]}\n{parameter}"
                 },
             )
-        all_parameters[obs.ts_mdata.parameter_name] = parameter
+
+        all_parameters[ts.parameter_name] = parameter
 
     collection = Collection(
         id="observations",
         links=[
-            Link(href=f"{request.url}/observations", rel="self" if is_self else "data"),
+            Link(href=f"{base_url}/observations", rel="self" if is_self else "data"),
         ],
         extent=Extent(spatial=Spatial(bbox=[[3.0, 50.0, 8.0, 55.0]], crs="WGS84")),  # TODO: Get this from database
         data_queries=DataQueries(
             position=EDRQuery(
                 link=EDRQueryLink(
-                    href=f"{request.url}/observations/position",
+                    href=f"{base_url}/observations/position",
                     rel="data",
                     variables=Variables(query_type="position", output_format=["CoverageJSON"]),
                 )
             ),
             locations=EDRQuery(
                 link=EDRQueryLink(
-                    href=f"{request.url}/observations/locations",
+                    href=f"{base_url}/observations/locations",
                     rel="data",
                     variables=Variables(query_type="locations", output_format=["CoverageJSON"]),
                 )
             ),
             area=EDRQuery(
                 link=EDRQueryLink(
-                    href=f"{request.url}/observations/area",
+                    href=f"{base_url}/observations/area",
                     rel="data",
                     variables=Variables(query_type="area", output_format=["CoverageJSON"]),
                 )
@@ -103,10 +109,10 @@ async def get_collection_metadata(request, is_self) -> Collection:
     return collection
 
 
-async def get_collections(request) -> Collections:
+async def get_collections(base_url: str) -> Collections:
     return Collections(
         links=[
-            Link(href=f"{request.url}", rel="self"),
+            Link(href=f"{base_url}", rel="self"),
         ],
-        collections=[await get_collection_metadata(request, is_self=False)],
+        collections=[await get_collection_metadata(base_url, is_self=False)],
     )
