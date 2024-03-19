@@ -110,6 +110,8 @@ def validate_bbox(bbox: str) -> Tuple[float, float, float, float]:
     else:
         if left > right or bottom > top:
             errors["range"] = f"Invalid bbox range: {bbox}"
+        if abs(left - right) > 90 or abs(bottom - top) > 90:
+            errors["range"] = f"Maximum bbox range is 90 degrees: {bbox}"
         if not -180 <= left <= 180 or not -180 <= right <= 180:
             errors["longitude"] = f"Invalid longitude: {bbox}"
         if not -90 <= bottom <= 90 or not -90 <= top <= 90:
