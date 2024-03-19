@@ -9,7 +9,7 @@ services:
       - "5433:5432"
     volumes:
 #      - ts-data:/home/postgres/pgdata/data # for timescale image
-      - ts-data:/var/lib/postgresql/data # for postgres image
+      - ts-data:/var/lib/postgresql # for postgres image
       - ./datastore/database/healthcheck_postgis_uptime.sh:/healthcheck_postgis_uptime.sh # for the healthcheck
     environment:
       - POSTGRES_USER=postgres

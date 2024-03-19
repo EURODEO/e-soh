@@ -67,6 +67,7 @@ def write_data(station):
             title=long_name,
             standard_name=standard_name,
             unit=unit,
+            parameter_name=f"{standard_name}_2.0m_{param_id}_PT10M",  # HACK: Putting {param_id} here is a hack
         )
         obs_mdata = dstore.ObsMetadata(
             id=str(uuid.uuid4()),
