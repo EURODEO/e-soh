@@ -118,7 +118,7 @@
                     "description": "Controlled vocabulary for the names used in the 'instrument' attribute."
                 },
                 "level": {
-                    "type": "number",
+                    "type": "string",
                     "description": "Instrument level above ground in meters."
                 },
                 "period": {

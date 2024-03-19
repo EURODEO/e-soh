@@ -29,20 +29,18 @@ mqtt_configuration = {
     "password": os.getenv("MQTT_PASSWORD", "password"),
 }
 
-datastore_configuration = {
-    "dshost": os.getenv("DATASTORE_HOST", "localhost"),
-    "dsport": os.getenv("DATASTORE_PORT", "1234"),
-    "username": os.getenv("DATASTORE_USERNAME", "username"),
-    "password": os.getenv("DATASTORE_PASSWORD", "password"),
-}
+# datastore_configuration = {
+#     "dshost": os.getenv("DATASTORE_HOST", "localhost"),
+#     "dsport": os.getenv("DATASTORE_PORT", "1234"),
+#     "username": os.getenv("DATASTORE_USERNAME", "username"),
+#     "password": os.getenv("DATASTORE_PASSWORD", "password"),
+# }
 
 
 @app.post("/nc")
 async def upload_netcdf_file(files: UploadFile, input_type: str = "nc"):
     try:
-        ingester = IngestToPipeline(
-            mqtt_conf=mqtt_configuration, dstore_conn=datastore_configuration, uuid_prefix="uuid", testing=True
-        )
+        ingester = IngestToPipeline(mqtt_conf=mqtt_configuration, uuid_prefix="uuid", testing=True)
         contents = await files.read()
         ds = xr.open_dataset(io.BytesIO(contents))
         response, status = ingester.ingest(ds, input_type)
@@ -57,9 +55,7 @@ async def upload_netcdf_file(files: UploadFile, input_type: str = "nc"):
 @app.post("/bufr")
 async def upload_bufr_file(files: UploadFile, input_type: str = "bufr"):
     try:
-        ingester = IngestToPipeline(
-            mqtt_conf=mqtt_configuration, dstore_conn=datastore_configuration, uuid_prefix="uuid", testing=True
-        )
+        ingester = IngestToPipeline(mqtt_conf=mqtt_configuration, uuid_prefix="uuid", testing=True)
         contents = await files.read()
         response, status = ingester.ingest(contents, input_type)
         return Response(status_message=response, status_code=status)
@@ -73,9 +69,7 @@ async def upload_bufr_file(files: UploadFile, input_type: str = "bufr"):
 @app.post("/json")
 async def post_json(request: JsonMessageSchema, input_type: str):
     try:
-        ingester = IngestToPipeline(
-            mqtt_conf=mqtt_configuration, dstore_conn=datastore_configuration, uuid_prefix="uuid", testing=True
-        )
+        ingester = IngestToPipeline(mqtt_conf=mqtt_configuration, uuid_prefix="uuid", testing=True)
         response, status = ingester.ingest(request.dict(exclude_none=True), input_type)
         return Response(status_message=response, status_code=status)
 

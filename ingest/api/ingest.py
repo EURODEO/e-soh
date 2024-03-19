@@ -8,7 +8,7 @@ import grpc
 import pkg_resources
 from jsonschema import Draft202012Validator
 
-from api.datastore import DatastoreConnection
+from api.datastore import ingest
 from api.messages import messages
 from api.send_mqtt import MQTTConnection
 
@@ -24,7 +24,6 @@ class IngestToPipeline:
     def __init__(
         self,
         mqtt_conf: dict,
-        dstore_conn: dict,
         uuid_prefix: str,
         testing: bool = False,
         schema_path=None,
@@ -49,7 +48,7 @@ class IngestToPipeline:
         if testing:
             return
 
-        self.dstore = DatastoreConnection(dstore_conn["dshost"], dstore_conn["dsport"])
+        # self.dstore = DatastoreConnection(dstore_conn["dshost"], dstore_conn["dsport"])
         if "username" in mqtt_conf:
             self.mqtt = MQTTConnection(
                 mqtt_conf["host"], mqtt_conf["topic"], mqtt_conf["username"], mqtt_conf["password"]
@@ -81,13 +80,13 @@ class IngestToPipeline:
         for msg in messages:
             if msg:
                 try:
-                    self.dstore.ingest(msg)
-                    self.mqtt.send_message(msg)
+                    ingest(msg)
+                    # self.mqtt.send_message(msg)
                 except grpc.RpcError as v_error:
                     # self.dstore.is_channel_ready()
                     return "Failed to ingest" + "\n" + str(v_error), 500
                 except Exception as e:
-                    return "Failed to ingest" + "\n" + str(e), 500
+                    return "Failed to ingest" + "\n" + str(e), 502
         return "succesfully published", 200
 
     def _decide_input_type(self, message) -> str:

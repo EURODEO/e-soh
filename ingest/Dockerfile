@@ -36,7 +36,7 @@ RUN python -m grpc_tools.protoc  \
 
 WORKDIR "${DOCKER_PATH}"
 
-RUN python "${DOCKER_PATH}/api/generate_standard_name.py"
+RUN python "api/generate_standard_name.py"
 
 # hadolint ignore=DL3013
 RUN pip install --no-cache-dir --upgrade pip \
