@@ -98,15 +98,6 @@ class DatastoreConnection:
             elif i in msg["properties"]["content"]:
                 setattr(ts_metadata, i, msg["properties"]["content"][i])
 
-        # special case for metadata_id -> time_series_id
-        # (NOTE: special case can be obsoleted if metadata_id is renamed to time_series_id
-        # already in the input)
-        from_name, to_name = "metadata_id", "time_series_id"
-        if from_name in msg["properties"]:
-            setattr(ts_metadata, to_name, msg["properties"][from_name])
-        elif from_name in msg["properties"]["content"]:
-            setattr(ts_metadata, to_name, msg["properties"]["content"][from_name])
-
         observation_data = dstore.ObsMetadata(
             pubtime=dtime2tstamp(datetime.strptime(msg["properties"]["pubtime"], "%Y-%m-%dT%H:%M:%S.%f%z")),
             obstime_instant=dtime2tstamp(
@@ -117,7 +108,7 @@ class DatastoreConnection:
             ),
         )
 
-        for i in ["id", "history", "processing_level", "data_id", "value"]:
+        for i in ["id", "history", "metadata_id", "processing_level", "data_id", "value"]:
             if i in msg:
                 setattr(observation_data, i, msg[i])
             elif i in msg["properties"]:
