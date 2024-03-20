@@ -265,7 +265,8 @@ std::ostream &operator<<(std::ostream &os, Section3 &sec) {
      << "\n";
   os << "Subsets: " << sec.subsets << "\n";
   os << "Observed: " << sec.isObserved() << "\n";
-  os << "Compressed:" << sec.isCompressed() << " " << "\n";
+  os << "Compressed:" << sec.isCompressed() << " " 
+     << "\n";
 
   os << "Descriptors:\n";
 
