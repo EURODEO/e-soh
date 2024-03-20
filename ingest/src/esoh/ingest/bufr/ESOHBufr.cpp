@@ -11,6 +11,7 @@
 
 #include <algorithm>
 #include <bitset>
+#include <iomanip>
 #include <list>
 #include <sstream>
 
@@ -732,9 +733,8 @@ bool ESOHBufr::addContent(const Descriptor &v, std::string cf_name,
   message["id"].SetString(id.c_str(), id.length(), message_allocator);
 
   if (sensor_level_active) {
-    message_properties["data_id"] = sensor_level;
     std::stringstream ss;
-    ss << sensor_level << "m";
+    ss << std::fixed << std::setprecision(1) << sensor_level << "m";
     rapidjson::Value r_level;
     r_level.SetString(ss.str().c_str(), message_allocator);
     // message_properties.AddMember("level", r_level, message_allocator);
