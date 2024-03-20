@@ -1,0 +1,33 @@
+{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            5.8723225499118,
+            52.0548617826
+        ]
+    },
+    "properties": {
+        "title": "Wind Direction 10 Min Average",
+        "keywords": "temperature, pressure, relative humidity, visibility, wind speed, wind direction, wind gust",
+        "keywords_vocabulary": "http://data.knmi.nl",
+        "naming_authority": "nl.knmi",
+        "creator_name": "KNMI",
+        "creator_email": "datacentrum@knmi.nl",
+        "creator_url": "http://data.knmi.nl",
+        "institution": "Royal Netherlands Meteorological Institute (KNMI)",
+        "source": "Royal Netherlands Meteorological Institute (KNMI)",
+        "platform": "06275",
+        "standard_name": "wind_from_direction",
+        "unit": "degree",
+        "instrument": "dd",
+        "level": "2.0",
+        "period": "PT10M",
+        "function": "mean",
+        "parameter_name": "wind_from_direction:2.0:mean:PT10M",
+        "creator_type": "Institution",
+        "platform_vocabulary": "https://oscar.wmo.int/surface/#/search/station/stationReportDetails/06275",
+        "name": "06275"
+    },
+    "id": "0f997a725ebb373d7eb9588bc3b50160"
+}
