@@ -6,7 +6,6 @@ from typing import Dict
 from typing import Set
 from typing import Tuple
 
-import datastore_pb2 as dstore
 import formatters
 from covjson_pydantic.coverage import Coverage
 from covjson_pydantic.coverage import CoverageCollection
@@ -26,6 +25,8 @@ from shapely import buffer
 from shapely import geometry
 from shapely import wkt
 from shapely.errors import GEOSException
+
+import datastore_pb2 as dstore
 
 # from dependencies import verify_parameter_names
 
@@ -66,6 +67,7 @@ async def get_locations(
         included_response_fields=[
             "parameter_name",
             "platform",
+            "platform_name",
             "geo_point",
             "title",
             "standard_name",
@@ -77,9 +79,13 @@ async def get_locations(
     ts_response = await get_obs_request(ts_request)
 
     platform_parameters: DefaultDict[str, Set[str]] = defaultdict(set)
+    platform_names: Dict[str, str] = defaultdict(str)
     platform_coordinates: Dict[str, Set[Tuple[float, float]]] = defaultdict(set)
     all_parameters: Dict[str, Parameter] = {}
     for obs in ts_response.observations:
+        platform_names[obs.ts_mdata.platform] = (
+            obs.ts_mdata.platform_name if obs.ts_mdata.platform_name != "" else f"platform-{obs.ts_mdata.platform}"
+        )
         parameter = make_parameter(obs.ts_mdata)
         platform_parameters[obs.ts_mdata.platform].add(obs.ts_mdata.parameter_name)
         # Take last point
@@ -114,8 +120,7 @@ async def get_locations(
             type="Feature",
             id=station_id,
             properties={
-                # TODO: Change to platform_name to correct one when its available, this is only for geoweb demo
-                "name": f"platform-{station_id}",
+                "name": platform_names[station_id],
                 "detail": f"https://oscar.wmo.int/surface/#/search/station/stationReportDetails/{station_id}",
                 "parameter-name": sorted(platform_parameters[station_id]),
             },
