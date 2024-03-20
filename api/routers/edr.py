@@ -55,16 +55,7 @@ response_fields_needed_for_data_api = [
 async def get_locations(
     bbox: Annotated[str | None, Query(example="5.0,52.0,6.0,52.1")] = None
 ) -> EDRFeatureCollection:  # Hack to use string
-    spatial_area = None
-    if bbox:
-        left, bottom, right, top = validate_bbox(bbox)
-        poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
-        spatial_area = dstore.Polygon(
-            points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords],
-        )
-
     ts_request = dstore.GetObsRequest(
-        spatial_area=spatial_area,
         temporal_latest=True,
         included_response_fields=[
             "parameter_name",
@@ -76,6 +67,13 @@ async def get_locations(
             "unit",
         ],
     )
+    # Add spatial area to the time series request if bbox exists.
+    if bbox:
+        left, bottom, right, top = validate_bbox(bbox)
+        poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
+        ts_request.spatial_area.points.extend(
+            [dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords],
+        )
 
     ts_response = await get_obs_request(ts_request)
 
