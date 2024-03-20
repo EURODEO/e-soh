@@ -85,7 +85,10 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                             value=str(obs_value),  # TODO: Store float in DB
                             metadata_id=md5(
                                 "".join(
-                                    [station_id, param_id + standard_name + level + period + function + "nl.knmi"]
+                                    [
+                                        station_id,
+                                        str(ts_mdata.platform) + standard_name + level + period + function + "nl.knmi",
+                                    ]
                                 ).encode()
                             ).hexdigest(),
                         )
