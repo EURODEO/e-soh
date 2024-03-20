@@ -92,3 +92,7 @@ def create_url_from_request(request):
     scheme = request.url.scheme
 
     return f"{scheme}://{host}{base_path}/collections"
+
+
+def split_and_strip(cs_string: str) -> list[str]:
+    return [i.strip() for i in cs_string.split(",")]
