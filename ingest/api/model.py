@@ -295,11 +295,13 @@ class JsonMessageSchema(BaseModel):
     version: str
 
     def dict(self, *args, **kwargs) -> Dict[str, Any]:
-        d = super().dict(*args, **kwargs)
+        d = super().model_dump(*args, **kwargs)
         d["type"] = self.type.value
         d["geometry"]["type"] = self.geometry.type.value
+        if hasattr(self.properties, "content") and self.properties.content:
+            d["properties"]["content"]["encoding"] = self.properties.content.encoding.value
         if isinstance(self.geometry, Geometry):
-            d["geometry"]["coordinates"] = self.geometry.coordinates.dict()
+            d["geometry"]["coordinates"] = self.geometry.coordinates.model_dump()
         elif isinstance(self.geometry, Geometry1):
-            d["geometry"]["coordinates"] = [coord.dict() for coord in self.geometry.coordinates]
+            d["geometry"]["coordinates"] = [coord.model_dump() for coord in self.geometry.coordinates]
         return d
