@@ -3,10 +3,14 @@
         {
             "ts_mdata": {
                 "title": "Wind Speed at 10m 10 Min Average",
-                "platform": "06280",
+                "platform": "0-20000-0-06280",
                 "standard_name": "wind_speed",
                 "unit": "m s-1",
-                "instrument": "ff"
+                "instrument": "ff",
+                "level": "10",
+                "period": "PT10M",
+                "function": "mean",
+                "parameter_name": "wind_speed:10:mean:PT10M"
             },
             "obs_mdata": [
                 {
@@ -15,7 +19,6 @@
                         "lat": 53.123676213651,
                         "lon": 6.5848470019087
                     },
-                    "pubtime": "1970-01-01T00:00:00Z",
                     "obstime_instant": "2022-12-31T00:00:00Z",
                     "value": "9.71"
                 },
@@ -25,7 +28,6 @@
                         "lat": 53.123676213651,
                         "lon": 6.5848470019087
                     },
-                    "pubtime": "1970-01-01T00:00:00Z",
                     "obstime_instant": "2022-12-31T00:10:00Z",
                     "value": "9.32"
                 },
@@ -35,7 +37,6 @@
                         "lat": 53.123676213651,
                         "lon": 6.5848470019087
                     },
-                    "pubtime": "1970-01-01T00:00:00Z",
                     "obstime_instant": "2022-12-31T00:20:00Z",
                     "value": "9.19"
                 },
@@ -45,7 +46,6 @@
                         "lat": 53.123676213651,
                         "lon": 6.5848470019087
                     },
-                    "pubtime": "1970-01-01T00:00:00Z",
                     "obstime_instant": "2022-12-31T00:30:00Z",
                     "value": "9.21"
                 },
@@ -55,7 +55,6 @@
                         "lat": 53.123676213651,
                         "lon": 6.5848470019087
                     },
-                    "pubtime": "1970-01-01T00:00:00Z",
                     "obstime_instant": "2022-12-31T00:40:00Z",
                     "value": "8.7"
                 },
@@ -65,7 +64,6 @@
                         "lat": 53.123676213651,
                         "lon": 6.5848470019087
                     },
-                    "pubtime": "1970-01-01T00:00:00Z",
                     "obstime_instant": "2022-12-31T00:50:00Z",
                     "value": "8.12"
                 },
@@ -75,7 +73,6 @@
                         "lat": 53.123676213651,
                         "lon": 6.5848470019087
                     },
-                    "pubtime": "1970-01-01T00:00:00Z",
                     "obstime_instant": "2022-12-31T01:00:00Z",
                     "value": "7.28"
                 }

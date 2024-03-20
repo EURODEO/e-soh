@@ -49,9 +49,13 @@
         ]
     },
     "parameters": {
-        "ff": {
+        "wind_speed:10:mean:PT10M": {
             "type": "Parameter",
+            "description": {
+                "en": "Wind Speed at 10m 10 Min Average"
+            },
             "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed",
                 "label": {
                     "en": "ff"
                 }
@@ -64,7 +68,7 @@
         }
     },
     "ranges": {
-        "ff": {
+        "wind_speed:10:mean:PT10M": {
             "type": "NdArray",
             "dataType": "float",
             "axisNames": [

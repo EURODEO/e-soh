@@ -2,11 +2,15 @@
     "observations": [
         {
             "ts_mdata": {
-                "title": "FMI test data",
-                "platform": "100945",
-                "standard_name": "TA_P1D_AVG",
+                "title": "Air Temperature 1d average",
+                "platform": "0-246-0-100945",
+                "standard_name": "air_temperature",
                 "unit": "degC",
-                "instrument": "TA_P1D_AVG"
+                "instrument": "TA_P1D_AVG",
+                "level": "2.0",
+                "period": "P1D",
+                "function": "average",
+                "parameter_name": "air_temperature:2.0:average:PT1D"
             },
             "obs_mdata": [
                 {
@@ -15,7 +19,6 @@
                         "lat": 59.86948983,
                         "lon": 22.19342704
                     },
-                    "pubtime": "1970-01-01T00:00:00Z",
                     "obstime_instant": "2022-12-31T00:00:00Z",
                     "value": "5.2"
                 }
@@ -23,11 +26,15 @@
         },
         {
             "ts_mdata": {
-                "title": "FMI test data",
-                "platform": "100976",
-                "standard_name": "TA_P1D_AVG",
+                "title": "Air Temperature 1d average",
+                "platform": "0-246-0-100976",
+                "standard_name": "air_temperature",
                 "unit": "degC",
-                "instrument": "TA_P1D_AVG"
+                "instrument": "TA_P1D_AVG",
+                "level": "2.0",
+                "period": "P1D",
+                "function": "average",
+                "parameter_name": "air_temperature:2.0:average:PT1D"
             },
             "obs_mdata": [
                 {
@@ -36,7 +43,6 @@
                         "lat": 60.41875496,
                         "lon": 24.3986218
                     },
-                    "pubtime": "1970-01-01T00:00:00Z",
                     "obstime_instant": "2022-12-31T00:00:00Z",
                     "value": "3.7"
                 }

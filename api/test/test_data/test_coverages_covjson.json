@@ -46,9 +46,13 @@
                 ]
             },
             "parameters": {
-                "TA_P1D_AVG": {
+                "air_temperature:2.0:average:PT1D": {
                     "type": "Parameter",
+                    "description": {
+                        "en": "Air Temperature 1d average"
+                    },
                     "observedProperty": {
+                        "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                         "label": {
                             "en": "TA_P1D_AVG"
                         }
@@ -61,7 +65,7 @@
                 }
             },
             "ranges": {
-                "TA_P1D_AVG": {
+                "air_temperature:2.0:average:PT1D": {
                     "type": "NdArray",
                     "dataType": "float",
                     "axisNames": [
@@ -125,9 +129,13 @@
                 ]
             },
             "parameters": {
-                "TA_P1D_AVG": {
+                "air_temperature:2.0:average:PT1D": {
                     "type": "Parameter",
+                    "description": {
+                        "en": "Air Temperature 1d average"
+                    },
                     "observedProperty": {
+                        "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                         "label": {
                             "en": "TA_P1D_AVG"
                         }
@@ -140,7 +148,7 @@
                 }
             },
             "ranges": {
-                "TA_P1D_AVG": {
+                "air_temperature:2.0:average:PT1D": {
                     "type": "NdArray",
                     "dataType": "float",
                     "axisNames": [
@@ -161,9 +169,13 @@
         }
     ],
     "parameters": {
-        "TA_P1D_AVG": {
+        "air_temperature:2.0:average:PT1D": {
             "type": "Parameter",
+            "description": {
+                "en": "Air Temperature 1d average"
+            },
             "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
                     "en": "TA_P1D_AVG"
                 }

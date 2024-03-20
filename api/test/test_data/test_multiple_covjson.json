@@ -45,9 +45,30 @@
         ]
     },
     "parameters": {
-        "dd": {
+        "relative_humidity:2.0:mean:PT1M": {
             "type": "Parameter",
+            "description": {
+                "en": "Relative Humidity 1 Min Average"
+            },
             "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/relative_humidity",
+                "label": {
+                    "en": "rh"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "%"
+                }
+            }
+        },
+        "wind_from_direction:2.0:mean:PT10M": {
+            "type": "Parameter",
+            "description": {
+                "en": "Wind Direction 10 Min Average"
+            },
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/wind_from_direction",
                 "label": {
                     "en": "dd"
                 }
@@ -58,9 +79,13 @@
                 }
             }
         },
-        "ff": {
+        "wind_speed:10:mean:PT10M": {
             "type": "Parameter",
+            "description": {
+                "en": "Wind Speed at 10m 10 Min Average"
+            },
             "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed",
                 "label": {
                     "en": "ff"
                 }
@@ -70,23 +95,29 @@
                     "en": "m s-1"
                 }
             }
-        },
-        "rh": {
-            "type": "Parameter",
-            "observedProperty": {
-                "label": {
-                    "en": "rh"
-                }
-            },
-            "unit": {
-                "label": {
-                    "en": "%"
-                }
-            }
         }
     },
     "ranges": {
-        "dd": {
+        "relative_humidity:2.0:mean:PT1M": {
+            "type": "NdArray",
+            "dataType": "float",
+            "axisNames": [
+                "t",
+                "y",
+                "x"
+            ],
+            "shape": [
+                3,
+                1,
+                1
+            ],
+            "values": [
+                88,
+                88,
+                88
+            ]
+        },
+        "wind_from_direction:2.0:mean:PT10M": {
             "type": "NdArray",
             "dataType": "float",
             "axisNames": [
@@ -105,7 +136,7 @@
                 232.9
             ]
         },
-        "ff": {
+        "wind_speed:10:mean:PT10M": {
             "type": "NdArray",
             "dataType": "float",
             "axisNames": [
@@ -122,25 +153,6 @@
                 9.71,
                 9.32,
                 9.19
-            ]
-        },
-        "rh": {
-            "type": "NdArray",
-            "dataType": "float",
-            "axisNames": [
-                "t",
-                "y",
-                "x"
-            ],
-            "shape": [
-                3,
-                1,
-                1
-            ],
-            "values": [
-                88,
-                88,
-                88
             ]
         }
     }
