@@ -4,7 +4,7 @@
         "type": "Feature",
         "geometry": {
             "type": "Polygon",
-            "coordinates": {{ spatial_extents }}
+            "coordinates": [{{ spatial_extents }}]
         },
         "time": {
             "interval": {{ temporal_extents|tojson }},

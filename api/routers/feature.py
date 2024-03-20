@@ -127,6 +127,7 @@ async def get_dataset_metadata():
             [extent.spatial_extent.right, extent.spatial_extent.bottom],
             [extent.spatial_extent.right, extent.spatial_extent.top],
             [extent.spatial_extent.left, extent.spatial_extent.top],
+            [extent.spatial_extent.left, extent.spatial_extent.bottom],
         ],
         "temporal_extents": [
             [
