@@ -11,13 +11,14 @@ from time import perf_counter
 from typing import List
 from typing import Tuple
 
-import datastore_pb2 as dstore
-import datastore_pb2_grpc as dstore_grpc
 import grpc
 import pandas as pd
 import xarray as xr
 from google.protobuf.timestamp_pb2 import Timestamp
 from parameters import knmi_parameter_names
+
+import datastore_pb2 as dstore
+import datastore_pb2_grpc as dstore_grpc
 
 regex_level = re.compile(r"first|second|third|[0-9]+(\.[0-9]+)?(?=m)|(?<=Level )[0-9]+", re.IGNORECASE)
 regex_level_centimeters = re.compile(r"[0-9]+(\.[0-9]+)?(?=cm)")
@@ -52,6 +53,7 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                 ts_mdata = dstore.TSMetadata(
                     platform=f"0-20000-0-{station_id}",
                     instrument=param_id,
+                    platform_name=station_name,
                     title=param_file.long_name,
                     standard_name=standard_name,
                     unit=param_file.units if "units" in param_file.attrs else None,
