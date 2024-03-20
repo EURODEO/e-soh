@@ -123,11 +123,13 @@ async def get_dataset_metadata():
     extent = await get_spatial_extent(spatial_request)
     dynamic_fields = {
         "spatial_extents": [
-            [extent.spatial_extent.left, extent.spatial_extent.bottom],
-            [extent.spatial_extent.right, extent.spatial_extent.bottom],
-            [extent.spatial_extent.right, extent.spatial_extent.top],
-            [extent.spatial_extent.left, extent.spatial_extent.top],
-            [extent.spatial_extent.left, extent.spatial_extent.bottom],
+            [
+                [extent.spatial_extent.left, extent.spatial_extent.bottom],
+                [extent.spatial_extent.right, extent.spatial_extent.bottom],
+                [extent.spatial_extent.right, extent.spatial_extent.top],
+                [extent.spatial_extent.left, extent.spatial_extent.top],
+                [extent.spatial_extent.left, extent.spatial_extent.bottom],
+            ]
         ],
         "temporal_extents": [
             [
