@@ -6,7 +6,6 @@ from typing import Dict
 from typing import Set
 from typing import Tuple
 
-import datastore_pb2 as dstore
 import formatters
 from covjson_pydantic.coverage import Coverage
 from covjson_pydantic.coverage import CoverageCollection
@@ -26,6 +25,8 @@ from shapely import buffer
 from shapely import geometry
 from shapely import wkt
 from shapely.errors import GEOSException
+
+import datastore_pb2 as dstore
 
 # from dependencies import verify_parameter_names
 
@@ -153,19 +154,20 @@ async def get_data_location_id(
     datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
     f: Annotated[formatters.Formats, Query(description="Specify return format.")] = formatters.Formats.covjson,
 ):
-    # TODO: There is no error handling of any kind at the moment!
-    #  This is just a quick and dirty demo
-    range = get_datetime_range(datetime)
+    filter = dict(platform=dstore.Strings(values=[location_id]))
     if parameter_name:
         parameter_name = parameter_name.split(",")
         parameter_name = list(map(lambda x: x.strip(), parameter_name))
+        filter["parameter_name"] = dstore.Strings(values=parameter_name)
+
+    temporal_interval = None
+    if datetime:
+        range = get_datetime_range(datetime)
+        temporal_interval = dstore.TimeInterval(start=range[0], end=range[1])
     # parameter_name = verify_parameter_names(parameter_name) # should the api verify that the parameter name is valid?
     request = dstore.GetObsRequest(
-        filter=dict(
-            parameter_name=dstore.Strings(values=parameter_name),
-            platform=dstore.Strings(values=[location_id]),
-        ),
-        temporal_interval=(dstore.TimeInterval(start=range[0], end=range[1]) if range else None),
+        filter=filter,
+        temporal_interval=temporal_interval,
         included_response_fields=response_fields_needed_for_data_api,
     )
     response = await get_obs_request(request)
@@ -260,17 +262,24 @@ async def get_data_area(
             detail={"coords": f"Unexpected error occurred during wkt parsing: {coords}"},
         )
 
-    range = get_datetime_range(datetime)
     # await verify_parameter_names(parameter_name)
+    filter = {}
     if parameter_name:
         parameter_name = parameter_name.split(",")
         parameter_name = list(map(lambda x: x.strip(), parameter_name))
+        filter["parameter_name"] = dstore.Strings(values=parameter_name)
+
+    temporal_interval = None
+    if datetime:
+        range = get_datetime_range(datetime)
+        temporal_interval = dstore.TimeInterval(start=range[0], end=range[1])
+
     request = dstore.GetObsRequest(
-        filter=dict(parameter_name=dstore.Strings(values=parameter_name if parameter_name else None)),
+        filter=filter,
         spatial_area=dstore.Polygon(
             points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
         ),
-        temporal_interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
+        temporal_interval=temporal_interval,
         included_response_fields=response_fields_needed_for_data_api,
     )
     coverages = await get_obs_request(request)
