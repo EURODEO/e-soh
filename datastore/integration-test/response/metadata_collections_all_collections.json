@@ -226,17 +226,6 @@
                         "label": "air_temperature:2.0:minimum:PT6H"
                     }
                 },
-                "air_temperature_2.0_point_PT0S": {
-                    "type": "Parameter",
-                    "description": "air_temperature at 2.0m PT0S point",
-                    "unit": {
-                        "label": "celsius"
-                    },
-                    "observedProperty": {
-                        "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
-                        "label": "air_temperature_2.0_point_PT0S"
-                    }
-                },
                 "cloud_base_altitude:2.0:point:PT0S": {
                     "type": "Parameter",
                     "description": "cloud_base_altitude at 2.0m PT0S point",
