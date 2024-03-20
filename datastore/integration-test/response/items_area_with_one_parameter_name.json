@@ -17,7 +17,7 @@
         "creator_url": "http://data.knmi.nl",
         "institution": "Royal Netherlands Meteorological Institute (KNMI)",
         "source": "Royal Netherlands Meteorological Institute (KNMI)",
-        "platform": "06275",
+        "platform": "0-20000-0-06275",
         "standard_name": "air_temperature",
         "unit": "degrees Celsius",
         "instrument": "Tn12",
@@ -26,8 +26,8 @@
         "function": "minimum",
         "parameter_name": "air_temperature:2.0:minimum:PT12H",
         "creator_type": "Institution",
-        "platform_vocabulary": "https://oscar.wmo.int/surface/#/search/station/stationReportDetails/06275",
-        "name": "06275"
+        "platform_vocabulary": "https://oscar.wmo.int/surface/#/search/station/stationReportDetails/0-20000-0-06275",
+        "name": "0-20000-0-06275"
     },
-    "id": "9785b0eb4316635ca9625b9beef17246"
+    "id": "f0d06231a6508f281dbdaea0b5000220"
 }

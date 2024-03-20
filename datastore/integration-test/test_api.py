@@ -122,7 +122,7 @@ def test_that_the_order_of_the_parameters_in_the_response_is_always_the_same():
     """
     collection_id = "observations"
     location_id = "0-20000-0-06260"
-    parameters = " wind_from_direction_2.0_mean_PT10M,wind_speed_10_mean_PT10M ,  relative_humidity_2.0_mean_PT1M"
+    parameters = " wind_from_direction:2.0:mean:PT10M,wind_speed:10:mean:PT10M ,  relative_humidity:2.0:mean:PT1M"
     first_response = requests.get(
         url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}" f"?parameter-name={parameters}"
     )
@@ -198,7 +198,7 @@ def test_items_get_area():
 
 def test_items_get_id():
     collection_id = "observations"
-    metadata_id = "0f997a725ebb373d7eb9588bc3b50160"
+    metadata_id = "225c8e92d96af07b1deec739ca681999"
     actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items/{metadata_id}")
 
     assert actual_response.status_code == 200
@@ -221,7 +221,7 @@ def test_items_get_area_with_one_parameter_name():
 
 def test_items_get_one_platform():
     collection_id = "observations"
-    platform = "06225"
+    platform = "0-20000-0-06225"
     actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items?platform={platform}")
 
     assert actual_response.status_code == 200
