@@ -51,6 +51,11 @@ message Polygon { // horizontal area; three or more points
   repeated Point points = 1;
 }
 
+message Circle { // horizontal circle area
+  Point center = 1;
+  double radius = 2;
+}
+
 message BoundingBox {
   double left = 1;
   double bottom = 2;
@@ -163,15 +168,16 @@ message GetObsRequest {
   // --- BEGIN non-string metadata -------------------------
 
   // temporal mode
-  string temporal_mode = 4; // use 'interval' (the default) to retrieve observations in
+  string temporal_mode = 1; // use 'interval' (the default) to retrieve observations in
   // an interval (defined by temporal) or 'latest' to retrieve the most recent observation
   // of otherwise matching time series
 
   // temporal spec applicable when temporal_mode = 'interval'
-  TimeInterval temporal_interval = 1; // only observations in this time range may be returned
+  TimeInterval temporal_interval = 2; // only observations in this time range may be returned
 
   // spatial filter
-  Polygon spatial_area = 2; // if specified, only observations in this area may be returned
+  Polygon spatial_polygon = 3; // if specified, only observations in this polygon may be returned
+  Circle spatial_circle = 4; // if specified, only observations in this circle may be returned
 
   // search wrt. TSMetadata.links
   // TODO - needs special handling
@@ -184,7 +190,7 @@ message GetObsRequest {
   // - map keys must correspond exactly with string field names in TSMetadata or ObsMetadata
   // - if map key F is specified (where F is for example 'platform'), only observations that match
   //   at least one of these values for F may be returned
-  map<string, Strings> filter = 3;
+  map<string, Strings> filter = 5;
 
   // --- END string metadata (handleable with reflection) -------------------------
 
@@ -199,9 +205,9 @@ message GetObsRequest {
   //     * 'obstime_instant' (--- '' ---)
   //     * 'pubtime' (--- '' ---)
   //     * 'value' (non-reflection handleable string field in ObsMetadata)
-  repeated string included_response_fields = 5;
+  repeated string included_response_fields = 6;
 
-  // repeated string excluded_response_fields = 6; // TODO
+  // repeated string excluded_response_fields = 7; // TODO
 }
 
 message GetObsResponse {

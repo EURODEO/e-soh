@@ -59,7 +59,7 @@ async def get_locations(
     poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
 
     ts_request = dstore.GetObsRequest(
-        spatial_area=dstore.Polygon(
+        spatial_polygon=dstore.Polygon(
             points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords],
         ),
         temporal_mode="latest",
@@ -267,7 +267,7 @@ async def get_data_area(
         parameter_name = list(map(lambda x: x.strip(), parameter_name))
     request = dstore.GetObsRequest(
         filter=dict(parameter_name=dstore.Strings(values=parameter_name if parameter_name else None)),
-        spatial_area=dstore.Polygon(
+        spatial_polygon=dstore.Polygon(
             points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
         ),
         temporal_interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,

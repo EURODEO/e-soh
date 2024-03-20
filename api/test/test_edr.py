@@ -102,8 +102,8 @@ def test_get_area_with_normal_query():
         m_args = mock_getObsRequest.call_args[0][0]
 
         assert {"TA_P1D_AVG"} == set(m_args.filter["instrument"].values)
-        assert len(m_args.spatial_area.points) == 5
-        assert 22.12 == m_args.spatial_area.points[0].lon
+        assert len(m_args.spatial_polygon.points) == 5
+        assert 22.12 == m_args.spatial_polygon.points[0].lon
         assert "2022-12-31 00:00:00" == m_args.temporal_interval.start.ToDatetime().strftime("%Y-%m-%d %H:%M:%S")
         assert "2022-12-31 01:00:01" == m_args.temporal_interval.end.ToDatetime().strftime("%Y-%m-%d %H:%M:%S")
 
