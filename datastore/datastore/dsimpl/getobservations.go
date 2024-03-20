@@ -3,7 +3,6 @@ package dsimpl
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"datastore/common"
 	"datastore/datastore"
@@ -14,34 +13,18 @@ import (
 // Returns (spec, nil) upon success, otherwise (..., error).
 func getTemporalSpec(request *datastore.GetObsRequest) (common.TemporalSpec, error) {
 
-	tspec := common.TemporalSpec{}
-
-	// get mode
-	tspec.IntervalMode = true // assume 'interval' mode by default
-	if tmode0 := request.GetTemporalMode(); tmode0 != "" {
-		tmode := strings.ToLower(strings.TrimSpace(tmode0))
-		switch {
-		case tmode == "latest":
-			tspec.IntervalMode = false
-		case tmode != "interval":
-			return common.TemporalSpec{}, fmt.Errorf(
-				"expected either 'interval' or 'latest' for temporal_mode; found '%s'", tmode)
-		}
+	tspec := common.TemporalSpec{
+		Latest:   request.GetTemporalLatest(),
+		Interval: request.GetTemporalInterval(),
 	}
 
-	if tspec.IntervalMode { // validate and initialize for 'interval' mode
-		ti := request.GetTemporalInterval()
-
-		// do general validation of interval
-		if ti != nil {
-			if ti.Start != nil && ti.End != nil {
-				if ti.End.AsTime().Before(ti.Start.AsTime()) {
-					return common.TemporalSpec{}, fmt.Errorf("end(%v) < start(%v)", ti.End, ti.Start)
-				}
+	ti := tspec.Interval
+	if ti != nil { // validate
+		if ti.Start != nil && ti.End != nil {
+			if ti.End.AsTime().Before(ti.Start.AsTime()) {
+				return common.TemporalSpec{}, fmt.Errorf("end(%v) < start(%v)", ti.End, ti.Start)
 			}
 		}
-
-		tspec.Interval = ti // valid (but possibly nil to specify a fully open interval!)
 	}
 
 	return tspec, nil

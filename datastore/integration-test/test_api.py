@@ -99,7 +99,7 @@ def test_from_a_single_collection_get_locations_within_a_bbox():
 
 def test_from_a_single_collection_get_a_single_location():
     collection_id = "observations"
-    location_id = "06260"
+    location_id = "0-20000-0-06260"
     parameters = (
         "air_temperature:1.5:maximum:PT10M , wind_from_direction:2.0:mean:PT10M,relative_humidity:2.0:mean:PT1M"
     )
@@ -121,8 +121,8 @@ def test_that_the_order_of_the_parameters_in_the_response_is_always_the_same():
     The first request returns the same response as the second request.
     """
     collection_id = "observations"
-    location_id = "06260"
-    parameters = " wind_from_direction:2.0:mean:PT10M,wind_speed:10:mean:PT10M ,  relative_humidity:2.0:mean:PT1M"
+    location_id = "0-20000-0-06260"
+    parameters = " wind_from_direction_2.0_mean_PT10M,wind_speed_10_mean_PT10M ,  relative_humidity_2.0_mean_PT1M"
     first_response = requests.get(
         url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}" f"?parameter-name={parameters}"
     )

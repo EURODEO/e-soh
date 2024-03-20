@@ -96,3 +96,28 @@ def create_url_from_request(request):
 
 def split_and_strip(cs_string: str) -> list[str]:
     return [i.strip() for i in cs_string.split(",")]
+
+
+def validate_bbox(bbox: str) -> Tuple[float, float, float, float]:
+    """
+    Function for validating the bbox parameter.
+    Raises error with invalid bbox if any are found.
+    """
+    errors = {}
+
+    try:
+        left, bottom, right, top = map(float, map(str.strip, bbox.split(",")))
+    except ValueError:
+        errors["bbox"] = f"Invalid format: {bbox}"
+    else:
+        if left > right or bottom > top:
+            errors["range"] = f"Invalid bbox range: {bbox}"
+        if not -180 <= left <= 180 or not -180 <= right <= 180:
+            errors["longitude"] = f"Invalid longitude: {bbox}"
+        if not -90 <= bottom <= 90 or not -90 <= top <= 90:
+            errors["latitude"] = f"Invalid latitude: {bbox}"
+
+    if errors:
+        raise HTTPException(status_code=400, detail=errors)
+
+    return left, bottom, right, top
