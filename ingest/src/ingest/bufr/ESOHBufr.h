@@ -85,7 +85,8 @@ private:
   bool updateLocation(double loc, int loc_index,
                       rapidjson::Document &message) const;
 
-  bool setDateTime(struct tm *, rapidjson::Document &) const;
+  bool setDateTime(struct tm *, rapidjson::Document &,
+                   std::string period_str = "") const;
   bool setStartDateTime(struct tm *, rapidjson::Document &) const;
   Oscar *oscar;
   std::string msg_template;

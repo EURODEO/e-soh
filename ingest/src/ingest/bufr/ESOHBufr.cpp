@@ -11,6 +11,7 @@
 
 #include <algorithm>
 #include <bitset>
+#include <iomanip>
 #include <list>
 #include <sstream>
 
@@ -101,6 +102,10 @@ std::list<std::string> ESOHBufr::msg() const {
     double hei = -99999;
     double sensor_level = 0.0;
     char sensor_level_active = 0;
+    std::string period_str;
+    std::string period_beg;
+    std::string period_end;
+    bool period_update = false;
     std::string platform;
     bool platform_check = false;
 
@@ -123,6 +128,7 @@ std::list<std::string> ESOHBufr::msg() const {
       } else {
         sensor_level = 0.0;
       }
+      period_update = false;
       auto v = *ci;
       lb.addLogEntry(LogEntry("ESOH Descriptor: " + v.toString(),
                               LogLevel::TRACE, __func__, bufr_id));
@@ -340,19 +346,71 @@ std::list<std::string> ESOHBufr::msg() const {
             dateupdate = true;
             break;
           }
+          case 21: { // Time period or displacement
+            period_beg = "P";
+            period_end = "YT";
+            period_update = true;
+            break;
+          }
+          case 22: { // Time period or displacement
+            period_beg = "P";
+            period_end = "MT";
+            period_update = true;
+            break;
+          }
+          case 73:   // Short time period or displacement
+          case 23: { // Time period or displacement
+            period_beg = "P";
+            period_end = "DT";
+            period_update = true;
+            break;
+          }
+          case 74: // Short time period or displacement
+          case 24: {
+            period_beg = "PT";
+            period_end = "H";
+            period_update = true;
+            break;
+          }
+          case 75:   // Short time period or displacement
+          case 25: { // Time period or displacement
+            period_beg = "PT";
+            period_end = "M";
+            period_update = true;
+            break;
+          }
+          case 16:   // Short time period or displacement
+          case 26: { // Time period or displacement
+            period_beg = "PT";
+            period_end = "S";
+            period_update = true;
+            break;
+          }
           case 86: // LONG TIME PERIOD OR DISPLACEMENT
           {
             time_disp = getValue(v, meas_datetime.tm_sec);
             dateupdate = true;
+            period_beg = "PT";
+            period_end = "S";
+            period_update = true;
             break;
           }
           }
-
+          if (period_update) {
+            int time_period = 0;
+            time_period = getValue(v, time_period);
+            dateupdate = true;
+            std::stringstream ss;
+            ss << period_beg << -time_period << period_end;
+            period_str = ss.str();
+            dateupdate = true;
+          }
           if (dateupdate) {
-            if (v.y() == 86) {
+            if (v.y() == 86 || (v.y() >= 21 && v.y() <= 26) ||
+                (v.y() >= 73 && v.y() <= 75)) {
               time_t meas_time = mktime(&meas_datetime);
               meas_time += time_disp;
-              setDateTime(gmtime(&meas_time), subset_message);
+              setDateTime(gmtime(&meas_time), subset_message, period_str);
             } else {
               setDateTime(&meas_datetime, subset_message);
             }
@@ -675,9 +733,8 @@ bool ESOHBufr::addContent(const Descriptor &v, std::string cf_name,
   message["id"].SetString(id.c_str(), id.length(), message_allocator);
 
   if (sensor_level_active) {
-    message_properties["data_id"] = sensor_level;
     std::stringstream ss;
-    ss << sensor_level << "m";
+    ss << std::fixed << std::setprecision(1) << sensor_level << "m";
     rapidjson::Value r_level;
     r_level.SetString(ss.str().c_str(), message_allocator);
     // message_properties.AddMember("level", r_level, message_allocator);
@@ -786,7 +843,8 @@ bool ESOHBufr::updateLocation(double loc_value, int loc_index,
 }
 
 bool ESOHBufr::setDateTime(struct tm *meas_datetime,
-                           rapidjson::Document &message) const {
+                           rapidjson::Document &message,
+                           std::string period_str) const {
 
   rapidjson::Document::AllocatorType &message_allocator =
       message.GetAllocator();
@@ -799,6 +857,10 @@ bool ESOHBufr::setDateTime(struct tm *meas_datetime,
 
   datetime.SetString(date_str, static_cast<rapidjson::SizeType>(dl),
                      message_allocator);
+
+  if (period_str.size()) {
+    properties["period"].SetString(period_str.c_str(), message_allocator);
+  }
 
   return true;
 }
