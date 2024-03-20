@@ -103,6 +103,7 @@ message TSMetadata {
   string period = 25;
   string function = 26;
   string parameter_name = 27 [json_name = "parameter_name"];
+  string time_series_id = 28 [json_name = "time_series_id"];
   // --- END string metadata -----------------
 }
 
@@ -123,7 +124,6 @@ message ObsMetadata {
   string id = 6;
   string data_id = 7 [json_name = "data_id"];
   string history = 8;
-  string metadata_id = 9 [json_name = "metadata_id"];
   string processing_level = 10 [json_name = "processing_level"];
   // --- END string metadata -----------------
 
