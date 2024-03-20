@@ -287,7 +287,7 @@ Section4::Section4() {}
 bool Section4::fromBuffer(uint8_t *buf, int size) {
   clear();
 
-  if (!SectionBase::fromBuffer(buf, size))
+  if (!SectionBase::fromBuffer(buf, size) || len <= 4)
     return false;
   bits.resize((len - 4) * 8);
   for (int i = 4; i < len; i++) {
