@@ -2,13 +2,15 @@ import json
 import logging
 import os
 import re
+from typing import Union
 
 import grpc
 import pkg_resources
-from esoh.ingest.datastore import DatastoreConnection
-from esoh.ingest.messages import messages
-from esoh.ingest.send_mqtt import MQTTConnection
 from jsonschema import Draft202012Validator
+
+from api.datastore import ingest
+from api.messages import messages
+from api.send_mqtt import MQTTConnection
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +24,6 @@ class IngestToPipeline:
     def __init__(
         self,
         mqtt_conf: dict,
-        dstore_conn: dict,
         uuid_prefix: str,
         testing: bool = False,
         schema_path=None,
@@ -31,15 +32,15 @@ class IngestToPipeline:
         self.uuid_prefix = uuid_prefix
 
         if not schema_path:
-            self.schema_path = pkg_resources.resource_filename("esoh", "schemas")
+            self.schema_path = pkg_resources.resource_filename("ingest", "schemas")
         else:
             self.schema_path = schema_path
         if not schema_file:
             self.schema_file = "e-soh-message-spec.json"
         else:
             self.schema_file = schema_file
-
         esoh_mqtt_schema = os.path.join(self.schema_path, self.schema_file)
+
         with open(esoh_mqtt_schema, "r") as file:
             self.esoh_mqtt_schema = json.load(file)
         self.schema_validator = Draft202012Validator(self.esoh_mqtt_schema)
@@ -47,7 +48,7 @@ class IngestToPipeline:
         if testing:
             return
 
-        self.dstore = DatastoreConnection(dstore_conn["dshost"], dstore_conn["dsport"])
+        # self.dstore = DatastoreConnection(dstore_conn["dshost"], dstore_conn["dsport"])
         if "username" in mqtt_conf:
             self.mqtt = MQTTConnection(
                 mqtt_conf["host"], mqtt_conf["topic"], mqtt_conf["username"], mqtt_conf["password"]
@@ -55,7 +56,7 @@ class IngestToPipeline:
         else:
             self.mqtt = MQTTConnection(mqtt_conf["host"], mqtt_conf["topic"])
 
-    def ingest(self, message: [str, object], input_type: str = None):
+    def ingest(self, message: Union[str, object], input_type: str = None):
         """
         Method designed to be main interaction point with this package.
         Will interpret call all methods for deciding input type, build the mqtt messages, and
@@ -63,9 +64,13 @@ class IngestToPipeline:
 
         """
         if not input_type:
-            input_type = self.decide_input_type(message)
-
-        self.publish_messages(self._build_messages(message, input_type))
+            input_type = self._decide_input_type(message)
+        messages = self._build_messages(message, input_type)
+        if isinstance(messages, list):
+            response, status = self.publish_messages(messages)
+            return response, status
+        else:
+            return messages, 400
 
     def publish_messages(self, messages: list):
         """
@@ -75,13 +80,14 @@ class IngestToPipeline:
         for msg in messages:
             if msg:
                 try:
-                    self.dstore.ingest(msg)
-                    self.mqtt.send_message(msg)
-                except grpc.RpcError:
-                    self.dstore.is_channel_ready()
-                    pass
-                except Exception:
-                    pass
+                    ingest(msg)
+                    # self.mqtt.send_message(msg)
+                except grpc.RpcError as v_error:
+                    # self.dstore.is_channel_ready()
+                    return "Failed to ingest" + "\n" + str(v_error), 500
+                except Exception as e:
+                    return "Failed to ingest" + "\n" + str(e), 502
+        return "succesfully published", 200
 
     def _decide_input_type(self, message) -> str:
         """
@@ -99,7 +105,7 @@ class IngestToPipeline:
                 logger.critical(f"Unknown filetype provided. Got {message.split('.')[-1]}")
                 raise ValueError(f"Unknown filetype provided. Got {message.split('.')[-1]}")
 
-    def _build_messages(self, message: [str, object], input_type: str = None) -> list:
+    def _build_messages(self, message: Union[str, object], input_type: str = None) -> list:
         """
         Internal method for calling the message building.
         """

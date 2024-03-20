@@ -3,7 +3,8 @@ import json
 
 import numpy as np
 import xarray as xr
-from esoh.ingest.netCDF.mapper import Mapper
+
+from ingest.netCDF.mapper import Mapper
 
 
 def get_attrs(ds: xr.Dataset, var: str):
@@ -63,7 +64,7 @@ def create_json_from_netcdf_metdata(ds: xr.Dataset, map_netcdf: dict) -> str:
 
     def populate_json_message(json_message_target: dict, netcdf_metadata: dict, current_sub_dict: dict) -> dict:
         """
-        This function contains the loop for actually assing values in to the json_message_target.
+        This function contains the loop for actually adding values in to the json_message_target.
 
         Keyword arguents:
         json_message_target (dict) -- This dict is where all extracted metadata is stored.

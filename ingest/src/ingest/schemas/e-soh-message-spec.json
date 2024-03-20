@@ -36,10 +36,13 @@
                             ]
                         },
                         "coordinates": {
-                            "type": "array",
-                            "minItems": 2,
-                            "items": {
-                                "type": "number"
+                            "lat": {
+                                "type": "number",
+                                "description": "Latitude"
+                            },
+                            "lon": {
+                                "type": "number",
+                                "description": "Latitude"
                             }
                         }
                     }
@@ -63,10 +66,13 @@
                                 "type": "array",
                                 "minItems": 4,
                                 "items": {
-                                    "type": "array",
-                                    "minItems": 2,
-                                    "items": {
-                                        "type": "number"
+                                    "lat": {
+                                        "type": "number",
+                                        "description": "Latitude"
+                                    },
+                                    "lon": {
+                                        "type": "number",
+                                        "description": "Latitude"
                                     }
                                 }
                             }
@@ -110,6 +116,18 @@
                 "instrument_vocabulary": {
                     "type": "string",
                     "description": "Controlled vocabulary for the names used in the 'instrument' attribute."
+                },
+                "level": {
+                    "type": "string",
+                    "description": "Instrument level above ground in meters."
+                },
+                "period": {
+                    "type": "string",
+                    "description": "Aggregation period for the measurement. Must be provided in ISO8601 duration format. https://www.iso.org/iso-8601-date-and-time-format.html"
+                },
+                "function": {
+                    "type": "string",
+                    "description": "Function used on the data during the aggregation period. Must be one of the functions given in CF cell_methods table. https://cfconventions.org/Data/cf-conventions/cf-conventions-1.7/build/ape.html"
                 },
                 "license": {
                     "type": "string",
@@ -275,6 +293,9 @@
                 }
             },
             "required": [
+                "level",
+                "period",
+                "function",
                 "pubtime",
                 "data_id",
                 "metadata_id",
