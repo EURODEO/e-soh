@@ -345,43 +345,41 @@ std::list<std::string> ESOHBufr::msg() const {
             dateupdate = true;
             break;
           }
-          case 11:
-          case 21: {
+          case 21: { // Time period or displacement
             period_beg = "P";
             period_end = "YT";
             period_update = true;
             break;
           }
-          case 12:
-          case 22: {
+          case 22: { // Time period or displacement
             period_beg = "P";
             period_end = "MT";
             period_update = true;
             break;
           }
-          case 13:
-          case 23: {
+          case 73:   // Short time period or displacement
+          case 23: { // Time period or displacement
             period_beg = "P";
             period_end = "DT";
             period_update = true;
             break;
           }
-          case 14:
+          case 74: // Short time period or displacement
           case 24: {
             period_beg = "PT";
             period_end = "H";
             period_update = true;
             break;
           }
-          case 15:
-          case 25: {
+          case 75:   // Short time period or displacement
+          case 25: { // Time period or displacement
             period_beg = "PT";
             period_end = "M";
             period_update = true;
             break;
           }
-          case 16:
-          case 26: {
+          case 16:   // Short time period or displacement
+          case 26: { // Time period or displacement
             period_beg = "PT";
             period_end = "S";
             period_update = true;
@@ -407,7 +405,8 @@ std::list<std::string> ESOHBufr::msg() const {
             dateupdate = true;
           }
           if (dateupdate) {
-            if (v.y() == 86 || (v.y() >= 21 && v.y() <= 26)) {
+            if (v.y() == 86 || (v.y() >= 21 && v.y() <= 26) ||
+                (v.y() >= 73 && v.y() <= 75)) {
               time_t meas_time = mktime(&meas_datetime);
               meas_time += time_disp;
               setDateTime(gmtime(&meas_time), subset_message, period_str);
