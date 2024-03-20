@@ -164,7 +164,6 @@ async def get_data_location_id(
         filter=dict(
             parameter_name=dstore.Strings(values=parameter_name),
             platform=dstore.Strings(values=[location_id]),
-            temporal_mode="latest",
         ),
         temporal_interval=(dstore.TimeInterval(start=range[0], end=range[1]) if range else None),
         included_response_fields=response_fields_needed_for_data_api,
