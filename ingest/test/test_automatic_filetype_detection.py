@@ -16,5 +16,5 @@ from api.ingest import IngestToPipeline
     ],
 )
 def test_decide_input_type(test_inpt, expected):
-    msg_build = IngestToPipeline(None, None, "testing", testing=True)
+    msg_build = IngestToPipeline(None, "testing", testing=True)
     assert msg_build._decide_input_type(test_inpt) == expected

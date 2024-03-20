@@ -22,7 +22,7 @@ def test_verify_json_payload_bufr(bufr_file_path):
     init_bufrtables_py("")
     init_oscar_py("./src/ingest/bufr/oscar/oscar_stations_all.json")
     init_bufr_schema_py("./src/ingest/schemas/bufr_to_e_soh_message.json")
-    msg_build = IngestToPipeline(None, None, "testing", testing=True)
+    msg_build = IngestToPipeline(None, "testing", testing=True)
 
     json_payloads = msg_build._build_messages(bufr_file_path, input_type="bufr")
 
@@ -30,8 +30,8 @@ def test_verify_json_payload_bufr(bufr_file_path):
         try:
             assert Draft202012Validator(e_soh_mqtt_message_schema).validate(payload) is None
         except ValidationError as e:
-            print(e.context)
-            raise ValidationError(e.message)
+            print(e)
+            raise ValidationError(e)
 
 
 @pytest.mark.parametrize("netcdf_file_path", glob.glob("test/test_data/met_norway/*.nc"))
@@ -42,7 +42,7 @@ def test_verify_json_payload_metno_netcdf(netcdf_file_path):
 
     ds = xr.load_dataset(netcdf_file_path)
 
-    msg_build = IngestToPipeline(None, None, "testing", testing=True)
+    msg_build = IngestToPipeline(None, "testing", testing=True)
 
     json_payloads = msg_build._build_messages(ds, input_type="netCDF")
 
@@ -50,8 +50,8 @@ def test_verify_json_payload_metno_netcdf(netcdf_file_path):
         try:
             assert Draft202012Validator(e_soh_mqtt_message_schema).validate(payload) is None
         except ValidationError as e:
-            print(e.context)
-            raise ValidationError(e.message)
+            print(e)
+            raise ValidationError(e)
 
 
 @pytest.mark.parametrize("netcdf_file_path", glob.glob("test/test_data/knmi/*.nc"))
@@ -61,7 +61,7 @@ def test_verify_json_payload_knmi_netcdf(netcdf_file_path):
 
     ds = xr.load_dataset(netcdf_file_path)
 
-    msg_build = IngestToPipeline(None, None, "testing", testing=True)
+    msg_build = IngestToPipeline(None, "testing", testing=True)
 
     json_payloads = msg_build._build_messages(ds, input_type="netCDF")
 
@@ -69,8 +69,8 @@ def test_verify_json_payload_knmi_netcdf(netcdf_file_path):
         try:
             assert Draft202012Validator(e_soh_mqtt_message_schema).validate(payload) is None
         except ValidationError as e:
-            print(e.message, "\n\n", e.cause)
-            raise ValidationError(e.message)
+            print(e, "\n\n")
+            raise ValidationError(e)
 
 
 if __name__ == "__main__":
