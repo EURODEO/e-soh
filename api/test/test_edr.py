@@ -191,6 +191,5 @@ def test_get_position_with_incorrect_geometry_type():
         "24.39 60.41, 24.39 59.86, 22.12 59.86))"
     )
 
-    assert False
     assert response.status_code == 400
     assert response.json() == {"detail": {"coords": "Invalid geometric type: Polygon"}}
