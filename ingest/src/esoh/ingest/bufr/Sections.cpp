@@ -298,7 +298,7 @@ bool Section4::fromBuffer(uint8_t *buf, int size) {
     }
   }
 
-  return 0;
+  return true;
 }
 
 uint64_t Section4::bitSize() const { return bits.size(); }
