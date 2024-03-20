@@ -148,7 +148,7 @@ def test_from_a_single_collection_get_a_single_location_which_does_not_exist():
         url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}?parameter-name={parameters}"
     )
 
-    expected_json = load_json("response/404_not_found.json")
+    expected_json = load_json("response/400_not_found.json")
 
     assert actual_response.status_code == 400
     actual_response_is_expected_response(actual_response, expected_json)
