@@ -22,15 +22,17 @@ def test_single_parameter_convert():
 
     # Assert that the coverage collection has the correct parameter
     # TODO: Change parameter name when parameter names have been decided
-    assert "ff" in coverage_collection.parameters.keys()
+    assert "wind_speed:10:mean:PT10M" in coverage_collection.parameters.keys()
 
     # Check that correct values exist in the coverage collection
-    assert 9.21 in coverage_collection.ranges["ff"].values
+    assert 9.21 in coverage_collection.ranges["wind_speed:10:mean:PT10M"].values
 
     assert len(coverage_collection.domain.axes.t.values) == 7
 
     # Number of time points should match with the number of observation values
-    assert len(coverage_collection.domain.axes.t.values) == len(coverage_collection.ranges["ff"].values)
+    assert len(coverage_collection.domain.axes.t.values) == len(
+        coverage_collection.ranges["wind_speed:10:mean:PT10M"].values
+    )
 
     # compare the coverage collection with the compare data
     # TODO: Modify compare data when parameter names have been decided
@@ -52,12 +54,15 @@ def test_multiple_parameter_convert():
 
     # Check that the coverage collection has the correct parameters
     # TODO: Change parameter names when parameter names have been decided
-    assert set(["dd", "ff", "rh"]) == coverage_collection.parameters.keys()
+    assert (
+        set(["wind_from_direction:2.0:mean:PT10M", "wind_speed:10:mean:PT10M", "relative_humidity:2.0:mean:PT1M"])
+        == coverage_collection.parameters.keys()
+    )
 
     # Check that correct values exist in the coverage collection
-    assert 230.7 in coverage_collection.ranges["dd"].values
-    assert 9.19 in coverage_collection.ranges["ff"].values
-    assert 88.0 in coverage_collection.ranges["rh"].values
+    assert 230.7 in coverage_collection.ranges["wind_from_direction:2.0:mean:PT10M"].values
+    assert 9.19 in coverage_collection.ranges["wind_speed:10:mean:PT10M"].values
+    assert 88.0 in coverage_collection.ranges["relative_humidity:2.0:mean:PT1M"].values
 
     # TODO: Modify compare data when parameter names have been decided
     coverage_collection_json = json.loads(coverage_collection.model_dump_json(exclude_none=True))
@@ -82,7 +87,9 @@ def test_single_parameter_area_convert():
 
     # Check that each coverage has the correct parameter
     # TODO: Change parameter name when parameter names have been decided
-    assert all(["TA_P1D_AVG" in coverage.parameters.keys() for coverage in coverage_collection.coverages])
+    assert all(
+        ["air_temperature:2.0:average:PT1D" in coverage.parameters.keys() for coverage in coverage_collection.coverages]
+    )
 
     # TODO: Modify compare data when parameter names have been decided
     coverage_collection_json = json.loads(coverage_collection.model_dump_json(exclude_none=True))
