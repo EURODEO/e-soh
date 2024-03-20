@@ -195,4 +195,6 @@ jobs:
           python -m grpc_tools.protoc --proto_path=./ingest/protobuf --python_out=./ingest --grpc_python_out=./ingest ./ingest/protobuf/datastore.proto
 
       - name: Run Tests
-        run: python -m pytest -v --timeout=60 ./ingest
+        run: |
+          cd ingest
+          python -m pytest -v --timeout=60
