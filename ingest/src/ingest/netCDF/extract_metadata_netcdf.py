@@ -127,8 +127,8 @@ def create_json_from_netcdf_metdata(ds: xr.Dataset, map_netcdf: dict) -> str:
     message_json["geometry"]["type"] = (
         message_json["geometry"]["type"][0].upper() + message_json["geometry"]["type"][1:].lower()
     )
-
-    message_json["geometry"]["coordinates"] = list(np.array(message_json["geometry"]["coordinates"], dtype=float))
+    coordinates = {"lat": message_json["geometry"]["coordinates"][0], "lon": message_json["geometry"]["coordinates"][1]}
+    message_json["geometry"]["coordinates"] = coordinates
 
     return json.dumps(message_json)
 
