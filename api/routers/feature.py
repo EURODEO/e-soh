@@ -35,7 +35,7 @@ async def search_timeseries(
             description="E-SOH database only contains data from the last 24 hours",
         ),
     ] = None,
-    ids: Annotated[str | None, Query(description="List of time series ids")] = None,
+    id: Annotated[str | None, Query(description="E-SOH time series id")] = None,
     parameter_name: Annotated[str | None, Query(alias="parameter-name", description="E-SOH parameter name")] = None,
     naming_authority: Annotated[
         str | None,
@@ -77,7 +77,7 @@ async def search_timeseries(
 
     obs_request = dstore.GetObsRequest(
         filter=dict(
-            metadata_id=dstore.Strings(values=split_and_strip(ids) if ids else None),
+            metadata_id=dstore.Strings(values=split_and_strip(id) if id else None),
             parameter_name=dstore.Strings(values=split_and_strip(parameter_name) if parameter_name else None),
             naming_authority=dstore.Strings(values=split_and_strip(naming_authority) if naming_authority else None),
             institution=dstore.Strings(values=split_and_strip(institution) if institution else None),
@@ -110,7 +110,9 @@ async def get_time_series_by_id(
         formatters.Metadata_Formats, Query(description="Specify return format")
     ] = formatters.Metadata_Formats.geojson,
 ):
-    obs_request = dstore.GetObsRequest(filter=dict(metadata_id=dstore.Strings(values=[item_id])))
+    obs_request = dstore.GetObsRequest(
+        filter=dict(metadata_id=dstore.Strings(values=[item_id])), temporal_mode="latest"
+    )
     time_series = await get_obs_request(obs_request)
 
     return formatters.metadata_formatters[f](time_series)
