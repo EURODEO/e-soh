@@ -324,7 +324,7 @@ func getCircleFilter(circle *datastore.Circle, phVals *[]interface{}) (string, e
 	index := len(*phVals) + 1
 	whereExpr := fmt.Sprintf(
 		"ST_DWithin(point, ST_SetSRID(ST_MakePoint($%d, $%d)::geography, %s), $%d)",
-		index, index + 1, srid, index + 2)
+		index, index+1, srid, index+2)
 	*phVals = append(*phVals, []interface{}{lon, lat, radius}...)
 
 	return whereExpr, nil
