@@ -16,6 +16,7 @@ from jinja2 import FileSystemLoader
 from jinja2 import select_autoescape
 from shapely import geometry
 from utilities import get_datetime_range
+from utilities import split_and_strip
 
 router = APIRouter(prefix="/collections/observations")
 
@@ -34,7 +35,7 @@ async def search_timeseries(
             description="E-SOH database only contains data from the last 24 hours",
         ),
     ] = None,
-    ids: Annotated[str | None, Query(description="Comma separated list of time series ids")] = None,
+    ids: Annotated[str | None, Query(description="List of time series ids")] = None,
     parameter_name: Annotated[str | None, Query(alias="parameter-name", description="E-SOH parameter name")] = None,
     naming_authority: Annotated[
         str | None,
@@ -76,17 +77,17 @@ async def search_timeseries(
 
     obs_request = dstore.GetObsRequest(
         filter=dict(
-            metadata_id=dstore.Strings(values=ids.split(",") if ids else None),
-            parameter_name=dstore.Strings(values=parameter_name.split(",") if parameter_name else None),
-            naming_authority=dstore.Strings(values=naming_authority.split(",") if naming_authority else None),
-            institution=dstore.Strings(values=institution.split(",") if institution else None),
-            platform=dstore.Strings(values=platform.split(",") if platform else None),
-            standard_name=dstore.Strings(values=standard_name.split(",") if standard_name else None),
-            unit=dstore.Strings(values=unit.split(",") if unit else None),
-            instrument=dstore.Strings(values=instrument.split(",") if instrument else None),
-            level=dstore.Strings(values=level.split(",") if level else None),
-            period=dstore.Strings(values=period.split(",") if period else None),
-            function=dstore.Strings(values=function.split(",") if function else None),
+            metadata_id=dstore.Strings(values=split_and_strip(ids) if ids else None),
+            parameter_name=dstore.Strings(values=split_and_strip(parameter_name) if parameter_name else None),
+            naming_authority=dstore.Strings(values=split_and_strip(naming_authority) if naming_authority else None),
+            institution=dstore.Strings(values=split_and_strip(institution) if institution else None),
+            platform=dstore.Strings(values=split_and_strip(platform) if platform else None),
+            standard_name=dstore.Strings(values=split_and_strip(standard_name) if standard_name else None),
+            unit=dstore.Strings(values=split_and_strip(unit) if unit else None),
+            instrument=dstore.Strings(values=split_and_strip(instrument) if instrument else None),
+            level=dstore.Strings(values=split_and_strip(level) if level else None),
+            period=dstore.Strings(values=split_and_strip(period) if period else None),
+            function=dstore.Strings(values=split_and_strip(function) if function else None),
         ),
         spatial_area=(
             dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords])
