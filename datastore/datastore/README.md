@@ -65,7 +65,6 @@ docker compose down --volumes
 docker compose --profile test build
 DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose up -d
 DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm loader
-DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm client
 DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm integration
 ```
 
@@ -250,17 +249,24 @@ $ grpcurl -d '{"filter": {"standard_name": {"values": ["wind_speed", "air_temper
 ...
 ```
 
-### Retrieve all wind speed observations for platform 78990
+### Retrieve all wind speed observations for platform 0-20000-0-78990
 
 ```text
-$ grpcurl -d '{"filter": {"standard_name": {"values": ["wind_speed"]}, "platform": {"values": ["78990"]}}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
+$ grpcurl -d '{"filter": {"standard_name": {"values": ["wind_speed"]}, "platform": {"values": ["0-20000-0-78990"]}}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
 ...
 ```
 
-### Retrieve the most recent wind speed observation for platform 78990
+### Retrieve the most recent wind speed observation for platform 0-20000-0-78990
 
 ```text
-$ grpcurl -d '{"filter": {"standard_name": {"values": ["wind_speed"]}, "platform": {"values": ["78990"]}}, "temporal_mode": "latest"}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
+$ grpcurl -d '{"filter": {"standard_name": {"values": ["wind_speed"]}, "platform": {"values": ["0-20000-0-78990"]}}, "temporal_latest": true}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
+...
+```
+
+### Retrieve the most recent wind speed observation for platform 0-20000-0-78990 in a time range
+
+```text
+$ grpcurl -d '{"filter": {"standard_name": {"values": ["wind_speed"]}, "platform": {"values": ["0-20000-0-78990"]}}, "temporal_latest": true, "temporal_interval": {"start": "2022-12-31T23:10:00Z", "end": "2022-12-31T23:40:10Z"}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
 ...
 ```
 

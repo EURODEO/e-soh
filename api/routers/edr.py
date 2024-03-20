@@ -62,7 +62,7 @@ async def get_locations(
         spatial_polygon=dstore.Polygon(
             points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords],
         ),
-        temporal_mode="latest",
+        temporal_latest=True,
         included_response_fields=[
             "parameter_name",
             "platform",
