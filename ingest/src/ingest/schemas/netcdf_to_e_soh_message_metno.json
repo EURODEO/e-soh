@@ -43,7 +43,10 @@
                 "license",
                 "platform",
                 "platform_vocabulary",
-                "naming_authority"
+                "naming_authority",
+                "level",
+                "period",
+                "function"
             ]
         }
     },
