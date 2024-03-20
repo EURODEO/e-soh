@@ -1,4 +1,5 @@
 import logging
+from datetime import timezone
 from typing import Dict
 
 import datastore_pb2 as dstore
@@ -11,6 +12,7 @@ from edr_pydantic.data_queries import DataQueries
 from edr_pydantic.data_queries import EDRQuery
 from edr_pydantic.extent import Extent
 from edr_pydantic.extent import Spatial
+from edr_pydantic.extent import Temporal
 from edr_pydantic.link import EDRQueryLink
 from edr_pydantic.link import Link
 from edr_pydantic.observed_property import ObservedProperty
@@ -18,6 +20,7 @@ from edr_pydantic.parameter import Parameter
 from edr_pydantic.unit import Unit
 from edr_pydantic.variables import Variables
 from fastapi import HTTPException
+from grpc_getter import get_extents_request
 from grpc_getter import get_ts_ag_request
 
 
@@ -73,12 +76,28 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
 
         all_parameters[ts.parameter_name] = parameter
 
+    extent_request = dstore.GetExtentsRequest()
+    extent_response = await get_extents_request(extent_request)
+    spatial_extent = extent_response.spatial_extent
+    interval_start = extent_response.temporal_extent.start.ToDatetime(tzinfo=timezone.utc)
+    interval_end = extent_response.temporal_extent.end.ToDatetime(tzinfo=timezone.utc)
+
     collection = Collection(
         id="observations",
         links=[
             Link(href=f"{base_url}/observations", rel="self" if is_self else "data"),
         ],
-        extent=Extent(spatial=Spatial(bbox=[[3.0, 50.0, 8.0, 55.0]], crs="WGS84")),  # TODO: Get this from database
+        extent=Extent(
+            spatial=Spatial(
+                bbox=[[spatial_extent.left, spatial_extent.bottom, spatial_extent.right, spatial_extent.top]],
+                crs="EPSG:4326",
+            ),
+            temporal=Temporal(
+                interval=[[interval_start, interval_end]],
+                values=[f"{interval_start.isoformat()[:-len('+00:00')]}Z/{interval_end.isoformat()[:-len('+00:00')]}Z"],
+                trs="datetime",
+            ),
+        ),
         data_queries=DataQueries(
             position=EDRQuery(
                 link=EDRQueryLink(
