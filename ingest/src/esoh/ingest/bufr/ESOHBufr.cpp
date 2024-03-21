@@ -831,16 +831,16 @@ bool ESOHBufr::setLocation(double lat, double lon, double hei,
 
 bool ESOHBufr::updateLocation(double loc_value, std::string loc_label,
                               rapidjson::Document &message) const {
-  //rapidjson::Document::AllocatorType &message_allocator =
-  //    message.GetAllocator();
+  // rapidjson::Document::AllocatorType &message_allocator =
+  //     message.GetAllocator();
   rapidjson::Value &geometry = message["geometry"];
   rapidjson::Value &coordinates = geometry["coordinates"];
   if (coordinates.HasMember(loc_label.c_str())) {
     coordinates[loc_label.c_str()] = loc_value;
-  }  else {
+  } else {
     lb.addLogEntry(LogEntry("Location update is not possible", LogLevel::WARN,
-                          __func__, bufr_id));
-  } 
+                            __func__, bufr_id));
+  }
   return true;
 }
 
