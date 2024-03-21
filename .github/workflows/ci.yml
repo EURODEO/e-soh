@@ -130,7 +130,7 @@ jobs:
       - name: Install Dependencies
         run: |
           pip install --upgrade pip
-          pip install pytest-timeout pytest-cov httpx
+          pip install pytest-timeout pytest-cov httpx deepdiff
           pip install -r ./api/requirements.txt
 
       - name: Copy Protobuf file to api directory and build
