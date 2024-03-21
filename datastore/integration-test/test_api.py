@@ -198,11 +198,11 @@ def test_items_get_area():
 
 def test_items_get_id():
     collection_id = "observations"
-    metadata_id = "225c8e92d96af07b1deec739ca681999"
+    metadata_id = "f0d06231a6508f281dbdaea0b5000220"
     actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items/{metadata_id}")
 
     assert actual_response.status_code == 200
-    expected_json = load_json("response/items_single_id.json")
+    expected_json = load_json("response/items_area_with_one_parameter_name.json")
     actual_response_is_expected_response(actual_response, expected_json)
 
 
