@@ -149,9 +149,9 @@ def ingest(msg: str) -> None:
         pass
 
 
-def ingest_list(self, msg_list: list) -> None:
-    for i in msg_list:
-        self.ingest(i)
+# def ingest_list(self, msg_list: list) -> None:
+#     for i in msg_list:
+#         self.ingest(i)
 
 
 def putObsRequest(put_obs_request):
@@ -161,12 +161,12 @@ def putObsRequest(put_obs_request):
         )
         grpc_stub = dstore_grpc.DatastoreStub(channel)
     except grpc._channel._InactiveRpcError as e:
-        print("Failed to connect:", e)
+        logger.error("Failed to connect:", e)
     else:
-        print("Connection established successfully.")
+        logger.info("Connection established successfully.")
 
     try:
         grpc_stub.PutObservations(put_obs_request)
-        print("RPC call succeeded.")
+        logger.info("RPC call succeeded.")
     except grpc._channel._InactiveRpcError as e:
-        print("RPC call failed:", e)
+        logger.critical("RPC call failed:", e)
