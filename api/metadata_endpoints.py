@@ -1,5 +1,5 @@
 import logging
-from datetime import timezone
+from datetime import timezone, datetime
 from typing import Dict
 
 import datastore_pb2 as dstore
@@ -26,6 +26,28 @@ from grpc_getter import get_ts_ag_request
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
+
+
+def datetime_to_iso_string(value: datetime) -> str:
+    """Returns the datetime as ISO 8601 string.
+    Changes timezone +00:00 to the military time zone indicator (Z).
+
+    Keyword arguments:
+    value -- A datetime
+
+    Returns:
+    datetime string -- Returns the datetime as an ISO 8601 string with the military indicator.
+    """
+    if value.tzinfo is None:
+        # This sort of replicates the functionality of Pydantic's AwareDatetime type
+        raise ValueError("Datetime object is not timezone aware")
+
+    iso_8601_str = value.isoformat()
+    tz_offset_utc = "+00:00"
+    if iso_8601_str.endswith(tz_offset_utc):
+        return f"{iso_8601_str[:-len(tz_offset_utc)]}Z"
+    else:
+        return iso_8601_str
 
 
 def get_landing_page(request):
@@ -94,7 +116,7 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
             ),
             temporal=Temporal(
                 interval=[[interval_start, interval_end]],
-                values=[f"{interval_start.isoformat()[:-len('+00:00')]}Z/{interval_end.isoformat()[:-len('+00:00')]}Z"],
+                values=[f"{datetime_to_iso_string(interval_start)}/{datetime_to_iso_string(interval_end)}"],
                 trs="datetime",
             ),
         ),
