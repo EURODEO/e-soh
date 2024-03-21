@@ -32,9 +32,7 @@ jobs:
           path: ~/.cache/pre-commit
           key: pre-commit-3|${{ env.pythonLocation }}|${{ hashFiles('.pre-commit-config.yaml') }}
       - name: Run pre-commit
-        run: |
-          python -m pip freeze --local
-          just lint
+        run: just lint
         shell: bash
 
   test-datastore:
