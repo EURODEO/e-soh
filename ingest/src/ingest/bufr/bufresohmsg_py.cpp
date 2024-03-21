@@ -48,6 +48,9 @@ bool norbufr_init_bufrtables(std::string tables_dir) {
     TableD tb_d(entry.path().string() + "/sequence.def");
     td[vers] = tb_d;
   }
+  if (!tb.size() || !tc.size() || !td.size()) {
+    return false;
+  }
 
   return true;
 }
@@ -74,7 +77,11 @@ bool norbufr_init_schema_template(std::string schema_path) {
       def_msg += c;
     }
     bufr_input_schema = def_msg;
+    if (!def_msg.size()) {
+      return false;
+    }
   }
+
   return true;
 }
 
