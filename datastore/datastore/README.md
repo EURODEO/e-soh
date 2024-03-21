@@ -203,7 +203,7 @@ message PutObsRequest {
 ### Insert observations
 
 ```text
-$ grpcurl -d '{"observations": [{"ts_mdata": {"version": "version_dummy", "type": "type_dummy", "standard_name": "air_temperature", "unit": "celsius"}, "obs_mdata": {"id": "id_dummy", "geo_point": {"lat": 59.91, "lon": 10.75}, "pubtime": "2023-01-01T00:00:10Z", "data_id": "data_id_dummy", "obstime_instant": "2023-01-010-20000-0-T00:00:00Z", "value": "123.456"}}]}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.PutObservations
+$ grpcurl -d '{"observations": [{"ts_mdata": {"version": "version_dummy", "type": "type_dummy", "standard_name": "air_temperature", "unit": "celsius"}, "obs_mdata": {"id": "id_dummy", "geo_point": {"lat": 59.91, "lon": 10.75}, "pubtime": "2023-01-01T00:00:10Z", "data_id": "data_id_dummy", "obstime_instant": "2023-01-01T00:00:00Z", "value": "123.456"}}]}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.PutObservations
 ...
 ```
 
@@ -266,7 +266,7 @@ $ grpcurl -d '{"filter": {"standard_name": {"values": ["wind_speed"]}, "platform
 ### Retrieve the most recent observations of all time series with platform, parameter_name, and geo_point as the only metadata fields to include in the response
 
 ```text
-$ grpcurl -d '{"temporal_mode": "latest", "included_response_fields": ["platform", "parameter_name", "geo_point"]}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
+$ grpcurl -d '{"temporal_latest": true, "included_response_fields": ["platform", "parameter_name", "geo_point"]}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
 ...
 ```
 
