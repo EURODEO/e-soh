@@ -12,6 +12,7 @@
         "license": "http//spdx.org/licenses/CC-BY-4.0(CC-BY-4.0)",
         "naming_authority": "naming_authority",
         "level": "0.0m",
+        "function": "point", 
         "period": "PT0S",
         "content": {
             "encoding": "utf-8",
