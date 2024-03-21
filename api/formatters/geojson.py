@@ -30,10 +30,10 @@ def convert_to_geojson(response):
             properties=_make_properties(ts=ts),
             geometry=Point(
                 type="Point",
-                coordinates=(
+                coordinates=[
                     ts.obs_mdata[0].geo_point.lon,
                     ts.obs_mdata[0].geo_point.lat,
-                ),
+                ],
             ),
         )
         for ts in sorted(response.observations, key=lambda ts: ts.obs_mdata[0].metadata_id)
