@@ -4,16 +4,14 @@ default:
 
 set positional-arguments
 
-# After running just all, the database needs cleanup, run just clean
+# After running just all, the database needs cleanup, run just down
 all: lint build local test
-setup: lint build local integration
+up: build local integration
 
 # ---------------------------------------------------------------------------- #
 #                                  utility                                     #
 # ---------------------------------------------------------------------------- #
 copy-proto:
-    #!/usr/bin/env bash
-
     declare -a destination_paths=(
         "./api"
         "./datastore/data-loader"
@@ -30,8 +28,6 @@ copy-proto:
 
 
 check-python-version:
-    #!/usr/bin/env bash
-
     # Get Python version
     python_version=$(python --version 2>&1 | cut -d' ' -f2)
 
@@ -48,8 +44,6 @@ check-python-version:
 
 # run pip-compile for all the requirement files
 pip-compile: check-python-version
-    #!/usr/bin/env bash
-
     find . \
         -iname "*requirements.in" \
         -type f \
@@ -64,8 +58,6 @@ pip-compile: check-python-version
 test: integration performance client
 
 lint: check-python-version
-    #!/usr/bin/env bash
-
     if ! command -v pre-commit &> /dev/null; then
         python -m pip install pre-commit
     fi
@@ -75,14 +67,10 @@ lint: check-python-version
 
 # run tests
 integration:
-    #!/usr/bin/env bash
-
     docker compose --env-file ./ci/config/env.list run --rm integration
 
 
 performance:
-    #!/usr/bin/env bash
-
     cd datastore/load-test || exit 1
     pip install -r requirements.txt
 
@@ -102,17 +90,14 @@ performance:
     cd ../.. || exit 1
 
 
-# After running client the database needs cleanup, run just clean.
+# After running client the database needs cleanup, run just down.
 client:
-    #!/usr/bin/env bash
     docker compose --env-file ./ci/config/env.list run --rm client
 
 # ---------------------------------------------------------------------------- #
 #                                    build                                     #
 # ---------------------------------------------------------------------------- #
 build: copy-proto
-    #!/usr/bin/env bash
-
     docker compose --profile test build
 
 
@@ -122,18 +107,12 @@ build: copy-proto
 local: services load
 
 services:
-    #!/usr/bin/env bash
-
     docker compose --env-file ./ci/config/env.list up -d --wait --wait-timeout 120
 
 
 load:
-    #!/usr/bin/env bash
-
     docker compose --env-file ./ci/config/env.list run --rm loader
 
 
-clean:
-    #!/usr/bin/env bash
-
+down:
     docker compose --profile test down --volumes

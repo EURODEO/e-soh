@@ -87,7 +87,7 @@ jobs:
 
       - name: Cleanup
         if: always()
-        run: just clean
+        run: just down
 
   test-api:
     runs-on: ubuntu-latest
