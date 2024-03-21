@@ -69,6 +69,15 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                     creator_url=file["iso_dataset"].attrs["url_metadata"],
                     creator_type="Institution",
                     institution=file.attrs["institution"],
+                    timeseries_id=md5(
+                        "".join(
+                            [
+                                station_id,
+                                str(ts_mdata.platform) + standard_name + level + period + function
+                                + "nl.knmi",
+                            ]
+                        ).encode()
+                    ).hexdigest(),
                 )
 
                 for time, obs_value in zip(
@@ -83,14 +92,6 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                             geo_point=dstore.Point(lat=latitude, lon=longitude),
                             obstime_instant=ts,
                             value=str(obs_value),  # TODO: Store float in DB
-                            metadata_id=md5(
-                                "".join(
-                                    [
-                                        station_id,
-                                        str(ts_mdata.platform) + standard_name + level + period + function + "nl.knmi",
-                                    ]
-                                ).encode()
-                            ).hexdigest(),
                         )
                         observations.append(dstore.Metadata1(ts_mdata=ts_mdata, obs_mdata=obs_mdata))
 
