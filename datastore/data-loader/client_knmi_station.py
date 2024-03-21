@@ -49,9 +49,10 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                     station_name,
                     param_id,
                 )
+                platform = f"0-20000-0-{station_id}"
 
                 ts_mdata = dstore.TSMetadata(
-                    platform=f"0-20000-0-{station_id}",
+                    platform=platform,
                     instrument=param_id,
                     title=param_file.long_name,
                     standard_name=standard_name,
@@ -73,7 +74,7 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                         "".join(
                             [
                                 station_id,
-                                str(ts_mdata.platform) + standard_name + level + period + function + "nl.knmi",
+                                platform + standard_name + level + period + function + "nl.knmi",
                             ]
                         ).encode()
                     ).hexdigest(),
