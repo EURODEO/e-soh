@@ -480,7 +480,7 @@ std::list<std::string> ESOHBufr::msg() const {
               v.y() == 51) // PRESSURE, PRESSURE REDUCED TO MEAN SEA LEVEL
           {
             ret.push_back(addMessage(ci, subset_message, sensor_level_active,
-                                     sensor_level));
+                                     sensor_level, "point"));
           }
           if (v.y() == 9) // Geopotential height, TODO: unit conversion?
           {
@@ -499,7 +499,7 @@ std::list<std::string> ESOHBufr::msg() const {
               sensor_level = 10.0;
             }
             ret.push_back(addMessage(ci, subset_message, sensor_level_active,
-                                     sensor_level));
+                                     sensor_level, "point"));
           }
 
           break;
@@ -512,7 +512,7 @@ std::list<std::string> ESOHBufr::msg() const {
               sensor_level = 2.0;
             }
             ret.push_back(addMessage(ci, subset_message, sensor_level_active,
-                                     sensor_level));
+                                     sensor_level, "point"));
           }
 
           break;
@@ -526,7 +526,7 @@ std::list<std::string> ESOHBufr::msg() const {
               sensor_level = 10.0;
             }
             ret.push_back(addMessage(ci, subset_message, sensor_level_active,
-                                     sensor_level));
+                                     sensor_level, "point"));
           }
 
           break;
@@ -537,7 +537,7 @@ std::list<std::string> ESOHBufr::msg() const {
 
           if (v.y() == 42 || v.y() == 43 || v.y() == 45) {
             ret.push_back(addMessage(ci, subset_message, sensor_level_active,
-                                     sensor_level));
+                                     sensor_level, "point"));
           }
 
           break;
@@ -578,7 +578,7 @@ std::list<std::string> ESOHBufr::msg() const {
 
                 ret.push_back(addMessage(ci, subset_message,
                                          sensor_level_active, sensor_level,
-                                         &start_datetime));
+                                         "sum", &start_datetime));
               }
             }
 
@@ -613,7 +613,7 @@ std::list<std::string> ESOHBufr::msg() const {
                     static_cast<double>(std::numeric_limits<uint64_t>::max())) {
                   ret.push_back(addMessage(ci, subset_message,
                                            sensor_level_active, sensor_level,
-                                           &start_datetime));
+                                           "sum", &start_datetime));
                 }
               }
             }
@@ -643,7 +643,7 @@ std::list<std::string> ESOHBufr::msg() const {
                   static_cast<double>(std::numeric_limits<uint64_t>::max())) {
                 ret.push_back(addMessage(ci, subset_message,
                                          sensor_level_active, sensor_level,
-                                         &start_datetime));
+                                         "sun", &start_datetime));
               }
             }
 
@@ -658,7 +658,7 @@ std::list<std::string> ESOHBufr::msg() const {
                   static_cast<double>(std::numeric_limits<uint64_t>::max())) {
                 ret.push_back(addMessage(ci, subset_message,
                                          sensor_level_active, sensor_level,
-                                         &start_datetime));
+                                         "sum", &start_datetime));
               }
             }
             ++ci; // [ 0 14 16 ] NET RADIATION, INTEGRATED OVER PERIOD SPECIFIED
@@ -717,7 +717,7 @@ bool ESOHBufr::addDescriptor(
 
 bool ESOHBufr::addContent(const Descriptor &v, std::string cf_name,
                           char sensor_level_active, double sensor_level,
-                          rapidjson::Document &message) const {
+                          std::string fn, rapidjson::Document &message) const {
 
   const DescriptorMeta *meta = v.getMeta();
   rapidjson::Document::AllocatorType &message_allocator =
@@ -731,6 +731,9 @@ bool ESOHBufr::addContent(const Descriptor &v, std::string cf_name,
   is >> id;
 
   message["id"].SetString(id.c_str(), id.length(), message_allocator);
+  if (fn.size()) {
+    message_properties["function"].SetString(fn.c_str(), message_allocator);
+  }
 
   if (sensor_level_active) {
     std::stringstream ss;
@@ -896,7 +899,7 @@ bool ESOHBufr::setStartDateTime(struct tm *start_meas_datetime,
 std::string ESOHBufr::addMessage(std::list<Descriptor>::const_iterator ci,
                                  rapidjson::Document &message,
                                  char sensor_level_active, double sensor_level,
-                                 time_t *start_datetime) const {
+                                 std::string fn, time_t *start_datetime) const {
   std::string ret;
 
   rapidjson::Document new_message;
@@ -907,7 +910,7 @@ std::string ESOHBufr::addMessage(std::list<Descriptor>::const_iterator ci,
   if (start_datetime)
     setStartDateTime(gmtime(start_datetime), new_message);
 
-  addContent(*ci, cf_names[*ci].first, sensor_level_active, sensor_level,
+  addContent(*ci, cf_names[*ci].first, sensor_level_active, sensor_level, fn,
              new_message);
 
   rapidjson::StringBuffer sb;
