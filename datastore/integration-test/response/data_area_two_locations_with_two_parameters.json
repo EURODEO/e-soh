@@ -55,12 +55,12 @@
                 "relative_humidity:2.0:mean:PT1M": {
                     "type": "Parameter",
                     "description": {
-                        "en": "Relative Humidity 1 Min Average"
+                        "en": "relative_humidity at 2.0m PT1M mean"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/relative_humidity",
                         "label": {
-                            "en": "rh"
+                            "en": "relative_humidity:2.0:mean:PT1M"
                         }
                     },
                     "unit": {
@@ -72,12 +72,12 @@
                 "wind_speed:10:mean:PT10M": {
                     "type": "Parameter",
                     "description": {
-                        "en": "Wind Speed at 10m 10 Min Average"
+                        "en": "wind_speed at 10m PT10M mean"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed",
                         "label": {
-                            "en": "ff"
+                            "en": "wind_speed:10:mean:PT10M"
                         }
                     },
                     "unit": {
@@ -190,12 +190,12 @@
                 "relative_humidity:2.0:mean:PT1M": {
                     "type": "Parameter",
                     "description": {
-                        "en": "Relative Humidity 1 Min Average"
+                        "en": "relative_humidity at 2.0m PT1M mean"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/relative_humidity",
                         "label": {
-                            "en": "rh"
+                            "en": "relative_humidity:2.0:mean:PT1M"
                         }
                     },
                     "unit": {
@@ -207,12 +207,12 @@
                 "wind_speed:10:mean:PT10M": {
                     "type": "Parameter",
                     "description": {
-                        "en": "Wind Speed at 10m 10 Min Average"
+                        "en": "wind_speed at 10m PT10M mean"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed",
                         "label": {
-                            "en": "ff"
+                            "en": "wind_speed:10:mean:PT10M"
                         }
                     },
                     "unit": {
@@ -276,12 +276,12 @@
         "relative_humidity:2.0:mean:PT1M": {
             "type": "Parameter",
             "description": {
-                "en": "Relative Humidity 1 Min Average"
+                "en": "relative_humidity at 2.0m PT1M mean"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/relative_humidity",
                 "label": {
-                    "en": "rh"
+                    "en": "relative_humidity:2.0:mean:PT1M"
                 }
             },
             "unit": {
@@ -293,12 +293,12 @@
         "wind_speed:10:mean:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "Wind Speed at 10m 10 Min Average"
+                "en": "wind_speed at 10m PT10M mean"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed",
                 "label": {
-                    "en": "ff"
+                    "en": "wind_speed:10:mean:PT10M"
                 }
             },
             "unit": {
