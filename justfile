@@ -5,8 +5,9 @@ default:
 set positional-arguments
 
 # After running just all, the database needs cleanup, run just down
-all: lint build services load test
-up: build services load integration
+all: lint unit build services load integration performance client
+up: build services
+test: unit load integration
 
 # ---------------------------------------------------------------------------- #
 #                                  utility                                     #
@@ -58,8 +59,6 @@ pip-compile: check-python-version
 # ---------------------------------------------------------------------------- #
 #                                    test                                      #
 # ---------------------------------------------------------------------------- #
-test: integration performance client
-
 lint: check-python-version
     #!/usr/bin/env bash
     if ! command -v pre-commit &> /dev/null; then
@@ -72,6 +71,24 @@ lint: check-python-version
 # run tests
 integration:
     docker compose --env-file ./ci/config/env.list run --rm integration
+
+
+unit: copy-proto
+    #!/usr/bin/env bash
+    pip install --upgrade pip
+    pip install pytest-timeout
+    pip install pytest-cov
+    pip install httpx
+    pip install -r ./api/requirements.txt
+
+    cd api
+    python -m pytest \
+        --timeout=60 \
+        --junitxml=pytest.xml \
+        --cov-report=term-missing \
+        --cov=. \
+        --cov-config=test/.coveragerc | tee pytest-coverage.txt
+    cd ..
 
 
 performance:
