@@ -124,6 +124,49 @@ std::list<std::string> norbufr_bufresohmsg(std::string fname) {
   return ret;
 }
 
+std::list<std::string> norbufr_bufresohmsgmem(char *api_buf, int api_size) {
+
+  std::list<std::string> ret;
+  int position = 0;
+
+  while (position < api_size) {
+
+    ESOHBufr *bufr = new ESOHBufr;
+    // TODO:
+    // bufr->setBufrId(file_path.filename());
+    bufr->setOscar(&oscar);
+    bufr->setMsgTemplate(bufr_input_schema);
+
+    int n = bufr->fromBuffer(api_buf, position, api_size);
+    if (n > position) {
+      position = n;
+      bufr->setTableB(
+          &tb.at(bufr->getVersionMaster() &&
+                         tb.find(bufr->getVersionMaster()) != tb.end()
+                     ? bufr->getVersionMaster()
+                     : tb.rbegin()->first));
+      bufr->setTableC(
+          &tc.at(bufr->getVersionMaster() &&
+                         tc.find(bufr->getVersionMaster()) != tc.end()
+                     ? bufr->getVersionMaster()
+                     : tc.rbegin()->first));
+      bufr->setTableD(
+          &td.at(bufr->getVersionMaster() &&
+                         td.find(bufr->getVersionMaster()) != td.end()
+                     ? bufr->getVersionMaster()
+                     : td.rbegin()->first));
+      bufr->extractDescriptors();
+
+      std::list<std::string> msg = bufr->msg();
+      bufr->logToCsvList(esoh_bufr_log);
+      ret.insert(ret.end(), msg.begin(), msg.end());
+    }
+    delete bufr;
+  }
+
+  return ret;
+}
+
 std::string norbufr_bufrprint(std::string fname) {
 
   std::stringstream ret;
@@ -173,6 +216,8 @@ PYBIND11_MODULE(bufresohmsg_py, m) {
   m.def("update_bufrtables_py", &norbufr_update_bufrtables, "Init BUFR Tables");
 
   m.def("bufresohmsg_py", &norbufr_bufresohmsg,
+        "bufresoh MQTT message generator");
+  m.def("bufresohmsgmem_py", &norbufr_bufresohmsgmem,
         "bufresoh MQTT message generator");
   m.def("bufrprint_py", &norbufr_bufrprint, "Print bufr message");
   m.def("bufrlog_py", &norbufr_log, "Get bufr log messages list");

@@ -24,11 +24,25 @@ uint64_t NorBufrIO::readBytes(std::istream &is, ssize_t size) {
   return ret;
 }
 
-unsigned long NorBufrIO::findBytes(std::ifstream &is, const char *seq,
+uint64_t NorBufrIO::readBytes(char *buf, ssize_t size) {
+  uint64_t j = 0;
+  uint64_t ret = buf[0];
+  if (size) {
+    for (int i = 1; i < size; ++i) {
+      j = buf[i];
+      ret *= 0x100;
+      ret += j;
+    }
+  }
+  return ret;
+}
+
+unsigned long NorBufrIO::findBytes(std::istream &is, const char *seq,
                                    unsigned int size) {
   unsigned long j = 0;
   char c;
   unsigned long position = is.tellg();
+  std::cerr << "POS: " << position << "\n";
   while (j < size && is.get(c)) {
     if (c == seq[j]) {
       ++j;
@@ -42,6 +56,25 @@ unsigned long NorBufrIO::findBytes(std::ifstream &is, const char *seq,
     ++position;
   }
   return (j < size ? ULONG_MAX : position - size);
+}
+
+unsigned long NorBufrIO::findBytes(char *buf, unsigned int buf_size,
+                                   const char *seq, unsigned int size) {
+  unsigned long j = 0;
+  char c;
+  while (j < size && j < buf_size) {
+    c = buf[j];
+    if (c == seq[j]) {
+      ++j;
+    } else {
+      if (c == seq[0]) {
+        j = 1;
+      } else {
+        j = 0;
+      }
+    }
+  }
+  return (j < size ? ULONG_MAX : j);
 }
 
 unsigned long NorBufrIO::getBytes(uint8_t *buffer, int size) {

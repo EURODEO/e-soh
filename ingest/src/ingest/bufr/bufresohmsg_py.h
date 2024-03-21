@@ -32,6 +32,7 @@ static std::list<std::string> esoh_bufr_log;
 bool norbufr_init_bufrtables(std::string tables_dir);
 bool norbufr_update_bufrtables(std::string tables_dir);
 std::list<std::string> norbufr_bufresohmsg(std::string fname);
+std::list<std::string> norbufr_bufresohmsgmem(char *buf, int size);
 std::list<std::string> norbufr_log();
 void norbufr_log_clear();
 

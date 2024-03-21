@@ -28,6 +28,8 @@ public:
   NorBufr();
   ~NorBufr();
 
+  std::streampos fromBuffer(char *ext_buf, std::streampos ext_buf_pos,
+                            std::streampos ext_buf_size);
   void setTableDir(std::string s);
   ssize_t extractDescriptors(int ss = 0, ssize_t subsb = 0);
   bool saveBuffer(std::string) const;
@@ -57,6 +59,7 @@ public:
   void setBufrId(std::string);
 
 private:
+  bool setSections(int slen);
   void clearTable();
   void clear();
   long checkBuffer();
@@ -91,7 +94,7 @@ protected:
 
   mutable LogBuffer lb;
 
-  friend std::ifstream &operator>>(std::ifstream &is, NorBufr &bufr);
+  friend std::istream &operator>>(std::istream &is, NorBufr &bufr);
   friend std::ostream &operator<<(std::ostream &is, NorBufr &bufr);
 };
 
