@@ -622,7 +622,55 @@ std::string NorBufr::getValue(const Descriptor &d, std::string,
   return ret;
 }
 
-std::ifstream &operator>>(std::ifstream &is, NorBufr &bufr) {
+std::streampos NorBufr::fromBuffer(char *ext_buf, std::streampos ext_buf_pos,
+                                   std::streampos ext_buf_size) {
+  clear();
+  if (buffer) {
+    delete[] buffer;
+    buffer = 0;
+  }
+
+  lb.addLogEntry(
+      LogEntry("Reading >> BUFR at position: " + std::to_string(ext_buf_pos),
+               LogLevel::DEBUG, __func__, bufr_id));
+
+  // Search "BUFR" string
+  unsigned long n = NorBufrIO::findBytes(ext_buf + ext_buf_pos,
+                                         ext_buf_size - ext_buf_pos, "BUFR", 4);
+  if (n >= ext_buf_size) {
+    lb.addLogEntry(
+        LogEntry("No more BUFR messages", LogLevel::WARN, __func__, bufr_id));
+    return 0;
+  }
+
+  // Section0 length
+  int slen = 8;
+  uint8_t sec0[slen];
+  if (ext_buf_pos + slen < ext_buf_size) {
+    memcpy(sec0, ext_buf + ext_buf_pos, slen);
+  }
+
+  len = NorBufrIO::getBytes(sec0 + 4, 3);
+  edition = sec0[7];
+
+  lb.addLogEntry(LogEntry("BUFR Size: " + std::to_string(len) +
+                              " Edition: " + std::to_string(edition),
+                          LogLevel::DEBUG, __func__, bufr_id));
+
+  buffer = new uint8_t[len];
+  memcpy(buffer, sec0, slen);
+
+  if (ext_buf_pos + len <= ext_buf_size) {
+    memcpy(buffer + slen, ext_buf + ext_buf_pos + slen, len - slen);
+  }
+
+  int offset = checkBuffer();
+  setSections(slen);
+
+  return ext_buf_pos + len;
+}
+
+std::istream &operator>>(std::istream &is, NorBufr &bufr) {
   bufr.clear();
   if (bufr.buffer) {
     delete[] bufr.buffer;
@@ -680,35 +728,45 @@ std::ifstream &operator>>(std::ifstream &is, NorBufr &bufr) {
     is.seekg(offset, std::ios_base::cur);
   }
 
+  bufr.setSections(slen);
+
+  return is;
+}
+
+bool NorBufr::setSections(int slen) {
+
   // Section1 load
-  bufr.Section1::fromBuffer(bufr.buffer + slen, bufr.len - slen, bufr.edition);
-  slen += bufr.Section1::length();
+  Section1::fromBuffer(buffer + slen, len - slen, edition);
+  slen += Section1::length();
 
   // Section2 load, if exists
-  if (bufr.optSection()) {
-    bufr.Section2::fromBuffer(bufr.buffer + slen, bufr.len - slen);
-    slen += bufr.Section2::length();
+  if (optSection()) {
+    Section2::fromBuffer(buffer + slen, len - slen);
+    slen += Section2::length();
   }
 
   // Section3 load
-  if (bufr.Section3::fromBuffer(bufr.buffer + slen, bufr.len - slen)) {
-    slen += bufr.Section3::length();
-    bufr.subsets.resize(bufr.subsetNum());
-    bufr.desc.resize(bufr.subsetNum());
+  if (Section3::fromBuffer(buffer + slen, len - slen)) {
+    slen += Section3::length();
+    subsets.resize(subsetNum());
+    desc.resize(subsetNum());
 
     // Section 4 load
-    if (bufr.Section4::fromBuffer(bufr.buffer + slen, bufr.len - slen)) {
-      bufr.lb.addLogEntry(
-          LogEntry("BUFR loaded", LogLevel::DEBUG, __func__, bufr.bufr_id));
+    if (Section4::fromBuffer(buffer + slen, len - slen)) {
+      lb.addLogEntry(
+          LogEntry("BUFR loaded", LogLevel::DEBUG, __func__, bufr_id));
     } else {
-      bufr.lb.addLogEntry(LogEntry("Corrupt Section4", LogLevel::ERROR,
-                                   __func__, bufr.bufr_id));
+      lb.addLogEntry(
+          LogEntry("Corrupt Section4", LogLevel::ERROR, __func__, bufr_id));
+      return false;
     }
   } else {
-    bufr.lb.addLogEntry(LogEntry("Section3 load error, skip Section4",
-                                 LogLevel::ERROR, __func__, bufr.bufr_id));
+    lb.addLogEntry(LogEntry("Section3 load error, skip Section4",
+                            LogLevel::ERROR, __func__, bufr_id));
+    return false;
   }
-  return is;
+
+  return true;
 }
 
 long NorBufr::checkBuffer() {
