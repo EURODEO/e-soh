@@ -10,6 +10,8 @@ from test.utilities import load_json
 
 
 def test_single_parameter_convert():
+    # /collections/observations/position?coords=POINT(6.5848470019087%2053.123676213651)&
+    # datetime=2022-12-31T00%3A00%3A00Z%2F2022-12-31T01%3A00%3A00Z&parameter-name=wind_speed%3A10%3Amean%3APT10M
     test_data = load_json("test/test_data/test_single_proto.json")
     compare_data = load_json("test/test_data/test_single_covjson.json")
 
@@ -21,16 +23,17 @@ def test_single_parameter_convert():
     assert type(coverage_collection) is Coverage
 
     # Assert that the coverage collection has the correct parameter
-    # TODO: Change parameter name when parameter names have been decided
-    assert "ff" in coverage_collection.parameters.keys()
+    assert "wind_speed:10:mean:PT10M" in coverage_collection.parameters.keys()
 
     # Check that correct values exist in the coverage collection
-    assert 9.21 in coverage_collection.ranges["ff"].values
+    assert 9.21 in coverage_collection.ranges["wind_speed:10:mean:PT10M"].values
 
     assert len(coverage_collection.domain.axes.t.values) == 7
 
     # Number of time points should match with the number of observation values
-    assert len(coverage_collection.domain.axes.t.values) == len(coverage_collection.ranges["ff"].values)
+    assert len(coverage_collection.domain.axes.t.values) == len(
+        coverage_collection.ranges["wind_speed:10:mean:PT10M"].values
+    )
 
     # compare the coverage collection with the compare data
     # TODO: Modify compare data when parameter names have been decided
