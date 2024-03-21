@@ -56,8 +56,14 @@ jobs:
       - name: Start docker stack
         run: just local
 
-      - name: Run the tests
-        run: just test
+      - name: Run the integration test
+        run: just integration
+
+      - name: Run the performance test
+        run: just performance
+
+      - name: Run the client test
+        run: just client
 
       - name: Archive load test artifacts
         uses: actions/upload-artifact@v4
