@@ -82,7 +82,7 @@ private:
                        bool force = true) const;
   bool setLocation(double lat, double lon, double hei,
                    rapidjson::Document &) const;
-  bool updateLocation(double loc, int loc_index,
+  bool updateLocation(double loc, std::string loc_label,
                       rapidjson::Document &message) const;
 
   bool setDateTime(struct tm *, rapidjson::Document &,

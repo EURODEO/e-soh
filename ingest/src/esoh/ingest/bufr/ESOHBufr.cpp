@@ -428,7 +428,7 @@ std::list<std::string> ESOHBufr::msg() const {
           }
           if (v.y() == 12 || v.y() == 15 || v.y() == 16) {
             double lat_disp = getValue(v, 0.0);
-            updateLocation(lat + lat_disp, 0, subset_message);
+            updateLocation(lat + lat_disp, "lat", subset_message);
           }
 
           break;
@@ -443,7 +443,7 @@ std::list<std::string> ESOHBufr::msg() const {
           }
           if (v.y() == 12 || v.y() == 15 || v.y() == 16) {
             double lon_disp = getValue(v, 0.0);
-            updateLocation(lon + lon_disp, 1, subset_message);
+            updateLocation(lon + lon_disp, "lon", subset_message);
           }
 
           break;
@@ -485,7 +485,7 @@ std::list<std::string> ESOHBufr::msg() const {
           if (v.y() == 9) // Geopotential height, TODO: unit conversion?
           {
             double gpm = getValue(v, 0.0);
-            updateLocation(gpm, 2, subset_message);
+            updateLocation(gpm, "hei", subset_message);
           }
 
           break;
@@ -811,34 +811,36 @@ bool ESOHBufr::setLocation(double lat, double lon, double hei,
     rapidjson::Value geometry_type;
     geometry_type.SetString("Point");
     geometry.AddMember("type", geometry_type, message_allocator);
-    rapidjson::Value location(rapidjson::kArrayType);
-    location.PushBack(lat, message_allocator);
-    location.PushBack(lon, message_allocator);
-    location.PushBack(hei, message_allocator);
+    rapidjson::Value location(rapidjson::kObjectType);
+    location.AddMember("lat", lat, message_allocator);
+    location.AddMember("lon", lon, message_allocator);
+    location.AddMember("hei", hei, message_allocator);
     geometry.AddMember("coordinates", location, message_allocator);
   } else {
-    rapidjson::Value location(rapidjson::kArrayType);
-    location.PushBack(lat, message_allocator);
-    location.PushBack(lon, message_allocator);
-    if (hei > -99990)
-      location.PushBack(hei, message_allocator);
+    rapidjson::Value location(rapidjson::kObjectType);
+    location.AddMember("lat", lat, message_allocator);
+    location.AddMember("lon", lon, message_allocator);
+    if (hei > -99990) {
+      location.AddMember("hei", hei, message_allocator);
+    }
     geometry["coordinates"] = location;
   }
 
   return true;
 }
 
-bool ESOHBufr::updateLocation(double loc_value, int loc_index,
+bool ESOHBufr::updateLocation(double loc_value, std::string loc_label,
                               rapidjson::Document &message) const {
-  rapidjson::Document::AllocatorType &message_allocator =
-      message.GetAllocator();
+  //rapidjson::Document::AllocatorType &message_allocator =
+  //    message.GetAllocator();
   rapidjson::Value &geometry = message["geometry"];
   rapidjson::Value &coordinates = geometry["coordinates"];
-  if (coordinates.Size() <= static_cast<rapidjson::SizeType>(loc_index)) {
-    geometry["coordinates"].PushBack(loc_value, message_allocator);
-  } else {
-    coordinates[loc_index] = loc_value;
-  }
+  if (coordinates.HasMember(loc_label.c_str())) {
+    coordinates[loc_label.c_str()] = loc_value;
+  }  else {
+    lb.addLogEntry(LogEntry("Location update is not possible", LogLevel::WARN,
+                          __func__, bufr_id));
+  } 
   return true;
 }
 
