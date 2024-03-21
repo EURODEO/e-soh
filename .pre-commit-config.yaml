@@ -17,7 +17,7 @@ repos:
   #        pass_filenames: false
 
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: ""
+    rev: "v18.1.1"
     hooks:
       - id: clang-format
         entry: clang-format -i
@@ -51,7 +51,7 @@ repos:
 
   # black ~ Formats Python code
   - repo: https://github.com/psf/black
-    rev: 23.12.1
+    rev: 24.3.0
     hooks:
       - id: black
         args: ["--line-length=120"]
@@ -65,7 +65,7 @@ repos:
 
   # hadolint ~ Docker linter
   - repo: https://github.com/hadolint/hadolint
-    rev: v2.12.0
+    rev: v2.12.1-beta
     hooks:
       - id: hadolint-docker
         args: [
@@ -74,6 +74,6 @@ repos:
 
   # ShellCheck ~ Gives warnings and suggestions for bash/sh shell scripts
   - repo: https://github.com/koalaman/shellcheck-precommit
-    rev: v0.9.0
+    rev: v0.10.0
     hooks:
       - id: shellcheck
