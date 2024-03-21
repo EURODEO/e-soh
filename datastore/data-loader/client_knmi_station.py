@@ -73,8 +73,7 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                         "".join(
                             [
                                 station_id,
-                                str(ts_mdata.platform) + standard_name + level + period + function
-                                + "nl.knmi",
+                                str(ts_mdata.platform) + standard_name + level + period + function + "nl.knmi",
                             ]
                         ).encode()
                     ).hexdigest(),
