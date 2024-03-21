@@ -1,5 +1,6 @@
 import logging
-from datetime import timezone, datetime
+from datetime import datetime
+from datetime import timezone
 from typing import Dict
 
 import datastore_pb2 as dstore
