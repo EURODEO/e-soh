@@ -12,6 +12,7 @@ from ingest.bufr.bufresohmsg_py import init_oscar_py
 
 init_bufrtables_py("/usr/share/eccodes/definitions/bufr/tables/0/wmo/")
 init_oscar_py("./src/ingest/bufr/oscar/oscar_stations_all.json")
+init_bufr_schema_py("./src/ingest/schemas/bufr_to_e_soh_message.json")
 
 
 def build_all_json_payloads_from_bufr(bufr_content: object) -> list[str]:
