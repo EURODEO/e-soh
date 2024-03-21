@@ -746,26 +746,6 @@ bool NorBufr::setSections(int slen) {
   }
 
   // Section3 load
-<<<<<<< HEAD:ingest/src/ingest/bufr/NorBufr.cpp
-  if (bufr.Section3::fromBuffer(bufr.buffer + slen, bufr.len - slen)) {
-    slen += bufr.Section3::length();
-    bufr.subsets.resize(bufr.subsetNum());
-    bufr.desc.resize(bufr.subsetNum());
-
-    // Section 4 load
-    if (bufr.Section4::fromBuffer(bufr.buffer + slen, bufr.len - slen)) {
-      bufr.lb.addLogEntry(
-          LogEntry("BUFR loaded", LogLevel::DEBUG, __func__, bufr.bufr_id));
-    } else {
-      bufr.lb.addLogEntry(LogEntry("Corrupt Section4", LogLevel::ERROR,
-                                   __func__, bufr.bufr_id));
-    }
-  } else {
-    bufr.lb.addLogEntry(LogEntry("Section3 load error, skip Section4",
-                                 LogLevel::ERROR, __func__, bufr.bufr_id));
-  }
-  return is;
-=======
   if (Section3::fromBuffer(buffer + slen, len - slen)) {
     slen += Section3::length();
     subsets.resize(subsetNum());
@@ -787,7 +767,6 @@ bool NorBufr::setSections(int slen) {
   }
 
   return true;
->>>>>>> origin/ingest-bufr-sensor-height:ingest/src/esoh/ingest/bufr/NorBufr.cpp
 }
 
 long NorBufr::checkBuffer() {
