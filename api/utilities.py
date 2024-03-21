@@ -1,6 +1,5 @@
 from datetime import datetime
 from datetime import timedelta
-from functools import lru_cache
 from typing import Tuple
 
 import datastore_pb2 as dstore
@@ -9,6 +8,8 @@ from google.protobuf.timestamp_pb2 import Timestamp
 from grpc_getter import getTSAGRequest
 from pydantic import AwareDatetime
 from pydantic import TypeAdapter
+
+# from aiocached import cached
 
 
 def get_datetime_range(datetime_string: str | None) -> Tuple[Timestamp, Timestamp] | None:
@@ -52,21 +53,18 @@ def get_datetime_range(datetime_string: str | None) -> Tuple[Timestamp, Timestam
     return start_datetime, end_datetime
 
 
-async def get_current_parameter_names(ttl_hash=None):
+# @cached(ttl=600)
+async def get_current_parameter_names():
     """
     This function get a set of standard_names currently in the datastore
     The ttl_hash should be a value that is updated at the same frequency
     we want the lru_cache to be valid for.
     """
 
-    @lru_cache(maxsize=1)
-    async def async_helper(ttl_hash):  # pylint: disable=unused-arguement
-        unique_parameter_names = dstore.GetTSAGRequest(attrs=["parameter_name"])
-        unique_parameter_names = await getTSAGRequest(unique_parameter_names)
+    unique_parameter_names = dstore.GetTSAGRequest(attrs=["parameter_name"])
+    unique_parameter_names = await getTSAGRequest(unique_parameter_names)
 
-        return set([i.combo.standard_name for i in unique_parameter_names.groups])
-
-    return await async_helper(ttl_hash)
+    return {i.combo.parameter_name for i in unique_parameter_names.groups}
 
 
 async def verify_parameter_names(parameter_names: list) -> None:
@@ -77,7 +75,7 @@ async def verify_parameter_names(parameter_names: list) -> None:
     unknown_parameter_names = []
 
     for i in parameter_names:
-        if i not in await get_current_parameter_names(datetime.now().hour):
+        if i not in await get_current_parameter_names():
             unknown_parameter_names.append(i)
 
     if unknown_parameter_names:
@@ -94,3 +92,34 @@ def create_url_from_request(request):
     scheme = request.url.scheme
 
     return f"{scheme}://{host}{base_path}/collections"
+
+
+def split_and_strip(cs_string: str) -> list[str]:
+    return [i.strip() for i in cs_string.split(",")]
+
+
+def validate_bbox(bbox: str) -> Tuple[float, float, float, float]:
+    """
+    Function for validating the bbox parameter.
+    Raises error with invalid bbox if any are found.
+    """
+    errors = {}
+
+    try:
+        left, bottom, right, top = map(float, map(str.strip, bbox.split(",")))
+    except ValueError:
+        errors["bbox"] = f"Invalid format: {bbox}"
+    else:
+        if left > right or bottom > top:
+            errors["range"] = f"Invalid bbox range: {bbox}"
+        if abs(left - right) > 90 or abs(bottom - top) > 90:
+            errors["range"] = f"Maximum bbox range is 90 degrees: {bbox}"
+        if not -180 <= left <= 180 or not -180 <= right <= 180:
+            errors["longitude"] = f"Invalid longitude: {bbox}"
+        if not -90 <= bottom <= 90 or not -90 <= top <= 90:
+            errors["latitude"] = f"Invalid latitude: {bbox}"
+
+    if errors:
+        raise HTTPException(status_code=400, detail=errors)
+
+    return left, bottom, right, top

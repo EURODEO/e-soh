@@ -99,9 +99,9 @@ def test_from_a_single_collection_get_locations_within_a_bbox():
 
 def test_from_a_single_collection_get_a_single_location():
     collection_id = "observations"
-    location_id = "06260"
+    location_id = "0-20000-0-06260"
     parameters = (
-        "air_temperature_1.5_maximum_PT10M , wind_from_direction_2.0_mean_PT10M,relative_humidity_2.0_mean_PT1M"
+        "air_temperature:1.5:maximum:PT10M , wind_from_direction:2.0:mean:PT10M,relative_humidity:2.0:mean:PT1M"
     )
     datetime = "../2022-12-31T01:10:00Z"
     actual_response = requests.get(
@@ -121,14 +121,14 @@ def test_that_the_order_of_the_parameters_in_the_response_is_always_the_same():
     The first request returns the same response as the second request.
     """
     collection_id = "observations"
-    location_id = "06260"
-    parameters = " wind_from_direction_2.0_mean_PT10M,wind_speed_10_mean_PT10M ,  relative_humidity_2.0_mean_PT1M"
+    location_id = "0-20000-0-06260"
+    parameters = " wind_from_direction:2.0:mean:PT10M,wind_speed:10:mean:PT10M ,  relative_humidity:2.0:mean:PT1M"
     first_response = requests.get(
         url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}" f"?parameter-name={parameters}"
     )
 
     parameters_2 = (
-        " relative_humidity_2.0_mean_PT1M, wind_speed_10_mean_PT10M,   wind_from_direction_2.0_mean_PT10M    "
+        " relative_humidity:2.0:mean:PT1M, wind_speed:10:mean:PT10M,   wind_from_direction:2.0:mean:PT10M    "
     )
     second_response = requests.get(
         url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}" f"?parameter-name={parameters_2}"
@@ -148,16 +148,16 @@ def test_from_a_single_collection_get_a_single_location_which_does_not_exist():
         url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}?parameter-name={parameters}"
     )
 
-    expected_json = load_json("response/404_not_found.json")
+    expected_json = load_json("response/400_not_found.json")
 
-    assert actual_response.status_code == 404
+    assert actual_response.status_code == 400
     actual_response_is_expected_response(actual_response, expected_json)
 
 
 def test_from_a_single_collection_get_a_single_position_with_one_parameter():
     collection_id = "observations"
     coords = "POINT(5.179705 52.0988218)"
-    parameters = "air_temperature_1.5_maximum_PT10M"
+    parameters = "air_temperature:1.5:maximum:PT10M"
     datetime = "2022-12-31T00:50:00Z/2022-12-31T02:10:00Z"
     actual_response = requests.get(
         url=BASE_URL + f"/collections/{collection_id}/position"
@@ -173,7 +173,7 @@ def test_from_a_single_collection_get_a_single_position_with_one_parameter():
 def test_from_a_single_collection_get_an_area_with_two_parameters():
     collection_id = "observations"
     coords = "POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))"
-    parameters = "relative_humidity_2.0_mean_PT1M ,   wind_speed_10_mean_PT10M"
+    parameters = "relative_humidity:2.0:mean:PT1M ,   wind_speed:10:mean:PT10M"
     datetime = "2022-12-31T22:50:00Z/.."
     actual_response = requests.get(
         url=BASE_URL + f"/collections/{collection_id}/area"
@@ -183,4 +183,82 @@ def test_from_a_single_collection_get_an_area_with_two_parameters():
     expected_json = load_json("response/data_area_two_locations_with_two_parameters.json")
 
     assert actual_response.status_code == 200
+    actual_response_is_expected_response(actual_response, expected_json)
+
+
+def test_items_get_area():
+    collection_id = "observations"
+    bbox = "4.5,52.4,4.6,52.57"
+    actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items?bbox={bbox}")
+
+    assert actual_response.status_code == 200
+    expected_json = load_json("response/items_within_area_single_platform.json")
+    actual_response_is_expected_response(actual_response, expected_json)
+
+
+def test_items_get_id():
+    collection_id = "observations"
+    metadata_id = "f0d06231a6508f281dbdaea0b5000220"
+    actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items/{metadata_id}")
+
+    assert actual_response.status_code == 200
+    expected_json = load_json("response/items_area_with_one_parameter_name.json")
+    actual_response_is_expected_response(actual_response, expected_json)
+
+
+def test_items_get_area_with_one_parameter_name():
+    collection_id = "observations"
+    bbox = "5.7,52.0,6.0,52.059"
+    parameter_name = "air_temperature:2.0:minimum:PT12H"
+    actual_response = requests.get(
+        url=BASE_URL + f"/collections/{collection_id}/items?bbox={bbox}&parameter-name={parameter_name}"
+    )
+
+    assert actual_response.status_code == 200
+    expected_json = load_json("response/items_area_with_one_parameter_name.json")
+    actual_response_is_expected_response(actual_response, expected_json)
+
+
+def test_items_get_one_platform():
+    collection_id = "observations"
+    platform = "0-20000-0-06225"
+    actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items?platform={platform}")
+
+    assert actual_response.status_code == 200
+    expected_json = load_json("response/items_within_area_single_platform.json")
+    actual_response_is_expected_response(actual_response, expected_json)
+
+
+# This test can not be made at the moment. Datetime have to limitation on the number
+# ts that is returned due to how temporal_mode latest is implemented.
+# def test_items_get_within_datetime():
+#     collection_id = "observations"
+#     datetime = "2022-12-31T00:50:00Z/2022-12-31T02:10:00Z"
+#     actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items" f"?datetime={datetime}")
+
+#     assert actual_response.status_code == 200
+#     actual_response_is_expected_response(
+#         actual_response, "response/collection/items/200/metadata_in_datetime_range"  # TODO: create response file
+#     )
+
+
+def test_items_dont_set_bbox_or_platform():
+    collection_id = "observations"
+    parameter_name = "this_parameter_name_does_not_exist"
+    actual_response = requests.get(
+        url=BASE_URL + f"/collections/{collection_id}/items" f"?parameter-name={parameter_name}"
+    )
+
+    assert actual_response.status_code == 400
+    expected_json = load_json("response/items_no_bbox_or_platform.json")
+    actual_response_is_expected_response(actual_response, expected_json)
+
+
+def test_items_no_data_return():
+    collection_id = "observations"
+    bbox = "-49.394531,22.593726,-36.386719,31.503629"
+    actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items" f"?bbox={bbox}")
+
+    assert actual_response.status_code == 404
+    expected_json = load_json("response/items_no_data_found.json")
     actual_response_is_expected_response(actual_response, expected_json)

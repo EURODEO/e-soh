@@ -17,7 +17,8 @@
                     },
                     "pubtime": "1970-01-01T00:00:00Z",
                     "obstime_instant": "2022-12-31T00:00:00Z",
-                    "value": "9.71"
+                    "value": "9.71",
+                    "metadata_id": "this-is-a-nice-uuid"
                 },
                 {
                     "id": "f236836d-5523-4609-9bfc-73158865076c",

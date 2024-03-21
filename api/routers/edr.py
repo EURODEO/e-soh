@@ -12,7 +12,6 @@ from covjson_pydantic.coverage import Coverage
 from covjson_pydantic.coverage import CoverageCollection
 from covjson_pydantic.parameter import Parameter
 from custom_geo_json.edr_feature_collection import EDRFeatureCollection
-from dependencies import get_datetime_range
 from fastapi import APIRouter
 from fastapi import HTTPException
 from fastapi import Path
@@ -25,8 +24,10 @@ from shapely import buffer
 from shapely import geometry
 from shapely import wkt
 from shapely.errors import GEOSException
-
-# from dependencies import verify_parameter_names
+from utilities import get_datetime_range
+from utilities import split_and_strip
+from utilities import validate_bbox
+from utilities import verify_parameter_names
 
 router = APIRouter(prefix="/collections/observations")
 
@@ -34,9 +35,10 @@ response_fields_needed_for_data_api = [
     "parameter_name",
     "platform",
     "geo_point",
-    "title",
     "standard_name",
-    "instrument",
+    "level",
+    "period",
+    "function",
     "unit",
     "obstime_instant",
     "value",
@@ -52,26 +54,28 @@ response_fields_needed_for_data_api = [
 # We can currently only query data, even if we only need metadata like for this endpoint
 # Maybe it would be better to only query a limited set of data instead of everything (meaning 24 hours)
 async def get_locations(
-    bbox: Annotated[str, Query(example="5.0,52.0,6.0,52.1")]
+    bbox: Annotated[str | None, Query(example="5.0,52.0,6.0,52.1")] = None
 ) -> EDRFeatureCollection:  # Hack to use string
-    left, bottom, right, top = map(str.strip, bbox.split(","))
-    poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
-
     ts_request = dstore.GetObsRequest(
-        spatial_area=dstore.Polygon(
-            points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords],
-        ),
-        temporal_mode="latest",
+        temporal_latest=True,
         included_response_fields=[
             "parameter_name",
             "platform",
             "geo_point",
-            "title",
             "standard_name",
-            "instrument",
             "unit",
+            "level",
+            "period",
+            "function",
         ],
     )
+    # Add spatial area to the time series request if bbox exists.
+    if bbox:
+        left, bottom, right, top = validate_bbox(bbox)
+        poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
+        ts_request.spatial_area.points.extend(
+            [dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords],
+        )
 
     ts_response = await get_obs_request(ts_request)
 
@@ -112,7 +116,12 @@ async def get_locations(
         Feature(
             type="Feature",
             id=station_id,
-            properties={"parameter-name": sorted(platform_parameters[station_id])},
+            properties={
+                # TODO: Change to platform_name to correct one when its available, this is only for geoweb demo
+                "name": f"platform-{station_id}",
+                "detail": f"https://oscar.wmo.int/surface/#/search/station/stationReportDetails/{station_id}",
+                "parameter-name": sorted(platform_parameters[station_id]),
+            },
             geometry=Point(
                 type="Point",
                 coordinates=list(platform_coordinates[station_id])[0],
@@ -132,7 +141,7 @@ async def get_locations(
     response_model_exclude_none=True,
 )
 async def get_data_location_id(
-    location_id: Annotated[str, Path(example="06260")],
+    location_id: Annotated[str, Path(example="0-20000-0-06260")],
     parameter_name: Annotated[
         str | None,
         Query(
@@ -151,9 +160,8 @@ async def get_data_location_id(
     #  This is just a quick and dirty demo
     range = get_datetime_range(datetime)
     if parameter_name:
-        parameter_name = parameter_name.split(",")
-        parameter_name = list(map(lambda x: x.strip(), parameter_name))
-    # parameter_name = verify_parameter_names(parameter_name) # should the api verify that the parameter name is valid?
+        parameter_name = split_and_strip(parameter_name)
+        await verify_parameter_names(parameter_name)
     request = dstore.GetObsRequest(
         filter=dict(
             parameter_name=dstore.Strings(values=parameter_name),
@@ -255,10 +263,9 @@ async def get_data_area(
         )
 
     range = get_datetime_range(datetime)
-    # await verify_parameter_names(parameter_name)
     if parameter_name:
-        parameter_name = parameter_name.split(",")
-        parameter_name = list(map(lambda x: x.strip(), parameter_name))
+        parameter_name = split_and_strip(parameter_name)
+        await verify_parameter_names(parameter_name)
     request = dstore.GetObsRequest(
         filter=dict(parameter_name=dstore.Strings(values=parameter_name if parameter_name else None)),
         spatial_area=dstore.Polygon(
