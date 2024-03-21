@@ -14,19 +14,7 @@ CREATE TABLE time_series (
 	-- --- END non-string metadata -----------------
 
 	-- --- BEGIN string metadata (handleable with reflection) -----------------
-
-	-- --- BEGIN unique_main constraint ------
-	naming_authority TEXT NOT NULL,
-	platform TEXT NOT NULL,
-	platform_vocabulary TEXT NOT NULL,
-	standard_name TEXT NOT NULL,
-	level TEXT NOT NULL,
-	function TEXT NOT NULL,
-	period TEXT NOT NULL,
-	instrument TEXT NOT NULL,
-	instrument_vocabulary TEXT NOT NULL,
-	-- --- END unique_main constraint ------
-
+	-- UMC = part of the unique_main constraint
 	version TEXT NOT NULL,
 	type TEXT NOT NULL,
 	title TEXT,
@@ -35,6 +23,7 @@ CREATE TABLE time_series (
 	keywords_vocabulary TEXT NOT NULL,
 	license TEXT NOT NULL,
 	conventions TEXT NOT NULL,
+	naming_authority TEXT NOT NULL, -- UMC
 	creator_type TEXT,
 	creator_name TEXT,
 	creator_email TEXT,
@@ -42,12 +31,20 @@ CREATE TABLE time_series (
 	institution TEXT,
 	project TEXT,
 	source TEXT,
+	platform TEXT NOT NULL, -- UMC
+	platform_vocabulary TEXT NOT NULL,
+	platform_name TEXT,
+	standard_name TEXT NOT NULL, -- UMC
 	unit TEXT,
+	level TEXT NOT NULL, -- UMC
+	function TEXT NOT NULL, -- UMC
+	period TEXT NOT NULL, -- UMC
+	instrument TEXT NOT NULL, -- UMC
+	instrument_vocabulary TEXT NOT NULL,
 	parameter_name TEXT NOT NULL,
 
     -- 1-1 relationship with the columns of the unique_main constraint (typically a hash of those)
 	timeseries_id TEXT NOT NULL,
-
 	-- --- END string metadata -----------------
 
 	-- --- END metadata fields that usually don't vary with obs time ---
