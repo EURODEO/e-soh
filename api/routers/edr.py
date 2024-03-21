@@ -56,9 +56,6 @@ response_fields_needed_for_data_api = [
 async def get_locations(
     bbox: Annotated[str | None, Query(example="5.0,52.0,6.0,52.1")] = None
 ) -> EDRFeatureCollection:  # Hack to use string
-    left, bottom, right, top = validate_bbox(bbox)
-    poly = geometry.Polygon([(left, bottom), (right, bottom), (right, top), (left, top)])
-
     ts_request = dstore.GetObsRequest(
         temporal_latest=True,
         included_response_fields=[
