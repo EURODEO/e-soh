@@ -106,7 +106,7 @@ message TSMetadata {
 
   // a 1-1 relationship with (naming_authority, platform, standard_name, level, function, period,
   // instrument); typically a hash of those
-  string time_series_id = 28 [json_name = "time_series_id"];
+  string timeseries_id = 28 [json_name = "timeseries_id"];
 
   // --- END string metadata -----------------
 }
