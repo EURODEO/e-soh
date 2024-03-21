@@ -37,6 +37,10 @@ jobs:
 
   test-datastore:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
@@ -47,6 +51,24 @@ jobs:
 
       - name: Install just a command runner
         run: ./ci/scripts/install-just.sh
+
+      - name: Run Tests
+        run: just unit
+
+      - name: Comment coverage
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-coverage-path: ./api/pytest-coverage.txt
+          coverage-path-prefix: api/
+          title: API Unit Test Coverage Report
+          hide-badge: true
+          hide-report: false
+          create-new-comment: false
+          hide-comment: false
+          report-only-changed-files: false
+          remove-link-from-badge: false
+          junitxml-path: ./api/pytest.xml
+          junitxml-title: API Unit Test Coverage Summary
 
       - name: Build docker containers
         run: just build
@@ -89,43 +111,6 @@ jobs:
       - name: Cleanup
         if: always()
         run: just down
-
-  test-api:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      issues: write
-      pull-requests: write
-
-    strategy:
-      matrix:
-        python-version: ["3.11"]
-    steps:
-      - name: Checkout the repo
-        uses: actions/checkout@v4
-
-      - name: Python Setup
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Run Tests
-        run: just unit
-
-      - name: Comment coverage
-        uses: MishaKav/pytest-coverage-comment@main
-        with:
-          pytest-coverage-path: ./api/pytest-coverage.txt
-          coverage-path-prefix: api/
-          title: API Unit Test Coverage Report
-          hide-badge: true
-          hide-report: false
-          create-new-comment: false
-          hide-comment: false
-          report-only-changed-files: false
-          remove-link-from-badge: false
-          junitxml-path: ./api/pytest.xml
-          junitxml-title: API Unit Test Coverage Summary
 
 
   test-ingest:
