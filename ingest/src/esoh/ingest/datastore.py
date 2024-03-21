@@ -98,6 +98,9 @@ class DatastoreConnection:
             elif i in msg["properties"]["content"]:
                 setattr(ts_metadata, i, msg["properties"]["content"][i])
 
+        # TODO: rename in e-soh-message-spec.json instead of doing the below translation
+        # NOTE: in that case "timeseries_id" needs to be added to the list iterated over above
+        #
         # Special case for metadata_id -> timeseries_id. This translation is required for naming
         # consistency with the terminology used internally in the datastore where a 'time series'
         # represents metadata that usually don't change with obs time. This metadata is represented
