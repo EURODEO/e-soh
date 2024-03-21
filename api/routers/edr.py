@@ -54,7 +54,7 @@ response_fields_needed_for_data_api = [
 # We can currently only query data, even if we only need metadata like for this endpoint
 # Maybe it would be better to only query a limited set of data instead of everything (meaning 24 hours)
 async def get_locations(
-    bbox: Annotated[str | None, Query(example="5.0,52.0,6.0,52.1")] = None
+    bbox: Annotated[str | None, Query(examples="5.0,52.0,6.0,52.1")] = None
 ) -> EDRFeatureCollection:  # Hack to use string
     ts_request = dstore.GetObsRequest(
         temporal_latest=True,
@@ -141,19 +141,19 @@ async def get_locations(
     response_model_exclude_none=True,
 )
 async def get_data_location_id(
-    location_id: Annotated[str, Path(example="0-20000-0-06260")],
+    location_id: Annotated[str, Path(examples="0-20000-0-06260")],
     parameter_name: Annotated[
         str | None,
         Query(
             alias="parameter-name",
-            example="wind_from_direction:2.0:mean:PT10M,"
+            examples="wind_from_direction:2.0:mean:PT10M,"
             "wind_speed:10:mean:PT10M,"
             "relative_humidity:2.0:mean:PT1M,"
             "air_pressure_at_sea_level:1:mean:PT1M,"
             "air_temperature:1.5:maximum:PT10M",
         ),
     ] = None,
-    datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
+    datetime: Annotated[str | None, Query(examples="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
     f: Annotated[formatters.Formats, Query(description="Specify return format.")] = formatters.Formats.covjson,
 ):
     # TODO: There is no error handling of any kind at the moment!
@@ -181,19 +181,19 @@ async def get_data_location_id(
     response_model_exclude_none=True,
 )
 async def get_data_position(
-    coords: Annotated[str, Query(example="POINT(5.179705 52.0988218)")],
+    coords: Annotated[str, Query(examples="POINT(5.179705 52.0988218)")],
     parameter_name: Annotated[
         str | None,
         Query(
             alias="parameter-name",
-            example="wind_from_direction:2.0:mean:PT10M,"
+            examples="wind_from_direction:2.0:mean:PT10M,"
             "wind_speed:10:mean:PT10M,"
             "relative_humidity:2.0:mean:PT1M,"
             "air_pressure_at_sea_level:1:mean:PT1M,"
             "air_temperature:1.5:maximum:PT10M",
         ),
     ] = None,
-    datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
+    datetime: Annotated[str | None, Query(examples="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
     f: Annotated[formatters.Formats, Query(description="Specify return format.")] = formatters.Formats.covjson,
 ):
     try:
@@ -227,19 +227,19 @@ async def get_data_position(
     response_model_exclude_none=True,
 )
 async def get_data_area(
-    coords: Annotated[str, Query(example="POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))")],
+    coords: Annotated[str, Query(examples="POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))")],
     parameter_name: Annotated[
         str | None,
         Query(
             alias="parameter-name",
-            example="wind_from_direction:2.0:mean:PT10M,"
+            examples="wind_from_direction:2.0:mean:PT10M,"
             "wind_speed:10:mean:PT10M,"
             "relative_humidity:2.0:mean:PT1M,"
             "air_pressure_at_sea_level:1:mean:PT1M,"
             "air_temperature:1.5:maximum:PT10M",
         ),
     ] = None,
-    datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
+    datetime: Annotated[str | None, Query(examples="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
     f: Annotated[formatters.Formats, Query(description="Specify return format.")] = formatters.Formats.covjson,
 ):
     try:
