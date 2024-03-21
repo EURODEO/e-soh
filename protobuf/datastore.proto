@@ -162,13 +162,20 @@ message Strings {
 message GetObsRequest {
   // --- BEGIN non-string metadata -------------------------
 
-  // temporal mode
-  string temporal_mode = 4; // use 'interval' (the default) to retrieve observations in
-  // an interval (defined by temporal) or 'latest' to retrieve the most recent observation
-  // of otherwise matching time series
+  // --- BEGIN temporal spec ----------------------------------
+  bool temporal_latest = 6;
+  TimeInterval temporal_interval = 1;
 
-  // temporal spec applicable when temporal_mode = 'interval'
-  TimeInterval temporal_interval = 1; // only observations in this time range may be returned
+  // combinations:
+
+	// latest | interval       | description
+	// -------------------------------------------------------------------------------------
+	// false  | not specified  | get all obs. in the entire buffer (typically last 24 hours)
+	// false  | specified      | get all obs. in the specified interval
+	// true   | not specified  | get the single latest obs. in the entire buffer
+	// true   | specified      | get the single latest obs. in the specified interval
+
+  // --- END temporal spec ----------------------------------
 
   // spatial filter
   Polygon spatial_area = 2; // if specified, only observations in this area may be returned
@@ -201,7 +208,7 @@ message GetObsRequest {
   //     * 'value' (non-reflection handleable string field in ObsMetadata)
   repeated string included_response_fields = 5;
 
-  // repeated string excluded_response_fields = 6; // TODO
+  // repeated string excluded_response_fields = 7; // TODO
 }
 
 message GetObsResponse {

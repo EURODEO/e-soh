@@ -1,0 +1,104 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    4.5549006792363,
+                    52.462242867998
+                ]
+            },
+            "properties": {
+                "title": "Wind Gust at 10m 10 Min Maximum",
+                "keywords": "temperature, pressure, relative humidity, visibility, wind speed, wind direction, wind gust",
+                "keywords_vocabulary": "http://data.knmi.nl",
+                "naming_authority": "nl.knmi",
+                "creator_name": "KNMI",
+                "creator_email": "datacentrum@knmi.nl",
+                "creator_url": "http://data.knmi.nl",
+                "institution": "Royal Netherlands Meteorological Institute (KNMI)",
+                "source": "Royal Netherlands Meteorological Institute (KNMI)",
+                "platform": "0-20000-0-06225",
+                "standard_name": "wind_speed_of_gust",
+                "unit": "m s-1",
+                "instrument": "gff",
+                "level": "10",
+                "period": "PT10M",
+                "function": "maximum",
+                "parameter_name": "wind_speed_of_gust:10:maximum:PT10M",
+                "creator_type": "Institution",
+                "platform_vocabulary": "https://oscar.wmo.int/surface/#/search/station/stationReportDetails/0-20000-0-06225",
+                "name": "0-20000-0-06225"
+            },
+            "id": "225c8e92d96af07b1deec739ca681999"
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    4.5549006792363,
+                    52.462242867998
+                ]
+            },
+            "properties": {
+                "title": "Wind Speed at 10m 10 Min Average",
+                "keywords": "temperature, pressure, relative humidity, visibility, wind speed, wind direction, wind gust",
+                "keywords_vocabulary": "http://data.knmi.nl",
+                "naming_authority": "nl.knmi",
+                "creator_name": "KNMI",
+                "creator_email": "datacentrum@knmi.nl",
+                "creator_url": "http://data.knmi.nl",
+                "institution": "Royal Netherlands Meteorological Institute (KNMI)",
+                "source": "Royal Netherlands Meteorological Institute (KNMI)",
+                "platform": "0-20000-0-06225",
+                "standard_name": "wind_speed",
+                "unit": "m s-1",
+                "instrument": "ff",
+                "level": "10",
+                "period": "PT10M",
+                "function": "mean",
+                "parameter_name": "wind_speed:10:mean:PT10M",
+                "creator_type": "Institution",
+                "platform_vocabulary": "https://oscar.wmo.int/surface/#/search/station/stationReportDetails/0-20000-0-06225",
+                "name": "0-20000-0-06225"
+            },
+            "id": "9f526eaa973d5daa6629fc400e7b107a"
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    4.5549006792363,
+                    52.462242867998
+                ]
+            },
+            "properties": {
+                "title": "Wind Direction 10 Min Average",
+                "keywords": "temperature, pressure, relative humidity, visibility, wind speed, wind direction, wind gust",
+                "keywords_vocabulary": "http://data.knmi.nl",
+                "naming_authority": "nl.knmi",
+                "creator_name": "KNMI",
+                "creator_email": "datacentrum@knmi.nl",
+                "creator_url": "http://data.knmi.nl",
+                "institution": "Royal Netherlands Meteorological Institute (KNMI)",
+                "source": "Royal Netherlands Meteorological Institute (KNMI)",
+                "platform": "0-20000-0-06225",
+                "standard_name": "wind_from_direction",
+                "unit": "degree",
+                "instrument": "dd",
+                "level": "2.0",
+                "period": "PT10M",
+                "function": "mean",
+                "parameter_name": "wind_from_direction:2.0:mean:PT10M",
+                "creator_type": "Institution",
+                "platform_vocabulary": "https://oscar.wmo.int/surface/#/search/station/stationReportDetails/0-20000-0-06225",
+                "name": "0-20000-0-06225"
+            },
+            "id": "c056de2030d4019d8b6a3efd20d245f0"
+        }
+    ]
+}

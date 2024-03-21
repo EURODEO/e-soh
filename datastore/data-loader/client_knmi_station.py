@@ -5,6 +5,7 @@ import math
 import os
 import re
 import uuid
+from hashlib import md5
 from multiprocessing import cpu_count
 from pathlib import Path
 from time import perf_counter
@@ -61,6 +62,15 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                     period=period,
                     function=function,
                     parameter_name=":".join([standard_name, level, function, period]),
+                    naming_authority="nl.knmi",
+                    keywords=file["iso_dataset"].attrs["keyword"],
+                    keywords_vocabulary=file.attrs["references"],
+                    source=file.attrs["source"],
+                    creator_name="KNMI",
+                    creator_email=file["iso_dataset"].attrs["email_dataset"],
+                    creator_url=file["iso_dataset"].attrs["url_metadata"],
+                    creator_type="Institution",
+                    institution=file.attrs["institution"],
                 )
 
                 for time, obs_value in zip(
@@ -75,6 +85,14 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                             geo_point=dstore.Point(lat=latitude, lon=longitude),
                             obstime_instant=ts,
                             value=str(obs_value),  # TODO: Store float in DB
+                            metadata_id=md5(
+                                "".join(
+                                    [
+                                        station_id,
+                                        str(ts_mdata.platform) + standard_name + level + period + function + "nl.knmi",
+                                    ]
+                                ).encode()
+                            ).hexdigest(),
                         )
                         observations.append(dstore.Metadata1(ts_mdata=ts_mdata, obs_mdata=obs_mdata))
 
