@@ -5,8 +5,8 @@ default:
 set positional-arguments
 
 # After running just all, the database needs cleanup, run just down
-all: lint build local test
-up: build local integration
+all: lint build services load test
+up: build services load integration
 
 # ---------------------------------------------------------------------------- #
 #                                  utility                                     #
@@ -109,8 +109,6 @@ build: copy-proto
 # # ---------------------------------------------------------------------------- #
 # #                                     local                                    #
 # # ---------------------------------------------------------------------------- #
-local: services load
-
 services:
     docker compose --env-file ./ci/config/env.list up -d --wait --wait-timeout 120
 
