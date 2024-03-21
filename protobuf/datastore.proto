@@ -86,7 +86,7 @@ message TSMetadata {
   string license = 8;
   string conventions = 9;
   string naming_authority = 10 [json_name = "naming_authority"];
-  string creator_type = 101 [json_name = "creator_type"];
+  string creator_type = 11 [json_name = "creator_type"];
   string creator_name = 12 [json_name = "creator_name"];
   string creator_email = 13 [json_name = "creator_email"];
   string creator_url = 14 [json_name = "creator_url"];
@@ -103,7 +103,11 @@ message TSMetadata {
   string period = 25;
   string function = 26;
   string parameter_name = 27 [json_name = "parameter_name"];
+
+  // a 1-1 relationship with (naming_authority, platform, standard_name, level, function, period,
+  // instrument); typically a hash of those
   string time_series_id = 28 [json_name = "time_series_id"];
+
   // --- END string metadata -----------------
 }
 

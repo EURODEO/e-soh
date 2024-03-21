@@ -98,9 +98,11 @@ class DatastoreConnection:
             elif i in msg["properties"]["content"]:
                 setattr(ts_metadata, i, msg["properties"]["content"][i])
 
-        # special case for metadata_id -> time_series_id
-        # (NOTE: special case can be obsoleted if metadata_id is renamed to time_series_id
-        # already in the input)
+        # Special case for metadata_id -> time_series_id. This translation is required for naming
+        # consistency with the terminology used internally in the datastore where a 'time series'
+        # represents metadata that usually don't change with obs time. This metadata is represented
+        # in the TSMetadata message in datastore.proto and used for defining request- and response
+        # messages for several methods.
         from_name, to_name = "metadata_id", "time_series_id"
         if from_name in msg["properties"]:
             setattr(ts_metadata, to_name, msg["properties"][from_name])
