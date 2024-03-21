@@ -154,22 +154,22 @@ async def get_data_location_id(
     datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
     f: Annotated[formatters.Formats, Query(description="Specify return format.")] = formatters.Formats.covjson,
 ):
-    filter = dict(platform=dstore.Strings(values=[location_id]))
+
+    # parameter_name = verify_parameter_names(parameter_name) # should the api verify that the parameter name is valid?
+    request = dstore.GetObsRequest(
+        filter=dict(platform=dstore.Strings(values=[location_id])),
+        included_response_fields=response_fields_needed_for_data_api,
+    )
+
     if parameter_name:
         parameter_name = parameter_name.split(",")
         parameter_name = list(map(lambda x: x.strip(), parameter_name))
-        filter["parameter_name"] = dstore.Strings(values=parameter_name)
+        request.filter["parameter_name"].values.extend(parameter_name)
 
-    temporal_interval = None
     if datetime:
         range = get_datetime_range(datetime)
-        temporal_interval = dstore.TimeInterval(start=range[0], end=range[1])
-    # parameter_name = verify_parameter_names(parameter_name) # should the api verify that the parameter name is valid?
-    request = dstore.GetObsRequest(
-        filter=filter,
-        temporal_interval=temporal_interval,
-        included_response_fields=response_fields_needed_for_data_api,
-    )
+        request.temporal_interval.CopyFrom(dstore.TimeInterval(start=range[0], end=range[1]))
+
     response = await get_obs_request(request)
     return formatters.formatters[f](response)
 
@@ -262,26 +262,23 @@ async def get_data_area(
             detail={"coords": f"Unexpected error occurred during wkt parsing: {coords}"},
         )
 
-    # await verify_parameter_names(parameter_name)
-    filter = {}
-    if parameter_name:
-        parameter_name = parameter_name.split(",")
-        parameter_name = list(map(lambda x: x.strip(), parameter_name))
-        filter["parameter_name"] = dstore.Strings(values=parameter_name)
-
-    temporal_interval = None
-    if datetime:
-        range = get_datetime_range(datetime)
-        temporal_interval = dstore.TimeInterval(start=range[0], end=range[1])
-
     request = dstore.GetObsRequest(
-        filter=filter,
         spatial_area=dstore.Polygon(
             points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
         ),
-        temporal_interval=temporal_interval,
         included_response_fields=response_fields_needed_for_data_api,
     )
+
+    # await verify_parameter_names(parameter_name)
+    if parameter_name:
+        parameter_name = parameter_name.split(",")
+        parameter_name = list(map(lambda x: x.strip(), parameter_name))
+        request.filter["parameter_name"].values.extend(parameter_name)
+
+    if datetime:
+        range = get_datetime_range(datetime)
+        request.temporal_interval.CopyFrom(dstore.TimeInterval(start=range[0], end=range[1]))
+
     coverages = await get_obs_request(request)
     coverages = formatters.formatters[f](coverages)
     return coverages
