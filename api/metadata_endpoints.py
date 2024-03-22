@@ -18,7 +18,7 @@ from edr_pydantic.parameter import Parameter
 from edr_pydantic.unit import Unit
 from edr_pydantic.variables import Variables
 from fastapi import HTTPException
-from grpc_getter import getTSAGRequest
+from grpc_getter import get_ts_ag_request
 
 
 logger = logging.getLogger(__name__)
@@ -44,7 +44,7 @@ def get_landing_page(request):
 
 async def get_collection_metadata(base_url: str, is_self) -> Collection:
     ts_request = dstore.GetTSAGRequest(attrs=["parameter_name", "standard_name", "unit", "level", "period", "function"])
-    ts_response = await getTSAGRequest(ts_request)
+    ts_response = await get_ts_ag_request(ts_request)
     # logger.info(ts_response.ByteSize())
     # logger.info(len(ts_response.groups))
 

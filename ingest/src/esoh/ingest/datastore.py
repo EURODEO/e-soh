@@ -98,6 +98,20 @@ class DatastoreConnection:
             elif i in msg["properties"]["content"]:
                 setattr(ts_metadata, i, msg["properties"]["content"][i])
 
+        # TODO: rename in e-soh-message-spec.json instead of doing the below translation
+        # NOTE: in that case "timeseries_id" needs to be added to the list iterated over above
+        #
+        # Special case for metadata_id -> timeseries_id. This translation is required for naming
+        # consistency with the terminology used internally in the datastore where a 'time series'
+        # represents metadata that usually don't change with obs time. This metadata is represented
+        # in the TSMetadata message in datastore.proto and used for defining request- and response
+        # messages for several methods.
+        from_name, to_name = "metadata_id", "timeseries_id"
+        if from_name in msg["properties"]:
+            setattr(ts_metadata, to_name, msg["properties"][from_name])
+        elif from_name in msg["properties"]["content"]:
+            setattr(ts_metadata, to_name, msg["properties"]["content"][from_name])
+
         observation_data = dstore.ObsMetadata(
             pubtime=dtime2tstamp(datetime.strptime(msg["properties"]["pubtime"], "%Y-%m-%dT%H:%M:%S.%f%z")),
             obstime_instant=dtime2tstamp(
@@ -108,7 +122,7 @@ class DatastoreConnection:
             ),
         )
 
-        for i in ["id", "history", "metadata_id", "processing_level", "data_id", "value"]:
+        for i in ["id", "history", "processing_level", "data_id", "value"]:
             if i in msg:
                 setattr(observation_data, i, msg[i])
             elif i in msg["properties"]:

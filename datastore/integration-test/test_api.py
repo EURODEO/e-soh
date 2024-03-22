@@ -198,8 +198,8 @@ def test_items_get_area():
 
 def test_items_get_id():
     collection_id = "observations"
-    metadata_id = "f0d06231a6508f281dbdaea0b5000220"
-    actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items/{metadata_id}")
+    timeseries_id = "f0d06231a6508f281dbdaea0b5000220"
+    actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items/{timeseries_id}")
 
     assert actual_response.status_code == 200
     expected_json = load_json("response/items_area_with_one_parameter_name.json")
