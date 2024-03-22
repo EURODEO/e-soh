@@ -74,6 +74,15 @@ def test_get_all_collections():
     actual_response_is_expected_response(actual_response, expected_json, exclude_regex_paths=r"\['href'\]$")
 
 
+def test_get_conformance():
+    actual_response = requests.get(url=BASE_URL + "/conformance")
+
+    expected_json = load_json("response/metadata_conformance.json")
+
+    assert actual_response.status_code == 200
+    actual_response_is_expected_response(actual_response, expected_json)
+
+
 def test_get_a_single_existing_collection():
     collection_id = "observations"
     actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}")
