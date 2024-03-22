@@ -2,40 +2,36 @@
     "observations": [
         {
             "ts_mdata": {
-                "title": "Wind Speed at 10m 10 Min Average",
-                "platform": "06280",
+                "platform": "0-20000-0-06280",
                 "standard_name": "wind_speed",
                 "unit": "m s-1",
-                "instrument": "ff"
+                "level": "10",
+                "function": "mean",
+                "period": "PT10M",
+                "parameter_name": "wind_speed:10:mean:PT10M"
             },
             "obs_mdata": [
                 {
-                    "id": "af50a680-d84a-41bb-a85f-4803dcd5d4b5",
                     "geo_point": {
                         "lat": 53.123676213651,
                         "lon": 6.5848470019087
                     },
-                    "pubtime": "1970-01-01T00:00:00Z",
                     "obstime_instant": "2022-12-31T00:00:00Z",
                     "value": "9.71"
                 },
                 {
-                    "id": "f236836d-5523-4609-9bfc-73158865076c",
                     "geo_point": {
                         "lat": 53.123676213651,
                         "lon": 6.5848470019087
                     },
-                    "pubtime": "1970-01-01T00:00:00Z",
                     "obstime_instant": "2022-12-31T00:10:00Z",
                     "value": "9.32"
                 },
                 {
-                    "id": "4b2eaa2e-1850-43f6-b844-ba4461c14d46",
                     "geo_point": {
                         "lat": 53.123676213651,
                         "lon": 6.5848470019087
                     },
-                    "pubtime": "1970-01-01T00:00:00Z",
                     "obstime_instant": "2022-12-31T00:20:00Z",
                     "value": "9.19"
                 }
@@ -43,40 +39,36 @@
         },
         {
             "ts_mdata": {
-                "title": "Wind Direction 10 Min Average",
-                "platform": "06280",
+                "platform": "0-20000-0-06280",
                 "standard_name": "wind_from_direction",
                 "unit": "degree",
-                "instrument": "dd"
+                "level": "2.0",
+                "function": "mean",
+                "period": "PT10M",
+                "parameter_name": "wind_from_direction:2.0:mean:PT10M"
             },
             "obs_mdata": [
                 {
-                    "id": "f7ec5d92-f3ab-4524-ad4e-a777a05b3b68",
                     "geo_point": {
                         "lat": 53.123676213651,
                         "lon": 6.5848470019087
                     },
-                    "pubtime": "1970-01-01T00:00:00Z",
                     "obstime_instant": "2022-12-31T00:00:00Z",
                     "value": "226.7"
                 },
                 {
-                    "id": "12bebe9e-1ddd-46cf-b9fa-2f866e987683",
                     "geo_point": {
                         "lat": 53.123676213651,
                         "lon": 6.5848470019087
                     },
-                    "pubtime": "1970-01-01T00:00:00Z",
                     "obstime_instant": "2022-12-31T00:10:00Z",
                     "value": "230.7"
                 },
                 {
-                    "id": "106f74e3-233a-46e3-83d4-b8508eb77aaf",
                     "geo_point": {
                         "lat": 53.123676213651,
                         "lon": 6.5848470019087
                     },
-                    "pubtime": "1970-01-01T00:00:00Z",
                     "obstime_instant": "2022-12-31T00:20:00Z",
                     "value": "232.9"
                 }
@@ -84,40 +76,36 @@
         },
         {
             "ts_mdata": {
-                "title": "Relative Humidity 1 Min Average",
-                "platform": "06280",
+                "platform": "0-20000-0-06280",
                 "standard_name": "relative_humidity",
                 "unit": "%",
-                "instrument": "rh"
+                "level": "2.0",
+                "function": "mean",
+                "period": "PT1M",
+                "parameter_name": "relative_humidity:2.0:mean:PT1M"
             },
             "obs_mdata": [
                 {
-                    "id": "8319d5a3-1ae9-4dc1-a83e-1548acd7b1b3",
                     "geo_point": {
                         "lat": 53.123676213651,
                         "lon": 6.5848470019087
                     },
-                    "pubtime": "1970-01-01T00:00:00Z",
                     "obstime_instant": "2022-12-31T00:00:00Z",
                     "value": "88.0"
                 },
                 {
-                    "id": "dc714268-8a24-4527-bed9-ea1e20d0568e",
                     "geo_point": {
                         "lat": 53.123676213651,
                         "lon": 6.5848470019087
                     },
-                    "pubtime": "1970-01-01T00:00:00Z",
                     "obstime_instant": "2022-12-31T00:10:00Z",
                     "value": "88.0"
                 },
                 {
-                    "id": "e2f7e423-23e7-4270-ae8c-6c7f769f3098",
                     "geo_point": {
                         "lat": 53.123676213651,
                         "lon": 6.5848470019087
                     },
-                    "pubtime": "1970-01-01T00:00:00Z",
                     "obstime_instant": "2022-12-31T00:20:00Z",
                     "value": "88.0"
                 }
