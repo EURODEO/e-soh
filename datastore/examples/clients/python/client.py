@@ -85,7 +85,7 @@ def call_get_obs_in_polygon(stub):
     points.append(dstore.Point(lat=60, lon=10.80))
     points.append(dstore.Point(lat=60, lon=10.70))
 
-    request = dstore.GetObsRequest(spatial_area=dstore.Polygon(points=points))
+    request = dstore.GetObsRequest(spatial_polygon=dstore.Polygon(points=points))
     response = stub.GetObservations(request)
 
     return response

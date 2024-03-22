@@ -175,7 +175,7 @@ input_params_polygon = [
 def test_get_observations_with_polygon(grpc_stub, coords, param_ids, expected_station_ids):
     polygon = dstore.Polygon(points=[dstore.Point(lat=lat, lon=lon) for lat, lon in coords])
     get_obs_request = dstore.GetObsRequest(
-        spatial_area=polygon, filter=dict(parameter_name=dstore.Strings(values=param_ids))
+        spatial_polygon=polygon, filter=dict(parameter_name=dstore.Strings(values=param_ids))
     )
     get_obs_response = grpc_stub.GetObservations(get_obs_request)
 

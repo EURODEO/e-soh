@@ -243,53 +243,110 @@ func getMdataFilter(stringFilterInfos []stringFilterInfo, phVals *[]interface{})
 	return whereExpr
 }
 
-// getGeoFilter derives from 'inside' the expression used in a WHERE clause for keeping
-// observations inside this polygon.
+// getPolygonFilter derives the expression used in a WHERE clause for selecting only
+// points inside a polygon.
 //
 // Values to be used for query placeholders are appended to phVals.
 //
-// Returns expression.
-func getGeoFilter(inside *datastore.Polygon, phVals *[]interface{}) (string, error) {
-	whereExpr := "TRUE" // by default, don't filter
-	if inside != nil {  // get all points
-		points := inside.Points
+// Returns (expression, nil) upon success, otherwise (..., error).
+func getPolygonFilter(polygon *datastore.Polygon, phVals *[]interface{}) (string, error) {
 
-		equal := func(p1, p2 *datastore.Point) bool {
-			return (p1.Lat == p2.Lat) && (p1.Lon == p2.Lon)
-		}
-
-		if (len(points) > 0) && !equal(points[0], points[len(points)-1]) {
-			points = append(points, points[0]) // close polygon
-		}
-
-		if len(points) < 4 {
-			return "", fmt.Errorf("polygon contains too few points")
-		}
-
-		// construct the polygon ring of the WKT representation
-		// (see https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry;
-		// note that only a single ring is supported for now)
-		polygonRing := []string{}
-		for _, point := range points {
-			polygonRing = append(polygonRing, fmt.Sprintf("%f %f", point.Lon, point.Lat))
-		}
-
-		srid := "4326" // spatial reference system ID
-
-		index := len(*phVals) + 1
-		whereExpr = fmt.Sprintf(
-			"ST_DWITHIN(point, ST_GeomFromText($%d, %s)::geography, 0.0)", index, srid)
-		*phVals = append(*phVals, fmt.Sprintf("polygon((%s))", strings.Join(polygonRing, ",")))
+	if polygon == nil {
+		return "TRUE", nil // don't filter by default
 	}
+
+	points := polygon.Points
+
+	equal := func(p1, p2 *datastore.Point) bool {
+		return (p1.Lat == p2.Lat) && (p1.Lon == p2.Lon)
+	}
+
+	if (len(points) > 0) && !equal(points[0], points[len(points)-1]) {
+		points = append(points, points[0]) // close polygon
+	}
+
+	if len(points) < 4 {
+		return "", fmt.Errorf("polygon contains too few points")
+	}
+
+	// construct the polygon ring of the WKT representation
+	// (see https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry;
+	// note that only a single ring is supported for now)
+	polygonRing := []string{}
+	for _, point := range points {
+		polygonRing = append(polygonRing, fmt.Sprintf("%f %f", point.Lon, point.Lat))
+	}
+
+	srid := "4326" // spatial reference system ID
+
+	index := len(*phVals) + 1
+	whereExpr := fmt.Sprintf(
+		"ST_DWITHIN(point, ST_GeomFromText($%d, %s)::geography, 0.0)", index, srid)
+	*phVals = append(*phVals, fmt.Sprintf("polygon((%s))", strings.Join(polygonRing, ",")))
 
 	return whereExpr, nil
 }
 
-type stringFieldInfo struct {
-	field      reflect.StructField
-	tableName  string
-	method     reflect.Value
-	methodName string
+// getCircleFilter derives the expression used in a WHERE clause for selecting only
+// points inside a circle.
+//
+// Values to be used for query placeholders are appended to phVals.
+//
+// Returns (expression, nil) upon success, otherwise (..., error).
+func getCircleFilter(circle *datastore.Circle, phVals *[]interface{}) (string, error) {
+
+	if circle == nil {
+		return "TRUE", nil // don't filter by default
+	}
+
+	lat := circle.Center.GetLat()
+	if (lat < -90) || (lat > 90) {
+		return "", fmt.Errorf("latitude not in range [-90, 90]: %f", lat)
+	}
+
+	lon := circle.Center.GetLon()
+	if (lon < -180) || (lon > 180) {
+		return "", fmt.Errorf("longitude not in range [-180, 180]: %f", lon)
+	}
+
+	radius := circle.GetRadius() * 1000 // get radius in meters
+	if radius < 0 {
+		return "", fmt.Errorf("negative radius not allowed: %f", radius)
+	}
+
+	srid := "4326" // spatial reference system ID
+
+	index := len(*phVals) + 1
+	whereExpr := fmt.Sprintf(
+		"ST_DWithin(point, ST_SetSRID(ST_MakePoint($%d, $%d)::geography, %s), $%d)",
+		index, index+1, srid, index+2)
+	*phVals = append(*phVals, []interface{}{lon, lat, radius}...)
+
+	return whereExpr, nil
+}
+
+// getGeoFilter derives from polygon and circle the expression used in a WHERE clause for keeping
+// observations inside both of these areas (i.e. in their intersection).
+//
+// Values to be used for query placeholders are appended to phVals.
+//
+// Returns (expression, nil) upon success, otherwise (..., error).
+func getGeoFilter(
+	polygon *datastore.Polygon, circle *datastore.Circle, phVals *[]interface{}) (string, error) {
+
+	var err error
+
+	polygonExpr, err := getPolygonFilter(polygon, phVals)
+	if err != nil {
+		return "", fmt.Errorf("getPolygonFilter() failed: %v", err)
+	}
+
+	circleExpr, err := getCircleFilter(circle, phVals)
+	if err != nil {
+		return "", fmt.Errorf("getCircleFilter() failed: %v", err)
+	}
+
+	return fmt.Sprintf("(%s) AND (%s)", polygonExpr, circleExpr), nil
 }
 
 // getTableNameFromField gets the database table name associated with fieldName.
@@ -359,7 +416,7 @@ func createObsQueryVals(
 
 	timeFilter := getTimeFilter(tspec)
 
-	geoFilter, err := getGeoFilter(request.GetSpatialArea(), phVals)
+	geoFilter, err := getGeoFilter(request.GetSpatialPolygon(), request.GetSpatialCircle(), phVals)
 	if err != nil {
 		return "", "", "", "", fmt.Errorf("getGeoFilter() failed: %v", err)
 	}

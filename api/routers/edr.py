@@ -57,6 +57,9 @@ async def get_locations(
     bbox: Annotated[str | None, Query(example="5.0,52.0,6.0,52.1")] = None
 ) -> EDRFeatureCollection:  # Hack to use string
     ts_request = dstore.GetObsRequest(
+        spatial_polygon=dstore.Polygon(
+            points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords],
+        ),
         temporal_latest=True,
         included_response_fields=[
             "parameter_name",
@@ -268,7 +271,7 @@ async def get_data_area(
         await verify_parameter_names(parameter_name)
     request = dstore.GetObsRequest(
         filter=dict(parameter_name=dstore.Strings(values=parameter_name if parameter_name else None)),
-        spatial_area=dstore.Polygon(
+        spatial_polygon=dstore.Polygon(
             points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
         ),
         temporal_interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
