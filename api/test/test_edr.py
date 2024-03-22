@@ -11,10 +11,13 @@ client = TestClient(app)
 
 
 def test_get_locations_id_with_single_parameter_query_without_format():
-    with patch("routers.edr.get_obs_request") as mock_get_obs_request:
+    with patch("routers.edr.get_obs_request") as mock_get_obs_request, patch(
+        "routers.edr.verify_parameter_names"
+    ) as mock_verify_parameter_names:
         test_data = load_json("test/test_data/test_single_proto.json")
         compare_data = load_json("test/test_data/test_single_covjson.json")
 
+        mock_verify_parameter_names.return_value = None
         mock_get_obs_request.return_value = create_mock_obs_response(test_data)
 
         response = client.get(
