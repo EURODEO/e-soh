@@ -72,11 +72,12 @@ public:
 private:
   std::string addMessage(std::list<Descriptor>::const_iterator ci,
                          rapidjson::Document &message, char sensor_level_active,
-                         double sensor_level, time_t *start_datetime = 0) const;
+                         double sensor_level, std::string fn = "",
+                         time_t *start_datetime = 0) const;
   bool addDescriptor(Descriptor &D, rapidjson::Value &dest,
                      rapidjson::Document::AllocatorType &) const;
   bool addContent(const Descriptor &D, std::string cf_name,
-                  char sensor_level_active, double sensor_level,
+                  char sensor_level_active, double sensor_level, std::string fn,
                   rapidjson::Document &) const;
   bool setPlatformName(std::string v, rapidjson::Document &message,
                        bool force = true) const;
