@@ -26,7 +26,7 @@ def convert_to_geojson(response):
     features = [
         Feature(
             type="Feature",
-            id=ts.obs_mdata[0].metadata_id,
+            id=ts.ts_mdata.timeseries_id,
             properties=_make_properties(ts=ts),
             geometry=Point(
                 type="Point",
@@ -36,7 +36,7 @@ def convert_to_geojson(response):
                 ],
             ),
         )
-        for ts in sorted(response.observations, key=lambda ts: ts.obs_mdata[0].metadata_id)
+        for ts in sorted(response.observations, key=lambda ts: ts.ts_mdata.timeseries_id)
     ]
     if not features:
         raise HTTPException(404, detail="Query did not return any time series.")
