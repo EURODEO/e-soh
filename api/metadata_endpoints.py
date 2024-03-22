@@ -18,7 +18,7 @@ from edr_pydantic.parameter import Parameter
 from edr_pydantic.unit import Unit
 from edr_pydantic.variables import Variables
 from fastapi import HTTPException
-from grpc_getter import getTSAGRequest
+from grpc_getter import get_ts_ag_request
 
 
 logger = logging.getLogger(__name__)
@@ -43,8 +43,8 @@ def get_landing_page(request):
 
 
 async def get_collection_metadata(base_url: str, is_self) -> Collection:
-    ts_request = dstore.GetTSAGRequest(attrs=["parameter_name", "title", "standard_name", "instrument", "unit"])
-    ts_response = await getTSAGRequest(ts_request)
+    ts_request = dstore.GetTSAGRequest(attrs=["parameter_name", "standard_name", "unit", "level", "period", "function"])
+    ts_response = await get_ts_ag_request(ts_request)
     # logger.info(ts_response.ByteSize())
     # logger.info(len(ts_response.groups))
 
@@ -55,10 +55,10 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
     for group in ts_response.groups:
         ts = group.combo
         parameter = Parameter(
-            description=ts.title,
+            description=f"{ts.standard_name} at {ts.level}m {ts.period} {ts.function}",
             observedProperty=ObservedProperty(
                 id=f"https://vocab.nerc.ac.uk/standard_name/{ts.standard_name}",
-                label=ts.instrument,
+                label=ts.parameter_name,
             ),
             unit=Unit(label=ts.unit),
         )

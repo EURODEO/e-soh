@@ -91,7 +91,7 @@ message TSMetadata {
   string license = 8;
   string conventions = 9;
   string naming_authority = 10 [json_name = "naming_authority"];
-  string creator_type = 101 [json_name = "creator_type"];
+  string creator_type = 11 [json_name = "creator_type"];
   string creator_name = 12 [json_name = "creator_name"];
   string creator_email = 13 [json_name = "creator_email"];
   string creator_url = 14 [json_name = "creator_url"];
@@ -100,14 +100,20 @@ message TSMetadata {
   string source = 17;
   string platform = 18;
   string platform_vocabulary = 19 [json_name = "platform_vocabulary"];
-  string standard_name = 20 [json_name = "standard_name"];
-  string unit = 21;
-  string instrument = 22;
-  string instrument_vocabulary = 23 [json_name = "instrument_vocabulary"];
-  string level = 24;
+  string platform_name = 20 [json_name = "platform_name"];
+  string standard_name = 21 [json_name = "standard_name"];
+  string unit = 22;
+  string level = 23;
+  string function = 24;
   string period = 25;
-  string function = 26;
-  string parameter_name = 27 [json_name = "parameter_name"];
+  string instrument = 26;
+  string instrument_vocabulary = 27 [json_name = "instrument_vocabulary"];
+  string parameter_name = 28 [json_name = "parameter_name"];
+
+  // a 1-1 relationship with (naming_authority, platform, standard_name, level, function, period,
+  // instrument); typically a hash of those
+  string timeseries_id = 29 [json_name = "timeseries_id"];
+
   // --- END string metadata -----------------
 }
 
@@ -128,7 +134,6 @@ message ObsMetadata {
   string id = 6;
   string data_id = 7 [json_name = "data_id"];
   string history = 8;
-  string metadata_id = 9 [json_name = "metadata_id"];
   string processing_level = 10 [json_name = "processing_level"];
   // --- END string metadata -----------------
 

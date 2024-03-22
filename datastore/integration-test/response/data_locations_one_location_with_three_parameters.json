@@ -53,12 +53,12 @@
         "air_temperature:1.5:maximum:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "Ambient Temperature 1.5m 10 Min Maximum"
+                "en": "air_temperature at 1.5m PT10M maximum"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "tx"
+                    "en": "air_temperature:1.5:maximum:PT10M"
                 }
             },
             "unit": {
@@ -70,12 +70,12 @@
         "relative_humidity:2.0:mean:PT1M": {
             "type": "Parameter",
             "description": {
-                "en": "Relative Humidity 1 Min Average"
+                "en": "relative_humidity at 2.0m PT1M mean"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/relative_humidity",
                 "label": {
-                    "en": "rh"
+                    "en": "relative_humidity:2.0:mean:PT1M"
                 }
             },
             "unit": {
@@ -87,12 +87,12 @@
         "wind_from_direction:2.0:mean:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "Wind Direction 10 Min Average"
+                "en": "wind_from_direction at 2.0m PT10M mean"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/wind_from_direction",
                 "label": {
-                    "en": "dd"
+                    "en": "wind_from_direction:2.0:mean:PT10M"
                 }
             },
             "unit": {
