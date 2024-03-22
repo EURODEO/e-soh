@@ -4,6 +4,7 @@ from datetime import timezone
 from typing import Dict
 
 import datastore_pb2 as dstore
+from edr_pydantic.capabilities import ConformanceModel
 from edr_pydantic.capabilities import Contact
 from edr_pydantic.capabilities import LandingPageModel
 from edr_pydantic.capabilities import Provider
@@ -22,7 +23,6 @@ from edr_pydantic.unit import Unit
 from edr_pydantic.variables import Variables
 from grpc_getter import get_extents_request
 from grpc_getter import get_ts_ag_request
-
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -61,9 +61,26 @@ def get_landing_page(request):
             Link(href=f"{request.url}", rel="self", title="Landing Page in JSON"),
             Link(href=f"{request.url}docs", rel="service-desc", title="API description in HTML"),
             Link(href=f"{request.url}openapi.json", rel="service-desc", title="API description in JSON"),
-            # Link(href=f"{request.url}conformance", rel="data", title="Conformance Declaration in JSON"),
+            Link(href=f"{request.url}conformance", rel="conformance", title="Conformance Declaration in JSON"),
             Link(href=f"{request.url}collections", rel="data", title="Collections metadata in JSON"),
         ],
+    )
+
+
+def get_conformance() -> ConformanceModel:
+    return ConformanceModel(
+        conformsTo=[
+            "https://www.opengis.net/spec/ogcapi-common-1/1.0/conf/core",  # A2 - required
+            "https://www.opengis.net/spec/ogcapi-edr-1/1.1/req/collections",  # A3 - required
+            "https://www.opengis.net/spec/ogcapi-edr-1/1.1/req/queries",  # A4
+            "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/core",  # B2
+            "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/collections",  # B3
+            "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/json",  # B4
+            "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/geojson",  # B5
+            "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/covjson",  # B7
+            "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/html",  # B8
+            "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/oas30",  # B9
+        ]
     )
 
 
