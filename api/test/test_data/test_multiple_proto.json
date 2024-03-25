@@ -84,7 +84,8 @@
                 "level": "2.0",
                 "function": "mean",
                 "period": "PT1M",
-                "parameter_name": "relative_humidity:2.0:mean:PT1M"
+                "parameter_name": "relative_humidity:2.0:mean:PT1M",
+                "timeseries_id": "d036b10ac4f6e62049b9a496f04e0a83"
             },
             "obs_mdata": [
                 {
