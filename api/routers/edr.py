@@ -6,6 +6,7 @@ from typing import Dict
 from typing import Set
 from typing import Tuple
 
+import datastore_pb2 as dstore
 import formatters
 from covjson_pydantic.coverage import Coverage
 from covjson_pydantic.coverage import CoverageCollection
@@ -27,8 +28,6 @@ from utilities import get_datetime_range
 from utilities import split_and_strip
 from utilities import validate_bbox
 from utilities import verify_parameter_names
-
-import datastore_pb2 as dstore
 
 router = APIRouter(prefix="/collections/observations")
 
@@ -123,7 +122,7 @@ async def get_locations(
             type="Feature",
             id=station_id,
             properties={
-                "name": platform_names[station_id],
+                "platform_name": platform_names[station_id],
                 "detail": f"https://oscar.wmo.int/surface/rest/api/search/station?wigosId={station_id}",
                 "parameter-name": sorted(platform_parameters[station_id]),
             },
