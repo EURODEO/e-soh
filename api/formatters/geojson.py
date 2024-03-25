@@ -12,9 +12,9 @@ def _make_properties(ts):
         if not ts.ts_mdata.platform_vocabulary
         else ts.ts_mdata.platform_vocabulary
     )
-    # This should also be compatible with future when name is added to datastore
-    if "name" not in ts_metadata:
-        ts_metadata["name"] = ts.ts_mdata.platform  # TODO: grab proper name when implemented in proto
+
+    if "platform_name" not in ts_metadata:
+        ts_metadata["platform_name"] = f"platform-{ts.ts_mdata.platform}"
 
     return ts_metadata
 
