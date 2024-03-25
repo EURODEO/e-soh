@@ -42,6 +42,9 @@ CREATE TABLE time_series (
 	instrument TEXT NOT NULL, -- UMC
 	instrument_vocabulary TEXT NOT NULL,
 	parameter_name TEXT NOT NULL,
+
+    -- 1-1 relationship with the columns of the unique_main constraint (typically a hash of those)
+	timeseries_id TEXT NOT NULL,
 	-- --- END string metadata -----------------
 
 	-- --- END metadata fields that usually don't vary with obs time ---
@@ -78,7 +81,6 @@ CREATE TABLE observation (
 	id TEXT NOT NULL, -- required
 	data_id TEXT NOT NULL, -- required
 	history TEXT,
-	metadata_id TEXT NOT NULL, -- required
 	processing_level TEXT,
 	-- --- END string metadata -----------------
 

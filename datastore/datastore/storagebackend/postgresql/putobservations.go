@@ -273,7 +273,6 @@ func createInsertVals(
 			$%d,
 			$%d,
 			$%d,
-			$%d,
 			$%d
 			)`,
 			index+1,
@@ -285,7 +284,6 @@ func createInsertVals(
 			index+7,
 			index+8,
 			index+9,
-			index+10,
 		)
 
 		phVals0 := []interface{}{
@@ -296,7 +294,6 @@ func createInsertVals(
 			common.Tstamp2float64Secs((*omds)[i].GetPubtime()),
 			(*omds)[i].GetDataId(),
 			(*omds)[i].GetHistory(),
-			(*omds)[i].GetMetadataId(),
 			(*omds)[i].GetProcessingLevel(),
 			(*omds)[i].GetValue(),
 		}
@@ -340,7 +337,6 @@ func upsertObs(
 			pubtime,
 			data_id,
 			history,
-			metadata_id,
 			processing_level,
 			value)
 		VALUES %s
@@ -350,7 +346,6 @@ func upsertObs(
 	 		pubtime = EXCLUDED.pubtime,
 	 		data_id = EXCLUDED.data_id,
 	 		history = EXCLUDED.history,
-	 		metadata_id = EXCLUDED.metadata_id,
 	 		processing_level = EXCLUDED.processing_level,
 	 		value = EXCLUDED.value
 	`, strings.Join(valsExpr, ","))

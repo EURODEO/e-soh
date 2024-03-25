@@ -77,7 +77,7 @@ async def search_timeseries(
 
     obs_request = dstore.GetObsRequest(
         filter=dict(
-            metadata_id=dstore.Strings(values=split_and_strip(id) if id else None),
+            timeseries_id=dstore.Strings(values=split_and_strip(id) if id else None),
             parameter_name=dstore.Strings(values=split_and_strip(parameter_name) if parameter_name else None),
             naming_authority=dstore.Strings(values=split_and_strip(naming_authority) if naming_authority else None),
             institution=dstore.Strings(values=split_and_strip(institution) if institution else None),
@@ -110,7 +110,9 @@ async def get_time_series_by_id(
         formatters.Metadata_Formats, Query(description="Specify return format")
     ] = formatters.Metadata_Formats.geojson,
 ):
-    obs_request = dstore.GetObsRequest(filter=dict(metadata_id=dstore.Strings(values=[item_id])), temporal_latest=True)
+    obs_request = dstore.GetObsRequest(
+        filter=dict(timeseries_id=dstore.Strings(values=[item_id])), temporal_latest=True
+    )
     time_series = await get_obs_request(obs_request)
 
     return formatters.metadata_formatters[f](time_series)
