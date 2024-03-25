@@ -2,8 +2,8 @@ import json
 
 from deepdiff import DeepDiff
 from formatters.geojson import convert_to_geojson
-from utilities import create_mock_obs_response
-from utilities import load_json
+from test.utilities import create_mock_obs_response
+from test.utilities import load_json
 
 
 def actual_response_is_expected_response(actual_response, expected_json, **kwargs):
