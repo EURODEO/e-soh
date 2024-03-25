@@ -104,5 +104,4 @@ def _collect_data(ts_mdata, obs_mdata):
     if not ts_mdata.platform_name:
         ts_mdata.platform_name = f"platform-{ts_mdata.platform}"
 
-    print(ts_mdata)
     return Data(Dom(lat, lon, times), values, ts_mdata)
