@@ -46,7 +46,8 @@
                 "level": "2.0",
                 "function": "mean",
                 "period": "PT10M",
-                "parameter_name": "wind_from_direction:2.0:mean:PT10M"
+                "parameter_name": "wind_from_direction:2.0:mean:PT10M",
+                "timeseries_id": "d036b10ac4f6e62049b9a496f04e0a83"
             },
             "obs_mdata": [
                 {
