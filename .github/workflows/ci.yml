@@ -52,7 +52,7 @@ jobs:
       - name: Install just a command runner
         run: ./ci/scripts/install-just.sh
 
-      - name: Run Tests
+      - name: Run the unit test
         run: just unit
 
       - name: Comment coverage
