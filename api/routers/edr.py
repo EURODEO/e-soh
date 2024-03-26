@@ -171,8 +171,9 @@ async def get_data_location_id(
         request.filter["parameter_name"].values.extend(parameter_name)
 
     if datetime:
-        range = get_datetime_range(datetime)
-        request.temporal_interval.CopyFrom(dstore.TimeInterval(start=range[0], end=range[1]))
+        start, end = get_datetime_range(datetime)
+        request.temporal_interval.start.CopyFrom(start)
+        request.temporal_interval.end.CopyFrom(end)
 
     response = await get_obs_request(request)
     return formatters.formatters[f](response)
@@ -279,8 +280,9 @@ async def get_data_area(
         request.filter["parameter_name"].values.extend(parameter_name)
 
     if datetime:
-        range = get_datetime_range(datetime)
-        request.temporal_interval.CopyFrom(dstore.TimeInterval(start=range[0], end=range[1]))
+        start, end = get_datetime_range(datetime)
+        request.temporal_interval.start.CopyFrom(start)
+        request.temporal_interval.end.CopyFrom(end)
 
     coverages = await get_obs_request(request)
     coverages = formatters.formatters[f](coverages)
