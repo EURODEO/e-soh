@@ -158,11 +158,11 @@ async def get_data_location_id(
         str | None,
         Query(
             alias="parameter-name",
-            example="wind_from_direction_2.0_mean_PT10M,"
-            "wind_speed_2.0_mean_PT10M,"
-            "relative_humidity_2.0_mean_PT1M,"
-            "air_pressure_at_sea_level_2.0_mean_PT1M,"
-            "air_temperature_2.0_minimum_PT10M",
+            example="wind_from_direction:2.0:mean:PT10M,"
+            "wind_speed:10:mean:PT10M,"
+            "relative_humidity:2.0:mean:PT1M,"
+            "air_pressure_at_sea_level:1:mean:PT1M,"
+            "air_temperature:1.5:maximum:PT10M",
         ),
     ] = None,
     datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
@@ -198,11 +198,11 @@ async def get_data_position(
         str | None,
         Query(
             alias="parameter-name",
-            example="wind_from_direction_2.0_mean_PT10M,"
-            "wind_speed_2.0_mean_PT10M,"
-            "relative_humidity_2.0_mean_PT1M,"
-            "air_pressure_at_sea_level_2.0_mean_PT1M,"
-            "air_temperature_2.0_minimum_PT10M",
+            example="wind_from_direction:2.0:mean:PT10M,"
+            "wind_speed:10:mean:PT10M,"
+            "relative_humidity:2.0:mean:PT1M,"
+            "air_pressure_at_sea_level:1:mean:PT1M,"
+            "air_temperature:1.5:maximum:PT10M",
         ),
     ] = None,
     datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
@@ -244,11 +244,11 @@ async def get_data_area(
         str | None,
         Query(
             alias="parameter-name",
-            example="wind_from_direction_2.0_mean_PT10M,"
-            "wind_speed_2.0_mean_PT10M,"
-            "relative_humidity_2.0_mean_PT1M,"
-            "air_pressure_at_sea_level_2.0_mean_PT1M,"
-            "air_temperature_2.0_minimum_PT10M",
+            example="wind_from_direction:2.0:mean:PT10M,"
+            "wind_speed:10:mean:PT10M,"
+            "relative_humidity:2.0:mean:PT1M,"
+            "air_pressure_at_sea_level:1:mean:PT1M,"
+            "air_temperature:1.5:maximum:PT10M",
         ),
     ] = None,
     datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
