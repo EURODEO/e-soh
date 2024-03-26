@@ -11,7 +11,7 @@
                 ]
             },
             "properties": {
-                "platform_name": "DE BILT AWS",
+                "name": "DE BILT AWS",
                 "detail": "https://oscar.wmo.int/surface/rest/api/search/station?wigosId=0-20000-0-06260",
                 "parameter-name": [
                     "air_pressure_at_sea_level:1:mean:PT1M",
@@ -70,7 +70,7 @@
                 ]
             },
             "properties": {
-                "platform_name": "DEELEN",
+                "name": "DEELEN",
                 "detail": "https://oscar.wmo.int/surface/rest/api/search/station?wigosId=0-20000-0-06275",
                 "parameter-name": [
                     "air_pressure_at_sea_level:1:mean:PT1M",

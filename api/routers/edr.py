@@ -130,7 +130,7 @@ async def get_locations(
             type="Feature",
             id=station_id,
             properties={
-                "platform_name": list(platform_names[station_id])[0],
+                "name": list(platform_names[station_id])[0],
                 "detail": f"https://oscar.wmo.int/surface/rest/api/search/station?wigosId={station_id}",
                 "parameter-name": sorted(platform_parameters[station_id]),
             },

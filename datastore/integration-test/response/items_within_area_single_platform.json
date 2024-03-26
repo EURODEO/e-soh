@@ -31,7 +31,7 @@
                 "parameter_name": "wind_speed_of_gust:10:maximum:PT10M",
                 "timeseries_id": "225c8e92d96af07b1deec739ca681999",
                 "platform_vocabulary": "https://oscar.wmo.int/surface/rest/api/search/station?wigosId=0-20000-0-06225",
-                "platform_name": "IJMUIDEN WP"
+                "name": "IJMUIDEN WP"
             },
             "id": "225c8e92d96af07b1deec739ca681999"
         },
@@ -65,7 +65,7 @@
                 "parameter_name": "wind_speed:10:mean:PT10M",
                 "timeseries_id": "9f526eaa973d5daa6629fc400e7b107a",
                 "platform_vocabulary": "https://oscar.wmo.int/surface/rest/api/search/station?wigosId=0-20000-0-06225",
-                "platform_name": "IJMUIDEN WP"
+                "name": "IJMUIDEN WP"
             },
             "id": "9f526eaa973d5daa6629fc400e7b107a"
         },
@@ -99,7 +99,7 @@
                 "parameter_name": "wind_from_direction:2.0:mean:PT10M",
                 "timeseries_id": "c056de2030d4019d8b6a3efd20d245f0",
                 "platform_vocabulary": "https://oscar.wmo.int/surface/rest/api/search/station?wigosId=0-20000-0-06225",
-                "platform_name": "IJMUIDEN WP"
+                "name": "IJMUIDEN WP"
             },
             "id": "c056de2030d4019d8b6a3efd20d245f0"
         }

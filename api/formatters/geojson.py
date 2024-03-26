@@ -13,8 +13,11 @@ def _make_properties(ts):
         else ts.ts_mdata.platform_vocabulary
     )
 
-    if "platform_name" not in ts_metadata:
-        ts_metadata["platform_name"] = f"platform-{ts.ts_mdata.platform}"
+    if "platform_name" in ts_metadata:
+        ts_metadata["name"] = ts_metadata["platform_name"]
+        del ts_metadata["platform_name"]
+    else:
+        ts_metadata["name"] = f'platform-{ts_metadata["platform"]}'
 
     return ts_metadata
 
