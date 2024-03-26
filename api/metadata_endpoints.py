@@ -1,4 +1,6 @@
 import logging
+from datetime import datetime
+from datetime import timezone
 from typing import Dict
 
 import datastore_pb2 as dstore
@@ -11,6 +13,7 @@ from edr_pydantic.data_queries import DataQueries
 from edr_pydantic.data_queries import EDRQuery
 from edr_pydantic.extent import Extent
 from edr_pydantic.extent import Spatial
+from edr_pydantic.extent import Temporal
 from edr_pydantic.link import EDRQueryLink
 from edr_pydantic.link import Link
 from edr_pydantic.observed_property import ObservedProperty
@@ -18,11 +21,34 @@ from edr_pydantic.parameter import Parameter
 from edr_pydantic.unit import Unit
 from edr_pydantic.variables import Variables
 from fastapi import HTTPException
+from grpc_getter import get_extents_request
 from grpc_getter import get_ts_ag_request
 
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
+
+
+def datetime_to_iso_string(value: datetime) -> str:
+    """Returns the datetime as ISO 8601 string.
+    Changes timezone +00:00 to the military time zone indicator (Z).
+
+    Keyword arguments:
+    value -- A datetime
+
+    Returns:
+    datetime string -- Returns the datetime as an ISO 8601 string with the military indicator.
+    """
+    if value.tzinfo is None:
+        # This sort of replicates the functionality of Pydantic's AwareDatetime type
+        raise ValueError("Datetime object is not timezone aware")
+
+    iso_8601_str = value.isoformat()
+    tz_offset_utc = "+00:00"
+    if iso_8601_str.endswith(tz_offset_utc):
+        return f"{iso_8601_str[:-len(tz_offset_utc)]}Z"
+    else:
+        return iso_8601_str
 
 
 def get_landing_page(request):
@@ -73,12 +99,28 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
 
         all_parameters[ts.parameter_name] = parameter
 
+    extent_request = dstore.GetExtentsRequest()
+    extent_response = await get_extents_request(extent_request)
+    spatial_extent = extent_response.spatial_extent
+    interval_start = extent_response.temporal_extent.start.ToDatetime(tzinfo=timezone.utc)
+    interval_end = extent_response.temporal_extent.end.ToDatetime(tzinfo=timezone.utc)
+
     collection = Collection(
         id="observations",
         links=[
             Link(href=f"{base_url}/observations", rel="self" if is_self else "data"),
         ],
-        extent=Extent(spatial=Spatial(bbox=[[3.0, 50.0, 8.0, 55.0]], crs="WGS84")),  # TODO: Get this from database
+        extent=Extent(
+            spatial=Spatial(
+                bbox=[[spatial_extent.left, spatial_extent.bottom, spatial_extent.right, spatial_extent.top]],
+                crs="EPSG:4326",
+            ),
+            temporal=Temporal(
+                interval=[[interval_start, interval_end]],
+                values=[f"{datetime_to_iso_string(interval_start)}/{datetime_to_iso_string(interval_end)}"],
+                trs="datetime",
+            ),
+        ),
         data_queries=DataQueries(
             position=EDRQuery(
                 link=EDRQueryLink(
