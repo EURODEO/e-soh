@@ -14,6 +14,8 @@ test: unit load integration
 # ---------------------------------------------------------------------------- #
 copy-proto:
     #!/usr/bin/env bash
+    set -euxo pipefail
+
     declare -a destination_paths=(
         "./api"
         "./datastore/data-loader"
@@ -31,6 +33,8 @@ copy-proto:
 
 check-python-version:
     #!/usr/bin/env bash
+    set -euxo pipefail
+
     # Get Python version
     python_version=$(python --version 2>&1 | cut -d' ' -f2)
 
@@ -48,6 +52,8 @@ check-python-version:
 # run pip-compile for all the requirement files
 pip-compile: check-python-version
     #!/usr/bin/env bash
+    set -euxo pipefail
+
     find . \
         -iname "*requirements.in" \
         -type f \
@@ -61,6 +67,8 @@ pip-compile: check-python-version
 # ---------------------------------------------------------------------------- #
 lint: check-python-version
     #!/usr/bin/env bash
+    set -euxo pipefail
+
     if ! command -v pre-commit &> /dev/null; then
         python -m pip install pre-commit
     fi
@@ -75,6 +83,8 @@ integration:
 
 unit: copy-proto
     #!/usr/bin/env bash
+    set -euxo pipefail
+
     pip install --upgrade pip
     pip install pytest-timeout
     pip install pytest-cov
@@ -93,6 +103,8 @@ unit: copy-proto
 
 performance:
     #!/usr/bin/env bash
+    set -euxo pipefail
+
     cd datastore/load-test || exit 1
     pip install -r requirements.txt
 
