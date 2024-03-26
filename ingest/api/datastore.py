@@ -25,7 +25,8 @@ def is_timezone_aware(dt):
 
 
 def nstime2stime(nstime):
-    nstime = nstime.split(".")
+    nstime = nstime.split("+")
+    nstime = nstime[0].split(".")
     if len(nstime) == 1:
         return nstime[0]
     else:
@@ -38,32 +39,6 @@ def dtime2str(dtime):
 
     else:
         return datetime.strptime(dtime, "%Y-%m-%dT%H:%M:%S")
-
-
-# class DatastoreConnection:
-# def __init__(self, ds_host: str, ds_port: str) -> None:
-#     self._channel = grpc.insecure_channel(ds_host + ":" + ds_port)
-#     self._stub = dstore_grpc.DatastoreStub(self._channel)
-
-#     self.is_channel_ready()
-
-#     logger.info(f"Established connection to {ds_host} gRPC service")
-
-# def is_channel_ready(self):
-#     try:
-#         grpc.channel_ready_future(self._channel).result(timeout=10)
-#     except grpc.FutureTimeoutError:
-#         logger.exception(
-#             grpc.FutureTimeoutError(
-#                 "Connection to the grpc service timed out, " "and was not available at application" "start."
-#             )
-#         )
-#         raise grpc.FutureTimeoutError(
-#             "Connection to the grpc service timed out, " "and was not available at application start."
-#         )
-#     except Exception as e:
-#         logger.exception(f"Unhandled exepction {e}")
-#         raise
 
 
 def ingest(msg: str) -> None:
