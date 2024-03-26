@@ -28,7 +28,7 @@
         "parameter_name": "air_temperature:2.0:minimum:PT12H",
         "timeseries_id": "f0d06231a6508f281dbdaea0b5000220",
         "platform_vocabulary": "https://oscar.wmo.int/surface/rest/api/search/station?wigosId=0-20000-0-06275",
-        "name": "DEELEN"
+        "platform_name": "DEELEN"
     },
     "id": "f0d06231a6508f281dbdaea0b5000220"
 }
