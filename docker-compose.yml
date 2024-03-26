@@ -70,6 +70,14 @@ services:
       store:
         condition: service_healthy
 
+  api-unit:
+    profiles: [ "test" ]
+    build:
+      context: api
+      dockerfile: unit.Dockerfile
+    volumes:
+      - ./api/test/output:/app/output
+
   client:
     profiles: ["test"]
     build:

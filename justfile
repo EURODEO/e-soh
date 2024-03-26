@@ -82,23 +82,7 @@ integration:
 
 
 unit: copy-proto
-    #!/usr/bin/env bash
-    set -euxo pipefail
-
-    pip install --upgrade pip
-    pip install pytest-timeout
-    pip install pytest-cov
-    pip install httpx
-    pip install -r ./api/requirements.txt
-
-    cd api
-    python -m pytest \
-        --timeout=60 \
-        --junitxml=pytest.xml \
-        --cov-report=term-missing \
-        --cov=. \
-        --cov-config=test/.coveragerc | tee pytest-coverage.txt
-    cd ..
+    docker compose run --rm api-unit
 
 
 performance:
