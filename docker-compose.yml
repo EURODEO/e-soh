@@ -66,6 +66,7 @@ services:
     environment:
       - DSHOST=store
       - DSPORT=50050
+      - PROXY_IP=${PROXY_IP:-}
     depends_on:
       store:
         condition: service_healthy
