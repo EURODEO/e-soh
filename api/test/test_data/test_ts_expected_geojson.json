@@ -1,0 +1,23 @@
+{
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            6.5848470019087,
+            53.123676213651
+        ]
+    },
+    "properties": {
+        "platform": "0-20000-0-06280",
+        "standard_name": "wind_speed",
+        "unit": "m s-1",
+        "level": "10",
+        "function": "mean",
+        "period": "PT10M",
+        "parameter_name": "wind_speed:10:mean:PT10M",
+        "timeseries_id": "d036b10ac4f6e62049b9a496f04e0a81",
+        "platform_vocabulary": "https://oscar.wmo.int/surface/#/search/station/stationReportDetails/0-20000-0-06280",
+        "name": "0-20000-0-06280"
+    },
+    "id": "d036b10ac4f6e62049b9a496f04e0a81"
+}

@@ -32,7 +32,7 @@ def call_put_obs(
         level=level,
         function=function,
         period=period,
-        parameter_name=parameter_name
+        parameter_name=parameter_name,
         # add more attributes as required ...
     )
 

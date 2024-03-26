@@ -65,7 +65,6 @@ docker compose down --volumes
 docker compose --profile test build
 DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose up -d
 DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm loader
-DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm client
 DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm integration
 ```
 
@@ -204,7 +203,7 @@ message PutObsRequest {
 ### Insert observations
 
 ```text
-$ grpcurl -d '{"observations": [{"ts_mdata": {"version": "version_dummy", "type": "type_dummy", "standard_name": "air_temperature", "unit": "celsius"}, "obs_mdata": {"id": "id_dummy", "geo_point": {"lat": 59.91, "lon": 10.75}, "pubtime": "2023-01-01T00:00:10Z", "data_id": "data_id_dummy", "obstime_instant": "2023-01-01T00:00:00Z", "value": "123.456"}}]}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.PutObservations
+$ grpcurl -d '{"observations": [{"ts_mdata": {"timeseries_id": "timeseries_id_dummy", "version": "version_dummy", "type": "type_dummy", "standard_name": "air_temperature", "unit": "celsius"}, "obs_mdata": {"id": "id_dummy", "geo_point": {"lat": 59.91, "lon": 10.75}, "pubtime": "2023-01-01T00:00:10Z", "data_id": "data_id_dummy", "obstime_instant": "2023-01-01T00:00:00Z", "value": "123.456"}}]}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.PutObservations
 ...
 ```
 
@@ -243,24 +242,31 @@ $ grpcurl -d '{"filter": {"standard_name": {"values": ["wind_speed", "air_temper
 ...
 ```
 
-### Retrieve all wind speed observations for platform 78990
+### Retrieve all wind speed observations for platform 0-20000-0-78990
 
 ```text
-$ grpcurl -d '{"filter": {"standard_name": {"values": ["wind_speed"]}, "platform": {"values": ["78990"]}}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
+$ grpcurl -d '{"filter": {"standard_name": {"values": ["wind_speed"]}, "platform": {"values": ["0-20000-0-78990"]}}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
 ...
 ```
 
-### Retrieve the most recent wind speed observation for platform 78990
+### Retrieve the most recent wind speed observation for platform 0-20000-0-78990
 
 ```text
-$ grpcurl -d '{"filter": {"standard_name": {"values": ["wind_speed"]}, "platform": {"values": ["78990"]}}, "temporal_mode": "latest"}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
+$ grpcurl -d '{"filter": {"standard_name": {"values": ["wind_speed"]}, "platform": {"values": ["0-20000-0-78990"]}}, "temporal_latest": true}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
+...
+```
+
+### Retrieve the most recent wind speed observation for platform 0-20000-0-78990 in a time range
+
+```text
+$ grpcurl -d '{"filter": {"standard_name": {"values": ["wind_speed"]}, "platform": {"values": ["0-20000-0-78990"]}}, "temporal_latest": true, "temporal_interval": {"start": "2022-12-31T23:10:00Z", "end": "2022-12-31T23:40:10Z"}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
 ...
 ```
 
 ### Retrieve the most recent observations of all time series with platform, parameter_name, and geo_point as the only metadata fields to include in the response
 
 ```text
-$ grpcurl -d '{"temporal_mode": "latest", "included_response_fields": ["platform", "parameter_name", "geo_point"]}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
+$ grpcurl -d '{"temporal_latest": true, "included_response_fields": ["platform", "parameter_name", "geo_point"]}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
 ...
 ```
 

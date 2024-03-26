@@ -23,7 +23,13 @@ async def get_obs_request(request):
     return response
 
 
-async def getTSAGRequest(request):
+async def get_ts_ag_request(request):
     grpc_stub = get_grpc_stub()
     response = await grpc_stub.GetTSAttrGroups(request)
+    return response
+
+
+async def get_extents_request(request):
+    grpc_stub = get_grpc_stub()
+    response = await grpc_stub.GetExtents(request)
     return response

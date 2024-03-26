@@ -4,13 +4,14 @@ import logging
 
 import metadata_endpoints
 from brotli_asgi import BrotliMiddleware
-from dependencies import create_url_from_request
 from edr_pydantic.capabilities import LandingPageModel
 from edr_pydantic.collections import Collection
 from edr_pydantic.collections import Collections
 from fastapi import FastAPI
 from fastapi import Request
-from routers import edr  # , records
+from routers import edr
+from routers import feature
+from utilities import create_url_from_request
 
 
 def setup_logging():
@@ -64,4 +65,4 @@ async def get_collection_metadata(request: Request) -> Collection:
 
 # Include all routes
 app.include_router(edr.router)
-# app.include(records.router)
+app.include_router(feature.router)

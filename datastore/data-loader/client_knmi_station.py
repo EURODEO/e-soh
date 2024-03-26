@@ -5,6 +5,7 @@ import math
 import os
 import re
 import uuid
+from hashlib import md5
 from multiprocessing import cpu_count
 from pathlib import Path
 from time import perf_counter
@@ -48,9 +49,10 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                     station_name,
                     param_id,
                 )
+                platform = f"0-20000-0-{station_id}"
 
                 ts_mdata = dstore.TSMetadata(
-                    platform=f"0-20000-0-{station_id}",
+                    platform=platform,
                     instrument=param_id,
                     title=param_file.long_name,
                     standard_name=standard_name,
@@ -59,6 +61,23 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                     period=period,
                     function=function,
                     parameter_name=":".join([standard_name, level, function, period]),
+                    naming_authority="nl.knmi",
+                    keywords=file["iso_dataset"].attrs["keyword"],
+                    keywords_vocabulary=file.attrs["references"],
+                    source=file.attrs["source"],
+                    creator_name="KNMI",
+                    creator_email=file["iso_dataset"].attrs["email_dataset"],
+                    creator_url=file["iso_dataset"].attrs["url_metadata"],
+                    creator_type="Institution",
+                    institution=file.attrs["institution"],
+                    timeseries_id=md5(
+                        "".join(
+                            [
+                                station_id,
+                                platform + standard_name + level + period + function + "nl.knmi",
+                            ]
+                        ).encode()
+                    ).hexdigest(),
                 )
 
                 for time, obs_value in zip(
