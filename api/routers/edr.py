@@ -81,12 +81,12 @@ async def get_locations(
     ts_response = await get_obs_request(ts_request)
 
     platform_parameters: DefaultDict[str, Set[str]] = defaultdict(set)
-    platform_names: Dict[str, str] = defaultdict(str)
+    platform_names: Dict[str, Set[str]] = defaultdict(set)
     platform_coordinates: Dict[str, Set[Tuple[float, float]]] = defaultdict(set)
     all_parameters: Dict[str, Parameter] = {}
     for obs in ts_response.observations:
-        platform_names[obs.ts_mdata.platform] = (
-            obs.ts_mdata.platform_name if obs.ts_mdata.platform_name != "" else f"platform-{obs.ts_mdata.platform}"
+        platform_names[obs.ts_mdata.platform].add(
+            obs.ts_mdata.platform_name if obs.ts_mdata.platform_name else f"platform-{obs.ts_mdata.platform}"
         )
         parameter = make_parameter(obs.ts_mdata)
         platform_parameters[obs.ts_mdata.platform].add(obs.ts_mdata.parameter_name)
@@ -106,7 +106,7 @@ async def get_locations(
             )
         all_parameters[obs.ts_mdata.parameter_name] = parameter
 
-    # Check for multiple coordinates on one station
+    # Check for multiple coordinates or names on one station
     for station_id in platform_parameters.keys():
         if len(platform_coordinates[station_id]) > 1:
             raise HTTPException(
@@ -116,13 +116,21 @@ async def get_locations(
                     f"has multiple coordinates: {platform_coordinates[station_id]}"
                 },
             )
+        if len(platform_names[station_id]) > 1:
+            raise HTTPException(
+                status_code=500,
+                detail={
+                    "platform_name": f"Station with id `{station_id} "
+                    f"has multiple names: {platform_names[station_id]}"
+                },
+            )
 
     features = [
         Feature(
             type="Feature",
             id=station_id,
             properties={
-                "platform_name": platform_names[station_id],
+                "platform_name": list(platform_names[station_id])[0],
                 "detail": f"https://oscar.wmo.int/surface/rest/api/search/station?wigosId={station_id}",
                 "parameter-name": sorted(platform_parameters[station_id]),
             },
