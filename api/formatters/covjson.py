@@ -1,6 +1,8 @@
 import math
+import operator
 from collections import namedtuple
 from datetime import timezone
+from functools import reduce
 from itertools import groupby
 
 from covjson_pydantic.coverage import Coverage
@@ -88,9 +90,8 @@ def convert_to_covjson(response):
     elif len(coverages) == 1:
         return coverages[0]
     else:
-        return CoverageCollection(
-            coverages=coverages, parameters=coverages[0].parameters
-        )  # HACK to take parameters from first one
+        parameter_union = reduce(operator.ior, (c.parameters for c in coverages), {})
+        return CoverageCollection(coverages=coverages, parameters=dict(sorted(parameter_union.items())))
 
 
 def _collect_data(ts_mdata, obs_mdata):
