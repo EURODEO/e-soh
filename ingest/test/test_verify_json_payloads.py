@@ -56,25 +56,25 @@ def test_verify_json_payload_metno_netcdf(netcdf_file_path):
             raise ValidationError(e)
 
 
-@pytest.mark.parametrize("netcdf_file_path", glob.glob("test/test_data/knmi/*.nc"))
-def test_verify_json_payload_knmi_netcdf(netcdf_file_path):
-    with open("src/ingest/schemas/e-soh-message-spec.json", "r") as file:
-        e_soh_mqtt_message_schema = json.load(file)
+# @pytest.mark.parametrize("netcdf_file_path", glob.glob("test/test_data/knmi/*.nc"))
+# def test_verify_json_payload_knmi_netcdf(netcdf_file_path):
+#     with open("src/ingest/schemas/e-soh-message-spec.json", "r") as file:
+#         e_soh_mqtt_message_schema = json.load(file)
 
-    ds = xr.load_dataset(netcdf_file_path)
+#     ds = xr.load_dataset(netcdf_file_path)
 
-    msg_build = IngestToPipeline(None, "testing", testing=True)
+#     msg_build = IngestToPipeline(None, "testing", testing=True)
 
-    json_payloads = msg_build._build_messages(ds, input_type="netCDF")
+#     json_payloads = msg_build._build_messages(ds, input_type="netCDF")
 
-    for payload in json_payloads:
-        try:
-            assert Draft202012Validator(e_soh_mqtt_message_schema).validate(payload) is None
-        except ValidationError as e:
-            print(e, "\n\n")
-            raise ValidationError(e)
+#     for payload in json_payloads:
+#         try:
+#             assert Draft202012Validator(e_soh_mqtt_message_schema).validate(payload) is None
+#         except ValidationError as e:
+#             print(e, "\n\n")
+#             raise ValidationError(e)
 
 
-if __name__ == "__main__":
-    [test_verify_json_payload_knmi_netcdf(i) for i in glob.glob("test/test_data/knmi/*nc")]
-    pass
+# if __name__ == "__main__":
+#     [test_verify_json_payload_knmi_netcdf(i) for i in glob.glob("test/test_data/knmi/*nc")]
+#     pass

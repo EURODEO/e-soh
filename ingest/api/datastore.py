@@ -117,29 +117,12 @@ def ingest(msg: str) -> None:
         elif i in msg["properties"]["content"]:
             setattr(observation_data, i, msg["properties"]["content"][i])
 
-    # json_format.ParseDict(msg, observation_data,
-    #                       ignore_unknown_fields=True, max_recursion_depth=100)
-    # json_format.ParseDict(msg["properties"], observation_data, ignore_unknown_fields=True)
-    # json_format.ParseDict(msg["properties"]["content"],
-    #                       observation_data, ignore_unknown_fields=True)
-
-    # observation_data["obstime"] = Timestamp().FromDatetime(
-    #     datetime.strptime(msg["properties"]["datetime"],
-    #                       "%Y-%m-%dT%H:%M:%S"))
-
     request = dstore.PutObsRequest(observations=[dstore.Metadata1(ts_mdata=ts_metadata, obs_mdata=observation_data)])
 
     try:
         putObsRequest(request)
-        # self._stub.PutObservations(request)
     except grpc.RpcError as e:
         logger.critical(str(e))
-        pass
-
-
-# def ingest_list(self, msg_list: list) -> None:
-#     for i in msg_list:
-#         self.ingest(i)
 
 
 def putObsRequest(put_obs_request):

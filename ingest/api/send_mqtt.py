@@ -28,7 +28,9 @@ class MQTTConnection:
 
         logger.info(f"Established MQTT connection to {self.mqtt_host}, with topic {self.mqtt_topic}")
 
-    def send_message(self, message: str):
+    def send_message(self, message: str, topic: str):
+        if len(topic) != 0:
+            self.mqtt_topic = topic
         try:
             if isinstance(message, str):
                 self.pub_client.publish(self.mqtt_topic, message)

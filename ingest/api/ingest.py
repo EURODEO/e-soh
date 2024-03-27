@@ -77,17 +77,22 @@ class IngestToPipeline:
         This method accepts a list of json strings ready to be ingest to datastore
          and published to the mqtt topic.
         """
+        if len(messages) > 0:
+            topic = messages[0]["properties"]["naming_authority"]
         for msg in messages:
             if msg:
                 try:
                     ingest(msg)
-                    # self.mqtt.send_message(msg)
                 except grpc.RpcError as v_error:
-                    # self.dstore.is_channel_ready()
                     return "Failed to ingest" + "\n" + str(v_error), 500
                 except Exception as e:
                     return "Failed to ingest" + "\n" + str(e), 502
-        return "succesfully published", 200
+                try:
+                    self.mqtt.send_message(msg, topic)
+                except Exception as e:
+                    return "Failed to publish " + str(e), 502
+
+        return "Succesfully published", 200
 
     def _decide_input_type(self, message) -> str:
         """

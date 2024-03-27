@@ -29,13 +29,6 @@ mqtt_configuration = {
     "password": os.getenv("MQTT_PASSWORD", "password"),
 }
 
-# datastore_configuration = {
-#     "dshost": os.getenv("DATASTORE_HOST", "localhost"),
-#     "dsport": os.getenv("DATASTORE_PORT", "1234"),
-#     "username": os.getenv("DATASTORE_USERNAME", "username"),
-#     "password": os.getenv("DATASTORE_PASSWORD", "password"),
-# }
-
 
 @app.post("/nc")
 async def upload_netcdf_file(files: UploadFile, input_type: str = "nc"):
