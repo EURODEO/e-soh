@@ -1,4 +1,5 @@
 # For developing:    uvicorn main:app --reload
+import logging
 from collections import defaultdict
 from typing import Annotated
 from typing import DefaultDict
@@ -20,6 +21,7 @@ from formatters.covjson import make_parameter
 from geojson_pydantic import Feature
 from geojson_pydantic import Point
 from grpc_getter import get_obs_request
+from grpc_getter import get_ts_ag_request
 from shapely import buffer
 from shapely import geometry
 from shapely import wkt
@@ -28,6 +30,11 @@ from utilities import get_datetime_range
 from utilities import split_and_strip
 from utilities import validate_bbox
 from utilities import verify_parameter_names
+
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
 
 router = APIRouter(prefix="/collections/observations")
 
@@ -56,17 +63,27 @@ response_fields_needed_for_data_api = [
 async def get_locations(
     bbox: Annotated[str | None, Query(example="5.0,52.0,6.0,52.1")] = None
 ) -> EDRFeatureCollection:  # Hack to use string
+    # TODO: Remove duplication between `/collections` endpoint
+    # Get all unique parameters
+    ts_request = dstore.GetTSAGRequest(attrs=["parameter_name", "standard_name", "unit", "level", "period", "function"])
+    ts_response = await get_ts_ag_request(ts_request)
+    # logger.info(ts_response.ByteSize())
+
+    # Sadly, this is a different parameter as in the /locations endpoint, due to an error in the EDR spec
+    # See: https://github.com/opengeospatial/ogcapi-environmental-data-retrieval/issues/427
+    all_parameters: Dict[str, Parameter] = {}
+
+    for group in ts_response.groups:
+        ts = group.combo
+        parameter = make_parameter(ts)
+        all_parameters[ts.parameter_name] = parameter
+
     ts_request = dstore.GetObsRequest(
         temporal_latest=True,
         included_response_fields=[
             "parameter_name",
             "platform",
             "geo_point",
-            "standard_name",
-            "unit",
-            "level",
-            "period",
-            "function",
         ],
     )
     # Add spatial area to the time series request if bbox exists.
@@ -78,28 +95,17 @@ async def get_locations(
         )
 
     ts_response = await get_obs_request(ts_request)
+    # logger.info(ts_response.ByteSize())
 
     platform_parameters: DefaultDict[str, Set[str]] = defaultdict(set)
     platform_coordinates: Dict[str, Set[Tuple[float, float]]] = defaultdict(set)
-    all_parameters: Dict[str, Parameter] = {}
     for obs in ts_response.observations:
-        parameter = make_parameter(obs.ts_mdata)
         platform_parameters[obs.ts_mdata.platform].add(obs.ts_mdata.parameter_name)
         # Take last point
         platform_coordinates[obs.ts_mdata.platform].add(
             (obs.obs_mdata[-1].geo_point.lon, obs.obs_mdata[-1].geo_point.lat)
         )
-        # Check for inconsistent parameter definitions between stations
-        # TODO: How to handle those?
-        if obs.ts_mdata.parameter_name in all_parameters and all_parameters[obs.ts_mdata.parameter_name] != parameter:
-            raise HTTPException(
-                status_code=500,
-                detail={
-                    "parameter": f"Parameter with name {obs.ts_mdata.parameter_name} "
-                    f"has multiple definitions:\n{all_parameters[obs.ts_mdata.parameter_name]}\n{parameter}"
-                },
-            )
-        all_parameters[obs.ts_mdata.parameter_name] = parameter
+        # TODO: How to check for inconsistent parameter definitions between stations
 
     # Check for multiple coordinates on one station
     for station_id in platform_parameters.keys():
