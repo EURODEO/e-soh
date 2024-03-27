@@ -101,6 +101,12 @@ async def get_locations(
 
     ts_response = await get_obs_request(ts_request)
 
+    if len(ts_response.observations) == 0:
+        raise HTTPException(
+            status_code=404,
+            detail="Query did not return any features.",
+        )
+
     platform_parameters: DefaultDict[str, Set[str]] = defaultdict(set)
     platform_coordinates: Dict[str, Set[Tuple[float, float]]] = defaultdict(set)
     all_parameters: Dict[str, Parameter] = {}
