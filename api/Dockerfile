@@ -6,7 +6,7 @@ ENV DOCKER_PATH="/app"
 
 RUN apt-get update \
     && apt-get -y upgrade \
-    && apt-get install -y --no-install-recommends git \
+    && apt-get install -y --no-install-recommends git curl \
     # Cleanup
     && rm -rf /usr/tmp  \
     && apt-get autoremove -y \

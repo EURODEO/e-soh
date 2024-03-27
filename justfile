@@ -77,15 +77,15 @@ lint: check-python-version
 
 
 # run tests
-integration:
+integration: build
     docker compose --env-file ./ci/config/env.list run --rm integration
 
 
-unit: copy-proto
+unit: build
     docker compose run --rm api-unit
 
 
-performance:
+performance: up
     #!/usr/bin/env bash
     set -euxo pipefail
 
@@ -98,7 +98,7 @@ performance:
     locust -f locustfile_read.py --headless -u 5 -r 10 --run-time 60 --only-summary --csv store_read
 
     echo "Run load test (write + read)."
-    python -m grpc_tools.protoc --proto_path=./protobuf datastore.proto --python_out=load-test --grpc_python_out=load-test
+    python -m grpc_tools.protoc --proto_path=./protobuf datastore.proto --python_out=. --grpc_python_out=.
     python schedule_write.py > schedule_write.log 2>&1 &
     locust -f locustfile_read.py --headless -u 5 -r 10 --run-time 60 --only-summary --csv store_rw
     kill %1

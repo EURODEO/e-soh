@@ -1,6 +1,7 @@
 # Use the following command to generate the python protobuf stuff in
 # the correct place (from the root of the repository)
 # python -m grpc_tools.protoc --proto_path=datastore/protobuf datastore.proto --python_out=load-test --grpc_python_out=load-test  # noqa: E501
+import os
 import random
 from datetime import datetime
 
@@ -33,7 +34,7 @@ points = [
 
 
 class StoreGrpcUser(grpc_user.GrpcUser):
-    host = "localhost:50050"
+    host = f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}"
     stub_class = dstore_grpc.DatastoreStub
 
     @task
