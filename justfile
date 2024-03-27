@@ -5,7 +5,7 @@ default:
 set positional-arguments
 
 # After running just all, the database needs cleanup, run just down
-all: lint unit build services load integration performance client
+all: lint build unit services load integration performance client
 up: build services
 test: unit load integration
 
