@@ -23,8 +23,10 @@ def test_verify_json_payload_bufr(bufr_file_path):
     init_oscar_py("./src/ingest/bufr/oscar/oscar_stations_all.json")
     init_bufr_schema_py("./src/ingest/schemas/bufr_to_e_soh_message.json")
     msg_build = IngestToPipeline(None, "testing", testing=True)
+    with open(bufr_file_path, "rb") as file:
+        bufr_content = file.read()
 
-    json_payloads = msg_build._build_messages(bufr_file_path, input_type="bufr")
+    json_payloads = msg_build._build_messages(bufr_content, input_type="bufr")
 
     for payload in json_payloads:
         try:
