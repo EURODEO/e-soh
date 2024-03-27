@@ -132,5 +132,18 @@ services:
       api:
         condition: service_healthy
 
+  performance:
+    profiles: [ "test" ]
+    build:
+      context: datastore/load-test
+    environment:
+      - DSHOST=store
+      - DSPORT=50050
+    volumes:
+      - ./datastore/load-test/output:/load-test/output
+    depends_on:
+      store:
+        condition: service_healthy
+
 volumes:
   ts-data:

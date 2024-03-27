@@ -85,27 +85,8 @@ unit: build
     docker compose run --rm api-unit
 
 
-performance: up
-    #!/usr/bin/env bash
-    set -euxo pipefail
-
-    cd datastore/load-test || exit 1
-    pip install -r requirements.txt
-
-    echo "Run load test (read only)."
-    python --version
-    python -m grpc_tools.protoc --proto_path=./protobuf datastore.proto --python_out=. --grpc_python_out=.
-    locust -f locustfile_read.py --headless -u 5 -r 10 --run-time 60 --only-summary --csv store_read
-
-    echo "Run load test (write + read)."
-    python -m grpc_tools.protoc --proto_path=./protobuf datastore.proto --python_out=. --grpc_python_out=.
-    python schedule_write.py > schedule_write.log 2>&1 &
-    locust -f locustfile_read.py --headless -u 5 -r 10 --run-time 60 --only-summary --csv store_rw
-    kill %1
-    echo "Catting schedule_write output..."
-    cat schedule_write.log
-    echo "Done catting"
-    cd ../.. || exit 1
+performance: build
+    docker compose --env-file ./ci/config/env.list run --rm performance
 
 
 # After running client the database needs cleanup, run just down.
@@ -116,7 +97,7 @@ client:
 #                                    build                                     #
 # ---------------------------------------------------------------------------- #
 build: copy-proto
-    docker compose --profile test build
+    docker compose --env-file ./ci/config/env.list --profile test build
 
 
 # # ---------------------------------------------------------------------------- #

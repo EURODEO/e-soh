@@ -95,20 +95,20 @@ jobs:
         with:
           name: performance
           path: |
-            datastore/load-test/store_read_*.csv
-            datastore/load-test/store_rw_*.csv
+            datastore/load-test/output/store_read_*.csv
+            datastore/load-test/output/store_rw_*.csv
 
       - name: Print results
         run: |
           pip install csvkit
           echo "## Stats (READ ONLY)" >> $GITHUB_STEP_SUMMARY
-          csvlook datastore/load-test/store_read_stats.csv >> $GITHUB_STEP_SUMMARY
+          csvlook datastore/load-test/output/store_read_stats.csv >> $GITHUB_STEP_SUMMARY
           echo "## Failures (READ ONLY)" >> $GITHUB_STEP_SUMMARY
-          csvlook datastore/load-test/store_read_failures.csv >> $GITHUB_STEP_SUMMARY
+          csvlook datastore/load-test/output/store_read_failures.csv >> $GITHUB_STEP_SUMMARY
           echo "## Stats (WRITE + READ)" >> $GITHUB_STEP_SUMMARY
-          csvlook datastore/load-test/store_rw_stats.csv >> $GITHUB_STEP_SUMMARY
+          csvlook datastore/load-test/output/store_rw_stats.csv >> $GITHUB_STEP_SUMMARY
           echo "## Failures (WRITE + READ)" >> $GITHUB_STEP_SUMMARY
-          csvlook datastore/load-test/store_rw_failures.csv >> $GITHUB_STEP_SUMMARY
+          csvlook datastore/load-test/output/store_rw_failures.csv >> $GITHUB_STEP_SUMMARY
 
       - name: Cleanup
         if: always()
