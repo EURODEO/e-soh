@@ -101,7 +101,4 @@ def _collect_data(ts_mdata, obs_mdata):
     )  # HACK: str -> float
     (times, values) = zip(*tuples)
 
-    if not ts_mdata.platform_name:
-        ts_mdata.platform_name = f"platform-{ts_mdata.platform}"
-
     return Data(Dom(lat, lon, times), values, ts_mdata)
