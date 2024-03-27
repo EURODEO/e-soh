@@ -66,6 +66,7 @@ services:
     environment:
       - DSHOST=store
       - DSPORT=50050
+      - FORWARDED_ALLOW_IPS=${FORWARDED_ALLOW_IPS:-127.0.0.1}
     depends_on:
       store:
         condition: service_healthy

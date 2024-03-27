@@ -9,12 +9,12 @@
                 "axes": {
                     "x": {
                         "values": [
-                            22.19342704
+                            5.5196324030324
                         ]
                     },
                     "y": {
                         "values": [
-                            59.86948983
+                            52.457270486008
                         ]
                     },
                     "t": {
@@ -46,22 +46,26 @@
                 ]
             },
             "parameters": {
-                "TA_P1D_AVG": {
+                "air_temperature:2.0:mean:PT1M": {
                     "type": "Parameter",
+                    "description": {
+                        "en": "air_temperature at 2.0m PT1M mean"
+                    },
                     "observedProperty": {
+                        "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                         "label": {
-                            "en": "TA_P1D_AVG"
+                            "en": "air_temperature:2.0:mean:PT1M"
                         }
                     },
                     "unit": {
                         "label": {
-                            "en": "degC"
+                            "en": "degrees Celsius"
                         }
                     }
                 }
             },
             "ranges": {
-                "TA_P1D_AVG": {
+                "air_temperature:2.0:mean:PT1M": {
                     "type": "NdArray",
                     "dataType": "float",
                     "axisNames": [
@@ -75,7 +79,7 @@
                         1
                     ],
                     "values": [
-                        5.2
+                        11.9
                     ]
                 }
             }
@@ -88,12 +92,12 @@
                 "axes": {
                     "x": {
                         "values": [
-                            24.3986218
+                            4.6029300588208
                         ]
                     },
                     "y": {
                         "values": [
-                            60.41875496
+                            52.505333893732
                         ]
                     },
                     "t": {
@@ -125,22 +129,26 @@
                 ]
             },
             "parameters": {
-                "TA_P1D_AVG": {
+                "air_temperature:2.0:mean:PT1M": {
                     "type": "Parameter",
+                    "description": {
+                        "en": "air_temperature at 2.0m PT1M mean"
+                    },
                     "observedProperty": {
+                        "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                         "label": {
-                            "en": "TA_P1D_AVG"
+                            "en": "air_temperature:2.0:mean:PT1M"
                         }
                     },
                     "unit": {
                         "label": {
-                            "en": "degC"
+                            "en": "degrees Celsius"
                         }
                     }
                 }
             },
             "ranges": {
-                "TA_P1D_AVG": {
+                "air_temperature:2.0:mean:PT1M": {
                     "type": "NdArray",
                     "dataType": "float",
                     "axisNames": [
@@ -154,23 +162,27 @@
                         1
                     ],
                     "values": [
-                        3.7
+                        10.2
                     ]
                 }
             }
         }
     ],
     "parameters": {
-        "TA_P1D_AVG": {
+        "air_temperature:2.0:mean:PT1M": {
             "type": "Parameter",
+            "description": {
+                "en": "air_temperature at 2.0m PT1M mean"
+            },
             "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "TA_P1D_AVG"
+                    "en": "air_temperature:2.0:mean:PT1M"
                 }
             },
             "unit": {
                 "label": {
-                    "en": "degC"
+                    "en": "degrees Celsius"
                 }
             }
         }

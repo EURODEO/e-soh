@@ -2,43 +2,45 @@
     "observations": [
         {
             "ts_mdata": {
-                "title": "FMI test data",
-                "platform": "100945",
-                "standard_name": "TA_P1D_AVG",
-                "unit": "degC",
-                "instrument": "TA_P1D_AVG"
+                "platform": "0-20000-0-06257",
+                "standard_name": "air_temperature",
+                "unit": "degrees Celsius",
+                "level": "2.0",
+                "function": "mean",
+                "period": "PT1M",
+                "parameter_name": "air_temperature:2.0:mean:PT1M",
+                "timeseries_id": "d036b10ac4f6e62049b9a496f04e0a82"
             },
             "obs_mdata": [
                 {
-                    "id": "56513647-809c-4582-94c1-40afeff639f8",
                     "geo_point": {
-                        "lat": 59.86948983,
-                        "lon": 22.19342704
+                        "lat": 52.505333893732,
+                        "lon": 4.6029300588208
                     },
-                    "pubtime": "1970-01-01T00:00:00Z",
                     "obstime_instant": "2022-12-31T00:00:00Z",
-                    "value": "5.2"
+                    "value": "10.2"
                 }
             ]
         },
         {
             "ts_mdata": {
-                "title": "FMI test data",
-                "platform": "100976",
-                "standard_name": "TA_P1D_AVG",
-                "unit": "degC",
-                "instrument": "TA_P1D_AVG"
+                "platform": "0-20000-0-06269",
+                "standard_name": "air_temperature",
+                "unit": "degrees Celsius",
+                "level": "2.0",
+                "function": "mean",
+                "period": "PT1M",
+                "parameter_name": "air_temperature:2.0:mean:PT1M",
+                "timeseries_id": "d036b10ac4f6e62049b9a496f04e0a86"
             },
             "obs_mdata": [
                 {
-                    "id": "7a144238-1c53-43de-b03e-9a630a89051f",
                     "geo_point": {
-                        "lat": 60.41875496,
-                        "lon": 24.3986218
+                        "lat": 52.457270486008,
+                        "lon": 5.5196324030324
                     },
-                    "pubtime": "1970-01-01T00:00:00Z",
                     "obstime_instant": "2022-12-31T00:00:00Z",
-                    "value": "3.7"
+                    "value": "11.9"
                 }
             ]
         }
