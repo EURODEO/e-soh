@@ -158,18 +158,23 @@ async def get_data_location_id(
 ):
     # TODO: There is no error handling of any kind at the moment!
     #  This is just a quick and dirty demo
-    range = get_datetime_range(datetime)
+    request = dstore.GetObsRequest(
+        filter=dict(
+            platform=dstore.Strings(values=[location_id]),
+        ),
+        included_response_fields=response_fields_needed_for_data_api,
+    )
+
     if parameter_name:
         parameter_name = split_and_strip(parameter_name)
         await verify_parameter_names(parameter_name)
-    request = dstore.GetObsRequest(
-        filter=dict(
-            parameter_name=dstore.Strings(values=parameter_name),
-            platform=dstore.Strings(values=[location_id]),
-        ),
-        temporal_interval=(dstore.TimeInterval(start=range[0], end=range[1]) if range else None),
-        included_response_fields=response_fields_needed_for_data_api,
-    )
+        request.filter["parameter_name"].values.extend(parameter_name)
+
+    if datetime:
+        start, end = get_datetime_range(datetime)
+        request.temporal_interval.start.CopyFrom(start)
+        request.temporal_interval.end.CopyFrom(end)
+
     response = await get_obs_request(request)
     return formatters.formatters[f](response)
 
@@ -262,18 +267,23 @@ async def get_data_area(
             detail={"coords": f"Unexpected error occurred during wkt parsing: {coords}"},
         )
 
-    range = get_datetime_range(datetime)
-    if parameter_name:
-        parameter_name = split_and_strip(parameter_name)
-        await verify_parameter_names(parameter_name)
     request = dstore.GetObsRequest(
-        filter=dict(parameter_name=dstore.Strings(values=parameter_name if parameter_name else None)),
         spatial_area=dstore.Polygon(
             points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
         ),
-        temporal_interval=dstore.TimeInterval(start=range[0], end=range[1]) if range else None,
         included_response_fields=response_fields_needed_for_data_api,
     )
+
+    if parameter_name:
+        parameter_name = split_and_strip(parameter_name)
+        await verify_parameter_names(parameter_name)
+        request.filter["parameter_name"].values.extend(parameter_name)
+
+    if datetime:
+        start, end = get_datetime_range(datetime)
+        request.temporal_interval.start.CopyFrom(start)
+        request.temporal_interval.end.CopyFrom(end)
+
     coverages = await get_obs_request(request)
     coverages = formatters.formatters[f](coverages)
     return coverages
