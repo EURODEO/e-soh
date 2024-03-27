@@ -58,7 +58,7 @@ jobs:
       - name: Comment coverage
         uses: MishaKav/pytest-coverage-comment@main
         with:
-          pytest-coverage-path: ./api/test/output/pytest-coverage.txt
+          pytest-coverage-path: api/test/output/pytest-coverage.txt
           coverage-path-prefix: api/
           title: API Unit Test Coverage Report
           hide-badge: true
@@ -67,8 +67,10 @@ jobs:
           hide-comment: false
           report-only-changed-files: false
           remove-link-from-badge: false
-          junitxml-path: ./api/pytest.xml
+          junitxml-path: api/pytest.xml
           junitxml-title: API Unit Test Coverage Summary
+
+#          /home/vervoort/project/e-soh/e-soh/api/test/output/pytest-coverage.txt
 
       - name: Build docker containers
         run: just build

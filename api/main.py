@@ -41,6 +41,11 @@ async def landing_page(request: Request) -> LandingPageModel:
     return metadata_endpoints.get_landing_page(request)
 
 
+@app.get("/health")
+def health():
+    return "ok"
+
+
 @app.get(
     "/collections",
     tags=["Capabilities"],
