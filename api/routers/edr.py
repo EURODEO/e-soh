@@ -54,7 +54,19 @@ response_fields_needed_for_data_api = [
 # We can currently only query data, even if we only need metadata like for this endpoint
 # Maybe it would be better to only query a limited set of data instead of everything (meaning 24 hours)
 async def get_locations(
-    bbox: Annotated[str | None, Query(example="5.0,52.0,6.0,52.1")] = None
+    bbox: Annotated[str | None, Query(example="5.0,52.0,6.0,52.1")] = None,
+    datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
+    parameter_name: Annotated[
+        str | None,
+        Query(
+            alias="parameter-name",
+            example="wind_from_direction:2.0:mean:PT10M,"
+            "wind_speed:10:mean:PT10M,"
+            "relative_humidity:2.0:mean:PT1M,"
+            "air_pressure_at_sea_level:1:mean:PT1M,"
+            "air_temperature:1.5:maximum:PT10M",
+        ),
+    ] = None,
 ) -> EDRFeatureCollection:  # Hack to use string
     ts_request = dstore.GetObsRequest(
         temporal_latest=True,
@@ -76,6 +88,16 @@ async def get_locations(
         ts_request.spatial_area.points.extend(
             [dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords],
         )
+
+    if parameter_name:
+        parameter_name = split_and_strip(parameter_name)
+        await verify_parameter_names(parameter_name)
+        ts_request.filter["parameter_name"].values.extend(parameter_name)
+
+    if datetime:
+        start, end = get_datetime_range(datetime)
+        ts_request.temporal_interval.start.CopyFrom(start)
+        ts_request.temporal_interval.end.CopyFrom(end)
 
     ts_response = await get_obs_request(ts_request)
 
