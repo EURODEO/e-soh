@@ -52,6 +52,9 @@ jobs:
       - name: Install just a command runner
         run: ./ci/scripts/install-just.sh
 
+      - name: Build docker containers
+        run: just build
+
       - name: Run the unit test
         run: just unit
 
@@ -67,13 +70,8 @@ jobs:
           hide-comment: false
           report-only-changed-files: false
           remove-link-from-badge: false
-          junitxml-path: api/pytest.xml
+          junitxml-path: api/test/output/pytest.xml
           junitxml-title: API Unit Test Coverage Summary
-
-#          /home/vervoort/project/e-soh/e-soh/api/test/output/pytest-coverage.txt
-
-      - name: Build docker containers
-        run: just build
 
       - name: Start docker stack
         run: just services
