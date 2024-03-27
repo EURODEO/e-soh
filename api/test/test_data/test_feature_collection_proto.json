@@ -1,0 +1,80 @@
+{
+    "observations": [
+        {
+            "ts_mdata": {
+                "platform": "0-20000-0-06260",
+                "standard_name": "air_pressure_at_sea_level",
+                "unit": "hPa",
+                "level": "1",
+                "function": "mean",
+                "period": "PT1M",
+                "parameter_name": "air_pressure_at_sea_level:1:mean:PT1M"
+            },
+            "obs_mdata": [
+                {
+                    "geo_point": {
+                        "lat": 52.098821802977,
+                        "lon": 5.1797058644882
+                    }
+                }
+            ]
+        },
+        {
+            "ts_mdata": {
+                "platform": "0-20000-0-06275",
+                "standard_name": "air_pressure_at_sea_level",
+                "unit": "hPa",
+                "level": "1",
+                "function": "mean",
+                "period": "PT1M",
+                "parameter_name": "air_pressure_at_sea_level:1:mean:PT1M"
+            },
+            "obs_mdata": [
+                {
+                    "geo_point": {
+                        "lat": 52.0548617826,
+                        "lon": 5.8723225499118
+                    }
+                }
+            ]
+        },
+        {
+            "ts_mdata": {
+                "platform": "0-20000-0-06260",
+                "standard_name": "air_temperature",
+                "unit": "degrees Celsius",
+                "level": "0.1",
+                "function": "minimum",
+                "period": "PT10M",
+                "parameter_name": "air_temperature:0.1:minimum:PT10M"
+            },
+            "obs_mdata": [
+                {
+                    "geo_point": {
+                        "lat": 52.098821802977,
+                        "lon": 5.1797058644882
+                    }
+                }
+            ]
+        },
+        {
+            "ts_mdata": {
+                "platform": "0-20000-0-06275",
+                "standard_name": "air_temperature",
+                "unit": "degrees Celsius",
+                "level": "0.1",
+                "function": "minimum",
+                "period": "PT10M",
+                "parameter_name": "air_temperature:0.1:minimum:PT10M"
+            },
+            "obs_mdata": [
+                {
+                    "geo_point": {
+                        "lat": 52.0548617826,
+                        "lon": 5.8723225499118
+                    }
+                }
+            ]
+        }
+    ]
+}
