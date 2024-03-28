@@ -14,6 +14,7 @@ client = TestClient(app)
 expected_metadata_endpoint_response_fields = [
     "parameter_name",
     "platform",
+    "platform_name",
     "geo_point",
     "standard_name",
     "unit",
