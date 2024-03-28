@@ -3,6 +3,7 @@
         {
             "ts_mdata": {
                 "platform": "0-20000-0-06280",
+                "platform_name": "GRONINGEN AP EELDE",
                 "standard_name": "wind_speed",
                 "unit": "m s-1",
                 "level": "10",
