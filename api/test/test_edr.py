@@ -1,5 +1,6 @@
 from unittest.mock import patch
 
+import datastore_pb2 as dstore
 import routers.edr as edr
 from fastapi.testclient import TestClient
 from main import app
@@ -9,16 +10,46 @@ from test.utilities import load_json
 
 client = TestClient(app)
 
+# expected response fields for endpoints
+expected_metadata_endpoint_response_fields = [
+    "parameter_name",
+    "platform",
+    "geo_point",
+    "standard_name",
+    "unit",
+    "level",
+    "period",
+    "function",
+]
+
+expected_data_endpoint_response_fields = [
+    "parameter_name",
+    "platform",
+    "geo_point",
+    "standard_name",
+    "level",
+    "period",
+    "function",
+    "unit",
+    "obstime_instant",
+    "value",
+]
+
 
 def test_get_locations_without_query_params():
     with patch("routers.edr.get_obs_request") as mock_get_obs_request, patch(
         "routers.edr.verify_parameter_names"
     ) as mock_verify_parameter_names:
+        # Load arbitary test data for making a mock_obs_request
         test_data = load_json("test/test_data/test_feature_collection_proto.json")
-        compare_data = load_json("test/test_data/test_feature_collection.json")
 
         mock_verify_parameter_names.return_value = None
         mock_get_obs_request.return_value = create_mock_obs_response(test_data)
+
+        # Create a GetObsRequest object with the expected arguments
+        expected_args = dstore.GetObsRequest(
+            temporal_latest=True, included_response_fields=expected_metadata_endpoint_response_fields
+        )
 
         response = client.get("/collections/observations/locations")
 
@@ -27,13 +58,8 @@ def test_get_locations_without_query_params():
         mock_get_obs_request.assert_called_once()
         m_args = mock_get_obs_request.call_args[0][0]
 
-        assert "parameter_name" not in m_args.filter
-        assert m_args.temporal_latest
-        assert not m_args.HasField("spatial_area")
-        assert not m_args.HasField("temporal_interval")
-
+        assert m_args == expected_args
         assert response.status_code == 200
-        assert response.json() == compare_data
 
 
 def test_get_locations_with_empty_response():
@@ -138,6 +164,12 @@ def test_get_locations_id_without_parameter_names_query():
 
         mock_get_obs_request.return_value = create_mock_obs_response(test_data)
 
+        # Create a GetObsRequest object with the expected arguments
+        expected_args = dstore.GetObsRequest(
+            filter=dict(platform=dstore.Strings(values=["0-20000-0-06280"])),
+            included_response_fields=expected_data_endpoint_response_fields,
+        )
+
         response = client.get("/collections/observations/locations/0-20000-0-06280?f=CoverageJSON")
 
         # Check that getObsRequest gets called with correct arguments when no parameter names are given
@@ -145,8 +177,7 @@ def test_get_locations_id_without_parameter_names_query():
         mock_get_obs_request.assert_called_once()
         m_args = mock_get_obs_request.call_args[0][0]
 
-        assert "parameter_name" not in m_args.filter
-        assert {"0-20000-0-06280"} == set(m_args.filter["platform"].values)
+        assert m_args == expected_args
         assert response.status_code == 200
         assert response.json() == compare_data
 
@@ -217,6 +248,16 @@ def test_get_area_with_without_parameter_names_query():
 
         mock_get_obs_request.return_value = create_mock_obs_response(test_data)
 
+        expected_spatial_area_coords = [(4.0, 52.4), (5.8, 52.4), (5.8, 52.6), (4.0, 52.6), (4.0, 52.4)]
+
+        # Create a GetObsRequest object with the expected arguments
+        expected_args = dstore.GetObsRequest(
+            spatial_area=dstore.Polygon(
+                points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in expected_spatial_area_coords]
+            ),
+            included_response_fields=expected_data_endpoint_response_fields,
+        )
+
         response = client.get(
             "/collections/observations/area?coords=POLYGON((4.0 52.4,5.8 52.4,5.8 52.6,4.0 52.6,4.0 52.4))"
         )
@@ -224,9 +265,9 @@ def test_get_area_with_without_parameter_names_query():
         mock_get_obs_request.assert_called_once()
         m_args = mock_get_obs_request.call_args[0][0]
 
-        assert "instrument" not in m_args.filter
-        response.status_code == 200
-        response.json() == compare_data
+        assert m_args == expected_args
+        assert response.status_code == 200
+        assert response.json() == compare_data
 
 
 def test_get_area_with_incorrect_coords():
