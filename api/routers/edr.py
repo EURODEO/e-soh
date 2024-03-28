@@ -73,6 +73,7 @@ async def get_locations(
         included_response_fields=[
             "parameter_name",
             "platform",
+            "platform_name",
             "geo_point",
             "standard_name",
             "unit",
@@ -108,9 +109,13 @@ async def get_locations(
         )
 
     platform_parameters: DefaultDict[str, Set[str]] = defaultdict(set)
+    platform_names: Dict[str, Set[str]] = defaultdict(set)
     platform_coordinates: Dict[str, Set[Tuple[float, float]]] = defaultdict(set)
     all_parameters: Dict[str, Parameter] = {}
     for obs in ts_response.observations:
+        platform_names[obs.ts_mdata.platform].add(
+            obs.ts_mdata.platform_name if obs.ts_mdata.platform_name else f"platform-{obs.ts_mdata.platform}"
+        )
         parameter = make_parameter(obs.ts_mdata)
         platform_parameters[obs.ts_mdata.platform].add(obs.ts_mdata.parameter_name)
         # Take last point
@@ -129,7 +134,7 @@ async def get_locations(
             )
         all_parameters[obs.ts_mdata.parameter_name] = parameter
 
-    # Check for multiple coordinates on one station
+    # Check for multiple coordinates or names on one station
     for station_id in platform_parameters.keys():
         if len(platform_coordinates[station_id]) > 1:
             raise HTTPException(
@@ -139,15 +144,22 @@ async def get_locations(
                     f"has multiple coordinates: {platform_coordinates[station_id]}"
                 },
             )
+        if len(platform_names[station_id]) > 1:
+            raise HTTPException(
+                status_code=500,
+                detail={
+                    "platform_name": f"Station with id `{station_id} "
+                    f"has multiple names: {platform_names[station_id]}"
+                },
+            )
 
     features = [
         Feature(
             type="Feature",
             id=station_id,
             properties={
-                # TODO: Change to platform_name to correct one when its available, this is only for geoweb demo
-                "name": f"platform-{station_id}",
-                "detail": f"https://oscar.wmo.int/surface/#/search/station/stationReportDetails/{station_id}",
+                "name": list(platform_names[station_id])[0],
+                "detail": f"https://oscar.wmo.int/surface/rest/api/search/station?wigosId={station_id}",
                 "parameter-name": sorted(platform_parameters[station_id]),
             },
             geometry=Point(
