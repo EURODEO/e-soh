@@ -34,5 +34,5 @@ CMD ["/bin/sh", "-c", "python -m pytest \
         --timeout=60 \
         --junitxml=./output/pytest.xml \
         --cov-report=term-missing \
-        --cov=./output \
+        --cov=. \
         --cov-config=./test/.coveragerc | tee ./output/pytest-coverage.txt"]

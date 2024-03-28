@@ -62,7 +62,7 @@ jobs:
         uses: MishaKav/pytest-coverage-comment@main
         with:
           pytest-coverage-path: api/test/output/pytest-coverage.txt
-          coverage-path-prefix: api/
+          coverage-path-prefix: api/test/output/
           title: API Unit Test Coverage Report
           hide-badge: true
           hide-report: false
