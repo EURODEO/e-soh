@@ -112,6 +112,7 @@ def test_from_a_single_collection_get_a_single_location():
     expected_json = load_json("response/data_locations_one_location_with_three_parameters.json")
 
     assert actual_response.status_code == 200
+    assert actual_response.headers["Content-Type"] == "application/prs.coverage+json"
     actual_response_is_expected_response(actual_response, expected_json)
 
 
@@ -167,6 +168,7 @@ def test_from_a_single_collection_get_a_single_position_with_one_parameter():
     expected_json = load_json("response/data_position_one_location_with_one_parameter.json")
 
     assert actual_response.status_code == 200
+    assert actual_response.headers["Content-Type"] == "application/prs.coverage+json"
     actual_response_is_expected_response(actual_response, expected_json)
 
 
@@ -183,6 +185,7 @@ def test_from_a_single_collection_get_an_area_with_two_parameters():
     expected_json = load_json("response/data_area_two_locations_with_two_parameters.json")
 
     assert actual_response.status_code == 200
+    assert actual_response.headers["Content-Type"] == "application/prs.coverage+json"
     actual_response_is_expected_response(actual_response, expected_json)
 
 
@@ -192,6 +195,7 @@ def test_items_get_area():
     actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items?bbox={bbox}")
 
     assert actual_response.status_code == 200
+    assert actual_response.headers["Content-Type"] == "application/geo+json"
     expected_json = load_json("response/items_within_area_single_platform.json")
     actual_response_is_expected_response(actual_response, expected_json)
 
@@ -202,6 +206,7 @@ def test_items_get_id():
     actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items/{timeseries_id}")
 
     assert actual_response.status_code == 200
+    assert actual_response.headers["Content-Type"] == "application/geo+json"
     expected_json = load_json("response/items_area_with_one_parameter_name.json")
     actual_response_is_expected_response(actual_response, expected_json)
 
@@ -215,6 +220,7 @@ def test_items_get_area_with_one_parameter_name():
     )
 
     assert actual_response.status_code == 200
+    assert actual_response.headers["Content-Type"] == "application/geo+json"
     expected_json = load_json("response/items_area_with_one_parameter_name.json")
     actual_response_is_expected_response(actual_response, expected_json)
 
@@ -225,6 +231,7 @@ def test_items_get_one_platform():
     actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items?platform={platform}")
 
     assert actual_response.status_code == 200
+    assert actual_response.headers["Content-Type"] == "application/geo+json"
     expected_json = load_json("response/items_within_area_single_platform.json")
     actual_response_is_expected_response(actual_response, expected_json)
 

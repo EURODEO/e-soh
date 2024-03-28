@@ -14,6 +14,7 @@ from grpc_getter import get_obs_request
 from jinja2 import Environment
 from jinja2 import FileSystemLoader
 from jinja2 import select_autoescape
+from response_classes import GeoJsonResponse
 from shapely import geometry
 from utilities import get_datetime_range
 from utilities import split_and_strip
@@ -24,7 +25,11 @@ env = Environment(loader=FileSystemLoader("templates"), autoescape=select_autoes
 
 
 @router.get(
-    "/items", tags=["Collection items"], response_model=Feature | FeatureCollection, response_model_exclude_none=True
+    "/items",
+    tags=["Collection items"],
+    response_model=Feature | FeatureCollection,
+    response_model_exclude_none=True,
+    response_class=GeoJsonResponse,
 )
 async def search_timeseries(
     bbox: Annotated[str | None, Query(example="5.0,52.0,6.0,52.1")] = None,
@@ -103,7 +108,13 @@ async def search_timeseries(
     return formatters.metadata_formatters[f](time_series)
 
 
-@router.get("/items/{item_id}", tags=["Collection items"], response_model=Feature, response_model_exclude_none=True)
+@router.get(
+    "/items/{item_id}",
+    tags=["Collection items"],
+    response_model=Feature,
+    response_model_exclude_none=True,
+    response_class=GeoJsonResponse,
+)
 async def get_time_series_by_id(
     item_id: Annotated[str, Path()],
     f: Annotated[
