@@ -6,7 +6,7 @@ declare -a destination_paths=(
   "./datastore/datastore"
   "./datastore/examples/clients/python"
   "./datastore/integration-test"
-#  "./ingest"
+  "./ingest"
 )
 
 for path in "${destination_paths[@]}"
