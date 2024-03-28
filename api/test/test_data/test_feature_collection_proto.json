@@ -3,6 +3,7 @@
         {
             "ts_mdata": {
                 "platform": "0-20000-0-06260",
+                "platform_name": "DE BILT AWS",
                 "standard_name": "air_pressure_at_sea_level",
                 "unit": "hPa",
                 "level": "1",
@@ -22,6 +23,7 @@
         {
             "ts_mdata": {
                 "platform": "0-20000-0-06275",
+                "platform_name": "DEELEN",
                 "standard_name": "air_pressure_at_sea_level",
                 "unit": "hPa",
                 "level": "1",
@@ -41,6 +43,7 @@
         {
             "ts_mdata": {
                 "platform": "0-20000-0-06260",
+                "platform_name": "DE BILT AWS",
                 "standard_name": "air_temperature",
                 "unit": "degrees Celsius",
                 "level": "0.1",
@@ -60,6 +63,7 @@
         {
             "ts_mdata": {
                 "platform": "0-20000-0-06275",
+                "platform_name": "DEELEN",
                 "standard_name": "air_temperature",
                 "unit": "degrees Celsius",
                 "level": "0.1",
