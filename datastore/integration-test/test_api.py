@@ -97,6 +97,20 @@ def test_from_a_single_collection_get_locations_within_a_bbox():
     actual_response_is_expected_response(actual_response, expected_json)
 
 
+def test_from_a_single_collection_get_locations_within_a_bbox_with_parameter_name_filtering():
+    collection_id = "observations"
+    bbox = "5.0,52.0,6.0,52.1"
+    parameters = "air_temperature:0.1:minimum:PT10M, air_pressure_at_sea_level:1:mean:PT1M"
+    actual_response = requests.get(
+        url=BASE_URL + f"/collections/{collection_id}/locations?bbox={bbox}&parameter-name={parameters}"
+    )
+
+    expected_json = load_json("response/data_locations_two_points_with_two_parameters.json")
+
+    assert actual_response.status_code == 200
+    actual_response_is_expected_response(actual_response, expected_json)
+
+
 def test_from_a_single_collection_get_a_single_location():
     collection_id = "observations"
     location_id = "0-20000-0-06260"
