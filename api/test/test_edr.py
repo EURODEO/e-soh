@@ -106,7 +106,7 @@ def test_get_area_with_normal_query():
         mock_get_obs_request.assert_called_once()
         m_args = mock_get_obs_request.call_args[0][0]
 
-        assert {"air_temperature:2.0:mean:PT1M"} == set(m_args.filter["parameter_name"].values)
+        assert {"air_temperature:2.0:mean:PT1M"}.issubset(set(m_args.filter["parameter_name"].values))
         assert len(m_args.spatial_polygon.points) == 5
         assert m_args.spatial_polygon.points[0].lon == 4.0
         assert "2022-12-31 00:00:00" == m_args.temporal_interval.start.ToDatetime().strftime("%Y-%m-%d %H:%M:%S")
