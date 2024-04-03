@@ -20,6 +20,8 @@ from formatters.covjson import make_parameter
 from geojson_pydantic import Feature
 from geojson_pydantic import Point
 from grpc_getter import get_obs_request
+from response_classes import CoverageJsonResponse
+from response_classes import GeoJsonResponse
 from shapely import buffer
 from shapely import geometry
 from shapely import wkt
@@ -50,6 +52,7 @@ response_fields_needed_for_data_api = [
     tags=["Collection data queries"],
     response_model=EDRFeatureCollection,
     response_model_exclude_none=True,
+    response_class=GeoJsonResponse,
 )
 # We can currently only query data, even if we only need metadata like for this endpoint
 # Maybe it would be better to only query a limited set of data instead of everything (meaning 24 hours)
@@ -151,6 +154,7 @@ async def get_locations(
     tags=["Collection data queries"],
     response_model=Coverage | CoverageCollection,
     response_model_exclude_none=True,
+    response_class=CoverageJsonResponse,
 )
 async def get_data_location_id(
     location_id: Annotated[str, Path(example="0-20000-0-06260")],
@@ -196,6 +200,7 @@ async def get_data_location_id(
     tags=["Collection data queries"],
     response_model=Coverage | CoverageCollection,
     response_model_exclude_none=True,
+    response_class=CoverageJsonResponse,
 )
 async def get_data_position(
     coords: Annotated[str, Query(example="POINT(5.179705 52.0988218)")],
@@ -242,6 +247,7 @@ async def get_data_position(
     tags=["Collection data queries"],
     response_model=Coverage | CoverageCollection,
     response_model_exclude_none=True,
+    response_class=CoverageJsonResponse,
 )
 async def get_data_area(
     coords: Annotated[str, Query(example="POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))")],
