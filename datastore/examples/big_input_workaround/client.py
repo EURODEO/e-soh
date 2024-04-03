@@ -13,6 +13,7 @@
          --python_out=../examples/big_input_workaround \
          --grpc_python_out=../examples/big_input_workaround
 """
+
 import argparse
 import os
 import sys
@@ -129,9 +130,7 @@ def call_put_obs(stub, obs_count, summary_size):
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter
-    )
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument(
         "-n",
         dest="obs_count",
@@ -155,9 +154,7 @@ def parse_args():
 
 
 if __name__ == "__main__":
-    with grpc.insecure_channel(
-        f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}"
-    ) as channel:
+    with grpc.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") as channel:
         stub = dstore_grpc.DatastoreStub(channel)
 
         obs_count, summary_size = parse_args()
