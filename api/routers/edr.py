@@ -286,7 +286,6 @@ async def get_data_area(
         )
 
     request = dstore.GetObsRequest(
-        filter=dict(parameter_name=dstore.Strings(values=parameter_name if parameter_name else None)),
         spatial_polygon=dstore.Polygon(
             points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
         ),
