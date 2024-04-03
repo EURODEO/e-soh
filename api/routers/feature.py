@@ -94,7 +94,7 @@ async def search_timeseries(
             period=dstore.Strings(values=split_and_strip(period) if period else None),
             function=dstore.Strings(values=split_and_strip(function) if function else None),
         ),
-        spatial_area=(
+        spatial_polygon=(
             dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords])
             if bbox
             else None
