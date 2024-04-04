@@ -17,7 +17,7 @@ repos:
   #        pass_filenames: false
 
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: ""
+    rev: "v18.1.2"
     hooks:
       - id: clang-format
         entry: clang-format -i
@@ -43,15 +43,16 @@ repos:
         # https://stackoverflow.com/questions/59413979/how-exclude-ref-tag-from-check-yaml-git-hook
         args: ["--unsafe"] # Parse the yaml files for syntax.
 
-  # reorder-python-imports ~ sort python imports
-  - repo: https://github.com/asottile/reorder_python_imports
-    rev: v3.12.0
-    hooks:
-      - id: reorder-python-imports
+  # TODO: Re-enable when the issue https://github.com/psf/black/issues/4175 is solved for Black.
+  ## reorder-python-imports ~ sort python imports
+  #- repo: https://github.com/asottile/reorder_python_imports
+  #  rev: v3.12.0
+  #  hooks:
+  #    - id: reorder-python-imports
 
   # black ~ Formats Python code
   - repo: https://github.com/psf/black
-    rev: 23.12.1
+    rev: 24.3.0
     hooks:
       - id: black
         args: ["--line-length=120"]
@@ -65,7 +66,7 @@ repos:
 
   # hadolint ~ Docker linter
   - repo: https://github.com/hadolint/hadolint
-    rev: v2.12.0
+    rev: v2.12.1-beta
     hooks:
       - id: hadolint-docker
         args: [
@@ -74,6 +75,6 @@ repos:
 
   # ShellCheck ~ Gives warnings and suggestions for bash/sh shell scripts
   - repo: https://github.com/koalaman/shellcheck-precommit
-    rev: v0.9.0
+    rev: v0.10.0
     hooks:
       - id: shellcheck
