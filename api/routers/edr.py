@@ -30,6 +30,7 @@ from utilities import get_datetime_range
 from utilities import split_and_strip
 from utilities import validate_bbox
 from utilities import verify_parameter_names
+from utilities import calculate_largest_postition_deviation
 
 router = APIRouter(prefix="/collections/observations")
 
@@ -97,6 +98,7 @@ async def get_locations(
         platform_coordinates[obs.ts_mdata.platform].add(
             (obs.obs_mdata[-1].geo_point.lon, obs.obs_mdata[-1].geo_point.lat)
         )
+
         # Check for inconsistent parameter definitions between stations
         # TODO: How to handle those?
         if obs.ts_mdata.parameter_name in all_parameters and all_parameters[obs.ts_mdata.parameter_name] != parameter:
@@ -112,6 +114,16 @@ async def get_locations(
     # Check for multiple coordinates or names on one station
     for station_id in platform_parameters.keys():
         if len(platform_coordinates[station_id]) > 1:
+            if (
+                calculate_largest_postition_deviation(platform_coordinates[station_id]) < 1e-4
+            ):  # all coordinates is with 10M
+                platform_coordinates[station_id] = {
+                    sorted(
+                        [i for i in platform_coordinates[station_id]],
+                        key=lambda x: (len(str(x[0])), len(str(x[1])), x[0], x[1]),
+                    )[-1]
+                }
+                continue
             raise HTTPException(
                 status_code=500,
                 detail={
