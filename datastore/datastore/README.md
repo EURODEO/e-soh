@@ -284,18 +284,14 @@ $ grpcurl -d '{"attrs": ["standard_name"]}' -plaintext -proto protobuf/datastore
 {
   "groups": [
     {
-      "combos": [
-        {
-          "standard_name": "air_pressure_at_sea_level"
-        }
-      ]
+      "combo": {
+        "standard_name": "air_pressure_at_sea_level"
+      }
     },
     {
-      "combos": [
-        {
-          "standard_name": "air_temperature"
-        }
-      ]
+      "combo": {
+        "standard_name": "air_temperature"
+      }
     },
 ...
 ```
@@ -304,23 +300,19 @@ $ grpcurl -d '{"attrs": ["standard_name"]}' -plaintext -proto protobuf/datastore
 
 ```text
 $ grpcurl -d '{"attrs": ["platform", "standard_name"]}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetTSAttrGroups
-{
+
   "groups": [
     {
-      "combos": [
-        {
-          "platform": "06201",
-          "standard_name": "air_pressure_at_sea_level"
-        }
-      ]
+      "combo": {
+        "platform": "0-20000-0-06201",
+        "standard_name": "air_pressure_at_sea_level"
+      }
     },
     {
-      "combos": [
-        {
-          "platform": "06201",
-          "standard_name": "air_temperature"
-        }
-      ]
+      "combo": {
+        "platform": "0-20000-0-06201",
+        "standard_name": "air_temperature"
+      }
     },
 ...
 ```
@@ -332,22 +324,50 @@ $ grpcurl -d '{"attrs": ["standard_name"], "include_instances": true}' -plaintex
 {
   "groups": [
     {
-      "combos": [
+      "combo": {
+        "standard_name": "air_pressure_at_sea_level"
+      },
+      "instances": [
         {
-          "title": "Air Pressure at Sea Level 1 Min Average",
-          "platform": "06208",
-          "standard_name": "air_pressure_at_sea_level",
-          "unit": "hPa",
-          "instrument": "pp"
+	  ...
+	  "platform": "0-20000-0-06215",
+          "platform_name": "VOORSCHOTEN AWS",
+	  "standard_name": "air_pressure_at_sea_level",
+	  ...
         },
         {
-          "title": "Air Pressure at Sea Level 1 Min Average",
-          "platform": "06348",
+	  ...
+	  "platform": "0-20000-0-06320",
+          "platform_name": "LICHTEILAND GOEREE",
           "standard_name": "air_pressure_at_sea_level",
-          "unit": "hPa",
-          "instrument": "pp"
+	  ...
         },
-...
+	...
+      ]
+    },
+    {
+      "combo": {
+        "standard_name": "air_temperature"
+      },
+      "instances": [
+        {
+	  ...
+	  "platform": "0-20000-0-06215",
+          "platform_name": "VOORSCHOTEN AWS",
+	  "standard_name": "air_temperature",
+	  ...
+        },
+        {
+	  ...
+	  "platform": "0-20000-0-06320",
+          "platform_name": "LICHTEILAND GOEREE",
+          "standard_name": "air_temperature",
+	  ...
+        },
+	...
+      ]
+    },
+    ...
 ```
 
 ### List unique combinations of time series metadata attributes 'platform' and 'standard_name', and include associated instances
@@ -357,22 +377,67 @@ $ grpcurl -d '{"attrs": ["platform", "standard_name"], "include_instances": true
 {
   "groups": [
     {
-      "combos": [
+      "combo": {
+        "platform": "0-20000-0-06201",
+        "standard_name": "air_pressure_at_sea_level"
+      },
+      "instances": [
         {
-          "title": "Air Temperature Minimum last 12 Hours",
-          "platform": "06201",
+	  "title": "Air Pressure at Sea Level 1 Min Average",
+	  ...
+          "platform": "0-20000-0-06201",
+          "platform_name": "D15-FA-1",
+          "standard_name": "air_pressure_at_sea_level",
+          "unit": "hPa",
+          "level": "1",
+          "function": "mean",
+          "period": "PT1M",
+          "instrument": "pp",
+          "parameter_name": "air_pressure_at_sea_level:1:mean:PT1M",
+          "timeseries_id": "663eb10c754f9636c7812653b00e0f3b"
+        }
+      ]
+    },
+    {
+      "combo": {
+        "platform": "0-20000-0-06201",
+        "standard_name": "air_temperature"
+      },
+      "instances": [
+        {
+          "title": "Air Temperature Maximum last 24 Hours",
+	  ...
+          "platform": "0-20000-0-06201",
+          "platform_name": "D15-FA-1",
           "standard_name": "air_temperature",
           "unit": "degrees Celsius",
-          "instrument": "Tn12"
+          "level": "2.0",
+          "function": "maximum",
+          "period": "PT24H",
+          "instrument": "Tx24",
+          "parameter_name": "air_temperature:2.0:maximum:PT24H",
+          "timeseries_id": "2aad08df7ccafa434bac3673c53e20f7"
         },
         {
-          "title": "Air Temperature Minimum last 14 Hours",
-          "platform": "06201",
+          "title": "Ambient Temperature 1.5m 10 Min Maximum",
+	  ...
+          "platform": "0-20000-0-06201",
+          "platform_name": "D15-FA-1",
           "standard_name": "air_temperature",
           "unit": "degrees Celsius",
-          "instrument": "Tn14"
+          "level": "1.5",
+          "function": "maximum",
+          "period": "PT10M",
+          "instrument": "tx",
+          "parameter_name": "air_temperature:1.5:maximum:PT10M",
+          "timeseries_id": "1030bcb120a2e9409b043c2e8e2f2c65"
         },
-...
+	...
+      ]
+    },
+    ...
+  ]
+}
 ```
 
 ### Get the temporal- and spatial extent of all observations currently in the storage
