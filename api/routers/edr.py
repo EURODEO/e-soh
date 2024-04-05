@@ -122,6 +122,8 @@ async def get_locations(
                     sorted(
                         [i for i in platform_coordinates[station_id]],
                         key=lambda x: (len(str(x[0])), len(str(x[1])), x[0], x[1]),
+                        # keys sort on number of decimals, then value of coordinates.
+                        # This is to enshure we just coordiantes with the most precision and the same ones every time
                     )[-1]
                 }
             else:
