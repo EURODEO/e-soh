@@ -13,6 +13,7 @@
          --python_out=../examples/big_input_workaround \
          --grpc_python_out=../examples/big_input_workaround
 """
+
 import argparse
 import os
 import sys
