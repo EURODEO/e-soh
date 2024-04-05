@@ -53,7 +53,7 @@ message Polygon { // horizontal area; three or more points
 
 message Circle { // horizontal circle area
   Point center = 1;
-  double radius = 2;
+  double radius = 2; // radius in kilometers
 }
 
 message BoundingBox {
