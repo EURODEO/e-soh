@@ -1,5 +1,6 @@
 from unittest.mock import patch
 
+import datastore_pb2 as dstore
 import routers.edr as edr
 from fastapi.testclient import TestClient
 from main import app
@@ -8,6 +9,124 @@ from test.utilities import load_json
 
 
 client = TestClient(app)
+
+# expected response fields for endpoints
+expected_metadata_endpoint_response_fields = [
+    "parameter_name",
+    "platform",
+    "platform_name",
+    "geo_point",
+    "standard_name",
+    "unit",
+    "level",
+    "period",
+    "function",
+]
+
+expected_data_endpoint_response_fields = [
+    "parameter_name",
+    "platform",
+    "geo_point",
+    "standard_name",
+    "level",
+    "period",
+    "function",
+    "unit",
+    "obstime_instant",
+    "value",
+]
+
+
+def test_get_locations_without_query_params():
+    with patch("routers.edr.get_obs_request") as mock_get_obs_request, patch(
+        "routers.edr.verify_parameter_names"
+    ) as mock_verify_parameter_names:
+        # Load arbitrary test data for making a mock_obs_request
+        test_data = load_json("test/test_data/test_feature_collection_proto.json")
+
+        mock_verify_parameter_names.return_value = None
+        mock_get_obs_request.return_value = create_mock_obs_response(test_data)
+
+        # Create a GetObsRequest object with the expected arguments
+        expected_args = dstore.GetObsRequest(
+            temporal_latest=True, included_response_fields=expected_metadata_endpoint_response_fields
+        )
+
+        response = client.get("/collections/observations/locations")
+
+        # Check that getObsRequest gets called with correct arguments when no parameters
+        # given in query
+        mock_get_obs_request.assert_called_once()
+        m_args = mock_get_obs_request.call_args[0][0]
+
+        assert m_args == expected_args
+        assert response.status_code == 200
+
+
+def test_get_locations_with_empty_response():
+    with patch("routers.edr.get_obs_request") as mock_get_obs_request:
+        test_data = load_json("test/test_data/test_empty_proto.json")
+
+        mock_get_obs_request.return_value = create_mock_obs_response(test_data)
+
+        response = client.get("/collections/observations/locations")
+
+        assert response.status_code == 404
+        assert response.json() == {"detail": "Query did not return any features."}
+
+
+def test_get_locations_with_query_params():
+    with patch("routers.edr.get_obs_request") as mock_get_obs_request, patch(
+        "routers.edr.verify_parameter_names"
+    ) as mock_verify_parameter_names:
+        test_data = load_json("test/test_data/test_feature_collection_proto.json")
+        compare_data = load_json("test/test_data/test_feature_collection.json")
+
+        mock_verify_parameter_names.return_value = None
+        mock_get_obs_request.return_value = create_mock_obs_response(test_data)
+
+        response = client.get(
+            "/collections/observations/locations?bbox=5.1,52.0,6.0,52.1"
+            "&datetime=2022-12-31T00:00:00Z/2022-12-31T01:00:00Z"
+            "&parameter-name=wind_speed:10:mean:PT10M, air_temperature:0.1:minimum:PT10M"
+        )
+
+        # Check that getObsRequest gets called with correct arguments given in query
+        mock_get_obs_request.assert_called_once()
+        m_args = mock_get_obs_request.call_args[0][0]
+
+        assert {"wind_speed:10:mean:PT10M", "air_temperature:0.1:minimum:PT10M"} == set(
+            m_args.filter["parameter_name"].values
+        )
+        assert m_args.temporal_latest
+        assert len(m_args.spatial_area.points) == 5
+        assert m_args.spatial_area.points[0].lon == 5.1
+        assert "2022-12-31 00:00:00" == m_args.temporal_interval.start.ToDatetime().strftime("%Y-%m-%d %H:%M:%S")
+        assert "2022-12-31 01:00:01" == m_args.temporal_interval.end.ToDatetime().strftime("%Y-%m-%d %H:%M:%S")
+
+        assert response.status_code == 200
+        assert response.json() == compare_data
+
+
+def test_get_locations_with_too_few_bbox_parameters():
+    response = client.get("/collections/observations/locations?bbox=5.1,52.0,6.0")
+
+    assert response.status_code == 400
+    assert response.json() == {"detail": {"bbox": "Invalid format: 5.1,52.0,6.0"}}
+
+
+def test_get_locations_with_incorrect_bbox_parameters():
+    response = client.get("/collections/observations/locations?bbox=180,52.0,6.0,-180,5.1")
+
+    assert response.status_code == 400
+    assert response.json() == {"detail": {"bbox": "Invalid format: 180,52.0,6.0,-180,5.1"}}
+
+
+def test_get_locations_with_too_large_bbox():
+    response = client.get("/collections/observations/locations?bbox=-180, -90, 180, 90")
+
+    assert response.status_code == 400
+    assert response.json() == {"detail": {"range": "Maximum bbox range is 90 degrees: -180, -90, 180, 90"}}
 
 
 def test_get_locations_id_with_single_parameter_query_without_format():
@@ -46,6 +165,12 @@ def test_get_locations_id_without_parameter_names_query():
 
         mock_get_obs_request.return_value = create_mock_obs_response(test_data)
 
+        # Create a GetObsRequest object with the expected arguments
+        expected_args = dstore.GetObsRequest(
+            filter=dict(platform=dstore.Strings(values=["0-20000-0-06280"])),
+            included_response_fields=expected_data_endpoint_response_fields,
+        )
+
         response = client.get("/collections/observations/locations/0-20000-0-06280?f=CoverageJSON")
 
         # Check that getObsRequest gets called with correct arguments when no parameter names are given
@@ -53,14 +178,15 @@ def test_get_locations_id_without_parameter_names_query():
         mock_get_obs_request.assert_called_once()
         m_args = mock_get_obs_request.call_args[0][0]
 
-        assert "instrument" not in m_args.filter
-        assert {"0-20000-0-06280"} == set(m_args.filter["platform"].values)
+        assert m_args == expected_args
         assert response.status_code == 200
         assert response.json() == compare_data
 
 
 def test_get_locations_id_with_incorrect_datetime_format():
-    response = client.get("/collections/observations/locations/06260?datetime=20221231T000000Z/20221231T010000Z")
+    response = client.get(
+        "/collections/observations/locations/0-20000-0-06260?datetime=20221231T000000Z/20221231T010000Z"
+    )
 
     assert response.status_code == 400
     assert response.json() == {"detail": {"datetime": "Invalid format: 20221231T000000Z/20221231T010000Z"}}
@@ -68,7 +194,7 @@ def test_get_locations_id_with_incorrect_datetime_format():
 
 def test_get_locations_id_with_incorrect_datetime_range():
     response = client.get(
-        "/collections/observations/locations/06260?datetime=2024-12-31T00:00:00Z/2022-12-31T01:00:00Z"
+        "/collections/observations/locations/0-20000-0-06260?datetime=2024-12-31T00:00:00Z/2022-12-31T01:00:00Z"
     )
 
     assert response.status_code == 400
@@ -123,6 +249,16 @@ def test_get_area_with_without_parameter_names_query():
 
         mock_get_obs_request.return_value = create_mock_obs_response(test_data)
 
+        expected_spatial_area_coords = [(4.0, 52.4), (5.8, 52.4), (5.8, 52.6), (4.0, 52.6), (4.0, 52.4)]
+
+        # Create a GetObsRequest object with the expected arguments
+        expected_args = dstore.GetObsRequest(
+            spatial_area=dstore.Polygon(
+                points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in expected_spatial_area_coords]
+            ),
+            included_response_fields=expected_data_endpoint_response_fields,
+        )
+
         response = client.get(
             "/collections/observations/area?coords=POLYGON((4.0 52.4,5.8 52.4,5.8 52.6,4.0 52.6,4.0 52.4))"
         )
@@ -130,9 +266,9 @@ def test_get_area_with_without_parameter_names_query():
         mock_get_obs_request.assert_called_once()
         m_args = mock_get_obs_request.call_args[0][0]
 
-        assert "instrument" not in m_args.filter
-        response.status_code == 200
-        response.json() == compare_data
+        assert m_args == expected_args
+        assert response.status_code == 200
+        assert response.json() == compare_data
 
 
 def test_get_area_with_incorrect_coords():
