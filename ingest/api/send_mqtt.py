@@ -3,6 +3,7 @@ import logging
 import ssl
 
 import paho.mqtt.client as mqtt
+from fastapi import HTTPException
 
 logger = logging.getLogger(__name__)
 
@@ -41,4 +42,4 @@ class MQTTConnection:
 
         except Exception as e:
             logger.critical(str(e))
-            raise
+            raise HTTPException(status_code=500, detail="Failed to publish to mqtt")

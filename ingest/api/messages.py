@@ -4,6 +4,7 @@ from datetime import datetime
 from datetime import timezone
 
 import xarray as xr
+from fastapi import HTTPException
 from jsonschema import ValidationError
 
 from ingest.bufr.create_mqtt_message_from_bufr import (
@@ -40,7 +41,7 @@ def build_message(file: object, input_type: str, uuid_prefix: str, schema_path: 
         except ValidationError as v_error:
             logger.error("Message did not pass schema validation, " + "\n" + str(v_error.message))
             json_msg = None
-            return "Message did not pass schema validation"
+            raise HTTPException(status_code=400, detail="Message did not pass schema validation")
 
     return unfinished_messages  # now populated with timestamps and uuids
 
@@ -71,5 +72,6 @@ def messages(message, input_type, uuid_prefix, schema_path, validator):
         )
     else:
         logger.error(TypeError("Unknown netCDF type, expected path " + f"or xarray.Dataset, got {type(message)}"))
-        raise
-        raise TypeError("Unknown netCDF type, expected path " + f"or xarray.Dataset, got {type(message)}")
+        raise HTTPException(
+            status_code=400, detail=f"Unknown netCDF type, expected path or xarray.Dataset, got {type(message)}"
+        )

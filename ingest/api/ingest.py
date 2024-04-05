@@ -6,6 +6,7 @@ from typing import Union
 
 import grpc
 import pkg_resources
+from fastapi import HTTPException
 from jsonschema import Draft202012Validator
 
 from api.datastore import ingest
@@ -18,17 +19,17 @@ logger = logging.getLogger(__name__)
 class IngestToPipeline:
     """
     This class should be the main interaction with this python package.
-    Should accept paths or objects to pass on to the datastore and mqtt broker.
+    Should accept paths or objects to pass on to mqtt broker.
     """
 
     def __init__(
         self,
         mqtt_conf: dict,
         uuid_prefix: str,
-        testing: bool = False,
         schema_path=None,
         schema_file=None,
     ):
+        self.mqtt = None
         self.uuid_prefix = uuid_prefix
 
         if not schema_path:
@@ -45,16 +46,13 @@ class IngestToPipeline:
             self.esoh_mqtt_schema = json.load(file)
         self.schema_validator = Draft202012Validator(self.esoh_mqtt_schema)
 
-        if testing:
-            return
-
-        # self.dstore = DatastoreConnection(dstore_conn["dshost"], dstore_conn["dsport"])
-        if "username" in mqtt_conf:
-            self.mqtt = MQTTConnection(
-                mqtt_conf["host"], mqtt_conf["topic"], mqtt_conf["username"], mqtt_conf["password"]
-            )
-        else:
-            self.mqtt = MQTTConnection(mqtt_conf["host"], mqtt_conf["topic"])
+        if mqtt_conf["host"] is not None:
+            if "username" in mqtt_conf:
+                self.mqtt = MQTTConnection(
+                    mqtt_conf["host"], mqtt_conf["topic"], mqtt_conf["username"], mqtt_conf["password"]
+                )
+            else:
+                self.mqtt = MQTTConnection(mqtt_conf["host"], mqtt_conf["topic"])
 
     def ingest(self, message: Union[str, object], input_type: str = None):
         """
@@ -66,11 +64,7 @@ class IngestToPipeline:
         if not input_type:
             input_type = self._decide_input_type(message)
         messages = self._build_messages(message, input_type)
-        if isinstance(messages, list):
-            response, status = self.publish_messages(messages)
-            return response, status
-        else:
-            return messages, 400
+        self.publish_messages(messages)
 
     def publish_messages(self, messages: list):
         """
@@ -83,16 +77,21 @@ class IngestToPipeline:
             if msg:
                 try:
                     ingest(msg)
-                except grpc.RpcError as v_error:
-                    return "Failed to ingest" + "\n" + str(v_error), 500
-                except Exception as e:
-                    return "Failed to ingest" + "\n" + str(e), 502
-                try:
-                    self.mqtt.send_message(msg, topic)
-                except Exception as e:
-                    return "Failed to publish " + str(e), 502
+                except grpc.RpcError as e:
+                    logger.error("Failed to reach datastore, " + "\n" + str(e))
+                    raise HTTPException(status_code=500, detail="API could not reach datastore")
 
-        return "Succesfully published", 200
+                except Exception as e:
+                    logger.error("Failed to ingest to datastore, " + "\n" + str(e))
+                    raise HTTPException(status_code=500, detail="Internal server error")
+                if self.mqtt is not None:
+                    try:
+                        self.mqtt.send_message(msg, topic)
+                    except Exception as e:
+                        logger.error("Failed to publish to mqtt, " + "\n" + str(e))
+                        raise HTTPException(
+                            status_code=500, detail="Data ingested to datastore. But unable to publish to mqtt"
+                        )
 
     def _decide_input_type(self, message) -> str:
         """
@@ -108,7 +107,7 @@ class IngestToPipeline:
                 return "bufr"
             case _:
                 logger.critical(f"Unknown filetype provided. Got {message.split('.')[-1]}")
-                raise ValueError(f"Unknown filetype provided. Got {message.split('.')[-1]}")
+                raise HTTPException(status_code=400, detail=f"Unknown filetype provided. Got {message.split('.')[-1]}")
 
     def _build_messages(self, message: Union[str, object], input_type: str = None) -> list:
         """
@@ -119,5 +118,8 @@ class IngestToPipeline:
                 input_type = self._decide_input_type(message)
             else:
                 logger.critical("Illegal usage, not allowed to input" + "objects without specifying input type")
-                raise TypeError("Illegal usage, not allowed to input" + "objects without specifying input type")
+                raise HTTPException(
+                    status_code=400,
+                    detail="Illegal usage, not allowed to input" + "objects without specifying input type",
+                )
         return messages(message, input_type, self.uuid_prefix, self.schema_path, self.schema_validator)

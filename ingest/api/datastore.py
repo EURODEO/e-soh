@@ -43,9 +43,6 @@ def dtime2str(dtime):
 
 def ingest(msg: str) -> None:
     ts_metadata = dstore.TSMetadata()
-    # json_format.ParseDict(msg, ts_metadata, ignore_unknown_fields=True,
-    #   max_recursion_depth=100)
-    # json_format.ParseDict(msg["properties"], ts_metadata, ignore_unknown_fields=True)
     for i in [
         "version",
         "type",
@@ -132,9 +129,10 @@ def putObsRequest(put_obs_request):
         )
         grpc_stub = dstore_grpc.DatastoreStub(channel)
     except grpc._channel._InactiveRpcError as e:
-        logger.error("Failed to connect:", e)
+        logger.error("Failed to connect to datastore:", e)
+
     else:
-        logger.info("Connection established successfully.")
+        logger.info("Connection to datastore established successfully.")
 
     try:
         grpc_stub.PutObservations(put_obs_request)

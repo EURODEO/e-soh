@@ -4,6 +4,7 @@ import os
 
 import xarray as xr
 from fastapi import FastAPI
+from fastapi import HTTPException
 from fastapi import UploadFile
 from pydantic import BaseModel
 
@@ -23,48 +24,57 @@ app = FastAPI()
 
 # Define configuration parameters
 mqtt_configuration = {
-    "host": os.getenv("MQTT_HOST", "localhost"),
-    "topic": os.getenv("MQTT_TOPIC", "esoh"),
-    "username": os.getenv("MQTT_USERNAME", "username"),
-    "password": os.getenv("MQTT_PASSWORD", "password"),
+    "host": os.getenv("MQTT_HOST"),
+    "topic": os.getenv("MQTT_TOPIC"),
+    "username": os.getenv("MQTT_USERNAME"),
+    "password": os.getenv("MQTT_PASSWORD"),
 }
 
 
 @app.post("/nc")
 async def upload_netcdf_file(files: UploadFile, input_type: str = "nc"):
     try:
-        ingester = IngestToPipeline(mqtt_conf=mqtt_configuration, uuid_prefix="uuid", testing=True)
+        ingester = IngestToPipeline(mqtt_conf=mqtt_configuration, uuid_prefix="uuid")
         contents = await files.read()
         ds = xr.open_dataset(io.BytesIO(contents))
-        response, status = ingester.ingest(ds, input_type)
-        return Response(status_message=response, status_code=status)
+        ingester.ingest(ds, input_type)
 
+    except HTTPException as httpexp:
+        raise httpexp
     except Exception as e:
-        # No specfic exceptions are thrown from ingest
-        # So catch all and send a generic response back
-        return Response(status_message=str(e), status_code=500)
+        logger.critical(e)
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+    return Response(status_message="Successfully ingested", status_code=200)
 
 
 @app.post("/bufr")
 async def upload_bufr_file(files: UploadFile, input_type: str = "bufr"):
     try:
-        ingester = IngestToPipeline(mqtt_conf=mqtt_configuration, uuid_prefix="uuid", testing=True)
+        ingester = IngestToPipeline(mqtt_conf=mqtt_configuration, uuid_prefix="uuid")
         contents = await files.read()
-        response, status = ingester.ingest(contents, input_type)
-        return Response(status_message=response, status_code=status)
+        # filename = files.filename
+        ingester.ingest(contents, input_type)
 
+    except HTTPException as httpexp:
+        raise httpexp
     except Exception as e:
-        # No specfic exceptions are thrown from ingest
-        # So catch all and send a generic response back
-        return Response(status_message=str(e), status_code=500)
+        logger.critical(e)
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+    return Response(status_message="Successfully ingested", status_code=200)
 
 
 @app.post("/json")
-async def post_json(request: JsonMessageSchema, input_type: str):
+async def post_json(request: JsonMessageSchema, input_type: str = "json") -> Response:
     try:
-        ingester = IngestToPipeline(mqtt_conf=mqtt_configuration, uuid_prefix="uuid", testing=True)
-        response, status = ingester.ingest(request.dict(exclude_none=True), input_type)
-        return Response(status_message=response, status_code=status)
+        ingester = IngestToPipeline(mqtt_conf=mqtt_configuration, uuid_prefix="uuid")
+        ingester.ingest(request.dict(exclude_none=True), input_type)
 
+    except HTTPException as httpexp:
+        raise httpexp
     except Exception as e:
-        return Response(status_message=str(e), status_code=500)
+        logger.critical(e)
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+    return Response(status_message="Successfully ingested", status_code=200)
