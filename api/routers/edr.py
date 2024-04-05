@@ -128,7 +128,7 @@ async def get_locations(
                     status_code=500,
                     detail={
                         "coordinates": f"Station with id `{station_id} "
-                        f"has multiple coordinates: {platform_coordinates[station_id]}"
+                        f"has multiple incompatible coordinates: {platform_coordinates[station_id]}"
                     },
                 )
         if len(platform_names[station_id]) > 1:
