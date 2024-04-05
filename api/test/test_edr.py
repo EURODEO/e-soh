@@ -329,3 +329,7 @@ def test_get_position_with_incorrect_geometry_type():
 
     assert response.status_code == 400
     assert response.json() == {"detail": {"coords": "Invalid geometric type: Polygon"}}
+
+
+def test_this_test_should_break_the_pipeline_because_it_fails():
+    assert 1 + 1 == 3
