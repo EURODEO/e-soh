@@ -116,7 +116,7 @@ async def get_locations(
         if len(platform_coordinates[station_id]) > 1:
             if (
                 calculate_largest_postition_deviation(platform_coordinates[station_id]) < 1e-4
-            ):  # all coordinates is with 10M
+            ):  # all coordinates are within 1e-4 degrees (roughly 10 m)
                 platform_coordinates[station_id] = {
                     sorted(
                         [i for i in platform_coordinates[station_id]],
