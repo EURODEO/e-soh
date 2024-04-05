@@ -58,7 +58,7 @@ response_fields_needed_for_data_api = [
 # We can currently only query data, even if we only need metadata like for this endpoint
 # Maybe it would be better to only query a limited set of data instead of everything (meaning 24 hours)
 async def get_locations(
-    bbox: Annotated[str | None, Query(example="5.0,52.0,6.0,52.1")] = None
+    bbox: Annotated[str | None, Query(example="5.0,52.0,6.0,52.1")] = None,
 ) -> EDRFeatureCollection:  # Hack to use string
     ts_request = dstore.GetObsRequest(
         temporal_latest=True,
