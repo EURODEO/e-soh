@@ -41,7 +41,7 @@ def test_get_locations_without_query_params():
     with patch("routers.edr.get_obs_request") as mock_get_obs_request, patch(
         "routers.edr.verify_parameter_names"
     ) as mock_verify_parameter_names:
-        # Load arbitary test data for making a mock_obs_request
+        # Load arbitrary test data for making a mock_obs_request
         test_data = load_json("test/test_data/test_feature_collection_proto.json")
 
         mock_verify_parameter_names.return_value = None
