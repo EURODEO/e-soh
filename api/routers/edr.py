@@ -123,14 +123,14 @@ async def get_locations(
                         key=lambda x: (len(str(x[0])), len(str(x[1])), x[0], x[1]),
                     )[-1]
                 }
-                continue
-            raise HTTPException(
-                status_code=500,
-                detail={
-                    "coordinates": f"Station with id `{station_id} "
-                    f"has multiple coordinates: {platform_coordinates[station_id]}"
-                },
-            )
+            else:
+                raise HTTPException(
+                    status_code=500,
+                    detail={
+                        "coordinates": f"Station with id `{station_id} "
+                        f"has multiple coordinates: {platform_coordinates[station_id]}"
+                    },
+                )
         if len(platform_names[station_id]) > 1:
             raise HTTPException(
                 status_code=500,
