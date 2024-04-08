@@ -24,11 +24,11 @@ jobs:
     strategy:
       matrix:
         include:
-          - context: ./datastore/datastore/
+          - context: /datastore/datastore/
             IMAGE_NAME: datastore
-          - context: ./api/
+          - context: /api/
             IMAGE_NAME: api
-          - context: ./ingest/
+          - context: /ingest/
             IMAGE_NAME: ingest
     steps:
       - name: Checkout repository
