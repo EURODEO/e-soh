@@ -22,7 +22,6 @@ from geojson_pydantic import Point
 from grpc_getter import get_obs_request
 from response_classes import CoverageJsonResponse
 from response_classes import GeoJsonResponse
-from shapely import buffer
 from shapely import geometry
 from shapely import wkt
 from shapely.errors import GEOSException
@@ -229,7 +228,6 @@ async def get_data_position(
         point = wkt.loads(coords)
         if point.geom_type != "Point":
             raise TypeError
-        poly = buffer(point, 0.0001, quad_segs=1)  # Roughly 10 meters around the point
     except GEOSException:
         raise HTTPException(
             status_code=400,
@@ -246,7 +244,17 @@ async def get_data_position(
             detail={"coords": f"Unexpected error occurred during wkt parsing: {coords}"},
         )
 
-    return await get_data_area(coords=poly.wkt, parameter_name=parameter_name, datetime=datetime, f=f)
+    request = dstore.GetObsRequest(
+        # 10 meters around the point
+        spatial_circle=dstore.Circle(center=dstore.Point(lat=point.y, lon=point.x), radius=0.01),
+        included_response_fields=response_fields_needed_for_data_api,
+    )
+
+    await add_parameter_name_and_datetime(request, parameter_name, datetime)
+
+    coverages = await get_obs_request(request)
+    coverages = formatters.formatters[f](coverages)
+    return coverages
 
 
 @router.get(
