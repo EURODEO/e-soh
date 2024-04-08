@@ -56,6 +56,7 @@ jobs:
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
           context: ${{ matrix.context }}
+          file: ${{ matrix.context }}/Dockerfile
           push: true
           tags: latest
           labels: ${{ steps.meta.outputs.labels }}
