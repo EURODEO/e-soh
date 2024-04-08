@@ -99,8 +99,8 @@ def test_get_locations_with_query_params():
             m_args.filter["parameter_name"].values
         )
         assert m_args.temporal_latest
-        assert len(m_args.spatial_area.points) == 5
-        assert m_args.spatial_area.points[0].lon == 5.1
+        assert len(m_args.spatial_polygon.points) == 5
+        assert m_args.spatial_polygon.points[0].lon == 5.1
         assert "2022-12-31 00:00:00" == m_args.temporal_interval.start.ToDatetime().strftime("%Y-%m-%d %H:%M:%S")
         assert "2022-12-31 01:00:01" == m_args.temporal_interval.end.ToDatetime().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -233,8 +233,8 @@ def test_get_area_with_normal_query():
         m_args = mock_get_obs_request.call_args[0][0]
 
         assert {"air_temperature:2.0:mean:PT1M"} == set(m_args.filter["parameter_name"].values)
-        assert len(m_args.spatial_area.points) == 5
-        assert 4.0 == m_args.spatial_area.points[0].lon
+        assert len(m_args.spatial_polygon.points) == 5
+        assert m_args.spatial_polygon.points[0].lon == 4.0
         assert "2022-12-31 00:00:00" == m_args.temporal_interval.start.ToDatetime().strftime("%Y-%m-%d %H:%M:%S")
         assert "2022-12-31 00:00:01" == m_args.temporal_interval.end.ToDatetime().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -249,12 +249,12 @@ def test_get_area_with_without_parameter_names_query():
 
         mock_get_obs_request.return_value = create_mock_obs_response(test_data)
 
-        expected_spatial_area_coords = [(4.0, 52.4), (5.8, 52.4), (5.8, 52.6), (4.0, 52.6), (4.0, 52.4)]
+        expected_spatial_polygon_coords = [(4.0, 52.4), (5.8, 52.4), (5.8, 52.6), (4.0, 52.6), (4.0, 52.4)]
 
         # Create a GetObsRequest object with the expected arguments
         expected_args = dstore.GetObsRequest(
-            spatial_area=dstore.Polygon(
-                points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in expected_spatial_area_coords]
+            spatial_polygon=dstore.Polygon(
+                points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in expected_spatial_polygon_coords]
             ),
             included_response_fields=expected_data_endpoint_response_fields,
         )

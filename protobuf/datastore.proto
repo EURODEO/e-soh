@@ -51,6 +51,11 @@ message Polygon { // horizontal area; three or more points
   repeated Point points = 1;
 }
 
+message Circle { // horizontal circle area
+  Point center = 1;
+  double radius = 2; // radius in kilometers
+}
+
 message BoundingBox {
   double left = 1;
   double bottom = 2;
@@ -168,8 +173,8 @@ message GetObsRequest {
   // --- BEGIN non-string metadata -------------------------
 
   // --- BEGIN temporal spec ----------------------------------
-  bool temporal_latest = 6;
-  TimeInterval temporal_interval = 1;
+  bool temporal_latest = 1;
+  TimeInterval temporal_interval = 2;
 
   // combinations:
 
@@ -183,7 +188,8 @@ message GetObsRequest {
   // --- END temporal spec ----------------------------------
 
   // spatial filter
-  Polygon spatial_area = 3; // if specified, only observations in this area may be returned
+  Polygon spatial_polygon = 3; // if specified, only observations in this polygon may be returned
+  Circle spatial_circle = 4; // if specified, only observations in this circle may be returned
 
   // search wrt. TSMetadata.links
   // TODO - needs special handling
@@ -196,7 +202,7 @@ message GetObsRequest {
   // - map keys must correspond exactly with string field names in TSMetadata or ObsMetadata
   // - if map key F is specified (where F is for example 'platform'), only observations that match
   //   at least one of these values for F may be returned
-  map<string, Strings> filter = 4;
+  map<string, Strings> filter = 5;
 
   // --- END string metadata (handleable with reflection) -------------------------
 
@@ -211,7 +217,7 @@ message GetObsRequest {
   //     * 'obstime_instant' (--- '' ---)
   //     * 'pubtime' (--- '' ---)
   //     * 'value' (non-reflection handleable string field in ObsMetadata)
-  repeated string included_response_fields = 5;
+  repeated string included_response_fields = 6;
 
   // repeated string excluded_response_fields = 7; // TODO
 }

@@ -65,6 +65,7 @@ docker compose down --volumes
 docker compose --profile test build
 DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose up -d
 DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm loader
+DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm client
 DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm integration
 ```
 
@@ -224,21 +225,28 @@ $ grpcurl -d '{"temporal_interval": {"start": "2023-01-01T00:00:00Z", "end": "20
 ### Retrieve observations in a polygon
 
 ```text
-$ grpcurl -d '{"spatial_area": {"points": [{"lat": 59.90, "lon": 10.70}, {"lat": 59.90, "lon": 10.80}, {"lat": 60, "lon": 10.80}, {"lat": 60, "lon": 10.70}]}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
+$ grpcurl -d '{"spatial_polygon": {"points": [{"lat": 59.90, "lon": 10.70}, {"lat": 59.90, "lon": 10.80}, {"lat": 60, "lon": 10.80}, {"lat": 60, "lon": 10.70}]}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
+...
+```
+
+### Retrieve observations in a circle
+
+```text
+$ grpcurl -d '{"spatial_circle": {"center": {"lat": 59.99146, "lon": 11.02986}, "radius": 18.082}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
 ...
 ```
 
 ### Retrieve observations in both a time range and a polygon
 
 ```text
-$ grpcurl -d '{"temporal_interval": {"start": "2023-01-01T00:00:00Z", "end": "2023-01-01T00:00:10Z"}, "spatial_area": {"points": [{"lat": 59.90, "lon": 10.70}, {"lat": 59.90, "lon": 10.80}, {"lat": 60, "lon": 10.80}, {"lat": 60, "lon": 10.70}]}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
+$ grpcurl -d '{"temporal_interval": {"start": "2023-01-01T00:00:00Z", "end": "2023-01-01T00:00:10Z"}, "spatial_polygon": {"points": [{"lat": 59.90, "lon": 10.70}, {"lat": 59.90, "lon": 10.80}, {"lat": 60, "lon": 10.80}, {"lat": 60, "lon": 10.70}]}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
 ...
 ```
 
 ### Retrieve wind speed and air temperature observations in a time range and a polygon
 
 ```text
-$ grpcurl -d '{"filter": {"standard_name": {"values": ["wind_speed", "air_temperature"]}}, "temporal_interval": {"start": "2023-01-01T00:00:00Z", "end": "2023-01-01T00:00:10Z"}, "spatial_area": {"points": [{"lat": 59.90, "lon": 10.70}, {"lat": 59.90, "lon": 10.80}, {"lat": 60, "lon": 10.80}, {"lat": 60, "lon": 10.70}]}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
+$ grpcurl -d '{"filter": {"standard_name": {"values": ["wind_speed", "air_temperature"]}}, "temporal_interval": {"start": "2023-01-01T00:00:00Z", "end": "2023-01-01T00:00:10Z"}, "spatial_polygon": {"points": [{"lat": 59.90, "lon": 10.70}, {"lat": 59.90, "lon": 10.80}, {"lat": 60, "lon": 10.80}, {"lat": 60, "lon": 10.70}]}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
 ...
 ```
 
