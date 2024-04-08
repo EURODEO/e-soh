@@ -306,7 +306,7 @@ def test_get_position_with_normal_query():
         m_args = mock_get_obs_request.call_args[0][0]
 
         assert {"air_temperature:2.0:mean:PT1M"} == set(m_args.filter["parameter_name"].values)
-        assert len(m_args.spatial_circle.radius) == 0.01
+        assert m_args.spatial_circle.radius == 0.01
         assert "2022-12-31 00:00:00" == m_args.temporal_interval.start.ToDatetime().strftime("%Y-%m-%d %H:%M:%S")
         assert "2022-12-31 00:00:01" == m_args.temporal_interval.end.ToDatetime().strftime("%Y-%m-%d %H:%M:%S")
 
