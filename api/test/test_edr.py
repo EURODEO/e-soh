@@ -39,7 +39,7 @@ expected_data_endpoint_response_fields = [
 
 def test_get_locations_without_query_params():
     with patch("routers.edr.get_obs_request") as mock_get_obs_request, patch(
-        "routers.edr.verify_parameter_names"
+        "utilities.verify_parameter_names"
     ) as mock_verify_parameter_names:
         # Load arbitrary test data for making a mock_obs_request
         test_data = load_json("test/test_data/test_feature_collection_proto.json")
@@ -77,7 +77,7 @@ def test_get_locations_with_empty_response():
 
 def test_get_locations_with_query_params():
     with patch("routers.edr.get_obs_request") as mock_get_obs_request, patch(
-        "routers.edr.verify_parameter_names"
+        "utilities.verify_parameter_names"
     ) as mock_verify_parameter_names:
         test_data = load_json("test/test_data/test_feature_collection_proto.json")
         compare_data = load_json("test/test_data/test_feature_collection.json")
@@ -131,7 +131,7 @@ def test_get_locations_with_too_large_bbox():
 
 def test_get_locations_id_with_single_parameter_query_without_format():
     with patch("routers.edr.get_obs_request") as mock_get_obs_request, patch(
-        "routers.edr.verify_parameter_names"
+        "utilities.verify_parameter_names"
     ) as mock_verify_parameter_names:
         test_data = load_json("test/test_data/test_single_proto.json")
         compare_data = load_json("test/test_data/test_single_covjson.json")
@@ -215,7 +215,7 @@ def test_get_locations_id_with_empty_response():
 
 def test_get_area_with_normal_query():
     with patch("routers.edr.get_obs_request") as mock_get_obs_request, patch(
-        "routers.edr.verify_parameter_names"
+        "utilities.verify_parameter_names"
     ) as mock_verify_parameter_names:
         test_data = load_json("test/test_data/test_coverages_proto.json")
         compare_data = load_json("test/test_data/test_coverages_covjson.json")
@@ -291,7 +291,7 @@ def test_get_position_with_normal_query():
     # Wrap the original get_data_area to a mock so we can assert against the call values
     with patch("routers.edr.get_data_area", wraps=edr.get_data_area) as mock_get_data_area, patch(
         "routers.edr.get_obs_request"
-    ) as mock_get_obs_request, patch("routers.edr.verify_parameter_names") as mock_verify_parameter_names:
+    ) as mock_get_obs_request, patch("utilities.verify_parameter_names") as mock_verify_parameter_names:
         test_data = load_json("test/test_data/test_coverages_proto.json")
         compare_data = load_json("test/test_data/test_coverages_covjson.json")
 
