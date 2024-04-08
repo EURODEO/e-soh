@@ -12,9 +12,10 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  CPU: "arm64"
 
 jobs:
-  docker-build-and-publish-arm:
+  docker-build-and-publish:
     runs-on: ubuntu-latest
     # Sets the permissions granted to the `GITHUB_TOKEN` for the actions in this job.
     permissions:
@@ -25,10 +26,13 @@ jobs:
         include:
           - context: ./datastore/datastore/
             IMAGE_NAME: datastore
+            CPU: ["arm64", "amd64"]
           - context: ./api/
             IMAGE_NAME: api
+            CPU: ["arm64", "amd64"]
 #          - context: ./ingest/
 #            IMAGE_NAME: ingest
+#            CPU: ["arm64", "amd64"]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -36,7 +40,7 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
         with:
-          platforms: 'arm64'
+          platforms: ${{ env.CPU }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -66,7 +70,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ${{ matrix.context }}
-          platforms: linux/arm64
+          platforms: linux/${{ env.CPU }}
           file: ${{ matrix.context }}/Dockerfile
           pull: true
           push: true
