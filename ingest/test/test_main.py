@@ -20,7 +20,7 @@ def test_post_json_success(test_app, monkeypatch):
     response = test_app.post("/json?input_type=json", json=json_data)
     assert response.status_code == 200
 
-    assert response.json() == {"status_message": "Success", "status_code": 200}
+    assert response.json() == {"status_message": "Successfully ingested", "status_code": 200}
 
 
 def test_post_json_failure(test_app, monkeypatch):
@@ -30,4 +30,4 @@ def test_post_json_failure(test_app, monkeypatch):
 
     response = test_app.post("/json?input_type=json", json=json_data)
     assert response.status_code == 200
-    assert response.json() == {"status_message": "Success", "status_code": 200}
+    assert response.json() == {"status_message": "Successfully ingested", "status_code": 200}

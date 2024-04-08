@@ -26,6 +26,7 @@ class IngestToPipeline:
         self,
         mqtt_conf: dict,
         uuid_prefix: str,
+        testing: bool,
         schema_path=None,
         schema_file=None,
     ):
@@ -45,6 +46,8 @@ class IngestToPipeline:
         with open(esoh_mqtt_schema, "r") as file:
             self.esoh_mqtt_schema = json.load(file)
         self.schema_validator = Draft202012Validator(self.esoh_mqtt_schema)
+        if testing is True:
+            return
 
         if mqtt_conf["host"] is not None:
             if "username" in mqtt_conf:
@@ -117,9 +120,9 @@ class IngestToPipeline:
             if isinstance(message, str):
                 input_type = self._decide_input_type(message)
             else:
-                logger.critical("Illegal usage, not allowed to input" + "objects without specifying input type")
+                logger.critical("Illegal usage, not allowed to input" + " objects without specifying input type")
                 raise HTTPException(
                     status_code=400,
-                    detail="Illegal usage, not allowed to input" + "objects without specifying input type",
+                    detail="Illegal usage, not allowed to input" + " objects without specifying input type",
                 )
         return messages(message, input_type, self.uuid_prefix, self.schema_path, self.schema_validator)
