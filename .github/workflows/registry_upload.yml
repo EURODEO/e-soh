@@ -70,7 +70,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ${{ matrix.context }}
-          platforms: linux/${{ env.CPU }}
+          platforms: linux/arm64, linux/amd64
           file: ${{ matrix.context }}/Dockerfile
           pull: true
           push: true
