@@ -86,12 +86,7 @@ std::list<std::string> ESOHBufr::msg() const {
     gettimeofday(&tv, 0);
     const int date_len = 50;
     char date_str[date_len];
-    size_t dl = strftime(date_str, date_len, "%FT%H:%M:%S.000000%z",
-                         gmtime(&(tv.tv_sec)));
-    char usec[8];
-    sprintf(usec, "%06ld", tv.tv_usec);
-    // Copy microseconds into the date char string
-    memcpy(date_str + 20, usec, 6);
+    size_t dl = NorBufrIO::strisotime(date_str, date_len, &tv);
     pubtime.SetString(date_str, static_cast<rapidjson::SizeType>(dl),
                       message_allocator);
   }
@@ -863,8 +858,9 @@ bool ESOHBufr::setDateTime(struct tm *meas_datetime,
 
   const int date_len = 50;
   char date_str[date_len];
-  size_t dl =
-      strftime(date_str, date_len, "%FT%H:%M:%S.000000%z", meas_datetime);
+  struct timeval tv = {0, 0};
+  tv.tv_sec = mktime(meas_datetime);
+  size_t dl = NorBufrIO::strisotime(date_str, date_len, &tv);
 
   datetime.SetString(date_str, static_cast<rapidjson::SizeType>(dl),
                      message_allocator);
@@ -887,8 +883,9 @@ bool ESOHBufr::setStartDateTime(struct tm *start_meas_datetime,
 
   const int date_len = 50;
   char date_str[date_len];
-  size_t dl =
-      strftime(date_str, date_len, "%FT%H:%M:%S.000000%z", start_meas_datetime);
+  struct timeval tv = {0, 0};
+  tv.tv_sec = mktime(start_meas_datetime);
+  size_t dl = NorBufrIO::strisotime(date_str, date_len, &tv);
 
   start_datetime.SetString(date_str, static_cast<rapidjson::SizeType>(dl),
                            message_allocator);

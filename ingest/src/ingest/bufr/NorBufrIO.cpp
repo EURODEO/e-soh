@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <bitset>
+#include <cstring>
 #include <iostream>
 
 #include "NorBufrIO.h"
@@ -169,4 +170,26 @@ void NorBufrIO::strPrintable(std::string &s) {
   s.erase(std::remove_if(s.begin(), s.end(),
                          [](unsigned char c) { return !std::isprint(c); }),
           s.end());
+}
+
+ssize_t NorBufrIO::strisotime(char *date_str, size_t date_max,
+                              const struct timeval *date) {
+  const char *format = "%FT%H:%M:%S.000000%z";
+  size_t dl = strftime(date_str, date_max, format, gmtime(&(date->tv_sec)));
+
+  // Copy microseconds into the date char string
+  char usec[8];
+  sprintf(usec, "%06ld", date->tv_usec);
+  memcpy(date_str + 20, usec, 6);
+
+  // Change Timezone +0000 to +00:00
+  if (dl > 4) {
+    ++dl;
+    date_str[dl] = '\0';
+    date_str[dl - 1] = date_str[dl - 2];
+    date_str[dl - 2] = date_str[dl - 3];
+    date_str[dl - 3] = ':';
+  }
+
+  return dl;
 }

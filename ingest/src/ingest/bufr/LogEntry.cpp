@@ -4,6 +4,7 @@
 #include "rapidjson/prettywriter.h"
 
 #include "LogEntry.h"
+#include "NorBufrIO.h"
 
 LogEntry::LogEntry() {}
 
@@ -65,13 +66,11 @@ std::string LogEntry::entryTime() const {
 
   struct tm entry_tm;
   gmtime_r(&(tv.tv_sec), &entry_tm);
+
   const int date_len = 50;
   char date_str[date_len];
-  size_t dl = strftime(date_str, date_len, "%FT%H:%M:%S", &entry_tm);
-  int us_len = snprintf(date_str + dl, date_len - dl, ".%06ld", tv.tv_usec);
-  size_t tz_len =
-      strftime(date_str + dl + us_len, date_len - dl - us_len, "%z", &entry_tm);
-  std::string ret(date_str, dl + us_len + tz_len);
+  size_t dl = NorBufrIO::strisotime(date_str, date_len, &tv);
+  std::string ret(date_str, dl);
 
   return ret;
 }
