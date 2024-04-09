@@ -3,7 +3,6 @@ import json
 
 import numpy as np
 import xarray as xr
-from datetime import datetime, timezone
 
 from ingest.netCDF.mapper import Mapper
 
@@ -220,18 +219,8 @@ def build_all_json_payloads_from_netcdf(
         if "standard_name" not in data.attrs:
             continue
         for value, time in zip(data.data, data.time.data):
-            time = np.datetime_as_string(time)
+            time = np.datetime_as_string(time, unit="μs", timezone="UTC")
             json_msg["properties"]["datetime"] = time
-            # nstime = nstime.split("+")
-            nstime = time.split(".")
-            if len(nstime) == 1:
-                time = nstime
-            else:
-                time = ".".join(nstime[:-1])
-            python_datetime_utc = datetime.strptime(time, "%Y-%m-%dT%H:%M:%S%f")
-
-            python_datetime_utc = python_datetime_utc.replace(tzinfo=timezone.utc).isoformat(timespec="microseconds")
-            json_msg["properties"]["datetime"] = python_datetime_utc
 
             content_str = f"{value}"
             content = {

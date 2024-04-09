@@ -1,7 +1,7 @@
 import logging
 import os
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 
 import datastore_pb2 as dstore
 import datastore_pb2_grpc as dstore_grpc
@@ -25,12 +25,18 @@ def is_timezone_aware(dt):
 
 
 def nstime2stime(nstime):
-    nstime = nstime.split("+")
-    nstime = nstime[0].split(".")
-    if len(nstime) == 1:
-        return nstime[0]
-    else:
-        return ".".join(nstime[:-1])
+    # # nstime = nstime.split("+")
+    # nstime = nstime[0].split(".")
+    # if len(nstime) == 1:
+    #     return nstime[0]
+    # else:
+    #     time = ".".join(nstime[:-1])
+    python_datetime_utc = datetime.strptime(nstime, "%Y-%m-%dT%H:%M:%S%f")
+
+    python_datetime_utc = python_datetime_utc.replace(tzinfo=timezone.utc).isoformat(timespec="microseconds")
+
+    # Convert to ISO 8601 format with 'Z' (UTC marker)
+    return python_datetime_utc
 
 
 def dtime2str(dtime):
@@ -98,9 +104,7 @@ def ingest(msg: str) -> None:
 
     observation_data = dstore.ObsMetadata(
         pubtime=dtime2tstamp(datetime.strptime(msg["properties"]["pubtime"], "%Y-%m-%dT%H:%M:%S.%f%z")),
-        obstime_instant=dtime2tstamp(
-            datetime.strptime(nstime2stime(msg["properties"]["datetime"]), "%Y-%m-%dT%H:%M:%S")
-        ),
+        obstime_instant=dtime2tstamp(datetime.strptime((msg["properties"]["datetime"]), "%Y-%m-%dT%H:%M:%S.%f%z")),
         geo_point=dstore.Point(
             lat=float(msg["geometry"]["coordinates"]["lat"]), lon=float(msg["geometry"]["coordinates"]["lon"])
         ),
