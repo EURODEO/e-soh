@@ -6,6 +6,7 @@ from typing import Dict
 from typing import List
 from typing import Optional
 from typing import Union
+from datetime import datetime
 
 from pydantic import BaseModel
 from pydantic import Field
@@ -276,6 +277,15 @@ class Properties(BaseModel):
     integrity: Optional[Integrity] = Field(
         None, description="Specifies a checksum to be applied to the data to ensure that the download is accurate."
     )
+
+    @model_validator(mode="after")
+    def check_datetime_iso(self) -> "Properties":
+        try:
+            datetime.fromisoformat(self.datetime)
+            print("hello")
+        except Exception:
+            raise ValueError(f"{self.datetime} not in ISO format")
+        return self
 
 
 class Link(BaseModel):

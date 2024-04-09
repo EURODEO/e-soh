@@ -18,8 +18,7 @@ logger = logging.getLogger(__name__)
 
 class IngestToPipeline:
     """
-    This class should be the main interaction with this python package.
-    Should accept paths or objects to pass on to mqtt broker.
+    This class should accept paths or objects to pass on to mqtt broker.
     """
 
     def __init__(
@@ -59,8 +58,7 @@ class IngestToPipeline:
 
     def ingest(self, message: Union[str, object], input_type: str = None):
         """
-        Method designed to be main interaction point with this package.
-        Will interpret call all methods for deciding input type, build the mqtt messages, and
+        This method will interpret call all methods for deciding input type, build the mqtt messages, and
         publish them.
 
         """
