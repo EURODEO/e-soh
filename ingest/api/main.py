@@ -32,12 +32,12 @@ mqtt_configuration = {
 
 
 @app.post("/nc")
-async def upload_netcdf_file(files: UploadFile, input_type: str = "nc"):
+async def upload_netcdf_file(files: UploadFile):
     try:
         ingester = IngestToPipeline(mqtt_conf=mqtt_configuration, uuid_prefix="uuid", testing=True)
         contents = await files.read()
         ds = xr.open_dataset(io.BytesIO(contents))
-        ingester.ingest(ds, input_type)
+        ingester.ingest(ds, "nc")
 
     except HTTPException as httpexp:
         raise httpexp
@@ -49,12 +49,12 @@ async def upload_netcdf_file(files: UploadFile, input_type: str = "nc"):
 
 
 @app.post("/bufr")
-async def upload_bufr_file(files: UploadFile, input_type: str = "bufr"):
+async def upload_bufr_file(files: UploadFile):
     try:
         ingester = IngestToPipeline(mqtt_conf=mqtt_configuration, uuid_prefix="uuid", testing=True)
         contents = await files.read()
         # filename = files.filename
-        ingester.ingest(contents, input_type)
+        ingester.ingest(contents, "bufr")
 
     except HTTPException as httpexp:
         raise httpexp
@@ -66,10 +66,10 @@ async def upload_bufr_file(files: UploadFile, input_type: str = "bufr"):
 
 
 @app.post("/json")
-async def post_json(request: JsonMessageSchema, input_type: str = "json") -> Response:
+async def post_json(request: JsonMessageSchema) -> Response:
     try:
         ingester = IngestToPipeline(mqtt_conf=mqtt_configuration, uuid_prefix="uuid", testing=True)
-        ingester.ingest(request.dict(exclude_none=True), input_type)
+        ingester.ingest(request.dict(exclude_none=True), "json")
 
     except HTTPException as httpexp:
         raise httpexp
