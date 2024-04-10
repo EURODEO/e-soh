@@ -67,7 +67,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ github.repository }}/${{ matrix.IMAGE_NAME }}
           tags: |
-          #Set tag to latest if there is not tag
+          #Set tag to latest if there is no release tag from git
           type=raw,value=latest,enable={{is_default_branch && !tag}}
           #Tag the build with the current release
           type=tag,event=tag,enable={{is_default_branch}}
