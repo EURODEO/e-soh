@@ -73,7 +73,8 @@ private:
   std::string addMessage(std::list<Descriptor>::const_iterator ci,
                          rapidjson::Document &message, char sensor_level_active,
                          double sensor_level, std::string fn = "",
-                         time_t *start_datetime = 0) const;
+                         time_t *start_datetime = 0,
+                         std::string period_str = "") const;
   bool addDescriptor(Descriptor &D, rapidjson::Value &dest,
                      rapidjson::Document::AllocatorType &) const;
   bool addContent(const Descriptor &D, std::string cf_name,
@@ -88,7 +89,8 @@ private:
 
   bool setDateTime(struct tm *, rapidjson::Document &,
                    std::string period_str = "") const;
-  bool setStartDateTime(struct tm *, rapidjson::Document &) const;
+  bool setStartDateTime(struct tm *, rapidjson::Document &,
+                        std::string period_str = "") const;
   Oscar *oscar;
   std::string msg_template;
 };

@@ -575,10 +575,11 @@ std::list<std::string> ESOHBufr::msg() const {
                 time_t start_datetime = 0;
                 start_datetime = mktime(&meas_datetime);
                 start_datetime -= 60 * 60 * 24;
+                period_str = "PT24H";
 
                 ret.push_back(addMessage(ci, subset_message,
                                          sensor_level_active, sensor_level,
-                                         "sum", &start_datetime));
+                                         "sum", &start_datetime, period_str));
               }
             }
 
@@ -604,6 +605,11 @@ std::list<std::string> ESOHBufr::msg() const {
                 period = getValue(*ci, period);
                 start_datetime = mktime(&meas_datetime);
                 start_datetime += period * 60 * 60;
+                period_beg = "PT";
+                period_end = "H";
+                std::stringstream ss;
+                ss << period_beg << -period << period_end;
+                period_str = ss.str();
               }
 
               ++ci;
@@ -613,7 +619,7 @@ std::list<std::string> ESOHBufr::msg() const {
                     static_cast<double>(std::numeric_limits<uint64_t>::max())) {
                   ret.push_back(addMessage(ci, subset_message,
                                            sensor_level_active, sensor_level,
-                                           "sum", &start_datetime));
+                                           "sum", &start_datetime, period_str));
                 }
               }
             }
@@ -630,6 +636,11 @@ std::list<std::string> ESOHBufr::msg() const {
               period = getValue(*ci, period);
               start_datetime = mktime(&meas_datetime);
               start_datetime += period * 60 * 60;
+              period_beg = "PT";
+              period_end = "H";
+              std::stringstream ss;
+              ss << period_beg << -period << period_end;
+              period_str = ss.str();
             }
 
             ++ci;
@@ -643,7 +654,7 @@ std::list<std::string> ESOHBufr::msg() const {
                   static_cast<double>(std::numeric_limits<uint64_t>::max())) {
                 ret.push_back(addMessage(ci, subset_message,
                                          sensor_level_active, sensor_level,
-                                         "sun", &start_datetime));
+                                         "sum", &start_datetime, period_str));
               }
             }
 
@@ -873,7 +884,8 @@ bool ESOHBufr::setDateTime(struct tm *meas_datetime,
 }
 
 bool ESOHBufr::setStartDateTime(struct tm *start_meas_datetime,
-                                rapidjson::Document &message) const {
+                                rapidjson::Document &message,
+                                std::string period_str) const {
   rapidjson::Document::AllocatorType &message_allocator =
       message.GetAllocator();
   rapidjson::Value &properties = message["properties"];
@@ -893,8 +905,12 @@ bool ESOHBufr::setStartDateTime(struct tm *start_meas_datetime,
 
   // datetime.SetString(date_str,static_cast<rapidjson::SizeType>(dl),message_allocator);
   end_datetime.CopyFrom(datetime, message_allocator);
-  properties.RemoveMember("datetime");
+  // properties.RemoveMember("datetime");
   properties.AddMember("end_datetime", end_datetime, message_allocator);
+
+  if (period_str.size()) {
+    properties["period"].SetString(period_str.c_str(), message_allocator);
+  }
 
   return true;
 }
@@ -902,7 +918,8 @@ bool ESOHBufr::setStartDateTime(struct tm *start_meas_datetime,
 std::string ESOHBufr::addMessage(std::list<Descriptor>::const_iterator ci,
                                  rapidjson::Document &message,
                                  char sensor_level_active, double sensor_level,
-                                 std::string fn, time_t *start_datetime) const {
+                                 std::string fn, time_t *start_datetime,
+                                 std::string period_str) const {
   std::string ret;
 
   rapidjson::Document new_message;
@@ -911,7 +928,7 @@ std::string ESOHBufr::addMessage(std::list<Descriptor>::const_iterator ci,
   new_message.CopyFrom(message, new_message_allocator);
 
   if (start_datetime)
-    setStartDateTime(gmtime(start_datetime), new_message);
+    setStartDateTime(gmtime(start_datetime), new_message, period_str);
 
   addContent(*ci, cf_names[*ci].first, sensor_level_active, sensor_level, fn,
              new_message);
