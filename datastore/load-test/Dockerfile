@@ -6,6 +6,7 @@ ENV DOCKER_PATH="/load-test"
 
 RUN apt-get update \
     && apt-get -y upgrade \
+    && apt-get install gcc libc6-dev -y --no-install-recommends \
     # Cleanup
     && rm -rf /usr/tmp  \
     && apt-get autoremove -y \
