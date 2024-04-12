@@ -92,13 +92,6 @@ class Content(BaseModel):
 
 
 class Properties(BaseModel):
-    data_id: str = Field(
-        ...,
-        description=(
-            "Unique identifier of the data as defined by the data producer."
-            "Data producers SHOULD NOT use an opaque id, but something meaningful to support client side filtering."
-        ),
-    )
     title: Optional[str] = Field(
         None,
         description=(
@@ -121,7 +114,7 @@ class Properties(BaseModel):
         ),
     )
     keywords_vocabulary: Optional[str] = Field(
-        ...,
+        None,
         description=(
             "If you are using a controlled vocabulary for the words/phrases in your 'keywords' attribute,"
             " this is the unique name or identifier of the vocabulary from which keywords are taken. "

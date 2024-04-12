@@ -4,8 +4,6 @@
     "type": "Feature",
     "geometry": "null",
     "properties": {
-        "data_id": "data_id",
-        "metadata_id": "metatata_id",
         "datetime": "null",
         "Conventions": "CF-1.8",
         "summary": "Observation data from GTS network.",
