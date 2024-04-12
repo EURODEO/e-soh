@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 class MQTTConnection:
-    def __init__(self, mqtt_host, mqtt_topic, mqtt_username=None, mqtt_password=None):
+    def __init__(self, mqtt_host, mqtt_topic=None, mqtt_username=None, mqtt_password=None):
         self.mqtt_host = mqtt_host
         self.mqtt_topic = mqtt_topic
         self.mqtt_port = 8883
@@ -27,7 +27,7 @@ class MQTTConnection:
         # Connect with MQTT Broker
         self.pub_client.connect(self.mqtt_host, port=self.mqtt_port)
 
-        logger.info(f"Established MQTT connection to {self.mqtt_host}, with topic {self.mqtt_topic}")
+        logger.info(f"Established MQTT connection to {self.mqtt_host}")
 
     def send_message(self, message: str, topic: str):
         if len(topic) != 0:

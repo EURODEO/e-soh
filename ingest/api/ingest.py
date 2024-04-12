@@ -25,7 +25,6 @@ class IngestToPipeline:
         self,
         mqtt_conf: dict,
         uuid_prefix: str,
-        testing: bool,
         schema_path=None,
         schema_file=None,
     ):
@@ -45,16 +44,16 @@ class IngestToPipeline:
         with open(esoh_mqtt_schema, "r") as file:
             self.esoh_mqtt_schema = json.load(file)
         self.schema_validator = Draft202012Validator(self.esoh_mqtt_schema)
-        if testing is True:
-            return
-
         if mqtt_conf["host"] is not None:
-            if "username" in mqtt_conf:
-                self.mqtt = MQTTConnection(
-                    mqtt_conf["host"], mqtt_conf["topic"], mqtt_conf["username"], mqtt_conf["password"]
-                )
-            else:
-                self.mqtt = MQTTConnection(mqtt_conf["host"], mqtt_conf["topic"])
+            try:
+                if "username" in mqtt_conf:
+                    self.mqtt = MQTTConnection(mqtt_conf["host"], mqtt_conf["username"], mqtt_conf["password"])
+                else:
+                    self.mqtt = MQTTConnection(mqtt_conf["host"])
+                logger.info("Established connection to mqtt")
+            except Exception as e:
+                logger.error("Failed to establish connection to mqtt, " + "\n" + str(e))
+                raise HTTPException(status_code=500, detail="API failed to establish connection to mqtt")
 
     def ingest(self, message: Union[str, object], input_type: str = None):
         """
@@ -78,6 +77,7 @@ class IngestToPipeline:
             if msg:
                 try:
                     ingest(msg)
+                    logger.info("Succesfully ingested to datastore")
                 except grpc.RpcError as e:
                     logger.error("Failed to reach datastore, " + "\n" + str(e))
                     raise HTTPException(status_code=500, detail="API could not reach datastore")
@@ -88,6 +88,7 @@ class IngestToPipeline:
                 if self.mqtt is not None:
                     try:
                         self.mqtt.send_message(msg, topic)
+                        logger.info("Succesfully published to mqtt")
                     except Exception as e:
                         logger.error("Failed to publish to mqtt, " + "\n" + str(e))
                         raise HTTPException(

@@ -11,6 +11,13 @@ from ingest.bufr.bufresohmsg_py import init_bufr_schema_py
 from ingest.bufr.bufresohmsg_py import init_bufrtables_py
 from ingest.bufr.bufresohmsg_py import init_oscar_py
 
+mqtt_configuration = {
+    "host": None,
+    "topic": None,
+    "username": None,
+    "password": None,
+}
+
 
 @pytest.mark.timeout(1000)
 @pytest.mark.parametrize("bufr_file_path", glob.glob("test/test_data/bufr/*.buf*"))
@@ -22,7 +29,8 @@ def test_verify_json_payload_bufr(bufr_file_path):
     init_bufrtables_py("")
     init_oscar_py("./src/ingest/bufr/oscar/oscar_stations_all.json")
     init_bufr_schema_py("./src/ingest/schemas/bufr_to_e_soh_message.json")
-    msg_build = IngestToPipeline(None, "testing", testing=True)
+
+    msg_build = IngestToPipeline(mqtt_configuration, "testing")
     with open(bufr_file_path, "rb") as file:
         bufr_content = file.read()
 
@@ -44,7 +52,7 @@ def test_verify_json_payload_metno_netcdf(netcdf_file_path):
 
     ds = xr.load_dataset(netcdf_file_path)
 
-    msg_build = IngestToPipeline(None, "testing", testing=True)
+    msg_build = IngestToPipeline(mqtt_configuration, "testing")
 
     json_payloads = msg_build._build_messages(ds, input_type="netCDF")
 
