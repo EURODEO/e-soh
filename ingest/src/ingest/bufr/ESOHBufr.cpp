@@ -901,12 +901,12 @@ bool ESOHBufr::setStartDateTime(struct tm *start_meas_datetime,
 
   start_datetime.SetString(date_str, static_cast<rapidjson::SizeType>(dl),
                            message_allocator);
-  properties.AddMember("start_datetime", start_datetime, message_allocator);
+  // properties.AddMember("start_datetime", start_datetime, message_allocator);
 
   // datetime.SetString(date_str,static_cast<rapidjson::SizeType>(dl),message_allocator);
   end_datetime.CopyFrom(datetime, message_allocator);
   // properties.RemoveMember("datetime");
-  properties.AddMember("end_datetime", end_datetime, message_allocator);
+  // properties.AddMember("end_datetime", end_datetime, message_allocator);
 
   if (period_str.size()) {
     properties["period"].SetString(period_str.c_str(), message_allocator);
