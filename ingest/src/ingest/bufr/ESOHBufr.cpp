@@ -748,7 +748,7 @@ bool ESOHBufr::addContent(const Descriptor &v, std::string cf_name,
 
   if (sensor_level_active) {
     std::stringstream ss;
-    ss << std::fixed << std::setprecision(1) << sensor_level << "m";
+    ss << std::fixed << std::setprecision(1) << sensor_level;
     rapidjson::Value r_level;
     r_level.SetString(ss.str().c_str(), message_allocator);
     // message_properties.AddMember("level", r_level, message_allocator);

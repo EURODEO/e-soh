@@ -11,7 +11,7 @@
         "summary": "Observation data from GTS network.",
         "license": "http//spdx.org/licenses/CC-BY-4.0(CC-BY-4.0)",
         "naming_authority": "naming_authority",
-        "level": "0.0m",
+        "level": "0.0",
         "function": "point",
         "period": "PT0S",
         "content": {
