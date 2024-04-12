@@ -13,6 +13,7 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+COPY "./load-test.sh" "${DOCKER_PATH}/load-test.sh"
 COPY "./protobuf/datastore.proto" "/protobuf/datastore.proto"
 COPY "./requirements.txt" "${DOCKER_PATH}/requirements.txt"
 
@@ -33,12 +34,4 @@ COPY "./schedule_write.py" "${DOCKER_PATH}/schedule_write.py"
 
 WORKDIR "${DOCKER_PATH}"
 
-CMD ["/bin/bash", "-c", "echo \"Run load test (read only).\"; \
-locust -f locustfile_read.py --headless -u 5 -r 10 --run-time 60 --only-summary --csv \"${DOCKER_PATH}/output/store_read\"; \
-echo \"Run load test (write + read).\"; \
-python schedule_write.py > \"${DOCKER_PATH}/output/schedule_write.log\" 2>&1 & \
-    locust -f locustfile_read.py --headless -u 5 -r 10 --run-time 60 --only-summary --csv \"${DOCKER_PATH}/output/store_rw\" && \
-    kill %1 && \
-    echo \"Catting schedule_write output...\" && \
-    cat \"${DOCKER_PATH}/output/schedule_write.log\" && \
-    echo \"Done catting\""]
+CMD ["/bin/bash", "-c", "${DOCKER_PATH}/load-test.sh"]
