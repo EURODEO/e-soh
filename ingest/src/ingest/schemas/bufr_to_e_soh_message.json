@@ -1,0 +1,29 @@
+{
+    "id": "",
+    "version": "v4.0",
+    "type": "Feature",
+    "geometry": "null",
+    "properties": {
+        "datetime": "null",
+        "Conventions": "CF-1.8",
+        "summary": "Observation data from GTS network.",
+        "license": "http//spdx.org/licenses/CC-BY-4.0(CC-BY-4.0)",
+        "naming_authority": "naming_authority",
+        "level": "0.0",
+        "function": "point",
+        "period": "PT0S",
+        "content": {
+            "encoding": "utf-8",
+            "standard_name": "",
+            "unit": "",
+            "size": 0,
+            "value": ""
+        }
+    },
+    "links": [
+        {
+            "href": "http://oscar.wmo.int",
+            "rel": "canonical"
+        }
+    ]
+}

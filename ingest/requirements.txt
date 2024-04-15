@@ -1,8 +1,11 @@
-xarray == 2023.7.0
-netCDF4 ~= 1.6.4
 numpy ~= 1.25.2
 paho-mqtt ~= 1.6.1
+gunicorn~=21.2
 jsonschema ~= 4.19.0
-pybind11 == 2.11.1
 protobuf ~= 4.24.3
 grpcio == 1.59.0
+fastapi == 0.108.0
+grpcio-tools==1.58.0
+uvicorn==0.25.0
+python-multipart~=0.0.9
+requests == 2.31.0

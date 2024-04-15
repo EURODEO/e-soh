@@ -1,5 +1,13 @@
 import pytest
-from esoh.ingest.main import IngestToPipeline
+
+from api.ingest import IngestToPipeline
+
+mqtt_configuration = {
+    "host": None,
+    "topic": None,
+    "username": None,
+    "password": None,
+}
 
 
 @pytest.mark.parametrize(
@@ -15,5 +23,5 @@ from esoh.ingest.main import IngestToPipeline
     ],
 )
 def test_decide_input_type(test_inpt, expected):
-    msg_build = IngestToPipeline(None, None, "testing", testing=True)
+    msg_build = IngestToPipeline(mqtt_configuration, "testing")
     assert msg_build._decide_input_type(test_inpt) == expected

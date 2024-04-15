@@ -205,3 +205,6 @@ datastore_pb2.py
 datastore_pb2_grpc.py
 # Ignore all the copied protobuf directories, as the root contains the source of truth.
 **/protobuf
+
+# Ignore cf standard file, as it is generated while docker build.
+cf_standard_names_v84.txt
