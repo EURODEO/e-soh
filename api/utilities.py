@@ -121,3 +121,15 @@ def validate_bbox(bbox: str) -> Tuple[float, float, float, float]:
         raise HTTPException(status_code=400, detail=errors)
 
     return left, bottom, right, top
+
+
+async def add_parameter_name_and_datetime(request, parameter_name: str | None, datetime: str | None):
+    if parameter_name:
+        parameter_name = split_and_strip(parameter_name)
+        await verify_parameter_names(parameter_name)
+        request.filter["parameter_name"].values.extend(parameter_name)
+
+    if datetime:
+        start, end = get_datetime_range(datetime)
+        request.temporal_interval.start.CopyFrom(start)
+        request.temporal_interval.end.CopyFrom(end)

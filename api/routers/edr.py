@@ -22,14 +22,11 @@ from geojson_pydantic import Point
 from grpc_getter import get_obs_request
 from response_classes import CoverageJsonResponse
 from response_classes import GeoJsonResponse
-from shapely import buffer
 from shapely import geometry
 from shapely import wkt
 from shapely.errors import GEOSException
-from utilities import get_datetime_range
-from utilities import split_and_strip
+from utilities import add_parameter_name_and_datetime
 from utilities import validate_bbox
-from utilities import verify_parameter_names
 
 router = APIRouter(prefix="/collections/observations")
 
@@ -93,16 +90,7 @@ async def get_locations(
             [dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords],
         )
 
-    if parameter_name:
-        parameter_name = split_and_strip(parameter_name)
-        await verify_parameter_names(parameter_name)
-        ts_request.filter["parameter_name"].values.extend(parameter_name)
-
-    if datetime:
-        start, end = get_datetime_range(datetime)
-        ts_request.temporal_interval.start.CopyFrom(start)
-        ts_request.temporal_interval.end.CopyFrom(end)
-
+    await add_parameter_name_and_datetime(ts_request, parameter_name, datetime)
     ts_response = await get_obs_request(ts_request)
 
     if len(ts_response.observations) == 0:
@@ -200,8 +188,6 @@ async def get_data_location_id(
     datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
     f: Annotated[formatters.Formats, Query(description="Specify return format.")] = formatters.Formats.covjson,
 ):
-    # TODO: There is no error handling of any kind at the moment!
-    #  This is just a quick and dirty demo
     request = dstore.GetObsRequest(
         filter=dict(
             platform=dstore.Strings(values=[location_id]),
@@ -209,15 +195,7 @@ async def get_data_location_id(
         included_response_fields=response_fields_needed_for_data_api,
     )
 
-    if parameter_name:
-        parameter_name = split_and_strip(parameter_name)
-        await verify_parameter_names(parameter_name)
-        request.filter["parameter_name"].values.extend(parameter_name)
-
-    if datetime:
-        start, end = get_datetime_range(datetime)
-        request.temporal_interval.start.CopyFrom(start)
-        request.temporal_interval.end.CopyFrom(end)
+    await add_parameter_name_and_datetime(request, parameter_name, datetime)
 
     response = await get_obs_request(request)
     return formatters.formatters[f](response)
@@ -250,7 +228,6 @@ async def get_data_position(
         point = wkt.loads(coords)
         if point.geom_type != "Point":
             raise TypeError
-        poly = buffer(point, 0.0001, quad_segs=1)  # Roughly 10 meters around the point
     except GEOSException:
         raise HTTPException(
             status_code=400,
@@ -267,7 +244,17 @@ async def get_data_position(
             detail={"coords": f"Unexpected error occurred during wkt parsing: {coords}"},
         )
 
-    return await get_data_area(coords=poly.wkt, parameter_name=parameter_name, datetime=datetime, f=f)
+    request = dstore.GetObsRequest(
+        # 10 meters around the point
+        spatial_circle=dstore.Circle(center=dstore.Point(lat=point.y, lon=point.x), radius=0.01),
+        included_response_fields=response_fields_needed_for_data_api,
+    )
+
+    await add_parameter_name_and_datetime(request, parameter_name, datetime)
+
+    coverages = await get_obs_request(request)
+    coverages = formatters.formatters[f](coverages)
+    return coverages
 
 
 @router.get(
@@ -320,15 +307,7 @@ async def get_data_area(
         included_response_fields=response_fields_needed_for_data_api,
     )
 
-    if parameter_name:
-        parameter_name = split_and_strip(parameter_name)
-        await verify_parameter_names(parameter_name)
-        request.filter["parameter_name"].values.extend(parameter_name)
-
-    if datetime:
-        start, end = get_datetime_range(datetime)
-        request.temporal_interval.start.CopyFrom(start)
-        request.temporal_interval.end.CopyFrom(end)
+    await add_parameter_name_and_datetime(request, parameter_name, datetime)
 
     coverages = await get_obs_request(request)
     coverages = formatters.formatters[f](coverages)
