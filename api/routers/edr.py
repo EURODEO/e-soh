@@ -140,7 +140,7 @@ async def get_locations(
         all_parameters[obs.ts_mdata.parameter_name] = parameter
 
     # Check for multiple coordinates or names on one station'
-    errors = {}
+    errors = defaultdict(list)
     for station_id in platform_parameters.keys():
         if len(platform_coordinates[station_id]) > 1:
             if (
@@ -155,26 +155,14 @@ async def get_locations(
                     )[-1]
                 }
             else:
-                if "coordinates" in errors:
-                    errors["coordinates"].append(
-                        f"Station with id `{station_id} "
-                        f"has multiple incompatible coordinates: {platform_coordinates[station_id]}"
-                    )
-                else:
-                    errors["coordinates"] = [
-                        f"Station with id `{station_id} "
-                        f"has multiple incompatible coordinates: {platform_coordinates[station_id]}"
-                    ]
-
-        if len(platform_names[station_id]) > 1:
-            if "platform_name" in errors:
-                errors["platform_name"].append(
-                    [f"Station with id `{station_id} has multiple names: {platform_names[station_id]}"]
+                errors["coordinates"].append(
+                    f"Station with id `{station_id} "
+                    f"has multiple incompatible coordinates: {platform_coordinates[station_id]}"
                 )
-            else:
-                errors["platform_name"] = [
-                    f"Station with id `{station_id} has multiple names: {platform_names[station_id]}"
-                ]
+        if len(platform_names[station_id]) > 1:
+            errors["platform_name"].append(
+                [f"Station with id `{station_id} has multiple names: {platform_names[station_id]}"]
+            )
 
     if errors:
         raise HTTPException(status_code=500, detail=errors)
