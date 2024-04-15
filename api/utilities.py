@@ -1,6 +1,7 @@
 from datetime import datetime
 from datetime import timedelta
 from typing import Tuple
+from itertools import combinations
 
 import datastore_pb2 as dstore
 from fastapi import HTTPException
@@ -121,3 +122,11 @@ def validate_bbox(bbox: str) -> Tuple[float, float, float, float]:
         raise HTTPException(status_code=400, detail=errors)
 
     return left, bottom, right, top
+
+
+def calculate_largest_postition_deviation(positions: list) -> float:
+    largest_deviation = 0
+    for i, j in combinations(positions, 2):
+        if (dist := ((i[0] - j[0]) ** 2) + ((i[1] - j[1]) ** 2) ** 0.5) > largest_deviation:
+            largest_deviation = dist
+    return largest_deviation

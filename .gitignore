@@ -205,3 +205,5 @@ datastore_pb2.py
 datastore_pb2_grpc.py
 # Ignore all the copied protobuf directories, as the root contains the source of truth.
 **/protobuf
+# Ignore nvim styling files
+.stylua.toml

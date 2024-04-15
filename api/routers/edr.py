@@ -30,6 +30,7 @@ from utilities import get_datetime_range
 from utilities import split_and_strip
 from utilities import validate_bbox
 from utilities import verify_parameter_names
+from utilities import calculate_largest_postition_deviation
 
 router = APIRouter(prefix="/collections/observations")
 
@@ -125,6 +126,7 @@ async def get_locations(
         platform_coordinates[obs.ts_mdata.platform].add(
             (obs.obs_mdata[-1].geo_point.lon, obs.obs_mdata[-1].geo_point.lat)
         )
+
         # Check for inconsistent parameter definitions between stations
         # TODO: How to handle those?
         if obs.ts_mdata.parameter_name in all_parameters and all_parameters[obs.ts_mdata.parameter_name] != parameter:
@@ -137,24 +139,33 @@ async def get_locations(
             )
         all_parameters[obs.ts_mdata.parameter_name] = parameter
 
-    # Check for multiple coordinates or names on one station
+    # Check for multiple coordinates or names on one station'
+    errors = defaultdict(list)
     for station_id in platform_parameters.keys():
         if len(platform_coordinates[station_id]) > 1:
-            raise HTTPException(
-                status_code=500,
-                detail={
-                    "coordinates": f"Station with id `{station_id} "
-                    f"has multiple coordinates: {platform_coordinates[station_id]}"
-                },
-            )
+            if (
+                calculate_largest_postition_deviation(platform_coordinates[station_id]) < 1e-4
+            ):  # all coordinates are within 1e-4 degrees (roughly 10 m)
+                platform_coordinates[station_id] = {
+                    sorted(
+                        [i for i in platform_coordinates[station_id]],
+                        key=lambda x: (len(str(x[0])), len(str(x[1])), x[0], x[1]),
+                        # keys sort on number of decimals, then value of coordinates.
+                        # This is to enshure we just coordiantes with the most precision and the same ones every time
+                    )[-1]
+                }
+            else:
+                errors["coordinates"].append(
+                    f"Station with id `{station_id} "
+                    f"has multiple incompatible coordinates: {platform_coordinates[station_id]}"
+                )
         if len(platform_names[station_id]) > 1:
-            raise HTTPException(
-                status_code=500,
-                detail={
-                    "platform_name": f"Station with id `{station_id} "
-                    f"has multiple names: {platform_names[station_id]}"
-                },
+            errors["platform_name"].append(
+                [f"Station with id `{station_id} has multiple names: {platform_names[station_id]}"]
             )
+
+    if errors:
+        raise HTTPException(status_code=500, detail=errors)
 
     features = [
         Feature(
