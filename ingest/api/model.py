@@ -274,9 +274,9 @@ class Properties(BaseModel):
     @model_validator(mode="after")
     def check_datetime_iso(self) -> "Properties":
         try:
-            datetime.strptime(self.datetime, "%Y-%m-%dT%H:%M:%S.%f%z")
+            datetime.strptime(self.datetime, "%Y-%m-%dT%H:%M:%S%z")
         except Exception:
-            raise ValueError(f"{self.datetime} not in ISO format(YYYY-MM-DDTHH:MM:SS.ssssss)")
+            raise ValueError(f"{self.datetime} not in ISO format(YYYY-MM-DDTHH:MM:SSZ)")
         return self
 
 

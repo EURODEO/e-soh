@@ -41,14 +41,14 @@ def ingest(msg: str) -> None:
         if i == "obstime_instant":
             if "datetime" in msg["properties"]:
                 obstime_instant = dtime2tstamp(
-                    datetime.strptime((msg["properties"]["datetime"]), "%Y-%m-%dT%H:%M:%S.%f%z")
+                    datetime.strptime((msg["properties"]["datetime"]), "%Y-%m-%dT%H:%M:%S%z")
                 )
                 observation_data.obstime_instant.CopyFrom(obstime_instant)
         elif i in msg:
             setattr(observation_data, i, msg[i])
         elif i in msg["properties"]:
             if i == "pubtime":
-                pubtime = dtime2tstamp(datetime.strptime(msg["properties"]["pubtime"], "%Y-%m-%dT%H:%M:%S.%f%z"))
+                pubtime = dtime2tstamp(datetime.strptime(msg["properties"]["pubtime"], "%Y-%m-%dT%H:%M:%S%z"))
                 observation_data.pubtime.CopyFrom(pubtime)
             else:
                 setattr(observation_data, i, msg["properties"][i])

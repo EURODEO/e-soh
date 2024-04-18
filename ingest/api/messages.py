@@ -44,7 +44,7 @@ def build_message(file: object, input_type: str, uuid_prefix: str, schema_path: 
         json_msg["id"] = message_uuid
         json_msg["properties"]["timeseries_id"] = message_uuid
         json_msg["properties"]["data_id"] = message_uuid
-        json_msg["properties"]["pubtime"] = datetime.now(timezone.utc).isoformat()
+        json_msg["properties"]["pubtime"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
 
     return unfinished_messages  # now populated with timestamps and uuids
 

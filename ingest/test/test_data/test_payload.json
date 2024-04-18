@@ -15,7 +15,7 @@
         "platform": "0-20000-0-01001",
         "platform_vocabulary": "placeholder",
         "naming_authority": "no.met",
-        "datetime": "2023-10-09T10:19:00.000000+00:00",
+        "datetime": "2023-10-09T10:19:00+00:00",
         "level": "12",
         "function": "point",
         "period": "P3DT12H30M5S",
