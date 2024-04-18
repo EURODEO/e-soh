@@ -42,7 +42,6 @@ repos:
         # only checks syntax not load the yaml:
         # https://stackoverflow.com/questions/59413979/how-exclude-ref-tag-from-check-yaml-git-hook
         args: ["--unsafe"] # Parse the yaml files for syntax.
-        exclude: ".github\/workflows\/*"
 
   # TODO: Re-enable when the issue https://github.com/psf/black/issues/4175 is solved for Black.
   ## reorder-python-imports ~ sort python imports

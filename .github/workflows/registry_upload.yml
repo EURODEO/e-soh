@@ -66,11 +66,11 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ github.repository }}/${{ matrix.IMAGE_NAME }}
+          # Set tag to latest if there is no release tag from git
+          # Tag the build with the current release
           tags: |
-          #Set tag to latest if there is no release tag from git
-          type=raw,value=latest,enable={{is_default_branch && !tag}}
-          #Tag the build with the current release
-          type=tag,event=tag,enable={{is_default_branch}}
+            type=raw,value=latest,enable={{is_default_branch && !tag}}
+            type=tag,event=tag,enable={{is_default_branch}}
 
       - name: Copy Protobuf files to Dockerfile directories
         run: ./ci/docker/copy-protobuf.sh
