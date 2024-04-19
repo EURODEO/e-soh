@@ -2,19 +2,11 @@ name: Create and publish a Docker image
 
 # Configures this workflow to run on main when testing CI is completed.
 on:
-  push:
-    branches:
-      - "**"
-    tags:
-      - "[0-9]+.[0-9]+.[0-9]+"
-  pull_request:
-    branches:
-      - main
-#  workflow_run:
-#    workflows: ["CI"]
-#    branches: [main]
-#    types:
-#      - completed
+  workflow_run:
+    workflows: ["CI"]
+    branches: [main]
+    types:
+      - completed
 
 # Defines two custom environment variables for the workflow. These are used for the Container registry domain, and a name for the Docker image that this workflow builds.
 env:
@@ -24,14 +16,14 @@ env:
 
 jobs:
 
-  #on-failure:
-    #runs-on: ubuntu-latest
-    #if: ${{ github.event.workflow_run.conclusion == 'failure' }}
-    #steps:
-    #  - run: echo 'The triggering CI workflow failed'
+  on-failure:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - run: echo 'The triggering CI workflow failed'
   docker-build-and-publish:
     runs-on: ubuntu-latest
-    #if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     # Sets the permissions granted to the `GITHUB_TOKEN` for the actions in this job.
     permissions:
       contents: read
@@ -74,9 +66,8 @@ jobs:
           # Set tag to latest if there is no release tag from git
           # Tag the build with the current release
           tags: |
-            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'master') }}
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
             type=ref,event=tag,enable={{is_default_branch}}
-            type=raw,value=test-build,enable=true
 
       - name: Copy Protobuf files to Dockerfile directories
         run: ./ci/docker/copy-protobuf.sh
