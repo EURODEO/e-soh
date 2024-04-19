@@ -75,7 +75,7 @@ jobs:
           # Tag the build with the current release
           tags: |
             type=raw,value=latest,enable={{is_default_branch && !tag}}
-            type=tag,event=tag,enable={{is_default_branch}}
+            type=ref,event=tag,enable={{is_default_branch}}
             type=raw,value=test-build,enable=True
 
       - name: Copy Protobuf files to Dockerfile directories
