@@ -74,7 +74,7 @@ jobs:
           # Set tag to latest if there is no release tag from git
           # Tag the build with the current release
           tags: |
-            type=raw,value=latest,enable={{is_default_branch && !tag}}
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'master') }}
             type=ref,event=tag,enable={{is_default_branch}}
             type=raw,value=test-build,enable=True
 
