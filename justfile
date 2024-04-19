@@ -4,7 +4,7 @@ default:
 
 set positional-arguments
 
-# After running just all, the database needs cleanup, run just down
+# After running just all, the database needs cleanup, run just destroy
 all: lint build unit services load integration performance client
 up: build services
 test: unit load integration
@@ -112,4 +112,7 @@ load:
 
 
 down:
+    docker compose --profile test down
+
+destroy:
     docker compose --profile test down --volumes

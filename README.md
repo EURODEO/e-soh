@@ -38,7 +38,7 @@ just all
 ```
 
 ```bash
-just test -ip
+just test
 ```
 
 ## Pre-commit

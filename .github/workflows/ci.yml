@@ -110,7 +110,7 @@ jobs:
 
       - name: Cleanup
         if: always()
-        run: just down
+        run: just destroy
 
 
   test-ingest:
