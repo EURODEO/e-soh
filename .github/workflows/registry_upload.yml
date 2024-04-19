@@ -3,7 +3,7 @@ name: Create and publish a Docker image
 # Configures this workflow to run on main when testing CI is completed.
 on:
   push:
-    "branches":
+    branches:
       - "**"
 #  workflow_run:
 #    workflows: ["CI"]
