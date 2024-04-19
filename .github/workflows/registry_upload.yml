@@ -76,7 +76,7 @@ jobs:
           tags: |
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'master') }}
             type=ref,event=tag,enable={{is_default_branch}}
-            type=raw,value=test-build,enable=True
+            type=raw,value=test-build,enable=true
 
       - name: Copy Protobuf files to Dockerfile directories
         run: ./ci/docker/copy-protobuf.sh
