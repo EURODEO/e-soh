@@ -33,13 +33,10 @@ jobs:
         include:
           - context: ./datastore/datastore/
             IMAGE_NAME: datastore
-            CPU: ["arm64", "amd64"]
           - context: ./api/
             IMAGE_NAME: api
-            CPU: ["arm64", "amd64"]
           - context: ./ingest/
             IMAGE_NAME: ingest
-            CPU: ["arm64", "amd64"]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
