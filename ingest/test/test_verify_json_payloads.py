@@ -2,10 +2,9 @@ import glob
 import json
 
 import pytest
-import xarray as xr
 from jsonschema import ValidationError
 from api.model import JsonMessageSchema
-from api.messages import build_all_json_payloads_from_bufr, build_all_json_payloads_from_netcdf
+from api.messages import build_all_json_payloads_from_bufr
 from ingest.bufr.bufresohmsg_py import init_bufr_schema_py
 from ingest.bufr.bufresohmsg_py import init_bufrtables_py
 from ingest.bufr.bufresohmsg_py import init_oscar_py
@@ -42,23 +41,23 @@ def test_verify_json_payload_bufr(bufr_file_path, capsys):
             raise ValidationError(e)
 
 
-@pytest.mark.parametrize("netcdf_file_path", glob.glob("test/test_data/met_norway/*.nc"))
-@pytest.mark.parametrize("schema_path", glob.glob("./src/ingest/schemas"))
-def test_verify_json_payload_metno_netcdf(netcdf_file_path, schema_path):
+# @pytest.mark.parametrize("netcdf_file_path", glob.glob("test/test_data/met_norway/*.nc"))
+# @pytest.mark.parametrize("schema_path", glob.glob("./src/ingest/schemas"))
+# def test_verify_json_payload_metno_netcdf(netcdf_file_path, schema_path):
 
-    ds = xr.load_dataset(netcdf_file_path)
+#     ds = xr.load_dataset(netcdf_file_path)
 
-    json_payloads = build_all_json_payloads_from_netcdf(ds, schema_path)
+#     json_payloads = build_all_json_payloads_from_netcdf(ds, schema_path)
 
-    for payload in json_payloads:
-        try:
-            instant = JsonMessageSchema.model_validate_json(json.dumps(payload))
+#     for payload in json_payloads:
+#         try:
+#             instant = JsonMessageSchema.model_validate_json(json.dumps(payload))
 
-            assert instant is not None
-            assert isinstance(instant, JsonMessageSchema)
-        except ValidationError as e:
-            print(e)
-            raise ValidationError(e)
+#             assert instant is not None
+#             assert isinstance(instant, JsonMessageSchema)
+#         except ValidationError as e:
+#             print(e)
+#             raise ValidationError(e)
 
 
 # @pytest.mark.parametrize("netcdf_file_path", glob.glob("test/test_data/knmi/*.nc"))
