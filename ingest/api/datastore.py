@@ -18,7 +18,7 @@ def dtime2tstamp(dtime):
 
 def ingest(msg: str) -> None:
     """
-    This method sets up required fields in TSMetadata and ObsMetadata and ingest to datastore
+    This method sets up required fields in TSMetadata, ObsMetadata and ingest data to datastore
     """
     ts_metadata = dstore.TSMetadata()
     field_list_ts = ts_metadata.DESCRIPTOR.fields_by_name.keys()
