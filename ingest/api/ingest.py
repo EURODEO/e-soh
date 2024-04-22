@@ -1,6 +1,4 @@
 import logging
-import os
-import re
 from typing import Union
 
 import grpc
@@ -50,8 +48,6 @@ class IngestToPipeline:
         publish them.
 
         """
-        if not input_type:
-            input_type = self._decide_input_type(message)
         messages = build_messages(message, input_type, self.uuid_prefix, self.schema_path)
         self.publish_messages(messages)
 
@@ -83,19 +79,3 @@ class IngestToPipeline:
                         raise HTTPException(
                             status_code=500, detail="Data ingested to datastore. But unable to publish to mqtt"
                         )
-
-    def _decide_input_type(self, message) -> str:
-        """
-        Internal method for deciding what type of input is being provided.
-        """
-        file_name = os.path.basename(message)
-        if re.match(r"data[0-9][0-9][0-9][05]$", file_name):
-            return "bufr"
-        match message.split(".")[-1].lower():
-            case "nc":
-                return "netCDF"
-            case "bufr" | "buf":
-                return "bufr"
-            case _:
-                logger.critical(f"Unknown filetype provided. Got {message.split('.')[-1]}")
-                raise HTTPException(status_code=400, detail=f"Unknown filetype provided. Got {message.split('.')[-1]}")
