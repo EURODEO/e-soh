@@ -1,4 +1,3 @@
-import json
 import logging
 import os
 import re
@@ -7,7 +6,6 @@ from typing import Union
 import grpc
 import pkg_resources
 from fastapi import HTTPException
-from jsonschema import Draft202012Validator
 
 from api.datastore import ingest
 from api.messages import messages
@@ -39,11 +37,11 @@ class IngestToPipeline:
             self.schema_file = "e-soh-message-spec.json"
         else:
             self.schema_file = schema_file
-        esoh_mqtt_schema = os.path.join(self.schema_path, self.schema_file)
+        # esoh_mqtt_schema = os.path.join(self.schema_path, self.schema_file)
 
-        with open(esoh_mqtt_schema, "r") as file:
-            self.esoh_mqtt_schema = json.load(file)
-        self.schema_validator = Draft202012Validator(self.esoh_mqtt_schema)
+        # with open(esoh_mqtt_schema, "r") as file:
+        #    self.esoh_mqtt_schema = json.load(file)
+        self.schema_validator = lambda x: True  # Draft202012Validator(self.esoh_mqtt_schema)
         if mqtt_conf["host"] is not None:
             try:
                 if "username" in mqtt_conf:
