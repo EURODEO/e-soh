@@ -31,7 +31,7 @@ class Coordinate(BaseModel):
     lon: float
 
 
-class Type2(Enum):
+class Type2(str, Enum):
     Polygon = "Polygon"
 
 
@@ -40,7 +40,7 @@ class Geometry1(BaseModel):
     coordinates: List[Coordinate] = Field(..., min_items=3)
 
 
-class CreatorType(Enum):
+class CreatorType(str, Enum):
     person = "person"
     group = "group"
     institution = "institution"
