@@ -1,4 +1,3 @@
-import json
 import logging
 import os
 import re
@@ -7,10 +6,9 @@ from typing import Union
 import grpc
 import pkg_resources
 from fastapi import HTTPException
-from jsonschema import Draft202012Validator
 
 from api.datastore import ingest
-from api.messages import messages
+from api.messages import build_messages
 from api.send_mqtt import MQTTConnection
 
 logger = logging.getLogger(__name__)
@@ -26,7 +24,6 @@ class IngestToPipeline:
         mqtt_conf: dict,
         uuid_prefix: str,
         schema_path=None,
-        schema_file=None,
     ):
         self.mqtt = None
         self.uuid_prefix = uuid_prefix
@@ -35,15 +32,7 @@ class IngestToPipeline:
             self.schema_path = pkg_resources.resource_filename("ingest", "schemas")
         else:
             self.schema_path = schema_path
-        if not schema_file:
-            self.schema_file = "e-soh-message-spec.json"
-        else:
-            self.schema_file = schema_file
-        esoh_mqtt_schema = os.path.join(self.schema_path, self.schema_file)
 
-        with open(esoh_mqtt_schema, "r") as file:
-            self.esoh_mqtt_schema = json.load(file)
-        self.schema_validator = Draft202012Validator(self.esoh_mqtt_schema)
         if mqtt_conf["host"] is not None:
             try:
                 if "username" in mqtt_conf:
@@ -63,7 +52,7 @@ class IngestToPipeline:
         """
         if not input_type:
             input_type = self._decide_input_type(message)
-        messages = self._build_messages(message, input_type)
+        messages = build_messages(message, input_type, self.uuid_prefix, self.schema_path)
         self.publish_messages(messages)
 
     def publish_messages(self, messages: list):
@@ -110,18 +99,3 @@ class IngestToPipeline:
             case _:
                 logger.critical(f"Unknown filetype provided. Got {message.split('.')[-1]}")
                 raise HTTPException(status_code=400, detail=f"Unknown filetype provided. Got {message.split('.')[-1]}")
-
-    def _build_messages(self, message: Union[str, object], input_type: str = None) -> list:
-        """
-        Internal method for calling the message building.
-        """
-        if not input_type:
-            if isinstance(message, str):
-                input_type = self._decide_input_type(message)
-            else:
-                logger.critical("Illegal usage, not allowed to input" + " objects without specifying input type")
-                raise HTTPException(
-                    status_code=400,
-                    detail="Illegal usage, not allowed to input" + " objects without specifying input type",
-                )
-        return messages(message, input_type, self.uuid_prefix, self.schema_path, self.schema_validator)
