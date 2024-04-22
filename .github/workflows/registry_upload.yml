@@ -66,8 +66,8 @@ jobs:
           # Set tag to latest if there is no release tag from git
           # Tag the build with the current release
           tags: |
-            type=raw,value=latest,enable=${{is_default_branch && !tag}}
-            type=tag,event=tag,enable=${{is_default_branch}}
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
+            type=ref,event=tag,enable={{is_default_branch}}
 
       - name: Copy Protobuf files to Dockerfile directories
         run: ./ci/docker/copy-protobuf.sh
