@@ -1,6 +1,4 @@
 import glob
-import json
-
 import pytest
 from jsonschema import ValidationError
 from api.model import JsonMessageSchema
@@ -8,13 +6,6 @@ from api.messages import build_all_json_payloads_from_bufr
 from ingest.bufr.bufresohmsg_py import init_bufr_schema_py
 from ingest.bufr.bufresohmsg_py import init_bufrtables_py
 from ingest.bufr.bufresohmsg_py import init_oscar_py
-
-mqtt_configuration = {
-    "host": None,
-    "topic": None,
-    "username": None,
-    "password": None,
-}
 
 
 @pytest.mark.timeout(1000)
@@ -32,7 +23,7 @@ def test_verify_json_payload_bufr(bufr_file_path, capsys):
 
     for payload in json_payloads:
         try:
-            instant = JsonMessageSchema.model_validate_json(json.dumps(payload))
+            instant = JsonMessageSchema(**payload)
 
             assert instant is not None
             assert isinstance(instant, JsonMessageSchema)
