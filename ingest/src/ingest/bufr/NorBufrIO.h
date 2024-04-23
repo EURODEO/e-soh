@@ -19,11 +19,11 @@ namespace NorBufrIO {
 uint64_t readBytes(std::istream &is, ssize_t size);
 uint64_t readBytes(char *buf, ssize_t size);
 
-unsigned long findBytes(std::istream &is, const char *seq, unsigned int size);
-unsigned long findBytes(char *, unsigned int buf_size, const char *seq,
-                        unsigned int size);
+uint64_t findBytes(std::istream &is, const char *seq, unsigned int size);
+uint64_t findBytes(char *, unsigned int buf_size, const char *seq,
+                   unsigned int size);
 
-unsigned long getBytes(uint8_t *buffer, int size);
+uint64_t getBytes(uint8_t *buffer, int size);
 
 std::vector<bool> valueToBitVec(const uint64_t value, const int datawidth);
 
