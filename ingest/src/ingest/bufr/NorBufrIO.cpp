@@ -173,14 +173,23 @@ void NorBufrIO::strPrintable(std::string &s) {
 }
 
 ssize_t NorBufrIO::strisotime(char *date_str, size_t date_max,
-                              const struct timeval *date) {
-  const char *format = "%FT%H:%M:%S.000000%z";
-  size_t dl = strftime(date_str, date_max, format, gmtime(&(date->tv_sec)));
+                              const struct timeval *date, bool usec) {
+  const char *uformat = "%FT%H:%M:%S.000000%z";
+  const char *format = "%FT%H:%M:%S%z";
+  const char *fmt = format;
+
+  if (usec) {
+    fmt = uformat;
+  }
+
+  size_t dl = strftime(date_str, date_max, fmt, gmtime(&(date->tv_sec)));
 
   // Copy microseconds into the date char string
-  char usec[8];
-  sprintf(usec, "%06ld", date->tv_usec);
-  memcpy(date_str + 20, usec, 6);
+  if (usec && dl > 26) {
+    char usec[8];
+    sprintf(usec, "%06ld", date->tv_usec);
+    memcpy(date_str + 20, usec, 6);
+  }
 
   // Change Timezone +0000 to +00:00
   if (dl > 4) {
