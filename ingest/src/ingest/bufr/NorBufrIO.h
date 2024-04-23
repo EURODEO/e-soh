@@ -19,11 +19,11 @@ namespace NorBufrIO {
 uint64_t readBytes(std::istream &is, ssize_t size);
 uint64_t readBytes(char *buf, ssize_t size);
 
-unsigned long findBytes(std::istream &is, const char *seq, unsigned int size);
-unsigned long findBytes(char *, unsigned int buf_size, const char *seq,
-                        unsigned int size);
+uint64_t findBytes(std::istream &is, const char *seq, unsigned int size);
+uint64_t findBytes(char *, unsigned int buf_size, const char *seq,
+                   unsigned int size);
 
-unsigned long getBytes(uint8_t *buffer, int size);
+uint64_t getBytes(uint8_t *buffer, int size);
 
 std::vector<bool> valueToBitVec(const uint64_t value, const int datawidth);
 
@@ -41,7 +41,8 @@ std::vector<bool> getBitVec(const uint64_t startbit, const int datawidth,
 
 std::string strTrim(std::string s);
 void strPrintable(std::string &s);
-ssize_t strisotime(char *date_str, size_t date_max, const struct timeval *date);
+ssize_t strisotime(char *date_str, size_t date_max, const struct timeval *date,
+                   bool usec = false);
 } // namespace NorBufrIO
 
 #endif

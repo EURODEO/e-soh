@@ -622,8 +622,8 @@ std::string NorBufr::getValue(const Descriptor &d, std::string,
   return ret;
 }
 
-std::streampos NorBufr::fromBuffer(char *ext_buf, std::streampos ext_buf_pos,
-                                   std::streampos ext_buf_size) {
+uint64_t NorBufr::fromBuffer(char *ext_buf, u_int64_t ext_buf_pos,
+                             uint64_t ext_buf_size) {
   clear();
   if (buffer) {
     delete[] buffer;
@@ -644,7 +644,7 @@ std::streampos NorBufr::fromBuffer(char *ext_buf, std::streampos ext_buf_pos,
   }
 
   // Section0 length
-  int slen = 8;
+  uint64_t slen = 8;
   uint8_t sec0[slen];
   if (ext_buf_pos + slen < ext_buf_size) {
     memcpy(sec0, ext_buf + ext_buf_pos, slen);
@@ -665,6 +665,10 @@ std::streampos NorBufr::fromBuffer(char *ext_buf, std::streampos ext_buf_pos,
   }
 
   int offset = checkBuffer();
+  if (offset) {
+    lb.addLogEntry(LogEntry("Offset: " + std::to_string(offset),
+                            LogLevel::DEBUG, __func__, bufr_id));
+  }
   setSections(slen);
 
   return ext_buf_pos + len;
