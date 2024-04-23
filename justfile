@@ -4,14 +4,17 @@ default:
 
 set positional-arguments
 
-# After running just all, the database needs cleanup, run just destroy
+# Run all docker services. After running the database needs cleanup, run just destroy
 all: lint build unit services load integration performance client
+# Build and run the default docker services
 up: build services
+# Run the unit, load and integration tests
 test: unit load integration
 
 # ---------------------------------------------------------------------------- #
 #                                  utility                                     #
 # ---------------------------------------------------------------------------- #
+# Copy the protofile to the Docker directories
 copy-proto:
     #!/usr/bin/env bash
     set -euxo pipefail
@@ -31,7 +34,8 @@ copy-proto:
     done
 
 
-check-python-version:
+# Check if the python version is 3.11 for reproducability
+_check-python-version:
     #!/usr/bin/env bash
     set -euxo pipefail
 
@@ -49,8 +53,8 @@ check-python-version:
     fi
 
 
-# run pip-compile for all the requirement files
-pip-compile: check-python-version
+# Run pip-compile for all the requirement files
+pip-compile: _check-python-version
     #!/usr/bin/env bash
     set -euxo pipefail
 
@@ -62,10 +66,12 @@ pip-compile: check-python-version
         pip-compile --upgrade --no-emit-index-url \
         {} ';'
 
+
 # ---------------------------------------------------------------------------- #
 #                                    test                                      #
 # ---------------------------------------------------------------------------- #
-lint: check-python-version
+# Run the pre-commit hook
+lint: _check-python-version
     #!/usr/bin/env bash
     set -euxo pipefail
 
@@ -76,26 +82,30 @@ lint: check-python-version
     pre-commit run --config './.pre-commit-config.yaml' --all-files --color=always --show-diff-on-failure
 
 
-# run tests
+# Run the integration tests
 integration: build
     docker compose --env-file ./ci/config/env.list run --rm integration
 
 
+# Run the unit tests
 unit: build
     docker compose run --rm api-unit
 
 
+# Run the performance tests
 performance: build
     docker compose --env-file ./ci/config/env.list run --rm performance
 
 
-# After running client the database needs cleanup, run just down.
+# Run the client test; after running client the database needs cleanup, run just destroy.
 client:
     docker compose --env-file ./ci/config/env.list run --rm client
+
 
 # ---------------------------------------------------------------------------- #
 #                                    build                                     #
 # ---------------------------------------------------------------------------- #
+# Build the docker images
 build: copy-proto
     docker compose --env-file ./ci/config/env.list --profile test build
 
@@ -103,16 +113,21 @@ build: copy-proto
 # # ---------------------------------------------------------------------------- #
 # #                                     local                                    #
 # # ---------------------------------------------------------------------------- #
+# Start the default docker compose containers
 services:
     docker compose --env-file ./ci/config/env.list up -d --wait --wait-timeout 120
 
 
+# Load the data in the database
 load:
     docker compose --env-file ./ci/config/env.list run --rm loader
 
 
+# Stop all E-SOH containers
 down:
     docker compose --profile test down
 
+
+# Stop all E-SOH containers and remove their volumes
 destroy:
     docker compose --profile test down --volumes
