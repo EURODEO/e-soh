@@ -37,10 +37,6 @@ jobs:
 
   test-datastore:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      issues: write
-      pull-requests: write
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
@@ -58,21 +54,6 @@ jobs:
       - name: Run the unit test
         run: just unit
 
-      - name: Comment coverage
-        uses: MishaKav/pytest-coverage-comment@main
-        with:
-          pytest-coverage-path: api/test/output/pytest-coverage.txt
-          coverage-path-prefix: api/test/output/
-          title: API Unit Test Coverage Report
-          hide-badge: true
-          hide-report: false
-          create-new-comment: false
-          hide-comment: false
-          report-only-changed-files: false
-          remove-link-from-badge: false
-          junitxml-path: api/test/output/pytest.xml
-          junitxml-title: API Unit Test Coverage Summary
-
       - name: Start docker stack
         run: just services
 
@@ -88,11 +69,13 @@ jobs:
       - name: Run the client test
         run: just client
 
-      - name: Archive load test artifacts
+      - name: Archive test artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: performance
+          name: test-results-artifact
           path: |
+            api/test/output/pytest-coverage.txt
+            api/test/output/pytest.xml
             datastore/load-test/output/store_read_*.csv
             datastore/load-test/output/store_rw_*.csv
 
@@ -150,3 +133,30 @@ jobs:
         run: |
           cd ingest
           python -m pytest -v --timeout=60
+
+  publish-test-results:
+    needs: test-datastore
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Download test results so that they can be published
+        uses: actions/download-artifact@v4
+        with:
+          name: test-results-artifact
+      - name: Comment coverage
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-coverage-path: api/test/output/pytest-coverage.txt
+          coverage-path-prefix: api/test/output/
+          title: API Unit Test Coverage Report
+          hide-badge: true
+          hide-report: false
+          create-new-comment: false
+          hide-comment: false
+          report-only-changed-files: false
+          remove-link-from-badge: false
+          junitxml-path: api/test/output/pytest.xml
+          junitxml-title: API Unit Test Coverage Summary
