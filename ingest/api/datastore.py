@@ -68,6 +68,7 @@ def ingest(msg: str) -> None:
         putObsRequest(request)
     except grpc.RpcError as e:
         logger.critical(str(e))
+        raise e
 
 
 def putObsRequest(put_obs_request):
@@ -78,6 +79,7 @@ def putObsRequest(put_obs_request):
         grpc_stub = dstore_grpc.DatastoreStub(channel)
     except grpc._channel._InactiveRpcError as e:
         logger.error("Failed to connect to datastore:", e)
+        raise e
 
     else:
         logger.info("Connection to datastore established successfully.")
@@ -87,3 +89,4 @@ def putObsRequest(put_obs_request):
         logger.info("RPC call succeeded.")
     except grpc._channel._InactiveRpcError as e:
         logger.critical("RPC call failed:", e)
+        raise e

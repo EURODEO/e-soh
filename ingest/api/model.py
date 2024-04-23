@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Any
-from typing import Dict
 from typing import List
 from typing import Optional
 from typing import Union
@@ -13,12 +11,12 @@ from pydantic import Field
 from pydantic import model_validator
 
 
-class Type(Enum):
-    Feature = "Feature"
+class Type(str, Enum):
+    Feature = ("Feature",)
 
 
-class Type1(Enum):
-    Point = "Point"
+class Type1(str, Enum):
+    Point = ("Point",)
 
 
 class Geometry(BaseModel):
@@ -31,8 +29,8 @@ class Coordinate(BaseModel):
     lon: float
 
 
-class Type2(Enum):
-    Polygon = "Polygon"
+class Type2(str, Enum):
+    Polygon = ("Polygon",)
 
 
 class Geometry1(BaseModel):
@@ -40,17 +38,17 @@ class Geometry1(BaseModel):
     coordinates: List[Coordinate] = Field(..., min_items=3)
 
 
-class CreatorType(Enum):
-    person = "person"
-    group = "group"
-    institution = "institution"
-    position = "position"
+class CreatorType(str, Enum):
+    person = ("person",)
+    group = ("group",)
+    institution = ("institution",)
+    position = ("position",)
 
 
 class Encoding(str, Enum):
     utf_8 = ("utf-8",)
     base64 = ("base64",)
-    gzip = "gzip"
+    gzip = ("gzip",)
 
 
 class Method(str, Enum):
@@ -59,7 +57,7 @@ class Method(str, Enum):
     sha3_256 = ("sha3-256",)
     sha384 = ("sha384",)
     sha3_384 = ("sha3-384",)
-    sha3_512 = "sha3-512"
+    sha3_512 = ("sha3-512",)
 
 
 class Integrity(BaseModel):
@@ -280,7 +278,7 @@ class Properties(BaseModel):
         except ValueError as utcexp:
             raise utcexp
         except Exception:
-            raise ValueError(f"{self.datetime} not in ISO format(YYYY-MM-DDTHH:MM:SSz)")
+            raise ValueError(f"{self.datetime} not in ISO format(YYYY-MM-DDTHH:MM:SSZ)")
         return self
 
 
@@ -299,15 +297,3 @@ class JsonMessageSchema(BaseModel):
     properties: Properties
     links: List[Link] = Field(..., min_items=1)
     version: str
-
-    def dict(self, *args, **kwargs) -> Dict[str, Any]:
-        d = super().model_dump(*args, **kwargs)
-        d["type"] = self.type.value
-        d["geometry"]["type"] = self.geometry.type.value
-        if hasattr(self.properties, "content") and self.properties.content:
-            d["properties"]["content"]["encoding"] = self.properties.content.encoding.value
-        if isinstance(self.geometry, Geometry):
-            d["geometry"]["coordinates"] = self.geometry.coordinates.model_dump()
-        elif isinstance(self.geometry, Geometry1):
-            d["geometry"]["coordinates"] = [coord.model_dump() for coord in self.geometry.coordinates]
-        return d
