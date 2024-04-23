@@ -26,6 +26,7 @@ copy-proto:
         "./datastore/examples/clients/python"
         "./datastore/integration-test"
         "./datastore/load-test"
+        "./ingest"
     )
 
     for path in "${destination_paths[@]}"
