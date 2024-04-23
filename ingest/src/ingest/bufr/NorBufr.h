@@ -28,8 +28,8 @@ public:
   NorBufr();
   ~NorBufr();
 
-  std::streampos fromBuffer(char *ext_buf, std::streampos ext_buf_pos,
-                            std::streampos ext_buf_size);
+  uint64_t fromBuffer(char *ext_buf, uint64_t ext_buf_pos,
+                      uint64_t ext_buf_size);
   void setTableDir(std::string s);
   ssize_t extractDescriptors(int ss = 0, ssize_t subsb = 0);
   bool saveBuffer(std::string) const;
