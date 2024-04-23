@@ -76,7 +76,7 @@ jobs:
       - name: Start docker stack
         run: just services
 
-      - name: Start docker stack
+      - name: Load the data into the database
         run: just load
 
       - name: Run the integration test
