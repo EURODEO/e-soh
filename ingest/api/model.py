@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-from enum import Enum
 from typing import List
+from typing import Literal
 from typing import Optional
-from typing import Union
 from datetime import datetime, timezone
 
 from pydantic import BaseModel
@@ -11,16 +10,8 @@ from pydantic import Field
 from pydantic import model_validator
 
 
-class Type(str, Enum):
-    Feature = ("Feature",)
-
-
-class Type1(str, Enum):
-    Point = ("Point",)
-
-
 class Geometry(BaseModel):
-    type: Type1
+    type: Literal["Point"]
     coordinates: Coordinate
 
 
@@ -29,44 +20,15 @@ class Coordinate(BaseModel):
     lon: float
 
 
-class Type2(str, Enum):
-    Polygon = ("Polygon",)
-
-
-class Geometry1(BaseModel):
-    type: Type2
-    coordinates: List[Coordinate] = Field(..., min_items=3)
-
-
-class CreatorType(str, Enum):
-    person = ("person",)
-    group = ("group",)
-    institution = ("institution",)
-    position = ("position",)
-
-
-class Encoding(str, Enum):
-    utf_8 = ("utf-8",)
-    base64 = ("base64",)
-    gzip = ("gzip",)
-
-
-class Method(str, Enum):
-    sha256 = ("sha256",)
-    sha512 = ("sha512",)
-    sha3_256 = ("sha3-256",)
-    sha384 = ("sha384",)
-    sha3_384 = ("sha3-384",)
-    sha3_512 = ("sha3-512",)
-
-
 class Integrity(BaseModel):
-    method: Method = Field(..., description="A specific set of methods for calculating the checksum algorithms")
+    method: Literal["sha256", "sha384", "sha512", "sha3-256", "sha3-384", "sha3-512"] = Field(
+        ..., description="A specific set of methods for calculating the checksum algorithms"
+    )
     value: str = Field(..., description="Checksum value.")
 
 
 class Content(BaseModel):
-    encoding: Encoding = Field(..., description="Encoding of content")
+    encoding: Literal["utf-8", "base64", "gzip"] = Field(..., description="Encoding of content")
     size: int = Field(
         ...,
         description=(
@@ -144,7 +106,7 @@ class Properties(BaseModel):
             "URIs are also acceptable. Example: 'edu.ucar.unidata'."
         ),
     )
-    creator_type: Optional[CreatorType] = Field(
+    creator_type: Optional[Literal["person", "group", "institution", "position"]] = Field(
         None,
         description=(
             "Specifies type of creator with one of the following: 'person', 'group', 'institution', or 'position'. "
@@ -195,8 +157,8 @@ class Properties(BaseModel):
             "If it is observational, source should characterize it. This attribute is defined in the CF Conventions."
         ),
     )
-    platform: Optional[str] = Field(
-        None,
+    platform: str = Field(
+        ...,
         description=(
             "Name of the platform(s) that supported the sensor data used to create this data set or product. "
             "Platforms can be of any type, including satellite, ship, station, aircraft or other. "
@@ -292,8 +254,8 @@ class Link(BaseModel):
 
 
 class JsonMessageSchema(BaseModel):
-    type: Type
-    geometry: Union[Geometry, Geometry1]
+    type: Literal["Feature"]
+    geometry: Geometry
     properties: Properties
     links: List[Link] = Field(..., min_items=1)
     version: str

@@ -1,6 +1,7 @@
 import logging
 import uuid
 import json
+import hashlib
 from datetime import datetime
 from datetime import timezone
 
@@ -40,10 +41,22 @@ def build_message(file: object, input_type: str, uuid_prefix: str, schema_path: 
             logger.error("Message did not pass schema validation, " + "\n" + str(v_error.message))
             json_msg = None
             raise HTTPException(status_code=400, detail="Message did not pass schema validation")
+
         message_uuid = f"{uuid_prefix}:{str(uuid.uuid4())}"
         json_msg["id"] = message_uuid
-        json_msg["properties"]["timeseries_id"] = message_uuid
         json_msg["properties"]["data_id"] = message_uuid
+
+        #  MD5 hash of a join on naming_authority, platform, standard_name, level,function and period.
+        timeseries_id_string = (
+            json_msg["properties"]["naming_authority"]
+            + json_msg["properties"]["platform"]
+            + json_msg["properties"]["content"]["standard_name"]
+            + json_msg["properties"]["level"]
+            + json_msg["properties"]["function"]
+            + json_msg["properties"]["period"]
+        )
+        timeseries_id = hashlib.md5(timeseries_id_string.encode()).hexdigest()
+        json_msg["properties"]["timeseries_id"] = timeseries_id
         json_msg["properties"]["pubtime"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
 
     return unfinished_messages  # now populated with timestamps and uuids
