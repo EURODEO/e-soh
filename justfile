@@ -8,8 +8,8 @@ set positional-arguments
 all: lint build unit services load integration performance client
 # Build and run the default docker services
 up: build services
-# Run the unit, load and integration tests
-test: unit load integration
+# Build and run the unit, load and integration tests
+test: build unit load integration
 
 # ---------------------------------------------------------------------------- #
 #                                  utility                                     #
@@ -84,17 +84,17 @@ lint: _check-python-version
 
 
 # Run the integration tests
-integration: build
+integration:
     docker compose --env-file ./ci/config/env.list run --rm integration
 
 
 # Run the unit tests
-unit: build
+unit:
     docker compose run --rm api-unit
 
 
 # Run the performance tests
-performance: build
+performance:
     docker compose --env-file ./ci/config/env.list run --rm performance
 
 
