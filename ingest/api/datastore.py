@@ -16,7 +16,7 @@ def dtime2tstamp(dtime):
     return tstamp
 
 
-def ingest(msg: str) -> None:
+async def ingest(msg: str) -> None:
     """
     This method sets up required fields in TSMetadata, ObsMetadata and ingest data to datastore
     """
@@ -65,27 +65,28 @@ def ingest(msg: str) -> None:
     request = dstore.PutObsRequest(observations=[dstore.Metadata1(ts_mdata=ts_metadata, obs_mdata=observation_data)])
 
     try:
-        putObsRequest(request)
+        await putObsRequest(request)
     except grpc.RpcError as e:
         logger.critical(str(e))
         raise e
 
 
-def putObsRequest(put_obs_request):
+async def putObsRequest(put_obs_request):
     try:
         channel = grpc.aio.insecure_channel(
-            f"{os.getenv('DATASTORE_HOST', 'localhost')}:{os.getenv('DATASTORE_PORT', '50050')}"
+            f"{os.getenv('DATASTORE_HOST', 'store')}:{os.getenv('DATASTORE_PORT', '50050')}"
         )
         grpc_stub = dstore_grpc.DatastoreStub(channel)
-    except grpc._channel._InactiveRpcError as e:
+    except grpc.RpcError as e:
         logger.error("Failed to connect to datastore:", e)
         raise e
-
+    except Exception as e:
+        raise e
     else:
         logger.info("Connection to datastore established successfully.")
 
     try:
-        grpc_stub.PutObservations(put_obs_request)
+        await grpc_stub.PutObservations(put_obs_request)
         logger.info("RPC call succeeded.")
     except grpc._channel._InactiveRpcError as e:
         logger.critical("RPC call failed:", e)

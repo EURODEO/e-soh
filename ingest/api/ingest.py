@@ -42,16 +42,16 @@ class IngestToPipeline:
                 logger.error("Failed to establish connection to mqtt, " + "\n" + str(e))
                 raise HTTPException(status_code=500, detail="API failed to establish connection to mqtt")
 
-    def ingest(self, message: Union[str, object], input_type: str = None):
+    async def ingest(self, message: Union[str, object], input_type: str = None):
         """
         This method will interpret call all methods for deciding input type, build the mqtt messages, and
         publish them.
 
         """
         messages = build_messages(message, input_type, self.uuid_prefix, self.schema_path)
-        self.publish_messages(messages)
+        await self.publish_messages(messages)
 
-    def publish_messages(self, messages: list):
+    async def publish_messages(self, messages: list):
         """
         This method accepts a list of json strings ready to be ingest to datastore
          and published to the mqtt topic.
@@ -61,7 +61,7 @@ class IngestToPipeline:
         for msg in messages:
             if msg:
                 try:
-                    ingest(msg)
+                    await ingest(msg)
                     logger.info("Succesfully ingested to datastore")
                 except grpc.RpcError as e:
                     logger.error("Failed to reach datastore, " + "\n" + str(e))
