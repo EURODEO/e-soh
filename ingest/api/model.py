@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import List
 from typing import Literal
 from typing import Optional
-from datetime import datetime, timezone
+from dateutil import parser
 
 from pydantic import BaseModel
 from pydantic import Field
@@ -234,13 +234,14 @@ class Properties(BaseModel):
     @model_validator(mode="after")
     def check_datetime_iso(self) -> "Properties":
         try:
-            dt = datetime.strptime(self.datetime, "%Y-%m-%dT%H:%M:%S%z")
-            if dt.tzinfo != timezone.utc:
-                raise ValueError("Input datetime is not in UTC timezone")
-        except ValueError as utcexp:
-            raise utcexp
-        except Exception:
+            dt = parser.isoparse(self.datetime)
+        except ValueError:
             raise ValueError(f"{self.datetime} not in ISO format(YYYY-MM-DDTHH:MM:SSZ)")
+        except Exception as e:
+            raise e
+
+        if dt.tzname() != "UTC":
+            raise ValueError(f"Input datetime, {self.datetime}, is not in UTC timezone")
         return self
 
 
