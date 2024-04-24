@@ -1,5 +1,7 @@
 import logging
 import os
+
+from functools import cache
 from datetime import datetime
 from dateutil import parser
 
@@ -15,6 +17,12 @@ def dtime2tstamp(dtime):
     tstamp = Timestamp()
     tstamp.FromDatetime(dtime)
     return tstamp
+
+
+@cache
+def get_grpc_stub():
+    channel = grpc.aio.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}")
+    return dstore_grpc.DatastoreStub(channel)
 
 
 async def ingest(msg: str) -> None:
@@ -63,30 +71,17 @@ async def ingest(msg: str) -> None:
 
     request = dstore.PutObsRequest(observations=[dstore.Metadata1(ts_mdata=ts_metadata, obs_mdata=observation_data)])
 
-    try:
-        await putObsRequest(request)
-    except grpc.RpcError as e:
-        logger.critical(str(e))
-        raise e
+    await putObsRequest(request)
 
 
 async def putObsRequest(put_obs_request):
-    try:
-        channel = grpc.aio.insecure_channel(
-            f"{os.getenv('DATASTORE_HOST', 'store')}:{os.getenv('DATASTORE_PORT', '50050')}"
-        )
-        grpc_stub = dstore_grpc.DatastoreStub(channel)
-    except grpc.RpcError as e:
-        logger.error("Failed to connect to datastore:", e)
-        raise e
-    except Exception as e:
-        raise e
-    else:
-        logger.info("Connection to datastore established successfully.")
 
+    grpc_stub = get_grpc_stub()
     try:
-        await grpc_stub.PutObservations(put_obs_request)
+        response = await grpc_stub.PutObservations(put_obs_request)
         logger.info("RPC call succeeded.")
     except grpc._channel._InactiveRpcError as e:
-        logger.critical("RPC call failed:", e)
+        logger.critical("RPC call failed:", e, response)
+        raise e
+    except Exception as e:
         raise e
