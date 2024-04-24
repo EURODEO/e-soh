@@ -1,6 +1,7 @@
 import logging
 import os
 from datetime import datetime
+from dateutil import parser
 
 import datastore_pb2 as dstore
 import datastore_pb2_grpc as dstore_grpc
@@ -40,9 +41,7 @@ async def ingest(msg: str) -> None:
     for i in field_list_obs:
         if i == "obstime_instant":
             if "datetime" in msg["properties"]:
-                obstime_instant = dtime2tstamp(
-                    datetime.strptime((msg["properties"]["datetime"]), "%Y-%m-%dT%H:%M:%S%z")
-                )
+                obstime_instant = dtime2tstamp(parser.isoparse(msg["properties"]["datetime"]))
                 observation_data.obstime_instant.CopyFrom(obstime_instant)
         elif i in msg:
             setattr(observation_data, i, msg[i])
