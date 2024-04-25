@@ -24,7 +24,6 @@ app = FastAPI()
 # Define configuration parameters
 mqtt_configuration = {
     "host": os.getenv("MQTT_HOST"),
-    "topic": os.getenv("MQTT_TOPIC"),
     "username": os.getenv("MQTT_USERNAME"),
     "password": os.getenv("MQTT_PASSWORD"),
 }
