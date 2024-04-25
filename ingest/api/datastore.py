@@ -41,7 +41,7 @@ async def ingest(msg: str) -> None:
     period = ts_metadata.period
     function = ts_metadata.function
     standard_name = ts_metadata.standard_name
-    parameter_name = ":".join([standard_name, level, period, function])
+    parameter_name = ":".join([standard_name, level, function, period])
     setattr(ts_metadata, "parameter_name", parameter_name)
 
     observation_data = dstore.ObsMetadata()
