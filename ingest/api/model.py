@@ -244,6 +244,15 @@ class Properties(BaseModel):
             raise ValueError(f"Input datetime, {self.datetime}, is not in UTC timezone")
         return self
 
+    @model_validator(mode="after")
+    def check_level_int_or_float(self) -> "Properties":
+        if self.level.isdigit():
+            return self
+        elif self.level.replace(".", "", 1).isdigit():
+            return self
+        else:
+            raise ValueError(f" Input level(str), '{self.level}', doesn't represent a valid integer or float")
+
 
 class Link(BaseModel):
     href: str = Field(..., example="http://data.example.com/buildings/123")
