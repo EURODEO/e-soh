@@ -7,6 +7,7 @@ from fastapi import HTTPException
 from fastapi import UploadFile
 from pydantic import BaseModel
 
+from typing import List
 from api.ingest import IngestToPipeline
 from api.model import JsonMessageSchema
 
@@ -64,7 +65,7 @@ async def upload_bufr_file(files: UploadFile):
 
 
 @app.post("/json")
-async def post_json(request: JsonMessageSchema) -> Response:
+async def post_json(request: JsonMessageSchema | List[JsonMessageSchema]) -> Response:
     try:
         ingester = IngestToPipeline(mqtt_conf=mqtt_configuration, uuid_prefix="uuid")
         await ingester.ingest(request.model_dump(exclude_none=True), "json")
