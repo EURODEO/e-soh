@@ -77,8 +77,10 @@ services:
     ports:
       - "8009:8001"
     environment:
-      - DSHOST=store
-      - DSPORT=50050
+      - DSHOST=${DSHOST:-store}
+      - DSPORT=${DSPORT:-50050}
+      - MQTT_USERNAME=${MQTT_USERNAME}
+      - MQTT_PASSWORD=${MQTT_PASSWORD}
     depends_on:
       store:
         condition: service_healthy
