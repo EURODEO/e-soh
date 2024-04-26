@@ -54,7 +54,6 @@ class Content(BaseModel):
 
     @model_validator(mode="after")
     def check_standard_name_match(self) -> "Content":
-
         if self.standard_name in standard_names_alias:
             self.standard_name = standard_names_alias[self.standard_name]
 
