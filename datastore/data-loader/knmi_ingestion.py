@@ -29,6 +29,8 @@ def netcdf_file_to_requests(file_path: Path | str):
             station_slice = file.sel(station=station_id)
 
             for param_id in knmi_parameter_names:
+                if param_id in ["hc1", "hc2", "hc3", "nc1", "nc2", "nc3"]:  # TODO!!!
+                    continue
                 # print(station_id, param_id)
                 param_file = station_slice[param_id]
                 standard_name, level, function, period = generate_parameter_name(
@@ -190,7 +192,7 @@ if __name__ == "__main__":
     print(len(features))
     print(features[123])
 
-    for f in features[0:3]:
+    for f in features:
         response = requests.post("http://localhost:8009/json", json=f)
         print(response.status_code)
         print(response.content)
