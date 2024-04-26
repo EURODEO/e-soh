@@ -6,8 +6,18 @@ from typing import Optional
 from dateutil import parser
 
 from pydantic import BaseModel
+from pydantic import constr
 from pydantic import Field
 from pydantic import model_validator
+
+with open("api/cf_standard_names_v84.txt", "r") as file:
+    standard_names = {line.strip() for line in file}
+
+with open("api/cf_standard_names_alias_v84.txt", "r") as file:
+    standard_names_alias = {}
+    for i in file:
+        i = i.strip().split(":")
+        standard_names_alias[i[1]] = i[0]
 
 
 class Geometry(BaseModel):
@@ -44,8 +54,10 @@ class Content(BaseModel):
 
     @model_validator(mode="after")
     def check_standard_name_match(self) -> "Content":
-        with open("api/cf_standard_names_v84.txt", "r") as file:
-            standard_names = {line.strip() for line in file}
+
+        if self.standard_name in standard_names_alias:
+            self.standard_name = standard_names_alias[self.standard_name]
+
         if self.standard_name not in standard_names:
             raise ValueError(f"{self.standard_name} not a CF Standard name")
         return self
@@ -184,7 +196,7 @@ class Properties(BaseModel):
         ...,
         description=("Instrument level above ground in meters."),
     )
-    period: str = Field(
+    period: constr(to_upper=True) = Field(
         ...,
         description=(
             "Aggregation period for the measurement. Must be provided in ISO8601 duration format."
