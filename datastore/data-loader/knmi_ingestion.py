@@ -1,15 +1,9 @@
 # tested with Python 3.11
-import concurrent
 import math
-import os
 import re
-from multiprocessing import cpu_count
 from pathlib import Path
 from time import perf_counter
-from typing import List
 
-import datastore_pb2_grpc as dstore_grpc
-import grpc
 import pandas as pd
 import requests
 import xarray as xr
@@ -91,7 +85,6 @@ def netcdf_file_to_requests(file_path: Path | str):
                         content = base_content.copy()
                         properties = base_properties.copy()
 
-                        # properties["datetime"] = time.isoformat()
                         properties["datetime"] = time.strftime("%Y-%m-%dT%H:%M:%S.%fZ")  # ??
                         content["size"] = 42  # ??
                         content["value"] = str(obs_value)
@@ -125,9 +118,6 @@ def netcdf_file_to_requests(file_path: Path | str):
                     #         value=str(obs_value),  # TODO: Store float in DB
                     #     )
                     #     observations.append(dstore.Metadata1(ts_mdata=ts_mdata, obs_mdata=obs_mdata))
-
-            # if len(observations) > 0:
-            #     observation_request_messages.append(dstore.PutObsRequest(observations=observations))
 
     return features
 
@@ -189,20 +179,6 @@ def generate_parameter_name(standard_name, long_name, station_id, station_name, 
     return standard_name, level, function, period
 
 
-def insert_data(observation_request_messages: List):
-    workers = int(cpu_count())
-
-    with grpc.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}") as channel:
-        client = dstore_grpc.DatastoreStub(channel=channel)
-
-        print(f"Inserting {len(observation_request_messages)} bulk observations requests.")
-        obs_insert_start = perf_counter()
-        with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as executor:
-            for _ in executor.map(client.PutObservations, observation_request_messages):
-                pass
-        print(f"Finished observations bulk insert {perf_counter() - obs_insert_start}.")
-
-
 if __name__ == "__main__":
     total_time_start = perf_counter()
 
@@ -214,9 +190,6 @@ if __name__ == "__main__":
     print(len(features))
     print(features[123])
 
-    # insert_data(
-    #     observation_request_messages=observation_request_messages,
-    # )
     for f in features[0:3]:
         response = requests.post("http://localhost:8009/json", json=f)
         print(response.status_code)
