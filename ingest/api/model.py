@@ -17,7 +17,7 @@ with open("api/cf_standard_names_alias_v84.txt", "r") as file:
     standard_names_alias = {}
     for i in file:
         i = i.strip().split(":")
-        standard_names_alias[i[1]] = i[0]
+        standard_names_alias[i[0]] = i[1]
 
 
 class Geometry(BaseModel):
