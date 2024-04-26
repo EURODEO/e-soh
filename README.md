@@ -33,12 +33,13 @@ ci/scripts/install-just.sh
 ### How does it work?
 The Justfile is a simple text file that contains a list of tasks. Each task is a shell command. For example:
 
+To run build and run the services locally:
 ```bash
-just all
+just up test
 ```
-
+To run everything including client and do a cleanup of the database afterward:
 ```bash
-just test
+just all destroy
 ```
 
 ## Pre-commit
