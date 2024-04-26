@@ -1,13 +1,10 @@
 import logging
-import os
 
-from functools import cache
 from datetime import datetime
 from dateutil import parser
 
 import datastore_pb2 as dstore
-import datastore_pb2_grpc as dstore_grpc
-import grpc
+
 from google.protobuf.timestamp_pb2 import Timestamp
 
 logger = logging.getLogger(__name__)
@@ -19,13 +16,7 @@ def dtime2tstamp(dtime):
     return tstamp
 
 
-@cache
-def get_grpc_stub():
-    channel = grpc.aio.insecure_channel(f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}")
-    return dstore_grpc.DatastoreStub(channel)
-
-
-async def ingest(msg: str) -> None:
+def ingest(msg: str) -> None:
     """
     This method sets up required fields in TSMetadata, ObsMetadata and ingest data to datastore
     """
@@ -69,19 +60,4 @@ async def ingest(msg: str) -> None:
             )
             observation_data.geo_point.CopyFrom(point)
 
-    request = dstore.PutObsRequest(observations=[dstore.Metadata1(ts_mdata=ts_metadata, obs_mdata=observation_data)])
-
-    await putObsRequest(request)
-
-
-async def putObsRequest(put_obs_request):
-
-    grpc_stub = get_grpc_stub()
-    try:
-        response = await grpc_stub.PutObservations(put_obs_request)
-        logger.info("RPC call succeeded.")
-    except grpc._channel._InactiveRpcError as e:
-        logger.critical("RPC call failed:", e, response)
-        raise e
-    except Exception as e:
-        raise e
+    return dstore.Metadata1(ts_mdata=ts_metadata, obs_mdata=observation_data)
