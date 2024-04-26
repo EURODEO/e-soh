@@ -12,6 +12,7 @@
         "level": "0.0",
         "function": "point",
         "period": "PT0S",
+        "platform": "",
         "content": {
             "encoding": "utf-8",
             "standard_name": "",

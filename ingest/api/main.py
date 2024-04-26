@@ -1,13 +1,13 @@
-import io
 import logging
 import os
+import re
 
-import xarray as xr
 from fastapi import FastAPI
 from fastapi import HTTPException
 from fastapi import UploadFile
 from pydantic import BaseModel
 
+from typing import List
 from api.ingest import IngestToPipeline
 from api.model import JsonMessageSchema
 
@@ -25,36 +25,35 @@ app = FastAPI()
 # Define configuration parameters
 mqtt_configuration = {
     "host": os.getenv("MQTT_HOST"),
-    "topic": os.getenv("MQTT_TOPIC"),
     "username": os.getenv("MQTT_USERNAME"),
     "password": os.getenv("MQTT_PASSWORD"),
 }
 
 
-@app.post("/nc")
-async def upload_netcdf_file(files: UploadFile):
-    try:
-        ingester = IngestToPipeline(mqtt_conf=mqtt_configuration, uuid_prefix="uuid")
-        contents = await files.read()
-        ds = xr.open_dataset(io.BytesIO(contents))
-        ingester.ingest(ds, "nc")
+# @app.post("/nc")
+# async def upload_netcdf_file(files: UploadFile):
+#     try:
+#         ingester = IngestToPipeline(mqtt_conf=mqtt_configuration, uuid_prefix="uuid")
+#         contents = await files.read()
+#         ds = xr.open_dataset(io.BytesIO(contents))
+#         ingester.ingest(ds, "nc")
 
-    except HTTPException as httpexp:
-        raise httpexp
-    except Exception as e:
-        logger.critical(e)
-        raise HTTPException(status_code=500, detail="Internal server error")
+#     except HTTPException as httpexp:
+#         raise httpexp
+#     except Exception as e:
+#         logger.critical(e)
+#         raise HTTPException(status_code=500, detail="Internal server error")
 
-    return Response(status_message="Successfully ingested", status_code=200)
+#     return Response(status_message="Successfully ingested", status_code=200)
 
 
 @app.post("/bufr")
 async def upload_bufr_file(files: UploadFile):
     try:
         ingester = IngestToPipeline(mqtt_conf=mqtt_configuration, uuid_prefix="uuid")
+        input_type = _decide_input_type(files.filename)
         contents = await files.read()
-        # filename = files.filename
-        ingester.ingest(contents, "bufr")
+        ingester.ingest(contents, input_type)
 
     except HTTPException as httpexp:
         raise httpexp
@@ -66,10 +65,15 @@ async def upload_bufr_file(files: UploadFile):
 
 
 @app.post("/json")
-async def post_json(request: JsonMessageSchema) -> Response:
+async def post_json(request: JsonMessageSchema | List[JsonMessageSchema]) -> Response:
     try:
         ingester = IngestToPipeline(mqtt_conf=mqtt_configuration, uuid_prefix="uuid")
-        ingester.ingest(request.dict(exclude_none=True), "json")
+        if isinstance(request, list):
+            json_data = [item.model_dump(exclude_none=True) for item in request]
+        else:
+            json_data = [request.model_dump(exclude_none=True)]
+
+        await ingester.ingest(json_data, "json")
 
     except HTTPException as httpexp:
         raise httpexp
@@ -78,3 +82,18 @@ async def post_json(request: JsonMessageSchema) -> Response:
         raise HTTPException(status_code=500, detail="Internal server error")
 
     return Response(status_message="Successfully ingested", status_code=200)
+
+
+def _decide_input_type(message) -> str:
+    """
+    Internal method for deciding what type of input is being provided.
+    """
+    file_name = os.path.basename(message)
+    if re.match(r"data[0-9][0-9][0-9][05]$", file_name):
+        return "bufr"
+    match message.split(".")[-1].lower():
+        case "bufr" | "buf":
+            return "bufr"
+        case _:
+            logger.critical(f"Unknown filetype provided. Got {message.split('.')[-1]}")
+            raise HTTPException(status_code=400, detail=f"Unknown filetype provided. Got {message.split('.')[-1]}")

@@ -69,7 +69,7 @@ std::string LogEntry::entryTime() const {
 
   const int date_len = 50;
   char date_str[date_len];
-  size_t dl = NorBufrIO::strisotime(date_str, date_len, &tv);
+  size_t dl = NorBufrIO::strisotime(date_str, date_len, &tv, true);
   std::string ret(date_str, dl);
 
   return ret;

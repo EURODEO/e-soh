@@ -91,8 +91,8 @@ services:
     ports:
       - "8009:8001"
     environment:
-      - DATASTORE_HOST=${DATASTORE_HOST:-store}
-      - DATASTORE_PORT=${DATASTORE_PORT:-50050}
+      - DSHOST=store
+      - DSPORT=50050
     depends_on:
       store:
         condition: service_healthy

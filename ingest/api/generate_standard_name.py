@@ -12,3 +12,9 @@ root = ET.fromstring(
 with open("api/cf_standard_names_v84.txt", "w") as file:
     for entry in root.findall("entry"):
         file.write(f'{entry.get("id")}\n')
+
+
+# Find all 'alias' elements and get their 'id' attribute
+with open("api/cf_standard_names_alias_v84.txt", "w") as file:
+    for alias in root.findall("alias"):
+        file.write(f'{alias.find("entry_id").text}:{entry.get("id")}\n')
