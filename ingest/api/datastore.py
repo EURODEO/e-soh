@@ -37,7 +37,7 @@ async def ingest(msg: str) -> None:
             setattr(ts_metadata, i, msg["properties"][i])
         elif i in msg["properties"]["content"]:
             setattr(ts_metadata, i, msg["properties"]["content"][i])
-    level = str(ts_metadata.level)
+    level = ts_metadata.level
     period = ts_metadata.period
     function = ts_metadata.function
     standard_name = ts_metadata.standard_name
