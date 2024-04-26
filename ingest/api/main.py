@@ -68,7 +68,12 @@ async def upload_bufr_file(files: UploadFile):
 async def post_json(request: JsonMessageSchema | List[JsonMessageSchema]) -> Response:
     try:
         ingester = IngestToPipeline(mqtt_conf=mqtt_configuration, uuid_prefix="uuid")
-        await ingester.ingest(request.model_dump(exclude_none=True), "json")
+        if isinstance(request, list):
+            json_data = [item.model_dump(exclude_none=True) for item in request]
+        else:
+            json_data = [request.model_dump(exclude_none=True)]
+
+        await ingester.ingest(json_data, "json")
 
     except HTTPException as httpexp:
         raise httpexp

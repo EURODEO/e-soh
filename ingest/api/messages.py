@@ -20,10 +20,10 @@ from ingest.bufr.create_mqtt_message_from_bufr import (
 logger = logging.getLogger(__name__)
 
 
-def build_messages(file: object, input_type: str, uuid_prefix: str, schema_path: str):
+def build_messages(message: object, input_type: str, uuid_prefix: str):
     match input_type:
         case "bufr":
-            unfinished_messages = build_all_json_payloads_from_bufr(file)
+            unfinished_messages = build_all_json_payloads_from_bufr(message)
             if len(unfinished_messages) >= 1:
                 for json_msg in unfinished_messages:
                     try:
@@ -38,8 +38,7 @@ def build_messages(file: object, input_type: str, uuid_prefix: str, schema_path:
                 raise HTTPException(status_code=400, detail="Empty message")
 
         case "json":
-            unfinished_messages = []
-            unfinished_messages.append(file)
+            unfinished_messages = message
 
     # Set message publication time in RFC3339 format
     # Create UUID for the message, and state message format version

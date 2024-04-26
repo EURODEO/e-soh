@@ -48,7 +48,7 @@ class IngestToPipeline:
         publish them.
 
         """
-        messages = build_messages(message, input_type, self.uuid_prefix, self.schema_path)
+        messages = build_messages(message, input_type, self.uuid_prefix)
         await self.publish_messages(messages)
 
     async def publish_messages(self, messages: list):
