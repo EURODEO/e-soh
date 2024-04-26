@@ -25,16 +25,18 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Install pre-commit
-        run: python -m pip install pre-commit
-      - name: Show pre-commit requirements
-        run: python -m pip freeze --local
+      # Most of the steps in this workflow use Just: https://github.com/casey/just
+      # Just can be used to run commands, it is similar to Make.
+      # The just file is located in the root of the repository:  "justfile"
+      - name: Install just
+        run: ./ci/scripts/install-just.sh
       - uses: actions/cache@v4
         with:
           path: ~/.cache/pre-commit
           key: pre-commit-3|${{ env.pythonLocation }}|${{ hashFiles('.pre-commit-config.yaml') }}
-      - name: Run pre-commit for all files
-        run: pre-commit run --config './.pre-commit-config.yaml' --all-files --color=always --show-diff-on-failure
+      - name: Run pre-commit
+        run: just lint
+        shell: bash
 
   test-datastore:
     runs-on: ubuntu-latest
@@ -46,118 +48,55 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Copy Protobuf files to Dockerfile directories
-        run: ./ci/docker/copy-protobuf.sh
+      - name: Install just
+        run: ./ci/scripts/install-just.sh
 
       - name: Build docker containers
-        run: docker compose --profile test build
+        run: just build
+
+      - name: Run the unit test
+        run: just unit
 
       - name: Start docker stack
-        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose up -d --wait --wait-timeout 120
+        run: just services
 
-      - name: Test loader runs without errors
-        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm loader
+      - name: Load the data into the database
+        run: just load
 
-      - name: Integration test
-        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm integration
+      - name: Run the integration test
+        run: just integration
 
-      - name: Test client runs without errors
-        run: DYNAMICTIME=false LOTIME=1000-01-01T00:00:00Z HITIME=9999-12-31T23:59:59Z docker compose run --rm client
+      - name: Run the performance test
+        run: just performance
 
-      - name: Run load test (read only)
-        run: |
-          python --version
-          pip install -r datastore/load-test/requirements.txt
-          python -m grpc_tools.protoc --proto_path=./protobuf datastore.proto --python_out=datastore/load-test --grpc_python_out=datastore/load-test
-          cd datastore/load-test
-          locust -f locustfile_read.py --headless -u 5 -r 10 --run-time 60 --only-summary --csv store_read
+      - name: Run the client test
+        run: just client
 
-      - name: Run load test (write + read)
-        run: |
-          pip install -r datastore/load-test/requirements.txt
-          python -m grpc_tools.protoc --proto_path=./protobuf datastore.proto --python_out=datastore/load-test --grpc_python_out=datastore/load-test
-          cd datastore/load-test
-          python schedule_write.py > schedule_write.log 2>&1 &
-          locust -f locustfile_read.py --headless -u 5 -r 10 --run-time 60 --only-summary --csv store_rw
-          kill %1
-          echo Catting schedule_write output...
-          cat schedule_write.log
-          echo Done catting
-
-      - name: Archive load test artifacts
+      - name: Archive test artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: performance
+          name: test-results-artifact
           path: |
-            datastore/load-test/store_read_*.csv
-            datastore/load-test/store_rw_*.csv
+            api/test/output/pytest-coverage.txt
+            api/test/output/pytest.xml
+            datastore/load-test/output/store_read_*.csv
+            datastore/load-test/output/store_rw_*.csv
 
       - name: Print results
         run: |
           pip install csvkit
           echo "## Stats (READ ONLY)" >> $GITHUB_STEP_SUMMARY
-          csvlook datastore/load-test/store_read_stats.csv >> $GITHUB_STEP_SUMMARY
+          csvlook datastore/load-test/output/store_read_stats.csv >> $GITHUB_STEP_SUMMARY
           echo "## Failures (READ ONLY)" >> $GITHUB_STEP_SUMMARY
-          csvlook datastore/load-test/store_read_failures.csv >> $GITHUB_STEP_SUMMARY
+          csvlook datastore/load-test/output/store_read_failures.csv >> $GITHUB_STEP_SUMMARY
           echo "## Stats (WRITE + READ)" >> $GITHUB_STEP_SUMMARY
-          csvlook datastore/load-test/store_rw_stats.csv >> $GITHUB_STEP_SUMMARY
+          csvlook datastore/load-test/output/store_rw_stats.csv >> $GITHUB_STEP_SUMMARY
           echo "## Failures (WRITE + READ)" >> $GITHUB_STEP_SUMMARY
-          csvlook datastore/load-test/store_rw_failures.csv >> $GITHUB_STEP_SUMMARY
+          csvlook datastore/load-test/output/store_rw_failures.csv >> $GITHUB_STEP_SUMMARY
 
       - name: Cleanup
         if: always()
-        run: docker compose down --volumes
-
-  test-api:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      issues: write
-      pull-requests: write
-
-    strategy:
-      matrix:
-        python-version: ["3.11"]
-    steps:
-      - name: Checkout the repo
-        uses: actions/checkout@v4
-
-      - name: Python Setup
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install Dependencies
-        run: |
-          pip install --upgrade pip
-          pip install pytest-timeout pytest-cov httpx deepdiff
-          pip install -r ./api/requirements.txt
-
-      - name: Copy Protobuf file to api directory and build
-        run: |
-          mkdir ./api/protobuf
-          cp ./protobuf/datastore.proto ./api/protobuf/datastore.proto
-          python -m grpc_tools.protoc --proto_path=./api/protobuf --python_out=./api --grpc_python_out=./api ./api/protobuf/datastore.proto
-
-      - name: Run Tests
-        run: |
-          cd api
-          python -m pytest --timeout=60 --junitxml=pytest.xml --cov-report=term-missing --cov=. --cov-config=test/.coveragerc | tee pytest-coverage.txt
-
-      - name: Comment coverage
-        uses: MishaKav/pytest-coverage-comment@main
-        with:
-          pytest-coverage-path: ./api/pytest-coverage.txt
-          coverage-path-prefix: api/
-          title: API Unit Test Coverage Report
-          hide-badge: true
-          hide-report: false
-          create-new-comment: false
-          hide-comment: false
-          report-only-changed-files: false
-          remove-link-from-badge: false
-          junitxml-path: ./api/pytest.xml
-          junitxml-title: API Unit Test Coverage Summary
+        run: just destroy
 
 
   test-ingest:
@@ -197,3 +136,30 @@ jobs:
         run: |
           cd ingest
           python -m pytest -v --timeout=60
+
+  publish-test-results:
+    needs: test-datastore
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Download test results so that they can be published
+        uses: actions/download-artifact@v4
+        with:
+          name: test-results-artifact
+      - name: Comment coverage
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-coverage-path: api/test/output/pytest-coverage.txt
+          coverage-path-prefix: api/test/output/
+          title: API Unit Test Coverage Report
+          hide-badge: true
+          hide-report: false
+          create-new-comment: false
+          hide-comment: false
+          report-only-changed-files: false
+          remove-link-from-badge: false
+          junitxml-path: api/test/output/pytest.xml
+          junitxml-title: API Unit Test Coverage Summary

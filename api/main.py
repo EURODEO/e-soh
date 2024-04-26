@@ -27,7 +27,7 @@ setup_logging()
 
 logger = logging.getLogger(__name__)
 
-app = FastAPI()
+app = FastAPI(swagger_ui_parameters={"tryItOutEnabled": True})
 app.add_middleware(BrotliMiddleware)
 
 
@@ -39,6 +39,11 @@ app.add_middleware(BrotliMiddleware)
 )
 async def landing_page(request: Request) -> LandingPageModel:
     return metadata_endpoints.get_landing_page(request)
+
+
+@app.get("/health", include_in_schema=False)
+def health():
+    return "ok"
 
 
 @app.get(

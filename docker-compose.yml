@@ -70,6 +70,20 @@ services:
     depends_on:
       store:
         condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "curl --fail http://localhost:8000/health || exit 1" ]
+      interval: 5s
+      timeout: 1s
+      retries: 3
+      start_period: 30s   # Failures in 30 seconds do not mark container as unhealthy
+
+  api-unit:
+    profiles: [ "test" ]
+    build:
+      context: api
+      dockerfile: unit.Dockerfile
+    volumes:
+      - ./api/test/output:/app/output
 
   ingest:
     build:
@@ -114,6 +128,19 @@ services:
       - DSHOST=store
       - DSPORT=50050
       - BASE_URL=http://api:8000
+    depends_on:
+      api:
+        condition: service_healthy
+
+  performance:
+    profiles: [ "test" ]
+    build:
+      context: datastore/load-test
+    environment:
+      - DSHOST=store
+      - DSPORT=50050
+    volumes:
+      - ./datastore/load-test/output:/load-test/output
     depends_on:
       store:
         condition: service_healthy

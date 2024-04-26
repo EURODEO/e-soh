@@ -208,3 +208,7 @@ datastore_pb2_grpc.py
 
 # Ignore cf standard file, as it is generated while docker build.
 cf_standard_names_v84.txt
+
+# API
+api/test/output/
+datastore/load-test/output/

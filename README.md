@@ -20,6 +20,28 @@ All three parts of the service is kept in this repository and can be built and s
 
 To keep a small docker context and not have the extra maintenance of a .dockerignore, it is necessary when running locally to copy the protobuf file to the Dockerfile directories. You can do this by running: `./ci/docker/copy-protobuf.sh`. Which copies the protobuf files to all specified Dockerfile directories. At the moment the ingestor is not included.
 
+## Just run command
+The Justfile is a simple way to define and run common tasks for a project. It’s similar to Makefiles, but simpler and more cross-platform.
+
+### Install
+Install by running:
+
+```bash
+ci/scripts/install-just.sh
+```
+
+### How does it work?
+The Justfile is a simple text file that contains a list of tasks. Each task is a shell command. For example:
+
+To run build and run the services locally:
+```bash
+just up test
+```
+To run everything including client and do a cleanup of the database afterward:
+```bash
+just all destroy
+```
+
 ## Pre-commit
 
 ### Setup
