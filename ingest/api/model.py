@@ -191,7 +191,21 @@ class Properties(BaseModel):
             "https://www.iso.org/iso-8601-date-and-time-format.html"
         ),
     )
-    function: str = Field(
+    function: Literal[
+        "point",
+        "sum",
+        "maximum",
+        "maximum_absolute_value",
+        "median",
+        "mid_range",
+        "minimum",
+        "minimum_absolute_value",
+        "mean",
+        "mean_absolute_value",
+        "mode",
+        "root_mean_square",
+        "variance",
+    ] = Field(
         ...,
         description=(
             "Function used on the data during the aggregation period."
