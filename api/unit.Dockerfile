@@ -6,7 +6,7 @@ ENV DOCKER_PATH="/app"
 
 RUN apt-get update \
     && apt-get -y upgrade \
-    && apt-get install -y --no-install-recommends git curl \
+    && apt-get install -y --no-install-recommends git \
     # Cleanup
     && rm -rf /usr/tmp  \
     && apt-get autoremove -y \
@@ -14,11 +14,12 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY "./protobuf/datastore.proto" "/protobuf/datastore.proto"
-COPY "./requirements.txt" "${DOCKER_PATH}/requirements.txt"
+COPY "./dev_requirements.txt" "${DOCKER_PATH}/dev_requirements.txt"
 
 # hadolint ignore=DL3013
 RUN pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir --upgrade -r "${DOCKER_PATH}/requirements.txt"
+    && pip install --no-cache-dir --upgrade  \
+    -r "${DOCKER_PATH}/dev_requirements.txt"
 
 # Compiling the protobuf file
 RUN python -m grpc_tools.protoc  \
@@ -28,6 +29,13 @@ RUN python -m grpc_tools.protoc  \
 
 COPY "." "${DOCKER_PATH}/"
 
-
 WORKDIR "${DOCKER_PATH}"
-CMD ["gunicorn", "main:app", "--workers=4", "--worker-class=uvicorn.workers.UvicornWorker", "--bind=0.0.0.0:8000"]
+CMD ["/bin/sh", "-c", "{ python -m pytest \
+        --timeout=60 \
+        --junitxml=./output/pytest.xml \
+        --cov-report=term-missing \
+        --cov=. \
+        --cov-config=./test/.coveragerc 2>&1; \
+            echo $? > ./output/exit-code; } | \
+            tee ./output/pytest-coverage.txt; \
+            exit $(cat ./output/exit-code)"]

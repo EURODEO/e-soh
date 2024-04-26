@@ -3,13 +3,13 @@
 # Install using:
 # pip-sync
 
-grpcio-tools~=1.56
+grpcio-tools~=1.62
 brotli-asgi~=1.4
-fastapi~=0.109.2
-gunicorn~=21.2
-uvicorn[standard]~=0.23.2
-covjson-pydantic~=0.2.0
-edr-pydantic~=0.2.0
+fastapi~=0.110.2
+gunicorn~=22.0
+uvicorn[standard]~=0.29.0
+covjson-pydantic~=0.3.0
+edr-pydantic~=0.2.1
 shapely~=2.0
 geojson-pydantic~=1.0
 aiocached~=0.3.0
