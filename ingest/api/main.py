@@ -44,7 +44,10 @@ async def upload_bufr_file(files: UploadFile):
 @app.post("/json")
 async def post_json(request: JsonMessageSchema | List[JsonMessageSchema]) -> Response:
     if isinstance(request, list):
-        json_data = [item.model_dump(exclude_none=True) for item in request]
+        hash_list = [i.__hash__() for i in request]
+        unique_request = [request[hash_list.index(i)] for i in set(hash_list)]
+
+        json_data = [item.model_dump(exclude_none=True) for item in unique_request]
     else:
         json_data = [request.model_dump(exclude_none=True)]
 

@@ -39,8 +39,8 @@ class Integrity(BaseModel):
 
 class Content(BaseModel):
     encoding: Literal["utf-8", "base64", "gzip"] = Field(..., description="Encoding of content")
-    size: int = Field(
-        ...,
+    size: int | None = Field(
+        None,
         description=(
             "Number of bytes contained in the file. Together with the ``integrity`` property,"
             " it provides additional assurance that file content was accurately received."
@@ -251,7 +251,7 @@ class Properties(BaseModel):
         None,
         description="A textual description of the processing (or quality control) level of the data.",
     )
-    content: Optional[Content] = Field(None, description="Actual data content")
+    content: Content = Field(..., description="Actual data content")
     integrity: Optional[Integrity] = Field(
         None, description="Specifies a checksum to be applied to the data to ensure that the download is accurate."
     )
@@ -294,3 +294,16 @@ class JsonMessageSchema(BaseModel):
     properties: Properties
     links: List[Link] = Field(..., min_items=1)
     version: str
+
+    def __hash__(self):
+        return hash(
+            (
+                self.properties.level,
+                self.properties.platform,
+                self.properties.content.standard_name,
+                self.properties.period,
+                self.properties.naming_authority,
+                self.properties.function,
+                self.properties.datetime,
+            )
+        )
