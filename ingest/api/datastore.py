@@ -16,7 +16,7 @@ def dtime2tstamp(dtime):
     return tstamp
 
 
-def ingest(msg: str) -> None:
+def build_grpc_messages(msg: str) -> None:
     """
     This method sets up required fields in TSMetadata, ObsMetadata and ingest data to datastore
     """
@@ -28,6 +28,7 @@ def ingest(msg: str) -> None:
             setattr(ts_metadata, i, msg["properties"][i])
         elif i in msg["properties"]["content"]:
             setattr(ts_metadata, i, msg["properties"]["content"][i])
+
     level = ts_metadata.level
     period = ts_metadata.period
     function = ts_metadata.function
