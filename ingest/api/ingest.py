@@ -61,8 +61,8 @@ class IngestToPipeline:
             logger.error("Failed to ingest to datastore, " + "\n" + str(e))
             raise e
 
-        for msg in messages:
-            if self.mqtt is not None:
+        if self.mqtt is not None:
+            for msg in messages:
                 topic = msg["properties"]["naming_authority"]
                 try:
                     self.mqtt.send_message(msg, topic)

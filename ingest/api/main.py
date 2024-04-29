@@ -30,23 +30,6 @@ mqtt_configuration = {
 }
 
 
-# @app.post("/nc")
-# async def upload_netcdf_file(files: UploadFile):
-#     try:
-#         ingester = IngestToPipeline(mqtt_conf=mqtt_configuration, uuid_prefix="uuid")
-#         contents = await files.read()
-#         ds = xr.open_dataset(io.BytesIO(contents))
-#         ingester.ingest(ds, "nc")
-
-#     except HTTPException as httpexp:
-#         raise httpexp
-#     except Exception as e:
-#         logger.critical(e)
-#         raise HTTPException(status_code=500, detail="Internal server error")
-
-#     return Response(status_message="Successfully ingested", status_code=200)
-
-
 @app.post("/bufr")
 async def upload_bufr_file(files: UploadFile):
     try:
@@ -59,27 +42,20 @@ async def upload_bufr_file(files: UploadFile):
         raise httpexp
     except Exception as e:
         logger.critical(e)
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise e
 
     return Response(status_message="Successfully ingested", status_code=200)
 
 
 @app.post("/json")
 async def post_json(request: JsonMessageSchema | List[JsonMessageSchema]) -> Response:
-    try:
-        ingester = IngestToPipeline(mqtt_conf=mqtt_configuration, uuid_prefix="uuid")
-        if isinstance(request, list):
-            json_data = [item.model_dump(exclude_none=True) for item in request]
-        else:
-            json_data = [request.model_dump(exclude_none=True)]
+    ingester = IngestToPipeline(mqtt_conf=mqtt_configuration, uuid_prefix="uuid")
+    if isinstance(request, list):
+        json_data = [item.model_dump(exclude_none=True) for item in request]
+    else:
+        json_data = [request.model_dump(exclude_none=True)]
 
-        await ingester.ingest(json_data, "json")
-
-    except HTTPException as httpexp:
-        raise httpexp
-    except Exception as e:
-        logger.critical(e)
-        raise HTTPException(status_code=500, detail="Internal server error")
+    await ingester.ingest(json_data, "json")
 
     return Response(status_message="Successfully ingested", status_code=200)
 

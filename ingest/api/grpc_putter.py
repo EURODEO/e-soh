@@ -21,8 +21,8 @@ async def putObsRequest(put_obs_request):
     try:
         response = await grpc_stub.PutObservations(put_obs_request)
         logger.info("RPC call succeeded.")
-    except grpc._channel._InactiveRpcError as e:
-        logger.critical("RPC call failed:", e, response)
-        raise e
+    except grpc._channel._InactiveRpcError as grpc_inactive_error:
+        logger.critical("RPC call failed:", grpc_inactive_error, response)
+        raise grpc_inactive_error
     except Exception as e:
         raise e
