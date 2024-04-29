@@ -4,10 +4,11 @@ from typing import Union
 import grpc
 from fastapi import HTTPException
 
-from api.datastore import ingest
+from api.datastore import build_grpc_messages
 from api.messages import build_messages
 from api.send_mqtt import MQTTConnection
 from api.grpc_putter import putObsRequest
+import datastore_pb2 as dstore
 
 logger = logging.getLogger(__name__)
 
@@ -50,19 +51,16 @@ class IngestToPipeline:
         This method accepts a list of json strings ready to be ingest to datastore
          and published to the mqtt topic.
         """
-        obs_requests = [ingest(msg) for msg in messages]
+        obs_requests = dstore.PutObsRequest(observations=[build_grpc_messages(msg) for msg in messages])
         try:
             await putObsRequest(obs_requests)
-            logger.info("Succesfully ingested to datastore")
+            logger.debug("Succesfully ingested to datastore")
         except grpc.RpcError as e:
             logger.error("Failed to reach datastore, " + "\n" + str(e))
             raise HTTPException(status_code=500, detail="API could not reach datastore")
-        except Exception as e:
-            logger.error("Failed to ingest to datastore, " + "\n" + str(e))
-            raise e
 
-        for msg in messages:
-            if self.mqtt is not None:
+        if self.mqtt is not None:
+            for msg in messages:
                 topic = msg["properties"]["naming_authority"]
                 try:
                     self.mqtt.send_message(msg, topic)

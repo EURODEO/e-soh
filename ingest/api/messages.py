@@ -28,11 +28,11 @@ def build_messages(message: object, input_type: str, uuid_prefix: str):
                 for json_msg in unfinished_messages:
                     try:
                         JsonMessageSchema(**json_msg)
-                        logger.info("Message passed schema validation.")
+                        logger.debug("Message passed schema validation.")
                     except ValidationError as v_error:
                         logger.error("Message did not pass schema validation, " + "\n" + str(v_error.message))
                         json_msg = None
-                        raise HTTPException(status_code=400, detail="Message did not pass schema validation")
+                        raise HTTPException(status_code=400, detail=v_error)
             else:
                 logger.error("Empty message")
                 raise HTTPException(status_code=400, detail="Empty message")
