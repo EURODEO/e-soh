@@ -10,9 +10,10 @@ import xarray as xr
 from parameters import knmi_parameter_names
 
 
-regex_level = re.compile(r"first|second|third|[0-9]+(\.[0-9]+)?(?=m)|(?<=Level )[0-9]+", re.IGNORECASE)
+regex_level = re.compile(r"[0-9]+(\.[0-9]+)?(?=m)|(?<=Level )[0-9]+", re.IGNORECASE)
 regex_level_centimeters = re.compile(r"[0-9]+(\.[0-9]+)?(?=cm)")
-regex_time_period = re.compile(r"(\d+) (Hours|Min)", re.IGNORECASE)
+regex_time_period = re.compile(r"([0-9]+) (Hours|Min)", re.IGNORECASE)
+regex_time_period_without_number = re.compile(r"[^0-9]+? (Hour|Min)", re.IGNORECASE)
 
 
 def netcdf_file_to_requests(file_path: Path | str):
@@ -29,12 +30,24 @@ def netcdf_file_to_requests(file_path: Path | str):
             station_slice = file.sel(station=station_id)
 
             for param_id in knmi_parameter_names:
-                if param_id in ["hc1", "hc2", "hc3", "nc1", "nc2", "nc3"]:  # TODO!!!
-                    continue
+                # if param_id in ["hc1", "hc2", "hc3", "nc1", "nc2", "nc3"]:  # TODO!!!
+                #     continue
                 # print(station_id, param_id)
                 param_file = station_slice[param_id]
+                if "standard_name" not in param_file.attrs:
+                    print(param_file.long_name)
+                    continue
+
+                # if param_file.standard_name in [
+                #     "precipitation_duration",
+                #     "precipitation_rate",
+                #     "rainfall_duration",
+                #     "total_downwelling_shortwave_flux_in_air",
+                # ]:
+                #     continue
+
                 standard_name, level, function, period = generate_parameter_name(
-                    (param_file.standard_name if "standard_name" in param_file.attrs else "placeholder"),
+                    param_file.standard_name,
                     param_file.long_name,
                     station_id,
                     station_name,
@@ -44,39 +57,36 @@ def netcdf_file_to_requests(file_path: Path | str):
 
                 base_content = {
                     "encoding": "utf-8",
-                    "standard_name": standard_name,  # ??
+                    "standard_name": standard_name,
                     "unit": param_file.units if "units" in param_file.attrs else None,
                 }
 
                 base_properties = {
                     "platform": platform,
                     "instrument": param_id,
-                    "platform_name": station_name,  # ??
                     "title": param_file.long_name,
-                    "summary": param_file.long_name,  # ??
+                    "summary": "KNMI collects observations from the automatic weather stations situated in "
+                    "the Netherlands and BES islands on locations such as aerodromes and "
+                    "North Sea platforms. In addition, wind data from KNMI wind poles are included. "
+                    "The weather stations report every 10 minutes meteorological parameters "
+                    "such as temperature, relative humidity, wind, air pressure, visibility, precipitation, "
+                    "and cloud cover. The number of parameters differs per station. The file for the past "
+                    "10 minutes is available a few minutes later and contains a timestamp denoting the end "
+                    "of the observation period in UTC. It is possible that a station's observations may not "
+                    "be immediately available.",
                     "level": level,
                     "period": period,
                     "function": function,
-                    # "parameter_name": ":".join([standard_name, level, function, period]),
                     "naming_authority": "nl.knmi",
                     "keywords": file["iso_dataset"].attrs["keyword"],
                     "keywords_vocabulary": file.attrs["references"],
-                    "source": file.attrs["source"],
-                    "creator_name": "KNMI",
-                    "creator_email": file["iso_dataset"].attrs["email_dataset"],
-                    "creator_url": file["iso_dataset"].attrs["url_metadata"],
+                    "creator_name": "Royal Netherlands Meteorological Institute (KNMI)",
+                    "creator_email": "opendata@knmi.nl",  # file["iso_dataset"].attrs["email_dataset"],
+                    "creator_url": "https://dataplatform.knmi.nl/",  # file["iso_dataset"].attrs["url_metadata"],
                     "creator_type": "institution",
                     "institution": file.attrs["institution"],
                     "license": "https://creativecommons.org/licenses/by/4.0/",
-                    "Conventions": "",  # ??
-                    # "timeseries_id": md5(
-                    #     "".join(
-                    #         [
-                    #             station_id,
-                    #             platform + standard_name + level + period + function + "nl.knmi",
-                    #             ]
-                    #     ).encode()
-                    # ).hexdigest(),
+                    "Conventions": station_slice.Conventions,
                 }
 
                 for time, obs_value in zip(
@@ -87,8 +97,8 @@ def netcdf_file_to_requests(file_path: Path | str):
                         content = base_content.copy()
                         properties = base_properties.copy()
 
-                        properties["datetime"] = time.strftime("%Y-%m-%dT%H:%M:%S.%fZ")  # ??
-                        content["size"] = 42  # ??
+                        properties["datetime"] = time.strftime("%Y-%m-%dT%H:%M:%S.%fZ")  # TODO: Format is unexpected
+                        content["size"] = param_file.nbytes  # TODO: Take bytes of entire file or slice?
                         content["value"] = str(obs_value)
                         properties["content"] = content
 
@@ -98,28 +108,23 @@ def netcdf_file_to_requests(file_path: Path | str):
                             "properties": properties,
                             "links": [
                                 {
-                                    "href": "http://data.example.com/buildings/123",
-                                    "rel": "alternate",
-                                    "type": "application/geo+json",
+                                    "href": "https://dataplatform.knmi.nl/",
+                                    "rel": "describedby",
+                                    "type": "text/html",
                                     "hreflang": "en",
-                                    "title": "De Bilt",
-                                    "length": 0,
-                                }
+                                    "title": "KNMI Data Platform",
+                                },
+                                {
+                                    "href": "https://developer.dataplatform.knmi.nl/",
+                                    "rel": "describedby",
+                                    "type": "text/html",
+                                    "hreflang": "en",
+                                    "title": "KNMI Developer Portal",
+                                },
                             ],
                             "version": "1.0",
                         }
                         features.append(feature)
-
-                    # ts = Timestamp()
-                    # ts.FromDatetime(time)
-                    # if not math.isnan(obs_value):  # Stations that don't have a parameter give them all as nan
-                    #     obs_mdata = dstore.ObsMetadata(
-                    #         id=str(uuid.uuid4()),
-                    #         geo_point=dstore.Point(lat=latitude, lon=longitude),
-                    #         obstime_instant=ts,
-                    #         value=str(obs_value),  # TODO: Store float in DB
-                    #     )
-                    #     observations.append(dstore.Metadata1(ts_mdata=ts_mdata, obs_mdata=obs_mdata))
 
     return features
 
@@ -129,10 +134,14 @@ def generate_parameter_name(standard_name, long_name, station_id, station_name, 
     level = "2.0"
     long_name = long_name.lower()
     station_name = station_name.lower()
-    if level_raw := re.search(regex_level, long_name):
-        level = level_raw[0]
+
+    if standard_name == "air_pressure_at_sea_level":
+        standard_name = "air_pressure_at_mean_sea_level"
+
     if level_raw := re.search(regex_level_centimeters, long_name):
         level = str(float(level_raw[0]) / 100.0)
+    elif level_raw := re.search(regex_level, long_name):
+        level = level_raw[0]
     elif "grass" in long_name:
         level = "0"
     elif param_id in ["pg", "pr", "pwc", "vv", "W10", "W10-10", "ww", "ww-10", "za", "zm"]:
@@ -169,10 +178,17 @@ def generate_parameter_name(standard_name, long_name, station_id, station_name, 
         else:
             raise Exception(f"{period_raw}, {long_name}")
         time, scale = period_raw
-        if scale == "hours":
-            period = f"PT{time}H"
-        elif scale == "min":
-            period = f"PT{time}M"
+        match scale:
+            case "hours":
+                period = f"PT{time}H"
+            case "min":
+                period = f"PT{time}M"
+    elif period_raw := re.search(regex_time_period_without_number, long_name):
+        match period_raw[1]:
+            case "hour":
+                period = "PT01H"
+            case "min":
+                period = "PT01M"
     elif param_id == "ww-10":
         period = "PT10M"
     elif param_id == "ww":
@@ -189,12 +205,32 @@ if __name__ == "__main__":
     file_path = Path(Path(__file__).parent / "test-data" / "KNMI" / "20221231.nc")
     features = netcdf_file_to_requests(file_path=file_path)
     print("Finished creating the features " f"{perf_counter() - create_requests_start}.")
-    print(len(features))
-    print(features[123])
+    total_features = len(features)
+    print(total_features)
 
-    for f in features:
+    value_errors = {}
+
+    for i, f in enumerate(features):
         response = requests.post("http://localhost:8009/json", json=f)
-        print(response.status_code)
-        print(response.content)
+        print(f"Feature {i} out of {total_features}.")
+        if response.status_code != 200:
+            try:
+                value_errors[f["properties"]["instrument"]] = {
+                    "parameter_name": ":".join(
+                        [
+                            f["properties"]["content"]["standard_name"],
+                            f["properties"]["level"],
+                            f["properties"]["function"],
+                            f["properties"]["period"],
+                        ]
+                    ),
+                    "title": f["properties"]["title"],
+                    "value_error": response.json()["detail"][0]["msg"],
+                }
+                print(f"Inbetween overview value errors:\n{value_errors}")
+            except Exception:
+                print(response.status_code)
+                print(response.content)
 
+    print(f"All value errors:\n{value_errors}")
     print(f"Finished, total time elapsed: {perf_counter() - total_time_start}")
