@@ -281,11 +281,9 @@ class Properties(BaseModel):
     @model_validator(mode="after")
     def validate_wigos_id(self) -> Properties:
         blocks = self.platform.split("-")
-        assert len(blocks) == 4, "Not enought blocks in ID, invalid WIGOS"
+        assert len(blocks) == 4, "Not enough blocks in ID, invalid WIGOS"
         for i in blocks[:-1]:
-            assert (
-                i.isdigit() and 0 <= int(i) <= 65534
-            ), "One of first 4 blocks is not valid numberical or out of range."
+            assert i.isdigit() and 0 <= int(i) <= 65534, "One of first 4 blocks is not valid numerical or out of range."
 
         assert 0 < len(blocks[-1]) <= 16, "Last block of WIGOS is to long"
 
