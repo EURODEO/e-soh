@@ -277,6 +277,8 @@ class Properties(BaseModel):
         except ValueError:
             raise ValueError(f" Input level(str), '{self.level}', doesn't represent a valid integer or float")
 
+        return self
+
 
 class Link(BaseModel):
     href: str = Field(..., example="http://data.example.com/buildings/123")
