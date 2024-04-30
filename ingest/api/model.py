@@ -278,7 +278,7 @@ class Properties(BaseModel):
 
         return self
 
-    @model_validator
+    @model_validator(mode="after")
     def validate_wigos_id(self) -> Properties:
         blocks = self.platform.split("-")
         assert len(blocks) == 4, "Not enough blocks in ID, invalid WIGOS"
