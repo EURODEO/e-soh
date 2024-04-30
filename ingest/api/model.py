@@ -272,8 +272,7 @@ class Properties(BaseModel):
     @model_validator(mode="after")
     def check_level_int_or_float(self) -> "Properties":
         try:
-            float(self.level)
-            int(self.level)
+            self.level = str(float(self.level))
         except ValueError:
             raise ValueError(f" Input level(str), '{self.level}', doesn't represent a valid integer or float")
 
