@@ -270,11 +270,24 @@ class Properties(BaseModel):
         return self
 
     @model_validator(mode="after")
-    def check_level_int_or_float(self) -> "Properties":
+    def check_level_int_or_float(self) -> Properties:
         try:
             self.level = str(float(self.level))
         except ValueError:
             raise ValueError(f" Input level(str), '{self.level}', doesn't represent a valid integer or float")
+
+        return self
+
+    @model_validator
+    def validate_wigos_id(self) -> Properties:
+        blocks = self.platform.split("-")
+        assert len(blocks) == 4, "Not enought blocks in ID, invalid WIGOS"
+        for i in blocks[:-1]:
+            assert (
+                i.isdigit() and 0 <= int(i) <= 65534
+            ), "One of first 4 blocks is not valid numberical or out of range."
+
+        assert 0 < len(blocks[-1]) <= 16, "Last block of WIGOS is to long"
 
         return self
 
