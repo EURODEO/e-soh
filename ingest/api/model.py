@@ -271,11 +271,10 @@ class Properties(BaseModel):
 
     @model_validator(mode="after")
     def check_level_int_or_float(self) -> "Properties":
-        if self.level.isdigit():
-            return self
-        elif self.level.replace(".", "", 1).isdigit():
-            return self
-        else:
+        try:
+            float(self.level)
+            int(self.level)
+        except ValueError:
             raise ValueError(f" Input level(str), '{self.level}', doesn't represent a valid integer or float")
 
 
