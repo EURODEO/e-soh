@@ -2,7 +2,9 @@ package storagebackend
 
 import (
 	"datastore/common"
-	"datastore/datastore"
+	datastore "datastore/datastore"
+
+	"google.golang.org/grpc/codes"
 )
 
 // StorageBackend is the interface for an observation storage backend.
@@ -12,19 +14,24 @@ type StorageBackend interface {
 	Description() string
 
 	// PutObservations inserts observations in the storage.
-	// Returns nil upon success, otherwise error.
-	PutObservations(*datastore.PutObsRequest) error
+	//
+	// Returns (codes.OK, ...) upon success, otherwise (error code, reason).
+	PutObservations(*datastore.PutObsRequest) (codes.Code, string)
 
 	// GetObservations retrieves observations from the storage.
-	// Returns nil upon success, otherwise error.
+	//
+	// Returns (observations, codes.OK, ...) upon success, otherwise (..., error code, reason).
 	GetObservations(*datastore.GetObsRequest, common.TemporalSpec) (
-		*datastore.GetObsResponse, error)
+		*datastore.GetObsResponse, codes.Code, string)
 
 	// GetTSAttrGroups retrieves, for the non-default attributes in the input, the unique
 	// combinations of attribute values currently represented in the storage.
-	GetTSAttrGroups(*datastore.GetTSAGRequest) (*datastore.GetTSAGResponse, error)
+	//
+	// Returns (combos, codes.OK, ...) upon success, otherwise (..., error code, reason).
+	GetTSAttrGroups(*datastore.GetTSAGRequest) (*datastore.GetTSAGResponse, codes.Code, string)
 
 	// GetExtents gets the time- and geo extents of all currently stored observations.
-	// Returns nil upon success, otherwise error.
-	GetExtents(*datastore.GetExtentsRequest) (*datastore.GetExtentsResponse, error)
+	//
+	// Returns (extents, codes.OK, ...) upon success, otherwise (..., error code, reason).
+	GetExtents(*datastore.GetExtentsRequest) (*datastore.GetExtentsResponse, codes.Code, string)
 }

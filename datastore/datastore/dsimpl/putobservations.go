@@ -5,15 +5,19 @@ import (
 	"fmt"
 
 	"datastore/datastore"
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 func (svcInfo *ServiceInfo) PutObservations(
 	ctx context.Context, request *datastore.PutObsRequest) (
 	*datastore.PutObsResponse, error) {
 
-	err := svcInfo.Sbe.PutObservations(request)
-	if err != nil {
-		return nil, fmt.Errorf("svcInfo.Sbe.PutObservations() failed: %v", err)
+	errCode, reason := svcInfo.Sbe.PutObservations(request)
+	if errCode != codes.OK {
+		return nil, status.Error(
+			errCode, fmt.Sprintf("svcInfo.Sbe.PutObservations() failed: %s", reason))
 	}
 
 	return &datastore.PutObsResponse{

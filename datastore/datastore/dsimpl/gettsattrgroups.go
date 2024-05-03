@@ -5,6 +5,9 @@ import (
 	"fmt"
 
 	"datastore/datastore"
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 func (svcInfo *ServiceInfo) GetTSAttrGroups(
@@ -12,12 +15,13 @@ func (svcInfo *ServiceInfo) GetTSAttrGroups(
 
 	// ensure that at least one attribute is specified
 	if len(request.Attrs) == 0 {
-		return nil, fmt.Errorf("no attributes specified")
+		return nil, status.Error(codes.InvalidArgument, "no attributes specified")
 	}
 
-	response, err := svcInfo.Sbe.GetTSAttrGroups(request)
-	if err != nil {
-		return nil, fmt.Errorf("svcInfo.Sbe.GetTSAttrGroups() failed: %v", err)
+	response, errCode, reason := svcInfo.Sbe.GetTSAttrGroups(request)
+	if errCode != codes.OK {
+		return nil, status.Error(
+			errCode, fmt.Sprintf("svcInfo.Sbe.GetTSAttrGroups() failed: %s", reason))
 	}
 
 	return response, nil

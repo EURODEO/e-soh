@@ -34,7 +34,10 @@ func createStorageBackend() (storagebackend.StorageBackend, error) {
 }
 
 func main() {
-	reqTimeLogger := func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+
+	reqTimeLogger := func(
+		ctx context.Context, req interface{}, info *grpc.UnaryServerInfo,
+		handler grpc.UnaryHandler) (interface{}, error) {
 		start := time.Now()
 		resp, err := handler(ctx, req)
 		reqTime := time.Since(start)
@@ -70,7 +73,7 @@ func main() {
 	// serve profiling info
 	log.Printf("serving profiling info\n")
 	go func() {
-		http.ListenAndServe(fmt.Sprintf("0.0.0.0:6060"), nil)
+		http.ListenAndServe("0.0.0.0:6060", nil)
 	}()
 
 	// serve incoming requests
