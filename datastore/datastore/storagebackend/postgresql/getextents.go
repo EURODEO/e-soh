@@ -62,7 +62,7 @@ func (sbe *PostgreSQL) GetExtents(request *datastore.GetExtentsRequest) (
 	row := sbe.Db.QueryRow(query, phVals...)
 
 	var (
-		start, end sql.NullTime
+		start, end             sql.NullTime
 		xmin, ymin, xmax, ymax float64
 	)
 
