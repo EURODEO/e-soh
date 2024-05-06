@@ -37,13 +37,13 @@ class IngestToPipeline:
                 logger.error("Failed to establish connection to mqtt, " + "\n" + str(e))
                 raise e
 
-    async def ingest(self, message: Union[str, object], input_type: str = None):
+    async def ingest(self, message: Union[str, object]):
         """
         This method will interpret call all methods for deciding input type, build the mqtt messages, and
         publish them.
 
         """
-        messages = build_messages(message, input_type, self.uuid_prefix)
+        messages = build_messages(message, self.uuid_prefix)
         await self.publish_messages(messages)
 
     async def publish_messages(self, messages: list):
