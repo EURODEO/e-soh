@@ -58,7 +58,7 @@ class Content(BaseModel):
             self.standard_name = standard_names_alias[self.standard_name]
 
         if self.standard_name not in standard_names:
-            raise ValueError(f"{self.standard_name} not a CF Standard name")
+            raise ValueError(f"{self.standard_name} is not a CF Standard name")
         return self
 
 
@@ -274,18 +274,20 @@ class Properties(BaseModel):
         try:
             self.level = str(float(self.level))
         except ValueError:
-            raise ValueError(f" Input level(str), '{self.level}', doesn't represent a valid integer or float")
-
+            raise ValueError(f"Input level(str), '{self.level}', doesn't represent a valid integer or float")
         return self
 
     @model_validator(mode="after")
     def validate_wigos_id(self) -> Properties:
-        blocks = self.platform.split("-")
-        assert len(blocks) == 4, "Not enough blocks in ID, invalid WIGOS"
-        for i in blocks[:-1]:
-            assert i.isdigit() and 0 <= int(i) <= 65534, "One of first 4 blocks is not valid numerical or out of range."
 
-        assert 0 < len(blocks[-1]) <= 16, "Last block of WIGOS is to long"
+        blocks = self.platform.split("-")
+        assert len(blocks) == 4, f"Not enough blocks in input 'platform', '{self.platform}'"
+        for i in blocks[:-1]:
+            assert (
+                i.isdigit() and 0 <= int(i) <= 65534
+            ), f"In input 'platform', '{self.platform}', one of  4 blocks is not a valid numerical or out of range."
+
+        assert 0 < len(blocks[-1]) <= 16, f"In input 'platform', '{self.platform}', last block of WIGOS is to long"
 
         return self
 
