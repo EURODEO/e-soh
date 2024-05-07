@@ -9,6 +9,7 @@ from pydantic import BaseModel
 from typing import List
 from api.ingest import IngestToPipeline
 from api.model import JsonMessageSchema
+from api.messages import build_json_payload
 
 
 logger = logging.getLogger(__name__)
@@ -36,7 +37,8 @@ ingester = IngestToPipeline(mqtt_conf=mqtt_configuration, uuid_prefix="uuid")
 @app.post("/bufr")
 async def upload_bufr_file(files: UploadFile):
     contents = await files.read()
-    ingester.ingest(contents, "bufr")
+    json_data = build_json_payload(contents)
+    await ingester.ingest(json_data)
 
     return Response(status_message="Successfully ingested", status_code=200)
 
@@ -54,6 +56,6 @@ async def post_json(request: JsonMessageSchema | List[JsonMessageSchema]) -> Res
     else:
         json_data = [request.model_dump(exclude_none=True)]
 
-    await ingester.ingest(json_data, "json")
+    await ingester.ingest(json_data)
 
     return Response(status_message=status, status_code=200)

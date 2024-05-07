@@ -319,6 +319,8 @@ std::list<std::string> ESOHBufr::msg() const {
           case 1: {
             meas_datetime.tm_year = getValue(v, meas_datetime.tm_year) - 1900;
             dateupdate = true;
+            // set 01 of Jan: mktime() change protection
+            meas_datetime.tm_mday = 1;
             break;
           }
           case 2: {

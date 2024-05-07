@@ -13,36 +13,32 @@ from ingest.bufr.create_mqtt_message_from_bufr import (
     build_all_json_payloads_from_bufr,
 )
 
-# from ingest.netCDF.extract_metadata_netcdf import (
-#     build_all_json_payloads_from_netcdf,
-# )
-
 logger = logging.getLogger(__name__)
 
 
-def build_messages(message: object, input_type: str, uuid_prefix: str):
-    match input_type:
-        case "bufr":
-            unfinished_messages = build_all_json_payloads_from_bufr(message)
-            if len(unfinished_messages) >= 1:
-                for json_msg in unfinished_messages:
-                    try:
-                        JsonMessageSchema(**json_msg)
-                        logger.debug("Message passed schema validation.")
-                    except ValidationError as v_error:
-                        logger.error("Message did not pass schema validation, " + "\n" + str(v_error.message))
-                        json_msg = None
-                        raise HTTPException(status_code=400, detail=v_error)
-            else:
-                logger.error("Empty message")
-                raise HTTPException(status_code=400, detail="Empty message")
+def build_json_payload(bufr: object):
 
-        case "json":
-            unfinished_messages = message
+    unfinished_messages = build_all_json_payloads_from_bufr(bufr)
+    if len(unfinished_messages) >= 1:
+        for json_msg in unfinished_messages:
+            try:
+                JsonMessageSchema(**json_msg)
+                logger.debug("Message passed schema validation.")
+            except ValidationError as v_error:
+                logger.error("Message did not pass schema validation, " + "\n" + str(v_error.message))
+                json_msg = None
+                raise HTTPException(status_code=400, detail=v_error)
+    else:
+        logger.error("Empty message")
+        raise HTTPException(status_code=400, detail="Empty message")
+    return unfinished_messages
+
+
+def build_messages(message: object, uuid_prefix: str):
 
     # Set message publication time in RFC3339 format
     # Create UUID for the message, and state message format version
-    for json_msg in unfinished_messages:
+    for json_msg in message:
         message_uuid = f"{uuid_prefix}:{str(uuid.uuid4())}"
         json_msg["id"] = message_uuid
         json_msg["properties"]["data_id"] = message_uuid
@@ -60,4 +56,4 @@ def build_messages(message: object, input_type: str, uuid_prefix: str):
         json_msg["properties"]["timeseries_id"] = timeseries_id
         json_msg["properties"]["pubtime"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
 
-    return unfinished_messages  # now populated with timestamps and uuids
+    return message  # now populated with timestamps and uuids

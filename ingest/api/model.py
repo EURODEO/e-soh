@@ -300,11 +300,11 @@ class Properties(BaseModel):
 
 
 class Link(BaseModel):
-    href: str = Field(..., example="http://data.example.com/buildings/123")
-    rel: str = Field(..., example="alternate")
-    type: Optional[str] = Field(None, example="application/geo+json")
-    hreflang: Optional[str] = Field(None, example="en")
-    title: Optional[str] = Field(None, example="Trierer Strasse 70, 53115 Bonn")
+    href: str = Field(..., examples="http://data.example.com/buildings/123")
+    rel: str = Field(..., examples="alternate")
+    type: Optional[str] = Field(None, examples="application/geo+json")
+    hreflang: Optional[str] = Field(None, examples="en")
+    title: Optional[str] = Field(None, examples="Trierer Strasse 70, 53115 Bonn")
     length: Optional[int] = None
 
 
@@ -312,7 +312,7 @@ class JsonMessageSchema(BaseModel):
     type: Literal["Feature"]
     geometry: Geometry
     properties: Properties
-    links: List[Link] = Field(..., min_items=1)
+    links: List[Link] = Field(..., min_length=1)
     version: str
 
     def __hash__(self):
