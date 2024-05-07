@@ -5,7 +5,6 @@ from datetime import datetime
 from datetime import timezone
 
 from fastapi import HTTPException
-from jsonschema import ValidationError
 from api.model import JsonMessageSchema
 
 
@@ -24,10 +23,11 @@ def build_json_payload(bufr: object):
             try:
                 JsonMessageSchema(**json_msg)
                 logger.debug("Message passed schema validation.")
-            except ValidationError as v_error:
-                logger.error("Message did not pass schema validation, " + "\n" + str(v_error.message))
+            except ValueError as v_error:
+                logger.error("Message did not pass schema validation, " + "\n" + str(v_error))
                 json_msg = None
-                raise HTTPException(status_code=400, detail=v_error)
+                raise HTTPException(status_code=400, detail=str(v_error))
+
     else:
         logger.error("Empty message")
         raise HTTPException(status_code=400, detail="Empty message")
