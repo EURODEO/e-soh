@@ -7,6 +7,7 @@ import (
 	"time"
 
 	_ "github.com/lib/pq"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -53,22 +54,22 @@ func getSpatialExtent(db *sql.DB) (*datastore.BoundingBox, error) {
 
 // GetExtents ... (see documentation in StorageBackend interface)
 func (sbe *PostgreSQL) GetExtents(request *datastore.GetExtentsRequest) (
-	*datastore.GetExtentsResponse, error) {
+	*datastore.GetExtentsResponse, codes.Code, string) {
 
 	var err error
 
 	temporalExtent, err := getTemporalExtent(sbe.Db)
 	if err != nil {
-		return nil, fmt.Errorf("getTemporalExtent() failed: %v", err)
+		return nil, codes.Internal, fmt.Sprintf("getTemporalExtent() failed: %v", err)
 	}
 
 	spatialExtent, err := getSpatialExtent(sbe.Db)
 	if err != nil {
-		return nil, fmt.Errorf("getSpatialExtent() failed: %v", err)
+		return nil, codes.Internal, fmt.Sprintf("getSpatialExtent() failed: %v", err)
 	}
 
 	return &datastore.GetExtentsResponse{
 		TemporalExtent: temporalExtent,
 		SpatialExtent:  spatialExtent,
-	}, nil
+	}, codes.OK, ""
 }

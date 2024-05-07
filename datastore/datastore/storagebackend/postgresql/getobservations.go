@@ -11,6 +11,7 @@ import (
 
 	"github.com/cridenour/go-postgis"
 	"github.com/lib/pq"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -625,20 +626,20 @@ func getObs(
 // GetObservations ... (see documentation in StorageBackend interface)
 func (sbe *PostgreSQL) GetObservations(
 	request *datastore.GetObsRequest, tspec common.TemporalSpec) (
-	*datastore.GetObsResponse, error) {
+	*datastore.GetObsResponse, codes.Code, string) {
 
 	var err error
 
 	incFields, err := getIncRespFields(request)
 	if err != nil {
-		return nil, fmt.Errorf("getIncRespFields() failed: %v", err)
+		return nil, codes.Internal, fmt.Sprintf("getIncRespFields() failed: %v", err)
 	}
 
 	obs := []*datastore.Metadata2{}
 	if err = getObs(
 		sbe.Db, request, tspec, &obs, incFields); err != nil {
-		return nil, fmt.Errorf("getObs() failed: %v", err)
+		return nil, codes.Internal, fmt.Sprintf("getObs() failed: %v", err)
 	}
 
-	return &datastore.GetObsResponse{Observations: obs}, nil
+	return &datastore.GetObsResponse{Observations: obs}, codes.OK, ""
 }
