@@ -6,6 +6,9 @@ import (
 
 	"datastore/common"
 	"datastore/datastore"
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 // getTemporalSpec derives and validates a temporal specification from request.
@@ -36,12 +39,14 @@ func (svcInfo *ServiceInfo) GetObservations(
 
 	tspec, err := getTemporalSpec(request)
 	if err != nil {
-		return nil, fmt.Errorf("dsimpl.GetTemporalSpec() failed: %v", err)
+		return nil, status.Error(
+			codes.Internal, fmt.Sprintf("getTemporalSpec() failed: %v", err))
 	}
 
-	response, err := svcInfo.Sbe.GetObservations(request, tspec)
-	if err != nil {
-		return nil, fmt.Errorf("svcInfo.Sbe.GetObservations() failed: %v", err)
+	response, errCode, reason := svcInfo.Sbe.GetObservations(request, tspec)
+	if errCode != codes.OK {
+		return nil, status.Error(
+			errCode, fmt.Sprintf("svcInfo.Sbe.GetObservations() failed: %s", reason))
 	}
 
 	return response, nil

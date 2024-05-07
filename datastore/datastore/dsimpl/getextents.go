@@ -5,15 +5,19 @@ import (
 	"fmt"
 
 	"datastore/datastore"
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 func (svcInfo *ServiceInfo) GetExtents(
 	ctx context.Context, request *datastore.GetExtentsRequest) (
 	*datastore.GetExtentsResponse, error) {
 
-	response, err := svcInfo.Sbe.GetExtents(request)
-	if err != nil {
-		return nil, fmt.Errorf("svcInfo.Sbe.GetExtents() failed: %v", err)
+	response, errCode, reason := svcInfo.Sbe.GetExtents(request)
+	if errCode != codes.OK {
+		return nil, status.Error(
+			errCode, fmt.Sprintf("svcInfo.Sbe.GetExtents() failed: %s", reason))
 	}
 
 	return response, nil

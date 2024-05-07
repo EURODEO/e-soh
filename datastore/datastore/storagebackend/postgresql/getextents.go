@@ -7,6 +7,7 @@ import (
 	"fmt"
 
 	_ "github.com/lib/pq"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -37,13 +38,13 @@ func createExtQueryVals(request *datastore.GetExtentsRequest, phVals *[]interfac
 
 // GetExtents ... (see documentation in StorageBackend interface)
 func (sbe *PostgreSQL) GetExtents(request *datastore.GetExtentsRequest) (
-	*datastore.GetExtentsResponse, error) {
+	*datastore.GetExtentsResponse, codes.Code, string) {
 
 	// get values needed for query
 	phVals := []interface{}{} // placeholder values
 	timeFilter, stringMdataFilter, err := createExtQueryVals(request, &phVals)
 	if err != nil {
-		return nil, fmt.Errorf("createQueryVals() failed: %v", err)
+		return nil, codes.Internal, fmt.Sprintf("createQueryVals() failed: %v", err)
 	}
 
 	query := fmt.Sprintf(`
@@ -68,9 +69,9 @@ func (sbe *PostgreSQL) GetExtents(request *datastore.GetExtentsRequest) (
 
 	err = row.Scan(&start, &end, &xmin, &ymin, &xmax, &ymax)
 	if !start.Valid { // indicates no matching rows found!
-		return nil, fmt.Errorf("no matching data to compute extensions for")
+		return nil, codes.NotFound, "no matching data to compute extensions for"
 	} else if err != nil {
-		return nil, fmt.Errorf("row.Scan() failed: %v", err)
+		return nil, codes.Internal, fmt.Sprintf("row.Scan() failed: %v", err)
 	}
 
 	return &datastore.GetExtentsResponse{
@@ -84,5 +85,5 @@ func (sbe *PostgreSQL) GetExtents(request *datastore.GetExtentsRequest) (
 			Right:  xmax,
 			Top:    ymax,
 		},
-	}, nil
+	}, codes.OK, ""
 }

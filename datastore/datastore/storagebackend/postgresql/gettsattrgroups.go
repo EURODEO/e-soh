@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	_ "github.com/lib/pq"
+	"google.golang.org/grpc/codes"
 )
 
 // getTSGoNamesFromPBNames returns Go names names corresponding to pbNames.
@@ -293,10 +294,10 @@ func getTSAttrGroupsComboOnly(db *sql.DB, cols []string) ([]*datastore.TSMdataGr
 
 // GetTSAttrGroups ... (see documentation in StorageBackend interface)
 func (sbe *PostgreSQL) GetTSAttrGroups(request *datastore.GetTSAGRequest) (
-	*datastore.GetTSAGResponse, error) {
+	*datastore.GetTSAGResponse, codes.Code, string) {
 
 	if err := validateAttrs(request.Attrs); err != nil {
-		return nil, fmt.Errorf("validateAttrs() failed: %v", err)
+		return nil, codes.Internal, fmt.Sprintf("validateAttrs() failed: %v", err)
 	}
 
 	var groups []*datastore.TSMdataGroup
@@ -304,13 +305,14 @@ func (sbe *PostgreSQL) GetTSAttrGroups(request *datastore.GetTSAGRequest) (
 
 	if request.IncludeInstances {
 		if groups, err = getTSAttrGroupsIncInstances(sbe.Db, request.Attrs); err != nil {
-			return nil, fmt.Errorf("getTSAttrGroupsIncInstances() failed: %v", err)
+			return nil, codes.Internal,
+				fmt.Sprintf("getTSAttrGroupsIncInstances() failed: %v", err)
 		}
 	} else {
 		if groups, err = getTSAttrGroupsComboOnly(sbe.Db, request.Attrs); err != nil {
-			return nil, fmt.Errorf("getTSAttrGroupsComboOnly() failed: %v", err)
+			return nil, codes.Internal, fmt.Sprintf("getTSAttrGroupsComboOnly() failed: %v", err)
 		}
 	}
 
-	return &datastore.GetTSAGResponse{Groups: groups}, nil
+	return &datastore.GetTSAGResponse{Groups: groups}, codes.OK, ""
 }
