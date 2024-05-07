@@ -5,8 +5,6 @@ from typing import Literal
 from typing import Optional
 from dateutil import parser
 
-
-from cfunits import Units
 from pydantic import BaseModel
 from pydantic import constr
 from pydantic import Field
@@ -65,9 +63,6 @@ class Content(BaseModel):
 
     @model_validator(mode="after")
     def standarize_unit(self) -> Content:
-        assert len(self.unit) > 0, "Must provide unit"
-        inpt_unit = Units(self.unit)
-        self.unit = inpt_unit.formatted()
 
         return self
 
