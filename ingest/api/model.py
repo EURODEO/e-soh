@@ -65,8 +65,9 @@ class Content(BaseModel):
 
     @model_validator(mode="after")
     def standarize_unit(self) -> Content:
-        _unit = Units(self.unit)
-        self.unit = _unit.formatted()
+        assert len(self.unit) > 0, "Must provide unit"
+        inpt_unit = Units(self.unit)
+        self.unit = inpt_unit.formatted()
 
         return self
 
