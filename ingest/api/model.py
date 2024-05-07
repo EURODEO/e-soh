@@ -5,6 +5,8 @@ from typing import Literal
 from typing import Optional
 from dateutil import parser
 
+
+from cfunits import Units
 from pydantic import BaseModel
 from pydantic import constr
 from pydantic import Field
@@ -53,12 +55,19 @@ class Content(BaseModel):
     unit: str = Field(..., description="Unit for the data")
 
     @model_validator(mode="after")
-    def check_standard_name_match(self) -> "Content":
+    def check_standard_name_match(self) -> Content:
         if self.standard_name in standard_names_alias:
             self.standard_name = standard_names_alias[self.standard_name]
 
         if self.standard_name not in standard_names:
             raise ValueError(f"{self.standard_name} is not a CF Standard name")
+        return self
+
+    @model_validator(mode="after")
+    def standarize_unit(self) -> Content:
+        _unit = Units(self.unit)
+        self.unit = _unit.formatted()
+
         return self
 
 
