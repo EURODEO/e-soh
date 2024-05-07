@@ -45,30 +45,6 @@ func addStringMdata(rv reflect.Value, stringMdataGoNames []string, colVals []int
 	return nil
 }
 
-// addWhereCondMatchAnyPattern appends to whereExpr an expression of the form
-// "(cond1 OR cond2 OR ... OR condN)" where condi tests if the ith pattern in patterns matches
-// colName. Matching is case-insensitive and an asterisk in a pattern matches zero or more
-// arbitrary characters. The patterns with '*' replaced with '%' are appended to phVals.
-func addWhereCondMatchAnyPattern(
-	colName string, patterns []string, whereExpr *[]string, phVals *[]interface{}) {
-
-	if (patterns == nil) || (len(patterns) == 0) {
-		return
-	}
-
-	whereExprOR := []string{}
-
-	index := len(*phVals)
-	for _, ptn := range patterns {
-		index++
-		expr := fmt.Sprintf("(lower(%s) LIKE lower($%d))", colName, index)
-		whereExprOR = append(whereExprOR, expr)
-		*phVals = append(*phVals, strings.ReplaceAll(ptn, "*", "%"))
-	}
-
-	*whereExpr = append(*whereExpr, fmt.Sprintf("(%s)", strings.Join(whereExprOR, " OR ")))
-}
-
 // scanTSRow scans all columns from the current result row in rows and converts to a TSMetadata
 // object.
 // Returns (TSMetadata object, time series ID, nil) upon success, otherwise (..., ..., error).
@@ -177,11 +153,11 @@ func getTSMetadata(
 	return nil
 }
 
-// getTimeFilter derives from tspec the expression used in a WHERE clause for overall
+// getObsTimeFilter derives from tspec the expression used in a WHERE clause for overall
 // (i.e. not time series specific) filtering on obs time.
 //
 // Returns expression.
-func getTimeFilter(tspec common.TemporalSpec) string {
+func getObsTimeFilter(tspec common.TemporalSpec) string {
 
 	// by default, restrict only to current valid time range
 	loTime, hiTime := common.GetValidTimeRange()
@@ -212,37 +188,6 @@ type stringFilterInfo struct {
 }
 
 // TODO: add filter info for non-string types
-
-// getMdataFilter derives from stringFilterInfos the expression used in a WHERE clause for
-// "match any" filtering on a set of attributes.
-//
-// The expression will be of the form
-//
-//	(
-//	  ((<attr1 matches pattern1,1>) OR (<attr1 matches pattern1,2>) OR ...) AND
-//	  ((<attr2 matches pattern2,1>) OR (<attr1 matches pattern2,2>) OR ...) AND
-//	  ...
-//	)
-//
-// Values to be used for query placeholders are appended to phVals.
-//
-// Returns expression.
-func getMdataFilter(stringFilterInfos []stringFilterInfo, phVals *[]interface{}) string {
-
-	whereExprAND := []string{}
-
-	for _, sfi := range stringFilterInfos {
-		addWhereCondMatchAnyPattern(
-			sfi.colName, sfi.patterns, &whereExprAND, phVals)
-	}
-
-	whereExpr := "TRUE" // by default, don't filter
-	if len(whereExprAND) > 0 {
-		whereExpr = fmt.Sprintf("(%s)", strings.Join(whereExprAND, " AND "))
-	}
-
-	return whereExpr
-}
 
 // getPolygonFilter derives the expression used in a WHERE clause for selecting only
 // points inside a polygon.
@@ -364,35 +309,6 @@ func getTableNameFromField(fieldName string) (string, error) {
 	return tableName, nil
 }
 
-// getStringMdataFilter creates from 'request' the string metadata filter used for querying
-// observations.
-//
-// Values to be used for query placeholders are appended to phVals.
-//
-// Returns upon success (string metadata filter used in a 'WHERE ... AND ...' clause (possibly
-// just 'TRUE'), nil), otherwise (..., error).
-func getStringMdataFilter(
-	request *datastore.GetObsRequest, phVals *[]interface{}) (string, error) {
-
-	stringFilterInfos := []stringFilterInfo{}
-
-	for fieldName, ptnObj := range request.GetFilter() {
-		tableName, err := getTableNameFromField(fieldName)
-		if err != nil {
-			return "", fmt.Errorf("getTableNameFromField() failed: %v", err)
-		}
-		patterns := ptnObj.GetValues()
-		if len(patterns) > 0 {
-			stringFilterInfos = append(stringFilterInfos, stringFilterInfo{
-				colName:  fmt.Sprintf("%s.%s", tableName, fieldName),
-				patterns: patterns,
-			})
-		}
-	}
-
-	return getMdataFilter(stringFilterInfos, phVals), nil
-}
-
 // createObsQueryVals creates from request and tspec values used for querying observations.
 //
 // Values to be used for query placeholders are appended to phVals.
@@ -415,14 +331,14 @@ func createObsQueryVals(
 		distinctSpec = "DISTINCT ON (ts_id)"
 	}
 
-	timeFilter := getTimeFilter(tspec)
+	timeFilter := getObsTimeFilter(tspec)
 
 	geoFilter, err := getGeoFilter(request.GetSpatialPolygon(), request.GetSpatialCircle(), phVals)
 	if err != nil {
 		return "", "", "", "", fmt.Errorf("getGeoFilter() failed: %v", err)
 	}
 
-	stringMdataFilter, err := getStringMdataFilter(request, phVals)
+	stringMdataFilter, err := getStringMdataFilter(request.GetFilter(), phVals)
 	if err != nil {
 		return "", "", "", "", fmt.Errorf("getStringMdataFilter() failed: %v", err)
 	}
@@ -537,7 +453,7 @@ func getObs(
 	distinctSpec, timeFilter, geoFilter, stringMdataFilter, err := createObsQueryVals(
 		request, tspec, &phVals)
 	if err != nil {
-		return fmt.Errorf("createQueryVals() failed: %v", err)
+		return fmt.Errorf("createObsQueryVals() failed: %v", err)
 	}
 
 	// convert obsStringMdataCols according to incFields
