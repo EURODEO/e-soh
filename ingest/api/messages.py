@@ -6,6 +6,7 @@ from datetime import timezone
 
 from fastapi import HTTPException
 from api.model import JsonMessageSchema
+from pydantic import ValidationError
 
 
 from ingest.bufr.create_mqtt_message_from_bufr import (
@@ -21,10 +22,11 @@ def build_json_payload(bufr: object):
     if len(unfinished_messages) >= 1:
         for json_msg in unfinished_messages:
             try:
+                json_msg["properties"]["platform"] = 1
                 JsonMessageSchema(**json_msg)
                 logger.debug("Message passed schema validation.")
-            except ValueError as v_error:
-                logger.error("Message did not pass schema validation, " + "\n" + str(v_error))
+            except ValidationError as v_error:
+                logger.error(" Message did not pass schema validation, " + "\n" + str(v_error))
                 json_msg = None
                 raise HTTPException(status_code=400, detail=str(v_error))
 

@@ -19,8 +19,8 @@ def get_grpc_stub():
 async def putObsRequest(put_obs_request):
     grpc_stub = get_grpc_stub()
     try:
-        response = await grpc_stub.PutObservations(put_obs_request)
+        await grpc_stub.PutObservations(put_obs_request)
         logger.debug("RPC call succeeded.")
     except grpc.aio.AioRpcError as grpc_error:
-        logger.critical("RPC call failed:", grpc_error, response)
+        logger.critical("RPC call failed:", grpc_error)
         raise grpc_error
