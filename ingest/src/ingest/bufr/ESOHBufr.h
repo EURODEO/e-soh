@@ -19,6 +19,7 @@
 
 #include "NorBufr.h"
 #include "Oscar.h"
+#include "WSI.h"
 
 // Default BUFR-CF map
 static std::map<DescriptorId, std::pair<std::string, std::string>> cf_names = {
@@ -61,6 +62,8 @@ static std::map<DescriptorId, std::pair<std::string, std::string>> cf_names = {
 
 };
 
+static std::string default_shadow_wigos("0-578-2024-");
+
 class ESOHBufr : public NorBufr {
 
 public:
@@ -68,6 +71,8 @@ public:
   std::list<std::string> msg() const;
   void setOscar(Oscar *);
   void setMsgTemplate(std::string);
+  bool setShadowWigos(std::string);
+  void setShadowWigos(const WSI &wsi);
 
 private:
   std::string addMessage(std::list<Descriptor>::const_iterator ci,
@@ -82,6 +87,7 @@ private:
                   rapidjson::Document &) const;
   bool setPlatformName(std::string v, rapidjson::Document &message,
                        bool force = true) const;
+  bool setPlatform(std::string v, rapidjson::Document &message) const;
   bool setLocation(double lat, double lon, double hei,
                    rapidjson::Document &) const;
   bool updateLocation(double loc, std::string loc_label,
@@ -91,8 +97,12 @@ private:
                    std::string period_str = "") const;
   bool setStartDateTime(struct tm *, rapidjson::Document &,
                         std::string period_str = "") const;
+  WSI genShadowWigosId(std::list<Descriptor> &,
+                       std::list<Descriptor>::const_iterator &cir) const;
+
   Oscar *oscar;
   std::string msg_template;
+  WSI shadow_wigos;
 };
 
 #endif

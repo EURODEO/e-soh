@@ -100,6 +100,7 @@ std::list<std::string> norbufr_bufresohmsg(std::string fname) {
     bufr->setBufrId(file_path.filename());
     bufr->setOscar(&oscar);
     bufr->setMsgTemplate(bufr_input_schema);
+    bufr->setShadowWigos(default_shadow_wigos_py);
 
     if (bufrFile >> *bufr) {
 
@@ -143,6 +144,7 @@ std::list<std::string> norbufr_bufresohmsgmem(char *api_buf, int api_size) {
     // bufr->setBufrId(file_path.filename());
     bufr->setOscar(&oscar);
     bufr->setMsgTemplate(bufr_input_schema);
+    bufr->setShadowWigos(default_shadow_wigos_py);
 
     int n = bufr->fromBuffer(api_buf, position, api_size);
     if (n > position) {
@@ -215,6 +217,7 @@ std::string norbufr_bufrprint(std::string fname) {
 std::list<std::string> norbufr_log() { return esoh_bufr_log; }
 
 void norbufr_log_clear() { esoh_bufr_log.clear(); }
+void norbufr_set_default_wigos(std::string s) { default_shadow_wigos_py = s; }
 
 PYBIND11_MODULE(bufresohmsg_py, m) {
   m.doc() = "bufresoh E-SOH MQTT message generator plugin";
@@ -233,4 +236,6 @@ PYBIND11_MODULE(bufresohmsg_py, m) {
   m.def("init_oscar_py", &norbufr_init_oscar, "Init OSCAR db");
   m.def("init_bufr_schema_py", &norbufr_init_schema_template,
         "Init BUFR schema");
+  m.def("bufr_sdwigos_py", &norbufr_set_default_wigos,
+        "Set default shadow WIGOS Id");
 }

@@ -49,6 +49,7 @@ ESOHBufr::ESOHBufr() {
           ] \
         }";
   setMsgTemplate(message_template);
+  shadow_wigos.from_string(default_shadow_wigos);
 }
 
 void ESOHBufr::setOscar(Oscar *o) { oscar = o; }
@@ -113,9 +114,6 @@ std::list<std::string> ESOHBufr::msg() const {
 
     rapidjson::Document subset_message;
     subset_message.CopyFrom(message, subset_message.GetAllocator());
-    rapidjson::Document::AllocatorType &subset_message_allocator =
-        subset_message.GetAllocator();
-    rapidjson::Value &subset_properties = subset_message["properties"];
 
     struct tm meas_datetime;
     memset(static_cast<void *>(&meas_datetime), 0, sizeof(meas_datetime));
@@ -186,6 +184,14 @@ std::list<std::string> ESOHBufr::msg() const {
                     wigos_id.to_string() + std::string(" ") + v.toString(),
                 LogLevel::WARN, __func__, bufr_id));
             goto subset_end;
+          }
+          // geolocation OK, but WIGOS is missing, create shadow WIGOS ID
+          if (!wigos_id.getWigosLocalId().size()) {
+            wigos_id = genShadowWigosId(s, ci);
+            lb.addLogEntry(LogEntry("Create shadow WIGOS ID: " +
+                                        wigos_id.to_string() + std::string(" "),
+                                    LogLevel::WARN, __func__, bufr_id));
+            setPlatform(wigos_id.to_string(), subset_message);
           }
         }
 
@@ -288,21 +294,15 @@ std::list<std::string> ESOHBufr::msg() const {
             break;
           }
           case 128: {
-            if (value_str.size())
+            if (value_str.size()) {
               wigos_id.setWigosLocalId(value_str);
+              skip_platform = false;
+            }
           }
           }
 
           if (!skip_platform) {
-            rapidjson::Value platform;
-            platform.SetString(wigos_id.to_string().c_str(),
-                               subset_message_allocator);
-            if (subset_properties.HasMember("platform")) {
-              subset_properties["platform"] = platform;
-            } else {
-              subset_properties.AddMember("platform", platform,
-                                          subset_message_allocator);
-            }
+            setPlatform(wigos_id.to_string(), subset_message);
           }
 
           break;
@@ -786,6 +786,23 @@ bool ESOHBufr::addContent(const Descriptor &v, std::string cf_name,
   return true;
 }
 
+bool ESOHBufr::setPlatform(std::string value,
+                           rapidjson::Document &message) const {
+
+  rapidjson::Value platform;
+  rapidjson::Document::AllocatorType &message_allocator =
+      message.GetAllocator();
+  rapidjson::Value &message_properties = message["properties"];
+
+  platform.SetString(value.c_str(), message_allocator);
+  if (message_properties.HasMember("platform")) {
+    message_properties["platform"] = platform;
+  } else {
+    message_properties.AddMember("platform", platform, message_allocator);
+  }
+  return true;
+}
+
 bool ESOHBufr::setPlatformName(std::string value, rapidjson::Document &message,
                                bool force) const {
   if (NorBufrIO::strTrim(value).size() == 0)
@@ -941,4 +958,34 @@ std::string ESOHBufr::addMessage(std::list<Descriptor>::const_iterator ci,
   ret = sb.GetString();
 
   return ret;
+}
+
+bool ESOHBufr::setShadowWigos(std::string s) {
+  return shadow_wigos.from_string(s);
+}
+
+void ESOHBufr::setShadowWigos(const WSI &wsi) { shadow_wigos = wsi; }
+
+WSI ESOHBufr::genShadowWigosId(
+    std::list<Descriptor> &s, std::list<Descriptor>::const_iterator &ci) const {
+  WSI tmp_id = shadow_wigos;
+  std::stringstream ss;
+  std::string localv;
+  for (std::list<Descriptor>::const_iterator di = s.begin(); di != ci; ++di) {
+    if (di->f() == 0 && di->x() == 1) {
+      localv = getValue(*di, localv, false);
+      if (localv != "MISSING") {
+        ss << NorBufrIO::strTrim(localv) << "_";
+      }
+    }
+  }
+  if (localv.size()) {
+    localv = ss.str().substr(0, 16);
+    if (localv[localv.size() - 1] == '_') {
+      localv.pop_back();
+    }
+    std::replace(localv.begin(), localv.end(), ' ', '_');
+    tmp_id.setWigosLocalId(localv);
+  }
+  return tmp_id;
 }
