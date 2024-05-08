@@ -39,14 +39,31 @@ std::string WSI::to_string() const {
   return ss.str();
 }
 
-void WSI::setWigosIdSeries(int wid) { wigos_id_series = wid; }
+bool WSI::setWigosIdSeries(int wid) {
+  wigos_id_series = wid;
+  return true;
+}
 
-void WSI::setWigosIssuerId(uint16_t wis) { wigos_issuer_id = wis; }
+bool WSI::setWigosIssuerId(uint16_t wis) {
+  if (wis > wigos_range)
+    return false;
+  wigos_issuer_id = wis;
+  return true;
+}
 
-void WSI::setWigosIssueNum(uint16_t wisn) { wigos_issue_num = wisn; }
+bool WSI::setWigosIssueNum(uint16_t wisn) {
+  if (wisn > wigos_range)
+    return false;
+  wigos_issue_num = wisn;
+  return true;
+}
 
-void WSI::setWigosLocalId(std::string wlid) {
-  wigos_local_id = NorBufrIO::strTrim(wlid);
+bool WSI::setWigosLocalId(std::string wlid) {
+  std::string tmp = NorBufrIO::strTrim(wlid);
+  if (tmp.size() > wigos_local_max_len)
+    return false;
+  wigos_local_id = tmp;
+  return true;
 }
 
 void WSI::setWmoId(int wlid) {
@@ -65,23 +82,49 @@ uint16_t WSI::getWigosIssueNum() const { return wigos_issue_num; }
 std::string WSI::getWigosLocalId() const { return wigos_local_id; }
 
 bool WSI::from_string(std::string s) {
-  wigos_id_series = wigos_issue_num = wigos_issuer_id = 0;
-  wigos_local_id = "";
   int cnt = std::count(s.begin(), s.end(), '-');
-  const int tmp_size = 10;
+  const int tmp_size = 16;
   char tmp[tmp_size];
+  uint16_t val_id_series;
+  uint16_t val_issue_num;
+  uint16_t val_issuer_id;
   std::stringstream ss;
   ss << s;
   if (cnt == 3) {
-    ss >> wigos_id_series;
+    ss >> val_id_series;
     ss.getline(tmp, tmp_size, '-');
-    ss >> wigos_issuer_id;
+    ss >> val_issuer_id;
+    if (val_issuer_id > wigos_range) {
+      return false;
+    }
     ss.getline(tmp, tmp_size, '-');
-    ss >> wigos_issue_num;
+    ss >> val_issue_num;
+    if (val_issue_num > wigos_range) {
+      return false;
+    }
     ss.getline(tmp, tmp_size, '-');
+  } else {
+    return false;
+  }
+
+  if (ss.fail() || ss.bad()) {
+    return false;
   }
 
   ss >> wigos_local_id;
+  if (ss.bad()) {
+    return false;
+  }
+
+  if (wigos_local_id.size() > 16) {
+    wigos_local_id = "";
+    return false;
+  } else {
+    wigos_id_series = val_id_series;
+    wigos_issue_num = val_issue_num;
+    wigos_issuer_id = val_issuer_id;
+  }
+
   return true;
 }
 

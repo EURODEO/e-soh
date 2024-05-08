@@ -18,16 +18,19 @@
 
 #include "CountryCodes.h"
 
+static const uint16_t wigos_range = 65534;
+static const uint8_t wigos_local_max_len = 16;
+
 class WSI {
 public:
   WSI();
   WSI(std::string);
   WSI(const char *);
   bool from_string(std::string s);
-  void setWigosIdSeries(int);
-  void setWigosIssuerId(uint16_t);
-  void setWigosIssueNum(uint16_t);
-  void setWigosLocalId(std::string);
+  bool setWigosIdSeries(int);
+  bool setWigosIssuerId(uint16_t);
+  bool setWigosIssueNum(uint16_t);
+  bool setWigosLocalId(std::string);
   void setWmoId(int);
   std::string to_string() const;
   int getWigosIdSeries() const;
