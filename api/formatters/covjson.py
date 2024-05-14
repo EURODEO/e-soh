@@ -54,7 +54,7 @@ def convert_to_covjson(response):
                 system=ReferenceSystem(type="GeographicCRS", id="http://www.opengis.net/def/crs/EPSG/0/4326"),
             ),
             ReferenceSystemConnectionObject(
-                coordinates=["z"],
+                coordinates=["t"],
                 system=ReferenceSystem(type="TemporalRS", calendar="Gregorian"),
             ),
         ]
