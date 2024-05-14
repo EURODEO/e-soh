@@ -21,8 +21,6 @@ class Response(BaseModel):
     status_code: int
 
 
-app = FastAPI()
-
 # Define configuration parameters
 mqtt_configuration = {
     "host": os.getenv("MQTT_HOST"),
@@ -32,6 +30,8 @@ mqtt_configuration = {
 
 
 ingester = IngestToPipeline(mqtt_conf=mqtt_configuration, uuid_prefix="uuid")
+
+app = FastAPI()
 
 
 @app.post("/bufr")

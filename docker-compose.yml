@@ -90,9 +90,11 @@ services:
       context: ingest
     ports:
       - "8009:8001"
+    network_mode: ""
     environment:
       - DSHOST=${DSHOST:-store}
       - DSPORT=${DSPORT:-50050}
+      - MQTT_HOST=${MQTT_HOST}
       - MQTT_USERNAME=${MQTT_USERNAME}
       - MQTT_PASSWORD=${MQTT_PASSWORD}
     depends_on:
