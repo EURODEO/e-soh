@@ -188,6 +188,20 @@ std::list<std::string> ESOHBufr::msg() const {
           // geolocation OK, but WIGOS is missing, create shadow WIGOS ID
           if (!wigos_id.getWigosLocalId().size()) {
             wigos_id = genShadowWigosId(s, ci);
+            if (!wigos_id.getWigosLocalId().size()) {
+              std::stringstream llss;
+              if (lat > 0) {
+                llss << "N" << std::to_string(lat).substr(0, 7);
+              } else {
+                llss << "S" << std::to_string(-lat).substr(0, 7);
+              }
+              if (lon > 0) {
+                llss << "E" << std::to_string(lon).substr(0, 7);
+              } else {
+                llss << "W" << std::to_string(-lon).substr(0, 7);
+              }
+              wigos_id.setWigosLocalId(llss.str());
+            }
             lb.addLogEntry(LogEntry("Create shadow WIGOS ID: " +
                                         wigos_id.to_string() + std::string(" "),
                                     LogLevel::WARN, __func__, bufr_id));
