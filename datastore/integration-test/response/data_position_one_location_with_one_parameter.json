@@ -41,7 +41,7 @@
             },
             {
                 "coordinates": [
-                    "z"
+                    "t"
                 ],
                 "system": {
                     "type": "TemporalRS",
