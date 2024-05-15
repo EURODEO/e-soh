@@ -979,12 +979,13 @@ WSI ESOHBufr::genShadowWigosId(
       }
     }
   }
-  if (localv.size()) {
+  if (ss.str().size()) {
     localv = ss.str().substr(0, 16);
     if (localv[localv.size() - 1] == '_') {
       localv.pop_back();
     }
     std::replace(localv.begin(), localv.end(), ' ', '_');
+    std::replace(localv.begin(), localv.end(), '-', '_');
     tmp_id.setWigosLocalId(localv);
   }
   return tmp_id;
