@@ -61,7 +61,13 @@ class IngestToPipeline:
         if self.client is not None:
 
             for msg in messages:
-                topic = msg["properties"]["naming_authority"]
+                topic = (
+                    msg["properties"]["naming_authority"]
+                    + "/"
+                    + msg["properties"]["platform"]
+                    + "/"
+                    + msg["propoerties"]["content"]["standard_name"]
+                )
                 try:
                     send_message(topic, msg, self.client)
                     logger.info("Succesfully published to mqtt")
