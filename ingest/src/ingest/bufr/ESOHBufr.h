@@ -64,6 +64,9 @@ static std::map<DescriptorId, std::pair<std::string, std::string>> cf_names = {
 
 static std::string default_shadow_wigos("0-578-2024-");
 
+static std::list<std::pair<char, char>> repl_chars = {
+    {' ', '_'}, {'-', '_'}, {'\'', '_'}};
+
 class ESOHBufr : public NorBufr {
 
 public:

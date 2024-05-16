@@ -825,18 +825,20 @@ bool ESOHBufr::setPlatformName(std::string value, rapidjson::Document &message,
       message.GetAllocator();
   rapidjson::Value &message_properties = message["properties"];
   rapidjson::Value platform_name;
-  platform_name.SetString(NorBufrIO::strTrim(value).c_str(), message_allocator);
+  std::string platform_str = NorBufrIO::strTrim(value);
+  NorBufrIO::filterStr(platform_str, repl_chars);
+  platform_name.SetString(platform_str.c_str(), message_allocator);
 
   if (message_properties.HasMember("platform_name")) {
     rapidjson::Value &platform_old_value = message_properties["platform_name"];
     std::string platform_old_name = platform_old_value.GetString();
-    if (platform_old_name != value) {
+    if (platform_old_name != platform_str) {
       if (force) {
-        message_properties["platform_name"].SetString(value.c_str(),
+        message_properties["platform_name"].SetString(platform_str.c_str(),
                                                       message_allocator);
       } else {
         message_properties["platform_name"].SetString(
-            std::string(platform_old_name + "," + value).c_str(),
+            std::string(platform_old_name + "," + platform_str).c_str(),
             message_allocator);
       }
     }
@@ -998,8 +1000,7 @@ WSI ESOHBufr::genShadowWigosId(
     if (localv[localv.size() - 1] == '_') {
       localv.pop_back();
     }
-    std::replace(localv.begin(), localv.end(), ' ', '_');
-    std::replace(localv.begin(), localv.end(), '-', '_');
+    NorBufrIO::filterStr(localv, repl_chars);
     tmp_id.setWigosLocalId(localv);
   }
   return tmp_id;
