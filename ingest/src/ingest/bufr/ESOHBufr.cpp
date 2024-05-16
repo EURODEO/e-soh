@@ -145,6 +145,16 @@ std::list<std::string> ESOHBufr::msg() const {
         if (v.x() >= 10 &&
             !(v.x() == 22 && (v.y() == 55 || v.y() == 56 || v.y() == 67)) &&
             v.x() != 25 && v.x() != 31 && v.x() != 35 && !platform_check) {
+          // Check datetime
+          if (meas_datetime.tm_mday == 0) {
+            // Date missing, skip processing
+            lb.addLogEntry(LogEntry(
+                "Missing measure datetime, skip this subset: " +
+                    std::to_string(subsetnum) + " Wigos: " +
+                    wigos_id.to_string() + std::string(" ") + v.toString(),
+                LogLevel::WARN, __func__, bufr_id));
+            goto subset_end;
+          }
           // Check station_id at OSCAR
           platform_check = true;
           if (wigos_id.getWigosLocalId().size()) {
