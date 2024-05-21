@@ -66,7 +66,7 @@ class IngestToPipeline:
                     + "/"
                     + msg["properties"]["platform"]
                     + "/"
-                    + msg["propoerties"]["content"]["standard_name"]
+                    + msg["properties"]["content"]["standard_name"]
                 )
                 try:
                     send_message(topic, msg, self.client)
