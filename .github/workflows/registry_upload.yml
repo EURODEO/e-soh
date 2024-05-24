@@ -69,6 +69,9 @@ jobs:
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
             type=ref,event=tag,enable={{is_default_branch}}
 
+      - name: Install just
+        run: ./ci/scripts/install-just.sh
+
       - name: Copy Protobuf files to Dockerfile directories
         run: just copy-proto
 
