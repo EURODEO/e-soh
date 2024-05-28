@@ -71,9 +71,13 @@ async def verify_parameter_names(parameter_names: list) -> None:
     Raises error with unknown names if any are found.
     """
     unknown_parameter_names = []
+    current_parameter_names = await get_current_parameter_names()
 
     for i in parameter_names:
-        if i not in await get_current_parameter_names():
+        # HACK: This checking breaks the wildcard support (e.g. air_temperature:*:*:*). Skip if contains wildcards
+        if "*" in i:
+            continue
+        if i not in current_parameter_names:
             unknown_parameter_names.append(i)
 
     if unknown_parameter_names:
