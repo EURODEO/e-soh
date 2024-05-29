@@ -1,0 +1,117 @@
+{
+    "type": "Coverage",
+    "domain": {
+        "type": "Domain",
+        "domainType": "PointSeries",
+        "axes": {
+            "x": {
+                "values": [
+                    4.6029300588208
+                ]
+            },
+            "y": {
+                "values": [
+                    52.505333893732
+                ]
+            },
+            "t": {
+                "values": [
+                    "2022-12-31T00:00:00Z"
+                ]
+            }
+        },
+        "referencing": [
+            {
+                "coordinates": [
+                    "y",
+                    "x"
+                ],
+                "system": {
+                    "type": "GeographicCRS",
+                    "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                }
+            },
+            {
+                "coordinates": [
+                    "t"
+                ],
+                "system": {
+                    "type": "TemporalRS",
+                    "calendar": "Gregorian"
+                }
+            }
+        ]
+    },
+    "parameters": {
+        "air_temperature:2.0:maximum:PT6H": {
+            "type": "Parameter",
+            "description": {
+                "en": "air_temperature at 2.0m PT6H maximum"
+            },
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
+                "label": {
+                    "en": "air_temperature:2.0:maximum:PT6H"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "degrees Celsius"
+                }
+            }
+        },
+        "air_temperature:2.0:minimum:PT6H": {
+            "type": "Parameter",
+            "description": {
+                "en": "air_temperature at 2.0m PT6H minimum"
+            },
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
+                "label": {
+                    "en": "air_temperature:2.0:minimum:PT6H"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "degrees Celsius"
+                }
+            }
+        }
+    },
+    "ranges": {
+        "air_temperature:2.0:maximum:PT6H": {
+            "type": "NdArray",
+            "dataType": "float",
+            "axisNames": [
+                "t",
+                "y",
+                "x"
+            ],
+            "shape": [
+                1,
+                1,
+                1
+            ],
+            "values": [
+                10.8
+            ]
+        },
+        "air_temperature:2.0:minimum:PT6H": {
+            "type": "NdArray",
+            "dataType": "float",
+            "axisNames": [
+                "t",
+                "y",
+                "x"
+            ],
+            "shape": [
+                1,
+                1,
+                1
+            ],
+            "values": [
+                9.9
+            ]
+        }
+    }
+}
