@@ -73,5 +73,5 @@ class StoreGrpcUser(grpc_user.GrpcUser):
             ),
         )
         response = self.stub.GetObservations(request)
-        assert len(response.observations) == 0
+        assert len(response.observations) == 1
         assert len(response.observations[0].obs_mdata) == 144
