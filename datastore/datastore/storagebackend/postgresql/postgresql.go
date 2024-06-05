@@ -130,6 +130,7 @@ func openDB(host, port, user, password, dbname string) (*sql.DB, error) {
 	db.SetMaxOpenConns(25)
 	db.SetMaxIdleConns(25)
 	db.SetConnMaxLifetime(5 * time.Minute)
+	db.SetConnMaxIdleTime(5 * time.Minute)
 
 	return db, nil
 }
