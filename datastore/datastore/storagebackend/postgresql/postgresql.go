@@ -126,6 +126,12 @@ func openDB(host, port, user, password, dbname string) (*sql.DB, error) {
 		return nil, fmt.Errorf("sql.Open() failed: %v", err)
 	}
 
+	// Set up connection pooling
+	db.SetMaxOpenConns(25)
+	db.SetMaxIdleConns(25)
+	db.SetConnMaxLifetime(5 * time.Minute)
+	db.SetConnMaxIdleTime(5 * time.Minute)
+
 	return db, nil
 }
 
