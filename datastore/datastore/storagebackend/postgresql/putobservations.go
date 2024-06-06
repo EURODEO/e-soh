@@ -10,7 +10,7 @@ import (
 	"strings"
 
 	"github.com/lib/pq"
-	_ "github.com/lib/pq"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -359,7 +359,7 @@ func upsertObs(
 }
 
 // PutObservations ... (see documentation in StorageBackend interface)
-func (sbe *PostgreSQL) PutObservations(request *datastore.PutObsRequest) error {
+func (sbe *PostgreSQL) PutObservations(request *datastore.PutObsRequest) (codes.Code, string) {
 
 	type tsInfo struct {
 		obsTimes *[]*timestamppb.Timestamp
@@ -376,7 +376,7 @@ func (sbe *PostgreSQL) PutObservations(request *datastore.PutObsRequest) error {
 
 	// reject call if # of observations exceeds limit
 	if len(request.Observations) > putObsLimit {
-		return fmt.Errorf(
+		return codes.OutOfRange, fmt.Sprintf(
 			"too many observations in a single call: %d > %d",
 			len(request.Observations), putObsLimit)
 	}
@@ -386,29 +386,29 @@ func (sbe *PostgreSQL) PutObservations(request *datastore.PutObsRequest) error {
 
 		obsTime, err := getObsTime(obs.GetObsMdata())
 		if err != nil {
-			return fmt.Errorf("getObsTime() failed: %v", err)
+			return codes.Internal, fmt.Sprintf("getObsTime() failed: %v", err)
 		}
 
 		if obsTime.AsTime().Before(loTime) {
-			return fmt.Errorf(
+			return codes.OutOfRange, fmt.Sprintf(
 				"obs time too old: %v < %v (hiTime: %v; settings: %s)",
 				obsTime.AsTime(), loTime, hiTime, common.GetValidTimeRangeSettings())
 		}
 
 		if obsTime.AsTime().After(hiTime) {
-			return fmt.Errorf(
+			return codes.OutOfRange, fmt.Sprintf(
 				"obs time too new: %v > %v (loTime: %v; settings: %s)",
 				obsTime.AsTime(), hiTime, loTime, common.GetValidTimeRangeSettings())
 		}
 
 		tsID, err := upsertTS(sbe.Db, obs.GetTsMdata(), tsIDCache)
 		if err != nil {
-			return fmt.Errorf("upsertTS() failed: %v", err)
+			return codes.Internal, fmt.Sprintf("upsertTS() failed: %v", err)
 		}
 
 		gpID, err := getGeoPointID(sbe.Db, obs.GetObsMdata().GetGeoPoint(), gpIDCache)
 		if err != nil {
-			return fmt.Errorf("getGeoPointID() failed: %v", err)
+			return codes.Internal, fmt.Sprintf("getGeoPointID() failed: %v", err)
 		}
 
 		var obsTimes []*timestamppb.Timestamp
@@ -427,6 +427,7 @@ func (sbe *PostgreSQL) PutObservations(request *datastore.PutObsRequest) error {
 			}
 			tsInfo0, found = tsInfos[tsID]
 			// assert(found)
+			_ = found
 		}
 		*tsInfo0.obsTimes = append(*tsInfo0.obsTimes, obsTime)
 		*tsInfo0.gpIDs = append(*tsInfo0.gpIDs, gpID)
@@ -437,7 +438,7 @@ func (sbe *PostgreSQL) PutObservations(request *datastore.PutObsRequest) error {
 	for tsID, tsInfo := range tsInfos {
 		if err := upsertObs(
 			sbe.Db, tsID, tsInfo.obsTimes, tsInfo.gpIDs, tsInfo.omds); err != nil {
-			return fmt.Errorf("upsertObs() failed: %v", err)
+			return codes.Internal, fmt.Sprintf("upsertObs() failed: %v", err)
 		}
 	}
 
@@ -445,5 +446,5 @@ func (sbe *PostgreSQL) PutObservations(request *datastore.PutObsRequest) error {
 		log.Printf("WARNING: considerCleanup() failed: %v", err)
 	}
 
-	return nil
+	return codes.OK, ""
 }

@@ -60,6 +60,10 @@ async def get_locations(
         str | None,
         Query(
             alias="parameter-name",
+            description="Comma seperated list of parameter names. Each consists of four components seperated by colons."
+            " The components are standard name, level in meters, aggregation function, and period. "
+            "Each of the components can be replaced by the wildcard character `*`. "
+            "To get all the air temperatures measured at 1.5 meter, use `air_temperature:1.5:*:*`.",
             example="wind_from_direction:2.0:mean:PT10M,"
             "wind_speed:10:mean:PT10M,"
             "relative_humidity:2.0:mean:PT1M,"
@@ -178,6 +182,10 @@ async def get_data_location_id(
         str | None,
         Query(
             alias="parameter-name",
+            description="Comma seperated list of parameter names. Each consists of four components seperated by colons."
+            " The components are standard name, level in meters, aggregation function, and period. "
+            "Each of the components can be replaced by the wildcard character `*`. "
+            "To get all the air temperatures measured at 1.5 meter, use `air_temperature:1.5:*:*`.",
             example="wind_from_direction:2.0:mean:PT10M,"
             "wind_speed:10:mean:PT10M,"
             "relative_humidity:2.0:mean:PT1M,"
@@ -214,6 +222,10 @@ async def get_data_position(
         str | None,
         Query(
             alias="parameter-name",
+            description="Comma seperated list of parameter names. Each consists of four components seperated by colons."
+            " The components are standard name, level in meters, aggregation function, and period. "
+            "Each of the components can be replaced by the wildcard character `*`. "
+            "To get all the air temperatures measured at 1.5 meter, use `air_temperature:1.5:*:*`.",
             example="wind_from_direction:2.0:mean:PT10M,"
             "wind_speed:10:mean:PT10M,"
             "relative_humidity:2.0:mean:PT1M,"
@@ -270,6 +282,10 @@ async def get_data_area(
         str | None,
         Query(
             alias="parameter-name",
+            description="Comma seperated list of parameter names. Each consists of four components seperated by colons."
+            " The components are standard name, level in meters, aggregation function, and period. "
+            "Each of the components can be replaced by the wildcard character `*`. "
+            "To get all the air temperatures measured at 1.5 meter, use `air_temperature:1.5:*:*`.",
             example="wind_from_direction:2.0:mean:PT10M,"
             "wind_speed:10:mean:PT10M,"
             "relative_humidity:2.0:mean:PT1M,"

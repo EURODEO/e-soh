@@ -3,6 +3,7 @@ package postgresql
 import (
 	"database/sql"
 	"datastore/common"
+	"datastore/datastore"
 	"fmt"
 	"regexp"
 	"strings"
@@ -125,6 +126,12 @@ func openDB(host, port, user, password, dbname string) (*sql.DB, error) {
 		return nil, fmt.Errorf("sql.Open() failed: %v", err)
 	}
 
+	// Set up connection pooling
+	db.SetMaxOpenConns(25)
+	db.SetMaxIdleConns(25)
+	db.SetConnMaxLifetime(5 * time.Minute)
+	db.SetConnMaxIdleTime(5 * time.Minute)
+
 	return db, nil
 }
 
@@ -235,6 +242,90 @@ func createSetFilter(colName string, vals []string) string {
 		return "FALSE" // set requested, but nothing will match
 	}
 	return fmt.Sprintf("(%s IN (%s))", colName, strings.Join(vals, ","))
+}
+
+// addWhereCondMatchAnyPattern appends to whereExpr an expression of the form
+// "(cond1 OR cond2 OR ... OR condN)" where condi tests if the ith pattern in patterns matches
+// colName. Matching is case-insensitive and an asterisk in a pattern matches zero or more
+// arbitrary characters. The patterns with '*' replaced with '%' are appended to phVals.
+func addWhereCondMatchAnyPattern(
+	colName string, patterns []string, whereExpr *[]string, phVals *[]interface{}) {
+
+	if (patterns == nil) || (len(patterns) == 0) {
+		return
+	}
+
+	whereExprOR := []string{}
+
+	index := len(*phVals)
+	for _, ptn := range patterns {
+		index++
+		expr := fmt.Sprintf("(lower(%s) LIKE lower($%d))", colName, index)
+		whereExprOR = append(whereExprOR, expr)
+		*phVals = append(*phVals, strings.ReplaceAll(ptn, "*", "%"))
+	}
+
+	*whereExpr = append(*whereExpr, fmt.Sprintf("(%s)", strings.Join(whereExprOR, " OR ")))
+}
+
+// getMdataFilter derives from stringFilterInfos the expression used in a WHERE clause for
+// "match any" filtering on a set of attributes.
+//
+// The expression will be of the form
+//
+//	(
+//	  ((<attr1 matches pattern1,1>) OR (<attr1 matches pattern1,2>) OR ...) AND
+//	  ((<attr2 matches pattern2,1>) OR (<attr1 matches pattern2,2>) OR ...) AND
+//	  ...
+//	)
+//
+// Values to be used for query placeholders are appended to phVals.
+//
+// Returns expression.
+func getMdataFilter(stringFilterInfos []stringFilterInfo, phVals *[]interface{}) string {
+
+	whereExprAND := []string{}
+
+	for _, sfi := range stringFilterInfos {
+		addWhereCondMatchAnyPattern(
+			sfi.colName, sfi.patterns, &whereExprAND, phVals)
+	}
+
+	whereExpr := "TRUE" // by default, don't filter
+	if len(whereExprAND) > 0 {
+		whereExpr = fmt.Sprintf("(%s)", strings.Join(whereExprAND, " AND "))
+	}
+
+	return whereExpr
+}
+
+// getStringMdataFilter creates from 'filter' the string metadata filter used for querying
+// extentions.
+//
+// Values to be used for query placeholders are appended to phVals.
+//
+// Returns upon success (string metadata filter used in a 'WHERE ... AND ...' clause (possibly
+// just 'TRUE'), nil), otherwise (..., error).
+func getStringMdataFilter(
+	filter map[string]*datastore.Strings, phVals *[]interface{}) (string, error) {
+
+	stringFilterInfos := []stringFilterInfo{}
+
+	for fieldName, ptnObj := range filter {
+		tableName, err := getTableNameFromField(fieldName)
+		if err != nil {
+			return "", fmt.Errorf("getTableNameFromField() failed: %v", err)
+		}
+		patterns := ptnObj.GetValues()
+		if len(patterns) > 0 {
+			stringFilterInfos = append(stringFilterInfos, stringFilterInfo{
+				colName:  fmt.Sprintf("%s.%s", tableName, fieldName),
+				patterns: patterns,
+			})
+		}
+	}
+
+	return getMdataFilter(stringFilterInfos, phVals), nil
 }
 
 // cleanup performs various cleanup tasks, like removing old observations from the database.

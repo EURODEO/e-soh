@@ -441,16 +441,16 @@ $ grpcurl -d '{"attrs": ["platform", "standard_name"], "include_instances": true
 }
 ```
 
-### Get the temporal- and spatial extent of all observations currently in the storage
+### Get the temporal- and spatial extent of all observations
 
 ```text
 $ grpcurl -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetExtents
 {
-  "timeExtent": {
+  "temporal_extent": {
     "start": "2022-12-31T00:00:00Z",
     "end": "2022-12-31T23:50:00Z"
   },
-  "geoExtent": {
+  "spatial_extent": {
     "left": -68.2758333,
     "bottom": 12.13,
     "right": 7.1493220605216,
@@ -458,6 +458,54 @@ $ grpcurl -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.D
   }
 }
 ```
+
+### Get the temporal- and spatial extent of all observations that match platform 0-20000-0-06348
+
+```text
+$ grpcurl -plaintext -d '{"filter": {"platform": {"values": ["0-20000-0-06348"]}}}' -proto protobuf/datastore
+.proto 127.0.0.1:50050 datastore.Datastore.GetExtents
+{
+  "temporal_extent": {
+    "start": "2022-12-31T00:00:00Z",
+    "end": "2022-12-31T23:50:00Z"
+  },
+  "spatial_extent": {
+    "left": 4.9259216999194,
+    "bottom": 51.969031121385,
+    "right": 4.9259216999194,
+    "top": 51.969031121385
+  }
+}
+```
+
+### Get the temporal- and spatial extent of all observations whose platform contains 06, whose naming authority contains either knmi or fmi
+
+```text
+$ grpcurl -plaintext -d '{"filter": {"platform": {"values": ["*06*"]}, "naming_authority": {"values": ["*knmi*", "*fmi*"]}}}' -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetExtents
+{
+  "temporal_extent": {
+    "start": "2022-12-31T00:00:00Z",
+    "end": "2022-12-31T23:50:00Z"
+  },
+  "spatial_extent": {
+    "left": 2.93575,
+    "bottom": 50.905256257898,
+    "right": 7.1493220605216,
+    "top": 55.399166666667
+  }
+}
+```
+
+### Same as above, with processing level A as an additional restriction
+
+```text
+$ grpcurl -plaintext -d '{"filter": {"platform": {"values": ["*06*"]}, "naming_authority": {"values": ["*knmi*", "*fmi*"]}, "processing_level": {"values": ["A"]}}}' -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetExtents
+ERROR:
+  Code: Unknown
+  Message: svcInfo.Sbe.GetExtents() failed: no matching data to compute extensions for
+```
+
+I.e. none of the otherwise matching observations had processing level A.
 
 ## Testing the datastore service with a Python client
 

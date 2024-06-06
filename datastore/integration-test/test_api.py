@@ -203,6 +203,23 @@ def test_from_a_single_collection_get_an_area_with_two_parameters():
     actual_response_is_expected_response(actual_response, expected_json)
 
 
+def test_from_a_single_collection_get_an_area_with_parameter_with_wildcard():
+    collection_id = "observations"
+    coords = "POLYGON((4.0 52.4, 4.7 52.4,4.7 52.6,4.0 52.6, 4.0 52.4))"
+    parameters = "air_temperature:2.0:*:PT6H"
+    datetime = "2022-12-31T00:00:00Z"
+    actual_response = requests.get(
+        url=BASE_URL + f"/collections/{collection_id}/area"
+        f"?coords={coords}&parameter-name={parameters}&datetime={datetime}"
+    )
+
+    expected_json = load_json("response/data_area_two_locations_with_paraneter_with_wildcard.json")
+
+    assert actual_response.status_code == 200
+    assert actual_response.headers["Content-Type"] == "application/prs.coverage+json"
+    actual_response_is_expected_response(actual_response, expected_json)
+
+
 def test_items_get_area():
     collection_id = "observations"
     bbox = "4.5,52.4,4.6,52.57"

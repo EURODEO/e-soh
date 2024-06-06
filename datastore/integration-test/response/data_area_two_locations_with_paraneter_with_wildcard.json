@@ -6,23 +6,17 @@
         "axes": {
             "x": {
                 "values": [
-                    6.5848470019087
+                    4.6029300588208
                 ]
             },
             "y": {
                 "values": [
-                    53.123676213651
+                    52.505333893732
                 ]
             },
             "t": {
                 "values": [
-                    "2022-12-31T00:00:00Z",
-                    "2022-12-31T00:10:00Z",
-                    "2022-12-31T00:20:00Z",
-                    "2022-12-31T00:30:00Z",
-                    "2022-12-31T00:40:00Z",
-                    "2022-12-31T00:50:00Z",
-                    "2022-12-31T01:00:00Z"
+                    "2022-12-31T00:00:00Z"
                 ]
             }
         },
@@ -49,26 +43,43 @@
         ]
     },
     "parameters": {
-        "wind_speed:10:mean:PT10M": {
+        "air_temperature:2.0:maximum:PT6H": {
             "type": "Parameter",
             "description": {
-                "en": "wind_speed at 10m PT10M mean"
+                "en": "air_temperature at 2.0m PT6H maximum"
             },
             "observedProperty": {
-                "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed",
+                "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "wind_speed:10:mean:PT10M"
+                    "en": "air_temperature:2.0:maximum:PT6H"
                 }
             },
             "unit": {
                 "label": {
-                    "en": "m s-1"
+                    "en": "degrees Celsius"
+                }
+            }
+        },
+        "air_temperature:2.0:minimum:PT6H": {
+            "type": "Parameter",
+            "description": {
+                "en": "air_temperature at 2.0m PT6H minimum"
+            },
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
+                "label": {
+                    "en": "air_temperature:2.0:minimum:PT6H"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "degrees Celsius"
                 }
             }
         }
     },
     "ranges": {
-        "wind_speed:10:mean:PT10M": {
+        "air_temperature:2.0:maximum:PT6H": {
             "type": "NdArray",
             "dataType": "float",
             "axisNames": [
@@ -77,18 +88,29 @@
                 "x"
             ],
             "shape": [
-                7,
+                1,
                 1,
                 1
             ],
             "values": [
-                9.71,
-                9.32,
-                9.19,
-                9.21,
-                8.7,
-                8.12,
-                7.28
+                10.8
+            ]
+        },
+        "air_temperature:2.0:minimum:PT6H": {
+            "type": "NdArray",
+            "dataType": "float",
+            "axisNames": [
+                "t",
+                "y",
+                "x"
+            ],
+            "shape": [
+                1,
+                1,
+                1
+            ],
+            "values": [
+                9.9
             ]
         }
     }
