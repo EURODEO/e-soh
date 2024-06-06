@@ -49,6 +49,7 @@ ESOHBufr::ESOHBufr() {
           ] \
         }";
   setMsgTemplate(message_template);
+  shadow_wigos.from_string(default_shadow_wigos);
 }
 
 void ESOHBufr::setOscar(Oscar *o) { oscar = o; }
@@ -113,9 +114,6 @@ std::list<std::string> ESOHBufr::msg() const {
 
     rapidjson::Document subset_message;
     subset_message.CopyFrom(message, subset_message.GetAllocator());
-    rapidjson::Document::AllocatorType &subset_message_allocator =
-        subset_message.GetAllocator();
-    rapidjson::Value &subset_properties = subset_message["properties"];
 
     struct tm meas_datetime;
     memset(static_cast<void *>(&meas_datetime), 0, sizeof(meas_datetime));
@@ -147,6 +145,16 @@ std::list<std::string> ESOHBufr::msg() const {
         if (v.x() >= 10 &&
             !(v.x() == 22 && (v.y() == 55 || v.y() == 56 || v.y() == 67)) &&
             v.x() != 25 && v.x() != 31 && v.x() != 35 && !platform_check) {
+          // Check datetime
+          if (meas_datetime.tm_mday == 0) {
+            // Date missing, skip processing
+            lb.addLogEntry(LogEntry(
+                "Missing measure datetime, skip this subset: " +
+                    std::to_string(subsetnum) + " Wigos: " +
+                    wigos_id.to_string() + std::string(" ") + v.toString(),
+                LogLevel::WARN, __func__, bufr_id));
+            goto subset_end;
+          }
           // Check station_id at OSCAR
           platform_check = true;
           if (wigos_id.getWigosLocalId().size()) {
@@ -186,6 +194,28 @@ std::list<std::string> ESOHBufr::msg() const {
                     wigos_id.to_string() + std::string(" ") + v.toString(),
                 LogLevel::WARN, __func__, bufr_id));
             goto subset_end;
+          }
+          // geolocation OK, but WIGOS is missing, create shadow WIGOS ID
+          if (!wigos_id.getWigosLocalId().size()) {
+            wigos_id = genShadowWigosId(s, ci);
+            if (!wigos_id.getWigosLocalId().size()) {
+              std::stringstream llss;
+              if (lat > 0) {
+                llss << "N" << std::to_string(lat).substr(0, 7);
+              } else {
+                llss << "S" << std::to_string(-lat).substr(0, 7);
+              }
+              if (lon > 0) {
+                llss << "E" << std::to_string(lon).substr(0, 7);
+              } else {
+                llss << "W" << std::to_string(-lon).substr(0, 7);
+              }
+              wigos_id.setWigosLocalId(llss.str());
+            }
+            lb.addLogEntry(LogEntry("Create shadow WIGOS ID: " +
+                                        wigos_id.to_string() + std::string(" "),
+                                    LogLevel::WARN, __func__, bufr_id));
+            setPlatform(wigos_id.to_string(), subset_message);
           }
         }
 
@@ -288,21 +318,15 @@ std::list<std::string> ESOHBufr::msg() const {
             break;
           }
           case 128: {
-            if (value_str.size())
+            if (value_str.size()) {
               wigos_id.setWigosLocalId(value_str);
+              skip_platform = false;
+            }
           }
           }
 
           if (!skip_platform) {
-            rapidjson::Value platform;
-            platform.SetString(wigos_id.to_string().c_str(),
-                               subset_message_allocator);
-            if (subset_properties.HasMember("platform")) {
-              subset_properties["platform"] = platform;
-            } else {
-              subset_properties.AddMember("platform", platform,
-                                          subset_message_allocator);
-            }
+            setPlatform(wigos_id.to_string(), subset_message);
           }
 
           break;
@@ -319,6 +343,8 @@ std::list<std::string> ESOHBufr::msg() const {
           case 1: {
             meas_datetime.tm_year = getValue(v, meas_datetime.tm_year) - 1900;
             dateupdate = true;
+            // set 01 of Jan: mktime() change protection
+            meas_datetime.tm_mday = 1;
             break;
           }
           case 2: {
@@ -784,6 +810,23 @@ bool ESOHBufr::addContent(const Descriptor &v, std::string cf_name,
   return true;
 }
 
+bool ESOHBufr::setPlatform(std::string value,
+                           rapidjson::Document &message) const {
+
+  rapidjson::Value platform;
+  rapidjson::Document::AllocatorType &message_allocator =
+      message.GetAllocator();
+  rapidjson::Value &message_properties = message["properties"];
+
+  platform.SetString(value.c_str(), message_allocator);
+  if (message_properties.HasMember("platform")) {
+    message_properties["platform"] = platform;
+  } else {
+    message_properties.AddMember("platform", platform, message_allocator);
+  }
+  return true;
+}
+
 bool ESOHBufr::setPlatformName(std::string value, rapidjson::Document &message,
                                bool force) const {
   if (NorBufrIO::strTrim(value).size() == 0)
@@ -792,18 +835,20 @@ bool ESOHBufr::setPlatformName(std::string value, rapidjson::Document &message,
       message.GetAllocator();
   rapidjson::Value &message_properties = message["properties"];
   rapidjson::Value platform_name;
-  platform_name.SetString(NorBufrIO::strTrim(value).c_str(), message_allocator);
+  std::string platform_str = NorBufrIO::strTrim(value);
+  NorBufrIO::filterStr(platform_str, repl_chars);
+  platform_name.SetString(platform_str.c_str(), message_allocator);
 
   if (message_properties.HasMember("platform_name")) {
     rapidjson::Value &platform_old_value = message_properties["platform_name"];
     std::string platform_old_name = platform_old_value.GetString();
-    if (platform_old_name != value) {
+    if (platform_old_name != platform_str) {
       if (force) {
-        message_properties["platform_name"].SetString(value.c_str(),
+        message_properties["platform_name"].SetString(platform_str.c_str(),
                                                       message_allocator);
       } else {
         message_properties["platform_name"].SetString(
-            std::string(platform_old_name + "," + value).c_str(),
+            std::string(platform_old_name + "," + platform_str).c_str(),
             message_allocator);
       }
     }
@@ -939,4 +984,34 @@ std::string ESOHBufr::addMessage(std::list<Descriptor>::const_iterator ci,
   ret = sb.GetString();
 
   return ret;
+}
+
+bool ESOHBufr::setShadowWigos(std::string s) {
+  return shadow_wigos.from_string(s);
+}
+
+void ESOHBufr::setShadowWigos(const WSI &wsi) { shadow_wigos = wsi; }
+
+WSI ESOHBufr::genShadowWigosId(
+    std::list<Descriptor> &s, std::list<Descriptor>::const_iterator &ci) const {
+  WSI tmp_id = shadow_wigos;
+  std::stringstream ss;
+  std::string localv;
+  for (std::list<Descriptor>::const_iterator di = s.begin(); di != ci; ++di) {
+    if (di->f() == 0 && di->x() == 1) {
+      localv = getValue(*di, localv, false);
+      if (localv != "MISSING") {
+        ss << NorBufrIO::strTrim(localv) << "_";
+      }
+    }
+  }
+  if (ss.str().size()) {
+    localv = ss.str().substr(0, 16);
+    if (localv[localv.size() - 1] == '_') {
+      localv.pop_back();
+    }
+    NorBufrIO::filterStr(localv, repl_chars);
+    tmp_id.setWigosLocalId(localv);
+  }
+  return tmp_id;
 }

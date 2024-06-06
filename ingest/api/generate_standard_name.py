@@ -17,4 +17,4 @@ with open("api/cf_standard_names_v84.txt", "w") as file:
 # Find all 'alias' elements and get their 'id' attribute
 with open("api/cf_standard_names_alias_v84.txt", "w") as file:
     for alias in root.findall("alias"):
-        file.write(f'{alias.find("entry_id").text}:{entry.get("id")}\n')
+        file.write(f'{alias.find("entry_id").text}:{alias.get("id")}\n')

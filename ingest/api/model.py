@@ -17,7 +17,7 @@ with open("api/cf_standard_names_alias_v84.txt", "r") as file:
     standard_names_alias = {}
     for i in file:
         i = i.strip().split(":")
-        standard_names_alias[i[0]] = i[1]
+        standard_names_alias[i[1]] = i[0]
 
 
 class Geometry(BaseModel):
@@ -39,8 +39,8 @@ class Integrity(BaseModel):
 
 class Content(BaseModel):
     encoding: Literal["utf-8", "base64", "gzip"] = Field(..., description="Encoding of content")
-    size: int = Field(
-        ...,
+    size: int | None = Field(
+        None,
         description=(
             "Number of bytes contained in the file. Together with the ``integrity`` property,"
             " it provides additional assurance that file content was accurately received."
@@ -53,12 +53,17 @@ class Content(BaseModel):
     unit: str = Field(..., description="Unit for the data")
 
     @model_validator(mode="after")
-    def check_standard_name_match(self) -> "Content":
+    def check_standard_name_match(self) -> Content:
         if self.standard_name in standard_names_alias:
             self.standard_name = standard_names_alias[self.standard_name]
 
         if self.standard_name not in standard_names:
-            raise ValueError(f"{self.standard_name} not a CF Standard name")
+            raise ValueError(f"{self.standard_name} is not a CF Standard name")
+        return self
+
+    @model_validator(mode="after")
+    def standarize_unit(self) -> Content:
+
         return self
 
 
@@ -251,7 +256,7 @@ class Properties(BaseModel):
         None,
         description="A textual description of the processing (or quality control) level of the data.",
     )
-    content: Optional[Content] = Field(None, description="Actual data content")
+    content: Content = Field(..., description="Actual data content")
     integrity: Optional[Integrity] = Field(
         None, description="Specifies a checksum to be applied to the data to ensure that the download is accurate."
     )
@@ -270,21 +275,34 @@ class Properties(BaseModel):
         return self
 
     @model_validator(mode="after")
-    def check_level_int_or_float(self) -> "Properties":
-        if self.level.isdigit():
-            return self
-        elif self.level.replace(".", "", 1).isdigit():
-            return self
-        else:
-            raise ValueError(f" Input level(str), '{self.level}', doesn't represent a valid integer or float")
+    def check_level_int_or_float(self) -> Properties:
+        try:
+            self.level = str(float(self.level))
+        except ValueError:
+            raise ValueError(f"Input level(str), '{self.level}', doesn't represent a valid integer or float")
+        return self
+
+    @model_validator(mode="after")
+    def validate_wigos_id(self) -> Properties:
+
+        blocks = self.platform.split("-")
+        assert len(blocks) == 4, f"Not enough blocks in input 'platform', '{self.platform}'"
+        for i in blocks[:-1]:
+            assert (
+                i.isdigit() and 0 <= int(i) <= 65534
+            ), f"In input 'platform', '{self.platform}', one of  4 blocks is not a valid numerical or out of range."
+
+        assert 0 < len(blocks[-1]) <= 16, f"In input 'platform', '{self.platform}', last block of WIGOS is to long"
+
+        return self
 
 
 class Link(BaseModel):
-    href: str = Field(..., example="http://data.example.com/buildings/123")
-    rel: str = Field(..., example="alternate")
-    type: Optional[str] = Field(None, example="application/geo+json")
-    hreflang: Optional[str] = Field(None, example="en")
-    title: Optional[str] = Field(None, example="Trierer Strasse 70, 53115 Bonn")
+    href: str = Field(..., examples=["http://data.example.com/buildings/123"])
+    rel: str = Field(..., examples=["alternate"])
+    type: Optional[str] = Field(None, examples=["application/geo+json"])
+    hreflang: Optional[str] = Field(None, examples=["en"])
+    title: Optional[str] = Field(None, examples=["Trierer Strasse 70, 53115 Bonn"])
     length: Optional[int] = None
 
 
@@ -292,5 +310,18 @@ class JsonMessageSchema(BaseModel):
     type: Literal["Feature"]
     geometry: Geometry
     properties: Properties
-    links: List[Link] = Field(..., min_items=1)
+    links: List[Link] = Field(..., min_length=1)
     version: str
+
+    def __hash__(self):
+        return hash(
+            (
+                self.properties.level,
+                self.properties.platform,
+                self.properties.content.standard_name,
+                self.properties.period,
+                self.properties.naming_authority,
+                self.properties.function,
+                self.properties.datetime,
+            )
+        )

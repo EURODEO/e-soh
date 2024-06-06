@@ -2,13 +2,16 @@ import logging
 from typing import Union
 
 import grpc
+
 from fastapi import HTTPException
 
 from api.datastore import build_grpc_messages
 from api.messages import build_messages
-from api.send_mqtt import MQTTConnection
+from api.send_mqtt import connect_mqtt, send_message
 from api.grpc_putter import putObsRequest
+
 import datastore_pb2 as dstore
+
 
 logger = logging.getLogger(__name__)
 
@@ -23,27 +26,23 @@ class IngestToPipeline:
         mqtt_conf: dict,
         uuid_prefix: str,
     ):
-        self.mqtt = None
-        self.uuid_prefix = uuid_prefix
 
+        self.uuid_prefix = uuid_prefix
+        self.client = None
         if mqtt_conf["host"] is not None:
             try:
-                if "username" in mqtt_conf:
-                    self.mqtt = MQTTConnection(mqtt_conf["host"], mqtt_conf["username"], mqtt_conf["password"])
-                else:
-                    self.mqtt = MQTTConnection(mqtt_conf["host"])
-                logger.info("Established connection to mqtt")
+                self.client = connect_mqtt(mqtt_conf)
             except Exception as e:
                 logger.error("Failed to establish connection to mqtt, " + "\n" + str(e))
                 raise e
 
-    async def ingest(self, message: Union[str, object], input_type: str = None):
+    async def ingest(self, message: Union[str, object]):
         """
         This method will interpret call all methods for deciding input type, build the mqtt messages, and
         publish them.
 
         """
-        messages = build_messages(message, input_type, self.uuid_prefix)
+        messages = build_messages(message, self.uuid_prefix)
         await self.publish_messages(messages)
 
     async def publish_messages(self, messages: list):
@@ -59,11 +58,18 @@ class IngestToPipeline:
             logger.error("Failed to reach datastore, " + "\n" + str(e))
             raise HTTPException(status_code=500, detail="API could not reach datastore")
 
-        if self.mqtt is not None:
+        if self.client is not None:
+
             for msg in messages:
-                topic = msg["properties"]["naming_authority"]
+                topic = (
+                    msg["properties"]["naming_authority"]
+                    + "/"
+                    + msg["properties"]["platform"]
+                    + "/"
+                    + msg["properties"]["content"]["standard_name"]
+                )
                 try:
-                    self.mqtt.send_message(msg, topic)
+                    send_message(topic, msg, self.client)
                     logger.info("Succesfully published to mqtt")
                 except Exception as e:
                     logger.error("Failed to publish to mqtt, " + "\n" + str(e))

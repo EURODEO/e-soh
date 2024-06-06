@@ -12,6 +12,7 @@
 
 #include <climits>
 #include <fstream>
+#include <list>
 #include <vector>
 
 namespace NorBufrIO {
@@ -43,6 +44,10 @@ std::string strTrim(std::string s);
 void strPrintable(std::string &s);
 ssize_t strisotime(char *date_str, size_t date_max, const struct timeval *date,
                    bool usec = false);
+
+void filterStr(std::string &s,
+               const std::list<std::pair<char, char>> &repl_chars);
+
 } // namespace NorBufrIO
 
 #endif
