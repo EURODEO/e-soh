@@ -80,6 +80,9 @@ class Content(BaseModel):
 
         return self
 
+    class Config:
+        anystr_strip_whitespace = True
+
 
 class Properties(BaseModel):
     title: Optional[str] = Field(
