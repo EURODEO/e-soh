@@ -1,4 +1,6 @@
 from __future__ import annotations
+import json
+
 
 from typing import List
 from typing import Literal
@@ -10,6 +12,7 @@ from pydantic import constr
 from pydantic import Field
 from pydantic import model_validator
 
+
 with open("api/cf_standard_names_v84.txt", "r") as file:
     standard_names = {line.strip() for line in file}
 
@@ -18,6 +21,9 @@ with open("api/cf_standard_names_alias_v84.txt", "r") as file:
     for i in file:
         i = i.strip().split(":")
         standard_names_alias[i[1]] = i[0]
+
+with open("api/std_name_unit_mapping.json") as f:
+    std_name_unit_mapping = json.load(f)
 
 
 class Geometry(BaseModel):
@@ -62,7 +68,15 @@ class Content(BaseModel):
         return self
 
     @model_validator(mode="after")
-    def standarize_unit(self) -> Content:
+    def standardize_units(self) -> Content:
+        if self.unit == std_name_unit_mapping[self.standard_name]["unit"]:
+            return self
+        elif self.unit in std_name_unit_mapping[self.standard_name]["alias"]:
+            self.unit = std_name_unit_mapping[self.standard_name]["unit"]
+        else:
+            raise ValueError(
+                f"Unknown unit or unit alias for {self.standard_name}. Provided unit {self.unit} is unknown."
+            )
 
         return self
 
