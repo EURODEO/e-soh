@@ -88,17 +88,9 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
             ),
             unit=Unit(label=ts.unit),
         )
-        # Check for inconsistent parameter definitions between stations
-        # HACK: Avoid this error for now. We always return the last value found in /locations and collection metedata.
-        # Note that the correct UoM is always returned for a time series in the Coverage parameters.
-        # if ts.parameter_name in all_parameters:
-        #     raise HTTPException(
-        #         status_code=500,
-        #         detail={
-        #             "parameter": f"Parameter with name {ts.parameter_name} "
-        #             f"has multiple definitions:\n{all_parameters[ts.parameter_name]}\n{parameter}"
-        #         },
-        #     )
+        # There might be parameter inconsistencies (e.g one station is reporting in Pa, and another in hPa)
+        # We always return the "last" parameter definition found (in /locations and collection metadata).
+        # Note that the correct UoM is always returned in the Coverage parameters for the data endpoints.
 
         all_parameters[ts.parameter_name] = parameter
 
