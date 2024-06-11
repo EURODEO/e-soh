@@ -10,7 +10,6 @@ require (
 )
 
 require (
-	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/lib/pq v1.10.9
 	golang.org/x/net v0.26.0 // indirect
 	golang.org/x/sys v0.21.0 // indirect
