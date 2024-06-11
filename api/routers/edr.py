@@ -118,15 +118,16 @@ async def get_locations(
             (obs.obs_mdata[-1].geo_point.lon, obs.obs_mdata[-1].geo_point.lat)
         )
         # Check for inconsistent parameter definitions between stations
-        # TODO: How to handle those?
-        if obs.ts_mdata.parameter_name in all_parameters and all_parameters[obs.ts_mdata.parameter_name] != parameter:
-            raise HTTPException(
-                status_code=500,
-                detail={
-                    "parameter": f"Parameter with name {obs.ts_mdata.parameter_name} "
-                    f"has multiple definitions:\n{all_parameters[obs.ts_mdata.parameter_name]}\n{parameter}"
-                },
-            )
+        # HACK: Avoid this error for now. We always return the last value found in /locations and collection metedata.
+        # Note that the correct UoM is always returned for a time series in the Coverage parameters.
+        # if obs.ts_mdata.parameter_name in all_parameters and all_parameters[obs.ts_mdata.parameter_name] != parameter:
+        #     raise HTTPException(
+        #         status_code=500,
+        #         detail={
+        #             "parameter": f"Parameter with name {obs.ts_mdata.parameter_name} "
+        #             f"has multiple definitions:\n{all_parameters[obs.ts_mdata.parameter_name]}\n{parameter}"
+        #         },
+        #     )
         all_parameters[obs.ts_mdata.parameter_name] = parameter
 
     # Check for multiple coordinates or names on one station
