@@ -20,7 +20,6 @@ from edr_pydantic.observed_property import ObservedProperty
 from edr_pydantic.parameter import Parameter
 from edr_pydantic.unit import Unit
 from edr_pydantic.variables import Variables
-from fastapi import HTTPException
 from grpc_getter import get_extents_request
 from grpc_getter import get_ts_ag_request
 
