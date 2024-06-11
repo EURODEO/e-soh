@@ -20,7 +20,6 @@ from edr_pydantic.observed_property import ObservedProperty
 from edr_pydantic.parameter import Parameter
 from edr_pydantic.unit import Unit
 from edr_pydantic.variables import Variables
-from fastapi import HTTPException
 from grpc_getter import get_extents_request
 from grpc_getter import get_ts_ag_request
 
@@ -88,14 +87,9 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
             ),
             unit=Unit(label=ts.unit),
         )
-        if ts.parameter_name in all_parameters:
-            raise HTTPException(
-                status_code=500,
-                detail={
-                    "parameter": f"Parameter with name {ts.parameter_name} "
-                    f"has multiple definitions:\n{all_parameters[ts.parameter_name]}\n{parameter}"
-                },
-            )
+        # There might be parameter inconsistencies (e.g one station is reporting in Pa, and another in hPa)
+        # We always return the "last" parameter definition found (in /locations and collection metadata).
+        # Note that the correct UoM is always returned in the Coverage parameters for the data endpoints.
 
         all_parameters[ts.parameter_name] = parameter
 
