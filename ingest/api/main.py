@@ -38,7 +38,7 @@ app = FastAPI()
 async def upload_bufr_file(files: UploadFile):
     contents = await files.read()
     json_data = build_json_payload(contents)
-    await ingester.ingest(json_data)
+    await post_json(json_data)
 
     return Response(status_message="Successfully ingested", status_code=200)
 
