@@ -121,7 +121,15 @@
         "unit": "W/m2"
     },
     "surface_air_pressure": {
-        "unit": "hPa"
+        "unit": "hPa",
+        "symbol": "",
+        "alias": [],
+        "converstions": {
+            "Pa": [
+                0,
+                0.001
+            ]
+        }
     },
     "surface_diffuse_downwelling_shortwave_flux_in_air": {
         "unit": "kJ/m2"
