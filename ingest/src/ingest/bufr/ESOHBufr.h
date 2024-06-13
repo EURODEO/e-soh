@@ -65,7 +65,7 @@ static std::map<DescriptorId, std::pair<std::string, std::string>> cf_names = {
 static std::string default_shadow_wigos("0-578-2024-");
 
 static std::list<std::pair<char, char>> repl_chars = {
-    {' ', '_'}, {'-', '_'}, {'\'', '_'}};
+    {' ', '_'}, {'-', '_'}, {'\'', 0}};
 
 class ESOHBufr : public NorBufr {
 
@@ -89,7 +89,7 @@ private:
                   char sensor_level_active, double sensor_level, std::string fn,
                   rapidjson::Document &) const;
   bool setPlatformName(std::string v, rapidjson::Document &message,
-                       bool force = true) const;
+                       bool force = true, bool filter = false) const;
   bool setPlatform(std::string v, rapidjson::Document &message) const;
   bool setLocation(double lat, double lon, double hei,
                    rapidjson::Document &) const;
@@ -101,7 +101,8 @@ private:
   bool setStartDateTime(struct tm *, rapidjson::Document &,
                         std::string period_str = "") const;
   WSI genShadowWigosId(std::list<Descriptor> &,
-                       std::list<Descriptor>::const_iterator &cir) const;
+                       std::list<Descriptor>::const_iterator &cir,
+                       bool filter = false) const;
 
   Oscar *oscar;
   std::string msg_template;

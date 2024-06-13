@@ -131,6 +131,83 @@ std::list<std::string> ESOHBufr::msg() const {
       lb.addLogEntry(LogEntry("ESOH Descriptor: " + v.toString(),
                               LogLevel::TRACE, __func__, bufr_id));
 
+      if (v.x() >= 10 &&
+          !(v.x() == 22 && (v.y() == 55 || v.y() == 56 || v.y() == 67)) &&
+          v.x() != 25 && v.x() != 31 && v.x() != 35 && !platform_check) {
+        // Check datetime
+        if (meas_datetime.tm_mday == 0) {
+          // Date missing, skip processing
+          lb.addLogEntry(LogEntry(
+              "Missing measure datetime, skip this subset: " +
+                  std::to_string(subsetnum) + " Wigos: " +
+                  wigos_id.to_string() + std::string(" ") + v.toString(),
+              LogLevel::WARN, __func__, bufr_id));
+          goto subset_end;
+        }
+        // Check station_id at OSCAR
+        platform_check = true;
+        if (wigos_id.getWigosLocalId().size()) {
+          std::string wigos_oscar = oscar->findWigosId(wigos_id);
+          if (wigos_oscar.size()) {
+            if (wigos_oscar != wigos_id.to_string()) {
+              wigos_id = WSI(wigos_oscar);
+            }
+            const rapidjson::Value &st_value = oscar->findStation(wigos_id);
+            if (st_value.HasMember("name")) {
+              setPlatformName(std::string(st_value["name"].GetString()),
+                              subset_message, true);
+            }
+            if (lat < -9999) {
+              if (st_value.HasMember("latitude")) {
+                if (st_value["latitude"].IsDouble()) {
+                  lat = st_value["latitude"].GetDouble();
+                  setLocation(lat, lon, hei, subset_message);
+                }
+              }
+            }
+            if (lon < -9999) {
+              if (st_value.HasMember("longitude")) {
+                if (st_value["longitude"].IsDouble()) {
+                  lon = st_value["longitude"].GetDouble();
+                  setLocation(lat, lon, hei, subset_message);
+                }
+              }
+            }
+          }
+        }
+        // Missing mandatory geolocation values. Skip this subset
+        if (lat < -9999 || lon < -9999) {
+          lb.addLogEntry(LogEntry(
+              "Missing geolocation information, skip this subset: " +
+                  std::to_string(subsetnum) + " Wigos: " +
+                  wigos_id.to_string() + std::string(" ") + v.toString(),
+              LogLevel::WARN, __func__, bufr_id));
+          goto subset_end;
+        }
+        // geolocation OK, but WIGOS is missing, create shadow WIGOS ID
+        if (!wigos_id.getWigosLocalId().size()) {
+          wigos_id = genShadowWigosId(s, ci);
+          if (!wigos_id.getWigosLocalId().size()) {
+            std::stringstream llss;
+            if (lat > 0) {
+              llss << "N" << std::to_string(lat).substr(0, 7);
+            } else {
+              llss << "S" << std::to_string(-lat).substr(0, 7);
+            }
+            if (lon > 0) {
+              llss << "E" << std::to_string(lon).substr(0, 7);
+            } else {
+              llss << "W" << std::to_string(-lon).substr(0, 7);
+            }
+            wigos_id.setWigosLocalId(llss.str());
+          }
+          lb.addLogEntry(LogEntry("Create shadow WIGOS ID: " +
+                                      wigos_id.to_string() + std::string(" "),
+                                  LogLevel::WARN, __func__, bufr_id));
+          setPlatform(wigos_id.to_string(), subset_message);
+        }
+      }
+
       switch (v.f()) {
       case 0: // Element Descriptors
       {
@@ -141,83 +218,6 @@ std::list<std::string> ESOHBufr::msg() const {
 
         if (value_str == "MISSING")
           break;
-
-        if (v.x() >= 10 &&
-            !(v.x() == 22 && (v.y() == 55 || v.y() == 56 || v.y() == 67)) &&
-            v.x() != 25 && v.x() != 31 && v.x() != 35 && !platform_check) {
-          // Check datetime
-          if (meas_datetime.tm_mday == 0) {
-            // Date missing, skip processing
-            lb.addLogEntry(LogEntry(
-                "Missing measure datetime, skip this subset: " +
-                    std::to_string(subsetnum) + " Wigos: " +
-                    wigos_id.to_string() + std::string(" ") + v.toString(),
-                LogLevel::WARN, __func__, bufr_id));
-            goto subset_end;
-          }
-          // Check station_id at OSCAR
-          platform_check = true;
-          if (wigos_id.getWigosLocalId().size()) {
-            std::string wigos_oscar = oscar->findWigosId(wigos_id);
-            if (wigos_oscar.size()) {
-              if (wigos_oscar != wigos_id.to_string()) {
-                wigos_id = WSI(wigos_oscar);
-              }
-              const rapidjson::Value &st_value = oscar->findStation(wigos_id);
-              if (st_value.HasMember("name")) {
-                setPlatformName(std::string(st_value["name"].GetString()),
-                                subset_message, true);
-              }
-              if (lat < -9999) {
-                if (st_value.HasMember("latitude")) {
-                  if (st_value["latitude"].IsDouble()) {
-                    lat = st_value["latitude"].GetDouble();
-                    setLocation(lat, lon, hei, subset_message);
-                  }
-                }
-              }
-              if (lon < -9999) {
-                if (st_value.HasMember("longitude")) {
-                  if (st_value["longitude"].IsDouble()) {
-                    lon = st_value["longitude"].GetDouble();
-                    setLocation(lat, lon, hei, subset_message);
-                  }
-                }
-              }
-            }
-          }
-          // Missing mandatory geolocation values. Skip this subset
-          if (lat < -9999 || lon < -9999) {
-            lb.addLogEntry(LogEntry(
-                "Missing geolocation information, skip this subset: " +
-                    std::to_string(subsetnum) + " Wigos: " +
-                    wigos_id.to_string() + std::string(" ") + v.toString(),
-                LogLevel::WARN, __func__, bufr_id));
-            goto subset_end;
-          }
-          // geolocation OK, but WIGOS is missing, create shadow WIGOS ID
-          if (!wigos_id.getWigosLocalId().size()) {
-            wigos_id = genShadowWigosId(s, ci);
-            if (!wigos_id.getWigosLocalId().size()) {
-              std::stringstream llss;
-              if (lat > 0) {
-                llss << "N" << std::to_string(lat).substr(0, 7);
-              } else {
-                llss << "S" << std::to_string(-lat).substr(0, 7);
-              }
-              if (lon > 0) {
-                llss << "E" << std::to_string(lon).substr(0, 7);
-              } else {
-                llss << "W" << std::to_string(-lon).substr(0, 7);
-              }
-              wigos_id.setWigosLocalId(llss.str());
-            }
-            lb.addLogEntry(LogEntry("Create shadow WIGOS ID: " +
-                                        wigos_id.to_string() + std::string(" "),
-                                    LogLevel::WARN, __func__, bufr_id));
-            setPlatform(wigos_id.to_string(), subset_message);
-          }
-        }
 
         switch (v.x()) {
         case 1: // platform
@@ -828,7 +828,7 @@ bool ESOHBufr::setPlatform(std::string value,
 }
 
 bool ESOHBufr::setPlatformName(std::string value, rapidjson::Document &message,
-                               bool force) const {
+                               bool force, bool filter) const {
   if (NorBufrIO::strTrim(value).size() == 0)
     return false;
   rapidjson::Document::AllocatorType &message_allocator =
@@ -836,7 +836,8 @@ bool ESOHBufr::setPlatformName(std::string value, rapidjson::Document &message,
   rapidjson::Value &message_properties = message["properties"];
   rapidjson::Value platform_name;
   std::string platform_str = NorBufrIO::strTrim(value);
-  NorBufrIO::filterStr(platform_str, repl_chars);
+  if (filter)
+    NorBufrIO::filterStr(platform_str, repl_chars);
   platform_name.SetString(platform_str.c_str(), message_allocator);
 
   if (message_properties.HasMember("platform_name")) {
@@ -992,8 +993,9 @@ bool ESOHBufr::setShadowWigos(std::string s) {
 
 void ESOHBufr::setShadowWigos(const WSI &wsi) { shadow_wigos = wsi; }
 
-WSI ESOHBufr::genShadowWigosId(
-    std::list<Descriptor> &s, std::list<Descriptor>::const_iterator &ci) const {
+WSI ESOHBufr::genShadowWigosId(std::list<Descriptor> &s,
+                               std::list<Descriptor>::const_iterator &ci,
+                               bool filter) const {
   WSI tmp_id = shadow_wigos;
   std::stringstream ss;
   std::string localv;
@@ -1010,7 +1012,8 @@ WSI ESOHBufr::genShadowWigosId(
     if (localv[localv.size() - 1] == '_') {
       localv.pop_back();
     }
-    NorBufrIO::filterStr(localv, repl_chars);
+    if (filter)
+      NorBufrIO::filterStr(localv, repl_chars);
     tmp_id.setWigosLocalId(localv);
   }
   return tmp_id;

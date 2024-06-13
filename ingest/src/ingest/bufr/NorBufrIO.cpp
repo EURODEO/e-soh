@@ -207,7 +207,11 @@ void NorBufrIO::filterStr(std::string &s,
                           const std::list<std::pair<char, char>> &repl_chars) {
 
   for (auto rch : repl_chars) {
-    std::replace(s.begin(), s.end(), rch.first, rch.second);
+    if (rch.second) {
+      std::replace(s.begin(), s.end(), rch.first, rch.second);
+    } else {
+      std::erase(s, rch.first);
+    }
   }
 
   return;
