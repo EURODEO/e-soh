@@ -210,7 +210,11 @@ void NorBufrIO::filterStr(std::string &s,
     if (rch.second) {
       std::replace(s.begin(), s.end(), rch.first, rch.second);
     } else {
+#if __cplusplus >= 202002L
       std::erase(s, rch.first);
+#else
+      s.erase(std::remove(s.begin(), s.end(), rch.first), s.end());
+#endif
     }
   }
 
