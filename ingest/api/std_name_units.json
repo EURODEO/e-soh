@@ -1,9 +1,17 @@
 {
     "diffuse_downwelling_shortwave_flux_in_air": {
-        "unit": "W/m2"
+        "unit": "W/m2",
+        "alias": [
+            "W m-2",
+            "Wm-2"
+        ]
     },
     "downwelling_longwave_flux_in_air": {
-        "unit": "kJ/m2"
+        "unit": "kJ/m2",
+        "alias": [
+            "kJm-2",
+            "kJ m-2"
+        ]
     },
     "duration_of_sunshine": {
         "unit": "s"
@@ -12,7 +20,11 @@
         "unit": "dB"
     },
     "integral_wrt_time_of_surface_downwelling_longwave_flux_in_air": {
-        "unit": "\"W s m-2\""
+        "unit": "Ws/m2",
+        "alias": [
+            "W s m-2",
+            "Wsm-2"
+        ]
     },
     "latitude": {
         "unit": "degrees"
@@ -24,7 +36,11 @@
         "unit": "octas"
     },
     "lwe_precipitation_rate": {
-        "unit": "mm/h"
+        "unit": "mm/h",
+        "alias": [
+            "mm h-1",
+            "mmh-1"
+        ]
     },
     "precipitation_amount": {
         "unit": "mm"
@@ -36,7 +52,8 @@
         "unit": "mm/h",
         "symbol": "",
         "alias": [
-            "mm h-1"
+            "mm h-1",
+            "mmh-1"
         ]
     },
     "relative_humidity": {
@@ -58,7 +75,11 @@
         "unit": "degrees"
     },
     "sea_surface_wave_energy_at_variance_spectral_density_maximum": {
-        "unit": "m2/Hz"
+        "unit": "m2/Hz",
+        "alias": [
+            "m2 Hz-1",
+            "m2Hz-1"
+        ]
     },
     "sea_surface_wave_from_direction": {
         "unit": "degrees"
@@ -103,13 +124,21 @@
         "unit": "m"
     },
     "sea_water_electrical_conductivity": {
-        "unit": "mS/cm"
+        "unit": "mS/cm",
+        "alias": [
+            "mS cm-1",
+            "mScm-1"
+        ]
     },
     "sea_water_salinity": {
         "unit": "1/1000"
     },
     "sea_water_speed": {
-        "unit": "m/s"
+        "unit": "m/s",
+        "alias": [
+            "m s-1",
+            "ms-1"
+        ]
     },
     "sea_water_temperature": {
         "unit": "degC"
@@ -118,7 +147,11 @@
         "unit": "degC"
     },
     "solar_irradiance": {
-        "unit": "W/m2"
+        "unit": "W/m2",
+        "alias": [
+            "W m-2",
+            "Wm-2"
+        ]
     },
     "surface_air_pressure": {
         "unit": "hPa",
@@ -132,25 +165,53 @@
         }
     },
     "surface_diffuse_downwelling_shortwave_flux_in_air": {
-        "unit": "kJ/m2"
+        "unit": "kJ/m2",
+        "alias": [
+            "kJm-2",
+            "kJ m-2"
+        ]
     },
     "surface_direct_downwelling_shortwave_flux_in_air": {
-        "unit": "kJ/m2"
+        "unit": "kJ/m2",
+        "alias": [
+            "kJm-2",
+            "kJ m-2"
+        ]
     },
     "surface_downwelling_longwave_flux_in_air": {
-        "unit": "kJ/m2"
+        "unit": "kJ/m2",
+        "alias": [
+            "kJm-2",
+            "kJ m-2"
+        ]
     },
     "surface_downwelling_photosynthetic_photon_flux_in_air": {
-        "unit": "umol/sm2"
+        "unit": "umol/sm2",
+        "alias": [
+            "umol sm-2",
+            "umolsm-2"
+        ]
     },
     "surface_downwelling_photosynthetic_radiative_flux_in_air": {
-        "unit": "mE/m2"
+        "unit": "mE/m2",
+        "alias": [
+            "mE m-2",
+            "mEm-2"
+        ]
     },
     "surface_downwelling_shortwave_flux_in_air": {
-        "unit": "kJ/m2"
+        "unit": "kJ/m2",
+        "alias": [
+            "kJm-2",
+            "kJ m-2"
+        ]
     },
     "surface_net_downward_radiative_flux": {
-        "unit": "kJ/m2"
+        "unit": "kJ/m2",
+        "alias": [
+            "kJm-2",
+            "kJ m-2"
+        ]
     },
     "surface_snow_thickness": {
         "unit": "cm"
@@ -159,13 +220,25 @@
         "unit": "degC"
     },
     "surface_upwelling_longwave_flux_in_air": {
-        "unit": "W/m2"
+        "unit": "W/m2",
+        "alias": [
+            "W m-2",
+            "Wm-2"
+        ]
     },
     "surface_upwelling_radiance_in_air": {
-        "unit": "kJ/m2"
+        "unit": "kJ/m2",
+        "alias": [
+            "kJm-2",
+            "kJ m-2"
+        ]
     },
     "surface_upwelling_shortwave_flux_in_air": {
-        "unit": "W/m2"
+        "unit": "W/m2",
+        "alias": [
+            "W m-2",
+            "Wm-2"
+        ]
     },
     "tendency_of_air_pressure": {
         "unit": "integer"
@@ -192,9 +265,17 @@
         "unit": "degrees"
     },
     "wind_speed": {
-        "unit": "m/s"
+        "unit": "m/s",
+        "alias": [
+            "m s-1",
+            "ms-1"
+        ]
     },
     "wind_speed_of_gust": {
-        "unit": "m/s"
+        "unit": "m/s",
+        "alias": [
+            "m s-1",
+            "ms-1"
+        ]
     }
 }
