@@ -134,8 +134,7 @@ async def get_locations(
                 },
             )
         if len(platform_names[station_id]) > 1:
-            # Just pick the first name in the set, names can be changed, but stationID is static
-            platform_names[station_id] = platform_names[station_id].pop()
+            platform_names[station_id] = {sorted(list(platform_names[station_id]))[0]}
 
             # raise HTTPException(
             #    status_code=500,
