@@ -22,7 +22,7 @@ with open("api/cf_standard_names_alias_v84.txt", "r") as file:
         i = i.strip().split(":")
         standard_names_alias[i[1]] = i[0]
 
-with open("api/std_name_unit_mapping.json") as f:
+with open("api/std_name_units.json") as f:
     std_name_unit_mapping = json.load(f)
 
 
@@ -73,6 +73,12 @@ class Content(BaseModel):
             return self
         elif self.unit in std_name_unit_mapping[self.standard_name]["alias"]:
             self.unit = std_name_unit_mapping[self.standard_name]["unit"]
+        elif self.unit in (conversion := std_name_unit_mapping[self.standard_name]["conversions"]):
+            self.value = str(
+                (float(self.value) + conversion[self.unit].get("add", 0)) * conversion[self.unit].get("mul", 1)
+            )
+            self.unit = std_name_unit_mapping[self.standard_name]["unit"]
+            return self
         else:
             raise ValueError(
                 f"Unknown unit or unit alias for {self.standard_name}. Provided unit {self.unit} is unknown."
