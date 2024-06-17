@@ -134,13 +134,16 @@ async def get_locations(
                 },
             )
         if len(platform_names[station_id]) > 1:
-            raise HTTPException(
-                status_code=500,
-                detail={
-                    "platform_name": f"Station with id `{station_id} "
-                    f"has multiple names: {platform_names[station_id]}"
-                },
-            )
+            # Just pick the first name in the set, names can be changed, but stationID is static
+            platform_names[station_id] = platform_names[station_id].pop()
+
+            # raise HTTPException(
+            #    status_code=500,
+            #    detail={
+            #        "platform_name": f"Station with id `{station_id} "
+            #        f"has multiple names: {platform_names[station_id]}"
+            #    },
+            # )
 
     features = [
         Feature(
