@@ -133,16 +133,18 @@ async def get_locations(
                     f"has multiple coordinates: {platform_coordinates[station_id]}"
                 },
             )
-        if len(platform_names[station_id]) > 1:
-            platform_names[station_id] = {sorted(list(platform_names[station_id]))[0]}
+        # TODO: Do we want to check for duplicate names? Can we communicate this to the user without throwing an error?
+        platform_names[station_id] = {sorted(list(platform_names[station_id]))[0]}
 
-            # raise HTTPException(
-            #    status_code=500,
-            #    detail={
-            #        "platform_name": f"Station with id `{station_id} "
-            #        f"has multiple names: {platform_names[station_id]}"
-            #    },
-            # )
+        # Old test to stop if we detect divering names for the same station, code above is a replacement.
+        # if len(platform_names[station_id]) > 1:
+        # raise HTTPException(
+        #    status_code=500,
+        #    detail={
+        #        "platform_name": f"Station with id `{station_id} "
+        #        f"has multiple names: {platform_names[station_id]}"
+        #    },
+        # )
 
     features = [
         Feature(
