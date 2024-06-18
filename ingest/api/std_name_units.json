@@ -4,158 +4,197 @@
         "alias": [
             "W m-2",
             "Wm-2"
-        ]
+        ],
+        "symbol": "W/m2"
     },
     "downwelling_longwave_flux_in_air": {
         "unit": "kJ/m2",
         "alias": [
             "kJm-2",
             "kJ m-2"
-        ]
+        ],
+        "symbol": "kJ/m2"
     },
     "duration_of_sunshine": {
-        "unit": "s"
+        "unit": "s",
+        "symbol": "s"
     },
     "equivalent_reflectivity_factor": {
-        "unit": "dB"
+        "unit": "dB",
+        "symbol": "dB"
     },
     "integral_wrt_time_of_surface_downwelling_longwave_flux_in_air": {
         "unit": "Ws/m2",
         "alias": [
             "W s m-2",
+            "Ws m-2",
             "Wsm-2"
-        ]
+        ],
+        "symbol": "Ws/m2"
     },
     "latitude": {
-        "unit": "degrees"
+        "unit": "degrees",
+        "symbol": "degrees"
     },
     "longitude": {
-        "unit": "degrees"
+        "unit": "degrees",
+        "symbol": "degrees"
     },
     "low_type_cloud_area_fraction": {
-        "unit": "octas"
+        "unit": "octas",
+        "symbol": "octas"
     },
     "lwe_precipitation_rate": {
         "unit": "mm/h",
         "alias": [
             "mm h-1",
             "mmh-1"
-        ]
+        ],
+        "symbol": "mm/h"
     },
     "precipitation_amount": {
-        "unit": "mm"
+        "unit": "mm",
+        "symbol": "mm"
     },
     "rainfall_amount": {
-        "unit": "mm"
+        "unit": "mm",
+        "symbol": "mm"
     },
     "rainfall_rate": {
         "unit": "mm/h",
-        "symbol": "",
+        "symbol": "mm/h",
         "alias": [
             "mm h-1",
             "mmh-1"
         ]
     },
     "relative_humidity": {
-        "unit": "percent"
+        "unit": "percent",
+        "symbol": "percent"
     },
     "sea_surface_swell_wave_from_direction": {
-        "unit": "degrees"
+        "unit": "degrees",
+        "symbol": "degrees"
     },
     "sea_surface_swell_wave_mean_period_from_variance_spectral_density_second_frequency_moment": {
-        "unit": "seconds"
+        "unit": "seconds",
+        "symbol": "seconds"
     },
     "sea_surface_swell_wave_significant_height": {
-        "unit": "m"
+        "unit": "m",
+        "symbol": "m"
     },
     "sea_surface_temperature": {
-        "unit": "degC"
+        "unit": "degC",
+        "symbol": "degC"
     },
     "sea_surface_wave_directional_spread": {
-        "unit": "degrees"
+        "unit": "degrees",
+        "symbol": "degrees"
     },
     "sea_surface_wave_energy_at_variance_spectral_density_maximum": {
         "unit": "m2/Hz",
         "alias": [
             "m2 Hz-1",
             "m2Hz-1"
-        ]
+        ],
+        "symbol": "m2/Hz"
     },
     "sea_surface_wave_from_direction": {
-        "unit": "degrees"
+        "unit": "degrees",
+        "symbol": "degrees"
     },
     "sea_surface_wave_from_direction_at_variance_spectral_density_maximum": {
-        "unit": "degrees"
+        "unit": "degrees",
+        "symbol": "degrees"
     },
     "sea_surface_wave_maximum_height": {
-        "unit": "m"
+        "unit": "m",
+        "symbol": "m"
     },
     "sea_surface_wave_maximum_period": {
-        "unit": "seconds"
+        "unit": "seconds",
+        "symbol": "seconds"
     },
     "sea_surface_wave_mean_period": {
-        "unit": "seconds"
+        "unit": "seconds",
+        "symbol": "seconds"
     },
     "sea_surface_wave_mean_period_from_variance_spectral_density_first_frequency_moment": {
-        "unit": "seconds"
+        "unit": "seconds",
+        "symbol": "seconds"
     },
     "sea_surface_wave_mean_period_from_variance_spectral_density_second_frequency_moment": {
-        "unit": "seconds"
+        "unit": "seconds",
+        "symbol": "seconds"
     },
     "sea_surface_wave_period_at_variance_spectral_density_maximum": {
-        "unit": "seconds"
+        "unit": "seconds",
+        "symbol": "seconds"
     },
     "sea_surface_wave_period_of_highest_wave": {
-        "unit": "seconds"
+        "unit": "seconds",
+        "symbol": "seconds"
     },
     "sea_surface_wave_significant_height": {
-        "unit": "m"
+        "unit": "m",
+        "symbol": "m"
     },
     "sea_surface_wave_significant_period": {
-        "unit": "seconds"
+        "unit": "seconds",
+        "symbol": "seconds"
     },
     "sea_surface_wind_wave_from_direction": {
-        "unit": "degrees"
+        "unit": "degrees",
+        "symbol": "degrees"
     },
     "sea_surface_wind_wave_mean_period_from_variance_spectral_density_second_frequency_moment": {
-        "unit": "seconds"
+        "unit": "seconds",
+        "symbol": "seconds"
     },
     "sea_surface_wind_wave_significant_height": {
-        "unit": "m"
+        "unit": "m",
+        "symbol": "m"
     },
     "sea_water_electrical_conductivity": {
         "unit": "mS/cm",
         "alias": [
             "mS cm-1",
             "mScm-1"
-        ]
+        ],
+        "symbol": "mS/cm"
     },
     "sea_water_salinity": {
-        "unit": "1/1000"
+        "unit": "1/1000",
+        "symbol": "1/1000"
     },
     "sea_water_speed": {
         "unit": "m/s",
         "alias": [
             "m s-1",
             "ms-1"
-        ]
+        ],
+        "symbol": "m/s"
     },
     "sea_water_temperature": {
-        "unit": "degC"
+        "unit": "degC",
+        "symbol": "degC"
     },
     "soil_temperature": {
-        "unit": "degC"
+        "unit": "degC",
+        "symbol": "degC"
     },
     "solar_irradiance": {
         "unit": "W/m2",
         "alias": [
             "W m-2",
             "Wm-2"
-        ]
+        ],
+        "symbol": "W/m2"
     },
     "surface_air_pressure": {
         "unit": "hPa",
-        "symbol": "",
+        "symbol": "hPa",
         "alias": [],
         "converstions": {
             "Pa": [
@@ -169,113 +208,135 @@
         "alias": [
             "kJm-2",
             "kJ m-2"
-        ]
+        ],
+        "symbol": "kJ/m2"
     },
     "surface_direct_downwelling_shortwave_flux_in_air": {
         "unit": "kJ/m2",
         "alias": [
             "kJm-2",
             "kJ m-2"
-        ]
+        ],
+        "symbol": "kJ/m2"
     },
     "surface_downwelling_longwave_flux_in_air": {
         "unit": "kJ/m2",
         "alias": [
             "kJm-2",
             "kJ m-2"
-        ]
+        ],
+        "symbol": "kJ/m2"
     },
     "surface_downwelling_photosynthetic_photon_flux_in_air": {
         "unit": "umol/sm2",
         "alias": [
             "umol sm-2",
             "umolsm-2"
-        ]
+        ],
+        "symbol": "umol/sm2"
     },
     "surface_downwelling_photosynthetic_radiative_flux_in_air": {
         "unit": "mE/m2",
         "alias": [
             "mE m-2",
             "mEm-2"
-        ]
+        ],
+        "symbol": "mE/m2"
     },
     "surface_downwelling_shortwave_flux_in_air": {
         "unit": "kJ/m2",
         "alias": [
             "kJm-2",
             "kJ m-2"
-        ]
+        ],
+        "symbol": "kJ/m2"
     },
     "surface_net_downward_radiative_flux": {
         "unit": "kJ/m2",
         "alias": [
             "kJm-2",
             "kJ m-2"
-        ]
+        ],
+        "symbol": "kJ/m2"
     },
     "surface_snow_thickness": {
-        "unit": "cm"
+        "unit": "cm",
+        "symbol": "cm"
     },
     "surface_temperature": {
-        "unit": "degC"
+        "unit": "degC",
+        "symbol": "degC"
     },
     "surface_upwelling_longwave_flux_in_air": {
         "unit": "W/m2",
         "alias": [
             "W m-2",
             "Wm-2"
-        ]
+        ],
+        "symbol": "W/m2"
     },
     "surface_upwelling_radiance_in_air": {
         "unit": "kJ/m2",
         "alias": [
             "kJm-2",
             "kJ m-2"
-        ]
+        ],
+        "symbol": "kJ/m2"
     },
     "surface_upwelling_shortwave_flux_in_air": {
         "unit": "W/m2",
         "alias": [
             "W m-2",
             "Wm-2"
-        ]
+        ],
+        "symbol": "W/m2"
     },
     "tendency_of_air_pressure": {
-        "unit": "integer"
+        "unit": "integer",
+        "symbol": "integer"
     },
     "tendency_of_surface_air_pressure": {
-        "unit": "hPa"
+        "unit": "hPa",
+        "symbol": "hPa"
     },
     "thickness_of_snowfall_amount": {
-        "unit": "cm"
+        "unit": "cm",
+        "symbol": "cm"
     },
     "ultraviolet_index": {
-        "unit": "index"
+        "unit": "index",
+        "symbol": "index"
     },
     "virtual_temperature": {
-        "unit": "degC"
+        "unit": "degC",
+        "symbol": "degC"
     },
     "visibility_in_air": {
-        "unit": "m"
+        "unit": "m",
+        "symbol": "m"
     },
     "wet_bulb_temperature": {
-        "unit": "degC"
+        "unit": "degC",
+        "symbol": "degC"
     },
     "wind_from_direction": {
-        "unit": "degrees"
+        "unit": "degrees",
+        "symbol": "degrees"
     },
     "wind_speed": {
         "unit": "m/s",
         "alias": [
             "m s-1",
             "ms-1"
-        ]
+        ],
+        "symbol": "m/s"
     },
     "wind_speed_of_gust": {
         "unit": "m/s",
         "alias": [
             "m s-1",
             "ms-1"
-        ]
+        ],
+        "symbol": "m/s"
     }
 }
