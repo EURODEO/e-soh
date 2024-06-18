@@ -15,6 +15,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
 	"google.golang.org/grpc/health/grpc_health_v1"
+	"google.golang.org/grpc/peer"
 
 	_ "expvar"
 	"net/http"
@@ -42,7 +43,11 @@ func main() {
 		resp, err := handler(ctx, req)
 		reqTime := time.Since(start)
 		if info.FullMethod != "/grpc.health.v1.Health/Check" {
-			log.Printf("time for method %q: %d ms", info.FullMethod, reqTime.Milliseconds())
+			var clientIp = "unknown"
+			if p, ok := peer.FromContext(ctx); ok {
+				clientIp = p.Addr.String()
+			}
+			log.Printf("time for method %q: %d ms. Client ip: %s", info.FullMethod, reqTime.Milliseconds(), clientIp)
 		}
 		return resp, err
 	}
