@@ -69,8 +69,6 @@ class Content(BaseModel):
 
     @model_validator(mode="after")
     def standardize_units(self) -> Content:
-        print(self.unit in (conversion := std_name_unit_mapping[self.standard_name]["conversion"]))
-        print(conversion)
         if self.unit == std_name_unit_mapping[self.standard_name]["unit"]:
             return self
         elif (
