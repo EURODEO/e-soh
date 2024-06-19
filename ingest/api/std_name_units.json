@@ -34,11 +34,19 @@
     },
     "latitude": {
         "unit": "degrees",
-        "symbol": "degrees"
+        "symbol": "degrees",
+        "alias": [
+            "deg",
+            "degree"
+        ]
     },
     "longitude": {
         "unit": "degrees",
-        "symbol": "degrees"
+        "symbol": "degrees",
+        "alias": [
+            "deg",
+            "degree"
+        ]
     },
     "low_type_cloud_area_fraction": {
         "unit": "octas",
@@ -53,12 +61,22 @@
         "symbol": "mm/h"
     },
     "precipitation_amount": {
-        "unit": "mm",
-        "symbol": "mm"
+        "unit": "kg/m2",
+        "symbol": "kg/m2",
+        "alias": [
+            "kg m-2",
+            "kgm-2",
+            "mm"
+        ]
     },
     "rainfall_amount": {
-        "unit": "mm",
-        "symbol": "mm"
+        "unit": "kg/m2",
+        "symbol": "kg/m2",
+        "alias": [
+            "kg m-2",
+            "kgm-2",
+            "mm"
+        ]
     },
     "rainfall_rate": {
         "unit": "mm/h",
@@ -70,11 +88,23 @@
     },
     "relative_humidity": {
         "unit": "percent",
-        "symbol": "percent"
+        "symbol": "%",
+        "alias": [
+            "%"
+        ],
+        "conversion": {
+            "1": {
+                "mul": 100
+            }
+        }
     },
     "sea_surface_swell_wave_from_direction": {
         "unit": "degrees",
-        "symbol": "degrees"
+        "symbol": "degrees",
+        "alias": [
+            "deg",
+            "degree"
+        ]
     },
     "sea_surface_swell_wave_mean_period_from_variance_spectral_density_second_frequency_moment": {
         "unit": "seconds",
@@ -95,7 +125,11 @@
     },
     "sea_surface_wave_directional_spread": {
         "unit": "degrees",
-        "symbol": "degrees"
+        "symbol": "degrees",
+        "alias": [
+            "deg",
+            "degree"
+        ]
     },
     "sea_surface_wave_energy_at_variance_spectral_density_maximum": {
         "unit": "m2/Hz",
@@ -107,11 +141,19 @@
     },
     "sea_surface_wave_from_direction": {
         "unit": "degrees",
-        "symbol": "degrees"
+        "symbol": "degrees",
+        "alias": [
+            "deg",
+            "degree"
+        ]
     },
     "sea_surface_wave_from_direction_at_variance_spectral_density_maximum": {
         "unit": "degrees",
-        "symbol": "degrees"
+        "symbol": "degrees",
+        "alias": [
+            "deg",
+            "degree"
+        ]
     },
     "sea_surface_wave_maximum_height": {
         "unit": "m",
@@ -151,7 +193,11 @@
     },
     "sea_surface_wind_wave_from_direction": {
         "unit": "degrees",
-        "symbol": "degrees"
+        "symbol": "degrees",
+        "alias": [
+            "deg",
+            "degree"
+        ]
     },
     "sea_surface_wind_wave_mean_period_from_variance_spectral_density_second_frequency_moment": {
         "unit": "seconds",
@@ -361,7 +407,11 @@
     },
     "wind_from_direction": {
         "unit": "degrees",
-        "symbol": "degrees"
+        "symbol": "degrees",
+        "alias": [
+            "deg",
+            "degree"
+        ]
     },
     "wind_speed": {
         "unit": "m/s",
