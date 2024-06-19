@@ -69,13 +69,20 @@ class Content(BaseModel):
 
     @model_validator(mode="after")
     def standardize_units(self) -> Content:
+        print(self.unit in (conversion := std_name_unit_mapping[self.standard_name]["conversion"]))
+        print(conversion)
         if self.unit == std_name_unit_mapping[self.standard_name]["unit"]:
             return self
-        elif self.unit in std_name_unit_mapping[self.standard_name]["alias"]:
+        elif (
+            "alias" in std_name_unit_mapping[self.standard_name]
+            and self.unit in std_name_unit_mapping[self.standard_name]["alias"]
+        ):
             self.unit = std_name_unit_mapping[self.standard_name]["unit"]
-        elif self.unit in (conversion := std_name_unit_mapping[self.standard_name]["conversions"]):
-            self.value = str(
-                (float(self.value) + conversion[self.unit].get("add", 0)) * conversion[self.unit].get("mul", 1)
+        elif "conversion" in std_name_unit_mapping[self.standard_name] and self.unit in (
+            conversion := std_name_unit_mapping[self.standard_name]["conversion"]
+        ):
+            self.value = (
+                f"{(float(self.value) + conversion[self.unit].get('add', 0)) * conversion[self.unit].get('mul', 1):.2f}"
             )
             self.unit = std_name_unit_mapping[self.standard_name]["unit"]
             return self

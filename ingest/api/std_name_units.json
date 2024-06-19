@@ -196,11 +196,10 @@
         "unit": "hPa",
         "symbol": "hPa",
         "alias": [],
-        "converstions": {
-            "Pa": [
-                0,
-                0.001
-            ]
+        "conversion": {
+            "Pa": {
+                "mul": 0.01
+            }
         }
     },
     "surface_diffuse_downwelling_shortwave_flux_in_air": {
@@ -297,7 +296,12 @@
     },
     "tendency_of_surface_air_pressure": {
         "unit": "hPa",
-        "symbol": "hPa"
+        "symbol": "hPa",
+        "conversion": {
+            "Pa": {
+                "mul": 0.01
+            }
+        }
     },
     "thickness_of_snowfall_amount": {
         "unit": "cm",
