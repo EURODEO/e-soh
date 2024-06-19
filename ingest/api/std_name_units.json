@@ -90,7 +90,8 @@
         "unit": "percent",
         "symbol": "%",
         "alias": [
-            "%"
+            "%",
+            "1/100"
         ],
         "conversion": {
             "1": {
