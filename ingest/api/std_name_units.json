@@ -17,7 +17,12 @@
     },
     "duration_of_sunshine": {
         "unit": "s",
-        "symbol": "s"
+        "symbol": "s",
+        "conversion": {
+            "minutes": {
+                "mul": 60
+            }
+        }
     },
     "equivalent_reflectivity_factor": {
         "unit": "dB",
