@@ -22,5 +22,5 @@ async def putObsRequest(put_obs_request):
         await grpc_stub.PutObservations(put_obs_request)
         logger.debug("RPC call succeeded.")
     except grpc.aio.AioRpcError as grpc_error:
-        logger.critical("RPC call failed:", f"{grpc_error.code()}\n{grpc_error.details()}")
+        logger.critical(f"RPC call failed: {grpc_error.code()}\n{grpc_error.details()}")
         raise HTTPException(detail=grpc_error.details(), status_code=400)
