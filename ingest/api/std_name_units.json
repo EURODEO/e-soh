@@ -125,7 +125,7 @@
         "symbol": "degC",
         "conversion": {
             "K": {
-                "add": -273.14
+                "add": -273.15
             }
         }
     },
@@ -238,7 +238,7 @@
         "symbol": "degC",
         "conversion": {
             "K": {
-                "add": -273.14
+                "add": -273.15
             }
         }
     },
@@ -247,7 +247,7 @@
         "symbol": "degC",
         "conversion": {
             "K": {
-                "add": -273.14
+                "add": -273.15
             }
         }
     },
@@ -334,7 +334,7 @@
         "symbol": "degC",
         "conversion": {
             "K": {
-                "add": -273.14
+                "add": -273.15
             }
         }
     },
@@ -394,7 +394,7 @@
         "symbol": "degC",
         "conversion": {
             "K": {
-                "add": -273.14
+                "add": -273.15
             }
         }
     },
@@ -407,7 +407,7 @@
         "symbol": "degC",
         "conversion": {
             "K": {
-                "add": -273.14
+                "add": -273.15
             }
         }
     },
@@ -459,7 +459,7 @@
         "unit": "degC",
         "conversion": {
             "K": {
-                "add": -273.14
+                "add": -273.15
             }
         }
     },
@@ -473,7 +473,7 @@
         "unit": "degC",
         "conversion": {
             "K": {
-                "add": -273.14
+                "add": -273.15
             }
         }
     }
