@@ -5,7 +5,7 @@ from functools import cache
 
 import datastore_pb2_grpc as dstore_grpc
 import grpc
-
+from fastapi import HTTPException
 
 logger = logging.getLogger(__name__)
 
@@ -23,4 +23,4 @@ async def putObsRequest(put_obs_request):
         logger.debug("RPC call succeeded.")
     except grpc.aio.AioRpcError as grpc_error:
         logger.critical("RPC call failed:", grpc_error)
-        raise grpc_error
+        raise HTTPException(detail=grpc_error.details(), status_code=400)
