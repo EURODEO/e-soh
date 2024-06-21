@@ -10,7 +10,7 @@
 
 CXX := g++
 #CXX := clang++
-CXXFLAGS := -c -Wall -Wextra -O2 -std=c++17 -fPIC
+CXXFLAGS := -c -Wall -Wextra -O2 -std=c++20 -fPIC
 LDFLAGS := -shared
 
 .PHONY: clean all bufresohmsg_py
