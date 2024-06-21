@@ -64,8 +64,7 @@ static std::map<DescriptorId, std::pair<std::string, std::string>> cf_names = {
 
 static std::string default_shadow_wigos("0-578-2024-");
 
-static std::list<std::pair<char, char>> repl_chars = {
-    {' ', '_'}, {'-', '_'}, {'\'', 0}};
+static std::list<std::pair<char, char>> repl_chars = {{'-', '_'}};
 
 class ESOHBufr : public NorBufr {
 
@@ -102,7 +101,7 @@ private:
                         std::string period_str = "") const;
   WSI genShadowWigosId(std::list<Descriptor> &,
                        std::list<Descriptor>::const_iterator &cir,
-                       bool filter = false) const;
+                       bool filter = true) const;
 
   Oscar *oscar;
   std::string msg_template;
