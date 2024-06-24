@@ -59,10 +59,22 @@ def get_landing_page(request):
         provider=Provider(name="RODEO", url="https://rodeo-project.eu/"),
         contact=Contact(email="rodeoproject@fmi.fi"),
         links=[
-            Link(href=f"{request.url}", rel="self", title="Landing Page in JSON"),
-            Link(href=f"{request.url}docs", rel="service-desc", title="API description in HTML"),
-            Link(href=f"{request.url}openapi.json", rel="service-desc", title="API description in JSON"),
-            Link(href=f"{request.url}conformance", rel="conformance", title="Conformance Declaration in JSON"),
+            Link(href=f"{request.url}", rel="self", title="Landing Page in JSON", type="application/json"),
+            Link(
+                href=f"{request.url}docs", rel="service-doc", title="API description in HTML", type="application/html"
+            ),
+            Link(
+                href=f"{request.url}openapi.json",
+                rel="service-desc",
+                title="API description in JSON",
+                type="application/json",
+            ),
+            Link(
+                href=f"{request.url}conformance",
+                rel="conformance",
+                title="Conformance Declaration in JSON",
+                type="application/json",
+            ),
             Link(href=f"{request.url}collections", rel="data", title="Collections metadata in JSON"),
         ],
     )
