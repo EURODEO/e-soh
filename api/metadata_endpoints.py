@@ -60,9 +60,7 @@ def get_landing_page(request):
         contact=Contact(email="rodeoproject@fmi.fi"),
         links=[
             Link(href=f"{request.url}", rel="self", title="Landing Page in JSON", type="application/json"),
-            Link(
-                href=f"{request.url}docs", rel="service-doc", title="API description in HTML", type="application/html"
-            ),
+            Link(href=f"{request.url}docs", rel="service-doc", title="API description in HTML", type="text/html"),
             Link(
                 href=f"{request.url}openapi.json",
                 rel="service-desc",
@@ -86,10 +84,10 @@ def get_conformance() -> ConformanceModel:
             "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/core",  # B2 - required
             "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/collections",  # B3 - required
             "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/json",  # B4
-            "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/geojson",  # B5
+            "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/edr-geojson",  # B5
             "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/covjson",  # B7
-            "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/html",  # B8
-            "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/oas30",  # B9
+            # TODO: Add when there is a conformance class for Open Api Spec 3.1
+            # "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/oas31",  # B9
             "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/queries",  # B10
         ]
     )

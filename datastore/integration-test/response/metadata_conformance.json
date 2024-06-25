@@ -3,10 +3,8 @@
         "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/core",
         "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/collections",
         "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/json",
-        "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/geojson",
+        "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/edr-geojson",
         "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/covjson",
-        "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/html",
-        "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/oas30",
         "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/queries"
     ]
 }
