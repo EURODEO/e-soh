@@ -4,6 +4,7 @@ import logging
 
 import metadata_endpoints
 from brotli_asgi import BrotliMiddleware
+from edr_pydantic.capabilities import ConformanceModel
 from edr_pydantic.capabilities import LandingPageModel
 from edr_pydantic.collections import Collection
 from edr_pydantic.collections import Collections
@@ -44,6 +45,16 @@ async def landing_page(request: Request) -> LandingPageModel:
 @app.get("/health", include_in_schema=False)
 def health():
     return "ok"
+
+
+@app.get(
+    "/conformance",
+    tags=["Capabilities"],
+    response_model=ConformanceModel,
+    response_model_exclude_none=True,
+)
+async def get_conformance() -> ConformanceModel:
+    return metadata_endpoints.get_conformance()
 
 
 @app.get(
