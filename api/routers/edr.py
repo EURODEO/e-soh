@@ -123,37 +123,38 @@ async def get_locations(
 
         all_parameters[obs.ts_mdata.parameter_name] = parameter
 
-    # Check for multiple coordinates or names on one station
-    for station_id in platform_parameters.keys():
-        if len(platform_coordinates[station_id]) > 1:
-            raise HTTPException(
-                status_code=500,
-                detail={
-                    "coordinates": f"Station with id `{station_id} "
-                    f"has multiple coordinates: {platform_coordinates[station_id]}"
-                },
-            )
-        if len(platform_names[station_id]) > 1:
-            raise HTTPException(
-                status_code=500,
-                detail={
-                    "platform_name": f"Station with id `{station_id} "
-                    f"has multiple names: {platform_names[station_id]}"
-                },
-            )
+    # TODO: Do we want to check for multiple coordinates or names on one station?
+    #  Can we communicate this to the user without throwing an error?
+    # for station_id in platform_parameters.keys():
+    #     if len(platform_coordinates[station_id]) > 1:
+    #         raise HTTPException(
+    #             status_code=500,
+    #             detail={
+    #                 "coordinates": f"Station with id `{station_id} "
+    #                 f"has multiple coordinates: {platform_coordinates[station_id]}"
+    #             },
+    #         )
+    #     if len(platform_names[station_id]) > 1:
+    #         raise HTTPException(
+    #             status_code=500,
+    #             detail={
+    #                 "platform_name": f"Station with id `{station_id} "
+    #                                  f"has multiple names: {platform_names[station_id]}"
+    #             },
+    #         )
 
     features = [
         Feature(
             type="Feature",
             id=station_id,
             properties={
-                "name": list(platform_names[station_id])[0],
+                "name": sorted(list(platform_names[station_id]))[0],  # Get "first" one if there are multiple
                 "detail": f"https://oscar.wmo.int/surface/rest/api/search/station?wigosId={station_id}",
                 "parameter-name": sorted(platform_parameters[station_id]),
             },
             geometry=Point(
                 type="Point",
-                coordinates=list(platform_coordinates[station_id])[0],
+                coordinates=sorted(list(platform_coordinates[station_id]))[0],  # Get "first" one if there are multiple
             ),
         )
         for station_id in sorted(platform_parameters.keys())  # Sort by station_id
