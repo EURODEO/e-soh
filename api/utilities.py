@@ -1,3 +1,5 @@
+import sys
+
 from datetime import datetime
 from datetime import timedelta
 from typing import Tuple
@@ -8,6 +10,8 @@ from google.protobuf.timestamp_pb2 import Timestamp
 from grpc_getter import get_ts_ag_request
 from pydantic import AwareDatetime
 from pydantic import TypeAdapter
+from pydantic import ValidationError
+
 
 
 def get_datetime_range(datetime_string: str | None) -> Tuple[Timestamp, Timestamp] | None:
@@ -137,3 +141,34 @@ async def add_parameter_name_and_datetime(request, parameter_name: str | None, d
         start, end = get_datetime_range(datetime)
         request.temporal_interval.start.CopyFrom(start)
         request.temporal_interval.end.CopyFrom(end)
+
+
+def get_z_range(z: str | None) -> (float, float):
+    # it can be z=value1,value2,value3: z=2,10,80 -> not yet implemented for more then one value
+    # or z=minimum value/maximum value: z=10/100
+    # or z=Rn/min height/height interval: z=R20/100/50  -> not yet implemented
+    if z:
+        split_on_slash = z.split("/")
+        if len(split_on_slash) == 2:
+            return float(split_on_slash[0]), float(split_on_slash[1])
+        elif len(split_on_slash) > 2:
+            # TODO
+            raise ValidationError
+        split_on_comma = list(map(float, z.split(",")))
+        if len(split_on_comma) == 1:
+            return float(split_on_comma[0]), float(split_on_comma[0])
+        else:
+            # TODO
+            raise ValidationError
+    else:
+        return -sys.float_info.max, sys.float_info.max
+
+
+def is_float(element: any) -> bool:
+    if element is None:
+        return False
+    try:
+        float(element)
+        return True
+    except ValueError:
+        return False

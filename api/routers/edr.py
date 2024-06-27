@@ -25,7 +25,7 @@ from response_classes import GeoJsonResponse
 from shapely import geometry
 from shapely import wkt
 from shapely.errors import GEOSException
-from utilities import add_parameter_name_and_datetime
+from utilities import add_parameter_name_and_datetime, get_z_range, is_float
 from utilities import validate_bbox
 
 router = APIRouter(prefix="/collections/observations")
@@ -273,6 +273,10 @@ async def get_data_position(
 )
 async def get_data_area(
     coords: Annotated[str, Query(example="POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))")],
+    z: Annotated[str | None, Query(
+        description="Define the vertical level to return data from",
+        example="1.25/2.0"
+    )] = None,
     parameter_name: Annotated[
         str | None,
         Query(
@@ -311,6 +315,7 @@ async def get_data_area(
             detail={"coords": f"Unexpected error occurred during wkt parsing: {coords}"},
         )
 
+    z_min, z_max = get_z_range(z)
     request = dstore.GetObsRequest(
         spatial_polygon=dstore.Polygon(
             points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords]
@@ -320,6 +325,12 @@ async def get_data_area(
 
     await add_parameter_name_and_datetime(request, parameter_name, datetime)
 
-    coverages = await get_obs_request(request)
-    coverages = formatters.formatters[f](coverages)
-    return coverages
+    grpc_response = await get_obs_request(request)
+
+    # Filter z values
+    # TODO: Move this to datastore
+    observations = [obs for obs in grpc_response.observations
+                    if is_float(obs.ts_mdata.level) and z_min <= float(obs.ts_mdata.level) <= z_max]
+
+    response = formatters.formatters[f](observations)
+    return response

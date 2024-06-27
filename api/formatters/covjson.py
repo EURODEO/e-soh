@@ -40,10 +40,10 @@ def make_parameter(ts_mdata):
     )
 
 
-def convert_to_covjson(response):
+def convert_to_covjson(observations):
     # Collect data
     coverages = []
-    data = [_collect_data(md.ts_mdata, md.obs_mdata) for md in response.observations]
+    data = [_collect_data(md.ts_mdata, md.obs_mdata) for md in observations]
 
     # Need to sort before using groupBy. Also sort on parameter_name to get consistently sorted output
     data.sort(key=lambda x: (x.dom, x.ts_mdata.parameter_name))
