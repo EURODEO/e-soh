@@ -13,7 +13,6 @@ from pydantic import TypeAdapter
 from pydantic import ValidationError
 
 
-
 def get_datetime_range(datetime_string: str | None) -> Tuple[Timestamp, Timestamp] | None:
     if not datetime_string:
         return None

@@ -273,10 +273,9 @@ async def get_data_position(
 )
 async def get_data_area(
     coords: Annotated[str, Query(example="POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))")],
-    z: Annotated[str | None, Query(
-        description="Define the vertical level to return data from",
-        example="1.25/2.0"
-    )] = None,
+    z: Annotated[
+        str | None, Query(description="Define the vertical level to return data from", example="1.25/2.0")
+    ] = None,
     parameter_name: Annotated[
         str | None,
         Query(
@@ -329,8 +328,11 @@ async def get_data_area(
 
     # Filter z values
     # TODO: Move this to datastore
-    observations = [obs for obs in grpc_response.observations
-                    if is_float(obs.ts_mdata.level) and z_min <= float(obs.ts_mdata.level) <= z_max]
+    observations = [
+        obs
+        for obs in grpc_response.observations
+        if is_float(obs.ts_mdata.level) and z_min <= float(obs.ts_mdata.level) <= z_max
+    ]
 
     response = formatters.formatters[f](observations)
     return response
