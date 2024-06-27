@@ -222,7 +222,7 @@ def test_from_a_single_collection_get_an_area_with_parameter_with_wildcard():
         f"?coords={coords}&parameter-name={parameters}&datetime={datetime}"
     )
 
-    expected_json = load_json("response/data_area_two_locations_with_paraneter_with_wildcard.json")
+    expected_json = load_json("response/data_area_one_location_with_parameter_with_wildcard.json")
 
     assert actual_response.status_code == 200
     assert actual_response.headers["Content-Type"] == "application/prs.coverage+json"
