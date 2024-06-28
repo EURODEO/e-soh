@@ -194,3 +194,11 @@ async def get_unique_values_for_metadata(field: str) -> list[str]:
     request = dstore.GetTSAGRequest(attrs=[field])
     response = await get_ts_ag_request(request)
     return sorted([getattr(i.combo, field) for i in response.groups])
+
+
+def filter_observations_for_z(observations, z):
+    z_min, z_max = get_z_range(z)
+    observations = [
+        obs for obs in observations if is_float(obs.ts_mdata.level) and z_min <= float(obs.ts_mdata.level) <= z_max
+    ]
+    return observations

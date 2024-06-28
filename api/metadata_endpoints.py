@@ -25,7 +25,7 @@ from grpc_getter import get_extents_request
 from grpc_getter import get_ts_ag_request
 
 import datastore_pb2 as dstore
-from utilities import get_unique_values_for_metadata
+from utilities import get_unique_values_for_metadata, is_float
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -109,7 +109,7 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
         ts = group.combo
         custom_fields = {
             "rodeo:standard_name": ts.standard_name,
-            "rodeo:level": ts.level,  # TODO: Put this in "z" instead?
+            "rodeo:level": float(ts.level) if is_float(ts.level) else 0.0,
             "rodeo:function": ts.function,
             "rodeo:period": ts.period,
         }

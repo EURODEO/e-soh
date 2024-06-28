@@ -31,7 +31,7 @@ Data = namedtuple("Data", ["dom", "values", "ts_mdata"])
 def make_parameter(ts_mdata):
     custom_fields = {
         "rodeo:standard_name": ts_mdata.standard_name,
-        # "rodeo:level": ts_mdata.level,  # TODO: Put this in "z" instead? Also solves issues that this is now a string
+        "rodeo:level": float(ts_mdata.level) if is_float(ts_mdata.level) else 0.0,
         "rodeo:function": ts_mdata.function,
         "rodeo:period": ts_mdata.period,
     }
