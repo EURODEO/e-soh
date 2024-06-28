@@ -472,8 +472,13 @@
         }
     },
     "cloud_area_fraction": {
-        "unit": "octas",
-        "alias": "octa"
+        "unit": "oktas",
+        "symbol": "oktas",
+        "alias": [
+            "okta",
+            "octa",
+            "octas"
+        ]
     },
     "cloud_base_altitude": {
         "unit": "m"
