@@ -83,7 +83,8 @@ def convert_to_covjson(response):
                 values=values_no_nan, axisNames=["t", "y", "x"], shape=[len(values_no_nan), 1, 1]
             )
 
-        coverages.append(Coverage(domain=domain, parameters=parameters, ranges=ranges))
+        custom_fields = {"rodeo:wigosId": data.ts_mdata.platform}
+        coverages.append(Coverage(domain=domain, parameters=parameters, ranges=ranges, **custom_fields))
 
     if len(coverages) == 0:
         raise HTTPException(status_code=404, detail="Requested data not found.")
