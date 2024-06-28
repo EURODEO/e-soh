@@ -19,7 +19,7 @@ def _make_properties(ts):
     return ts_metadata
 
 
-def convert_to_geojson(response):
+def convert_to_geojson(observations):
     """
     Will only generate geoJSON for stationary timeseries
     """
@@ -36,7 +36,7 @@ def convert_to_geojson(response):
                 ],
             ),
         )
-        for ts in sorted(response.observations, key=lambda ts: ts.ts_mdata.timeseries_id)
+        for ts in sorted(observations, key=lambda ts: ts.ts_mdata.timeseries_id)
     ]
     if not features:
         raise HTTPException(404, detail="Query did not return any time series.")

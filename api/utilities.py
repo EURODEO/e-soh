@@ -1,3 +1,5 @@
+import sys
+
 from datetime import datetime
 from datetime import timedelta
 from typing import Tuple
@@ -8,6 +10,7 @@ from google.protobuf.timestamp_pb2 import Timestamp
 from grpc_getter import get_ts_ag_request
 from pydantic import AwareDatetime
 from pydantic import TypeAdapter
+from pydantic import ValidationError
 
 
 def get_datetime_range(datetime_string: str | None) -> Tuple[Timestamp, Timestamp] | None:
@@ -127,7 +130,14 @@ def validate_bbox(bbox: str) -> Tuple[float, float, float, float]:
     return left, bottom, right, top
 
 
-async def add_parameter_name_and_datetime(request, parameter_name: str | None, datetime: str | None):
+async def add_request_parameters(
+    request,
+    parameter_name: str | None,
+    datetime: str | None,
+    standard_names: str | None,
+    functions: str | None,
+    periods: str | None,
+):
     if parameter_name:
         parameter_name = split_and_strip(parameter_name)
         await verify_parameter_names(parameter_name)
@@ -137,3 +147,57 @@ async def add_parameter_name_and_datetime(request, parameter_name: str | None, d
         start, end = get_datetime_range(datetime)
         request.temporal_interval.start.CopyFrom(start)
         request.temporal_interval.end.CopyFrom(end)
+
+    if standard_names:
+        request.filter["standard_name"].values.extend(split_and_strip(standard_names))
+
+    if functions:
+        request.filter["function"].values.extend(split_and_strip(functions))
+
+    if periods:
+        request.filter["period"].values.extend(split_and_strip(periods))
+
+
+def get_z_range(z: str | None) -> (float, float):
+    # it can be z=value1,value2,value3: z=2,10,80 -> not yet implemented for more then one value
+    # or z=minimum value/maximum value: z=10/100
+    # or z=Rn/min height/height interval: z=R20/100/50  -> not yet implemented
+    if z:
+        split_on_slash = z.split("/")
+        if len(split_on_slash) == 2:
+            return float(split_on_slash[0]), float(split_on_slash[1])
+        elif len(split_on_slash) > 2:
+            # TODO
+            raise ValidationError
+        split_on_comma = list(map(float, z.split(",")))
+        if len(split_on_comma) == 1:
+            return float(split_on_comma[0]), float(split_on_comma[0])
+        else:
+            # TODO
+            raise ValidationError
+    else:
+        return -sys.float_info.max, sys.float_info.max
+
+
+def is_float(element: any) -> bool:
+    if element is None:
+        return False
+    try:
+        float(element)
+        return True
+    except ValueError:
+        return False
+
+
+async def get_unique_values_for_metadata(field: str) -> list[str]:
+    request = dstore.GetTSAGRequest(attrs=[field])
+    response = await get_ts_ag_request(request)
+    return sorted([getattr(i.combo, field) for i in response.groups])
+
+
+def filter_observations_for_z(observations, z):
+    z_min, z_max = get_z_range(z)
+    observations = [
+        obs for obs in observations if is_float(obs.ts_mdata.level) and z_min <= float(obs.ts_mdata.level) <= z_max
+    ]
+    return observations
