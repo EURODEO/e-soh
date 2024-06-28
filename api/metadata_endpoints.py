@@ -155,6 +155,7 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
                 values=[f"{datetime_to_iso_string(interval_start)}/{datetime_to_iso_string(interval_end)}"],
                 trs="datetime",
             ),
+            # TODO: Add Vertical extent (if we put `level in 'z' coordinate).
             custom=[
                 Custom(
                     id="standard_names",

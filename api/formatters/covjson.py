@@ -20,17 +20,18 @@ from covjson_pydantic.unit import Unit
 from fastapi import HTTPException
 from pydantic import AwareDatetime
 
+from utilities import is_float
 
 # mime_type = "application/prs.coverage+json"
 
-Dom = namedtuple("Dom", ["lat", "lon", "times"])
+Dom = namedtuple("Dom", ["lat", "lon", "level", "times"])
 Data = namedtuple("Data", ["dom", "values", "ts_mdata"])
 
 
 def make_parameter(ts_mdata):
     custom_fields = {
         "rodeo:standard_name": ts_mdata.standard_name,
-        "rodeo:level": ts_mdata.level,  # TODO: Put this in "z" instead? Also solves issues that this is now a string...
+        # "rodeo:level": ts_mdata.level,  # TODO: Put this in "z" instead? Also solves issues that this is now a string...
         "rodeo:function": ts_mdata.function,
         "rodeo:period": ts_mdata.period
     }
@@ -56,22 +57,25 @@ def convert_to_covjson(observations):
 
     # Need to sort before using groupBy. Also sort on parameter_name to get consistently sorted output
     data.sort(key=lambda x: (x.dom, x.ts_mdata.parameter_name))
-    for (lat, lon, times), group in groupby(data, lambda x: x.dom):
+    for (lat, lon, level, times), group in groupby(data, lambda x: x.dom):
         referencing = [
             ReferenceSystemConnectionObject(
                 coordinates=["y", "x"],
                 system=ReferenceSystem(type="GeographicCRS", id="http://www.opengis.net/def/crs/EPSG/0/4326"),
             ),
+            # TODO: Add Vertical reference system (if we put `level in 'z' coordinate).
             ReferenceSystemConnectionObject(
                 coordinates=["t"],
                 system=ReferenceSystem(type="TemporalRS", calendar="Gregorian"),
             ),
         ]
+        z = float(level) if is_float(level) else 0.0
         domain = Domain(
             domainType=DomainType.point_series,
             axes=Axes(
                 x=ValuesAxis[float](values=[lon]),
                 y=ValuesAxis[float](values=[lat]),
+                z=ValuesAxis[float](values=[z]),
                 t=ValuesAxis[AwareDatetime](values=times),
             ),
             referencing=referencing,
@@ -112,4 +116,4 @@ def _collect_data(ts_mdata, obs_mdata):
     )  # HACK: str -> float
     (times, values) = zip(*tuples)
 
-    return Data(Dom(lat, lon, times), values, ts_mdata)
+    return Data(Dom(lat, lon, ts_mdata.level, times), values, ts_mdata)
