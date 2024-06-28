@@ -105,6 +105,13 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
 
     for group in ts_response.groups:
         ts = group.combo
+        custom_fields = {
+            "rodeo:standard_name": ts.standard_name,
+            "rodeo:level": ts.level,  # TODO: Put this in "z" instead?
+            "rodeo:function": ts.function,
+            "rodeo:period": ts.period
+        }
+
         parameter = Parameter(
             description=f"{ts.standard_name} at {ts.level}m {ts.period} {ts.function}",
             observedProperty=ObservedProperty(
@@ -112,6 +119,7 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
                 label=ts.parameter_name,
             ),
             unit=Unit(label=ts.unit),
+            **custom_fields
         )
         # There might be parameter inconsistencies (e.g one station is reporting in Pa, and another in hPa)
         # We always return the "last" parameter definition found (in /locations and collection metadata).

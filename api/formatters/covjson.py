@@ -28,7 +28,15 @@ Data = namedtuple("Data", ["dom", "values", "ts_mdata"])
 
 
 def make_parameter(ts_mdata):
+    custom_fields = {
+        "rodeo:standard_name": ts_mdata.standard_name,
+        "rodeo:level": ts_mdata.level,  # TODO: Put this in "z" instead? Also solves issues that this is now a string...
+        "rodeo:function": ts_mdata.function,
+        "rodeo:period": ts_mdata.period
+    }
+
     return Parameter(
+        # TODO: Change description, as we know have the explicit fields?
         description={
             "en": f"{ts_mdata.standard_name} at {ts_mdata.level}m {ts_mdata.period} {ts_mdata.function}",
         },
@@ -37,6 +45,7 @@ def make_parameter(ts_mdata):
             label={"en": ts_mdata.parameter_name},
         ),
         unit=Unit(label={"en": ts_mdata.unit}),
+        **custom_fields
     )
 
 

@@ -130,7 +130,9 @@ def validate_bbox(bbox: str) -> Tuple[float, float, float, float]:
     return left, bottom, right, top
 
 
-async def add_parameter_name_and_datetime(request, parameter_name: str | None, datetime: str | None):
+# TODO: Remove default arguments
+async def add_request_parameters(request, parameter_name: str | None, datetime: str | None, standard_name: str | None = None,
+                                 function: str | None = None, period: str | None = None):
     if parameter_name:
         parameter_name = split_and_strip(parameter_name)
         await verify_parameter_names(parameter_name)
@@ -140,6 +142,15 @@ async def add_parameter_name_and_datetime(request, parameter_name: str | None, d
         start, end = get_datetime_range(datetime)
         request.temporal_interval.start.CopyFrom(start)
         request.temporal_interval.end.CopyFrom(end)
+
+    if standard_name:
+        request.filter["standard_name"].values.extend(split_and_strip(standard_name))
+
+    if function:
+        request.filter["function"].values.extend(split_and_strip(function))
+
+    if period:
+        request.filter["period"].values.extend(split_and_strip(period))
 
 
 def get_z_range(z: str | None) -> (float, float):

@@ -25,7 +25,7 @@ from response_classes import GeoJsonResponse
 from shapely import geometry
 from shapely import wkt
 from shapely.errors import GEOSException
-from utilities import add_parameter_name_and_datetime, get_z_range, is_float
+from utilities import add_request_parameters, get_z_range, is_float
 from utilities import validate_bbox
 
 router = APIRouter(prefix="/collections/observations")
@@ -94,7 +94,7 @@ async def get_locations(
             [dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords],
         )
 
-    await add_parameter_name_and_datetime(ts_request, parameter_name, datetime)
+    await add_request_parameters(ts_request, parameter_name, datetime)
     ts_response = await get_obs_request(ts_request)
 
     if len(ts_response.observations) == 0:
@@ -198,7 +198,7 @@ async def get_data_location_id(
         included_response_fields=response_fields_needed_for_data_api,
     )
 
-    await add_parameter_name_and_datetime(request, parameter_name, datetime)
+    await add_request_parameters(request, parameter_name, datetime)
 
     response = await get_obs_request(request)
     return formatters.formatters[f](response)
@@ -257,7 +257,7 @@ async def get_data_position(
         included_response_fields=response_fields_needed_for_data_api,
     )
 
-    await add_parameter_name_and_datetime(request, parameter_name, datetime)
+    await add_request_parameters(request, parameter_name, datetime)
 
     coverages = await get_obs_request(request)
     coverages = formatters.formatters[f](coverages)
@@ -273,6 +273,7 @@ async def get_data_position(
 )
 async def get_data_area(
     coords: Annotated[str, Query(example="POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))")],
+    # TODO: Add new parameters to other data queries as well
     z: Annotated[
         str | None, Query(description="Define the vertical level to return data from", example="1.25/2.0")
     ] = None,
@@ -293,6 +294,9 @@ async def get_data_area(
     ] = None,
     datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
     f: Annotated[formatters.Formats, Query(description="Specify return format.")] = formatters.Formats.covjson,
+    standard_name: Annotated[str | None, Query(description="Comma seperated list of parameter standard_name to query ")] = None,
+    function: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation functions")] = None,
+    period: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation period")] = None,
 ):
     try:
         poly = wkt.loads(coords)
@@ -322,7 +326,7 @@ async def get_data_area(
         included_response_fields=response_fields_needed_for_data_api,
     )
 
-    await add_parameter_name_and_datetime(request, parameter_name, datetime)
+    await add_request_parameters(request, parameter_name, datetime, standard_name, function, period)
 
     grpc_response = await get_obs_request(request)
 
