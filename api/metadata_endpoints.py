@@ -111,7 +111,7 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
             "rodeo:standard_name": ts.standard_name,
             "rodeo:level": ts.level,  # TODO: Put this in "z" instead?
             "rodeo:function": ts.function,
-            "rodeo:period": ts.period
+            "rodeo:period": ts.period,
         }
 
         parameter = Parameter(
@@ -121,7 +121,7 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
                 label=ts.parameter_name,
             ),
             unit=Unit(label=ts.unit),
-            **custom_fields
+            **custom_fields,
         )
         # There might be parameter inconsistencies (e.g one station is reporting in Pa, and another in hPa)
         # We always return the "last" parameter definition found (in /locations and collection metadata).
@@ -161,21 +161,21 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
                     id="standard_names",
                     interval=[[standard_names[0], standard_names[-1]]],
                     values=standard_names,
-                    reference="https://vocab.nerc.ac.uk/standard_name/"
+                    reference="https://vocab.nerc.ac.uk/standard_name/",
                 ),
                 Custom(
                     id="functions",
                     interval=[[functions[0], functions[-1]]],
                     values=functions,
-                    reference="Time aggregation functions"
+                    reference="Time aggregation functions",
                 ),
                 Custom(
                     id="periods",
                     interval=[[periods[0], periods[-1]]],
                     values=periods,
-                    reference="https://en.wikipedia.org/wiki/ISO_8601#Durations"
+                    reference="https://en.wikipedia.org/wiki/ISO_8601#Durations",
                 ),
-            ]
+            ],
         ),
         data_queries=DataQueries(
             position=EDRQuery(

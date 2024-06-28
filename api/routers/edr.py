@@ -294,8 +294,12 @@ async def get_data_area(
     ] = None,
     datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
     f: Annotated[formatters.Formats, Query(description="Specify return format.")] = formatters.Formats.covjson,
-    standard_names: Annotated[str | None, Query(description="Comma seperated list of parameter standard_name to query ")] = None,
-    functions: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation functions")] = None,
+    standard_names: Annotated[
+        str | None, Query(description="Comma seperated list of parameter standard_name to query ")
+    ] = None,
+    functions: Annotated[
+        str | None, Query(description="Comma seperated list of parameter aggregation functions")
+    ] = None,
     periods: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation period")] = None,
 ):
     try:

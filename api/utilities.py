@@ -131,8 +131,14 @@ def validate_bbox(bbox: str) -> Tuple[float, float, float, float]:
 
 
 # TODO: Remove default arguments
-async def add_request_parameters(request, parameter_name: str | None, datetime: str | None, standard_names: str | None = None,
-                                 functions: str | None = None, periods: str | None = None):
+async def add_request_parameters(
+    request,
+    parameter_name: str | None,
+    datetime: str | None,
+    standard_names: str | None = None,
+    functions: str | None = None,
+    periods: str | None = None,
+):
     if parameter_name:
         parameter_name = split_and_strip(parameter_name)
         await verify_parameter_names(parameter_name)
