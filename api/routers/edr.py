@@ -294,9 +294,9 @@ async def get_data_area(
     ] = None,
     datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
     f: Annotated[formatters.Formats, Query(description="Specify return format.")] = formatters.Formats.covjson,
-    standard_name: Annotated[str | None, Query(description="Comma seperated list of parameter standard_name to query ")] = None,
-    function: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation functions")] = None,
-    period: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation period")] = None,
+    standard_names: Annotated[str | None, Query(description="Comma seperated list of parameter standard_name to query ")] = None,
+    functions: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation functions")] = None,
+    periods: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation period")] = None,
 ):
     try:
         poly = wkt.loads(coords)
@@ -326,7 +326,7 @@ async def get_data_area(
         included_response_fields=response_fields_needed_for_data_api,
     )
 
-    await add_request_parameters(request, parameter_name, datetime, standard_name, function, period)
+    await add_request_parameters(request, parameter_name, datetime, standard_names, functions, periods)
 
     grpc_response = await get_obs_request(request)
 

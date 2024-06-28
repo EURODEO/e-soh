@@ -11,6 +11,7 @@ from edr_pydantic.collections import Collection
 from edr_pydantic.collections import Collections
 from edr_pydantic.data_queries import DataQueries
 from edr_pydantic.data_queries import EDRQuery
+from edr_pydantic.extent import Custom
 from edr_pydantic.extent import Extent
 from edr_pydantic.extent import Spatial
 from edr_pydantic.extent import Temporal
@@ -24,6 +25,7 @@ from grpc_getter import get_extents_request
 from grpc_getter import get_ts_ag_request
 
 import datastore_pb2 as dstore
+from utilities import get_unique_values_for_metadata
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -133,6 +135,11 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
     interval_start = extent_response.temporal_extent.start.ToDatetime(tzinfo=timezone.utc)
     interval_end = extent_response.temporal_extent.end.ToDatetime(tzinfo=timezone.utc)
 
+    # TODO: Check if these make /collections significantly slower. If yes, do we need DB indices on these?
+    standard_names = await get_unique_values_for_metadata("standard_name")
+    functions = await get_unique_values_for_metadata("function")
+    periods = await get_unique_values_for_metadata("period")
+
     collection = Collection(
         id="observations",
         links=[
@@ -148,6 +155,26 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
                 values=[f"{datetime_to_iso_string(interval_start)}/{datetime_to_iso_string(interval_end)}"],
                 trs="datetime",
             ),
+            custom=[
+                Custom(
+                    id="standard_names",
+                    interval=[[standard_names[0], standard_names[-1]]],
+                    values=standard_names,
+                    reference="https://vocab.nerc.ac.uk/standard_name/"
+                ),
+                Custom(
+                    id="functions",
+                    interval=[[functions[0], functions[-1]]],
+                    values=functions,
+                    reference="Time aggregation functions"
+                ),
+                Custom(
+                    id="periods",
+                    interval=[[periods[0], periods[-1]]],
+                    values=periods,
+                    reference="https://en.wikipedia.org/wiki/ISO_8601#Durations"
+                ),
+            ]
         ),
         data_queries=DataQueries(
             position=EDRQuery(

@@ -131,8 +131,8 @@ def validate_bbox(bbox: str) -> Tuple[float, float, float, float]:
 
 
 # TODO: Remove default arguments
-async def add_request_parameters(request, parameter_name: str | None, datetime: str | None, standard_name: str | None = None,
-                                 function: str | None = None, period: str | None = None):
+async def add_request_parameters(request, parameter_name: str | None, datetime: str | None, standard_names: str | None = None,
+                                 functions: str | None = None, periods: str | None = None):
     if parameter_name:
         parameter_name = split_and_strip(parameter_name)
         await verify_parameter_names(parameter_name)
@@ -143,14 +143,14 @@ async def add_request_parameters(request, parameter_name: str | None, datetime: 
         request.temporal_interval.start.CopyFrom(start)
         request.temporal_interval.end.CopyFrom(end)
 
-    if standard_name:
-        request.filter["standard_name"].values.extend(split_and_strip(standard_name))
+    if standard_names:
+        request.filter["standard_name"].values.extend(split_and_strip(standard_names))
 
-    if function:
-        request.filter["function"].values.extend(split_and_strip(function))
+    if functions:
+        request.filter["function"].values.extend(split_and_strip(functions))
 
-    if period:
-        request.filter["period"].values.extend(split_and_strip(period))
+    if periods:
+        request.filter["period"].values.extend(split_and_strip(periods))
 
 
 def get_z_range(z: str | None) -> (float, float):
@@ -182,3 +182,9 @@ def is_float(element: any) -> bool:
         return True
     except ValueError:
         return False
+
+
+async def get_unique_values_for_metadata(field: str) -> list[str]:
+    request = dstore.GetTSAGRequest(attrs=[field])
+    response = await get_ts_ag_request(request)
+    return sorted([getattr(i.combo, field) for i in response.groups])
