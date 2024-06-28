@@ -290,7 +290,6 @@ async def get_data_position(
 )
 async def get_data_area(
     coords: Annotated[str, Query(example="POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))")],
-    # TODO: Add new parameters to other data queries as well
     z: Annotated[
         str | None, Query(description="Define the vertical level to return data from", example="1.25/2.0")
     ] = None,
