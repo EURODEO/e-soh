@@ -29,7 +29,7 @@ class IngestToPipeline:
 
         self.uuid_prefix = uuid_prefix
         self.client = None
-        if mqtt_conf["host"] is not None:
+        if mqtt_conf["host"]:
             try:
                 self.client = connect_mqtt(mqtt_conf)
             except Exception as e:
