@@ -21,6 +21,9 @@
         "conversion": {
             "minutes": {
                 "mul": 60
+            },
+            "h": {
+                "mul": 3600
             }
         }
     },
