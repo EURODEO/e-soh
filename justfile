@@ -38,10 +38,11 @@ copy-proto:
 # Check if the python version is 3.11 for reproducability
 _check-python-version:
     #!/usr/bin/env bash
-    set -euxo pipefail
+    set -euo pipefail
 
     # Get Python version
     python_version=$(python --version 2>&1 | cut -d' ' -f2)
+    echo "Using Python: \"$(which python)\" with version: ${python_version}" >&2
 
     # Extract major and minor version numbers
     major_version=$(echo "$python_version" | cut -d'.' -f1)
@@ -49,7 +50,7 @@ _check-python-version:
 
     # Check if Python version is greater than or equal to 3.11
     if [[ "$major_version" -lt 3 || ( "$major_version" -eq 3 && "$minor_version" -lt 11 ) ]]; then
-        echo "Error: Python version must be greater than or equal to 3.11"
+        echo "Error: Python version must be greater than or equal to 3.11" >&2
         exit 1
     fi
 
