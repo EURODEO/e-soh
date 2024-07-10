@@ -11,7 +11,7 @@ from edr_pydantic.collections import Collection
 from edr_pydantic.collections import Collections
 from edr_pydantic.data_queries import DataQueries
 from edr_pydantic.data_queries import EDRQuery
-from edr_pydantic.extent import Custom
+from edr_pydantic.extent import Custom, Vertical
 from edr_pydantic.extent import Extent
 from edr_pydantic.extent import Spatial
 from edr_pydantic.extent import Temporal
@@ -135,7 +135,8 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
     interval_start = extent_response.temporal_extent.start.ToDatetime(tzinfo=timezone.utc)
     interval_end = extent_response.temporal_extent.end.ToDatetime(tzinfo=timezone.utc)
 
-    # TODO: Check if these make /collections significantly slower. If yes, do we need DB indices on these?
+    # TODO: Check if these make /collections significantly slower. If yes, do we need DB indices on these? And parallel
+    levels = sorted(await get_unique_values_for_metadata("level"))
     standard_names = await get_unique_values_for_metadata("standard_name")
     functions = await get_unique_values_for_metadata("function")
     periods = await get_unique_values_for_metadata("period")
@@ -155,7 +156,12 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
                 values=[f"{datetime_to_iso_string(interval_start)}/{datetime_to_iso_string(interval_end)}"],
                 trs="datetime",
             ),
-            # TODO: Add Vertical extent (if we put `level in 'z' coordinate).
+            vertical=Vertical(
+                interval=[[levels[0], levels[-1]]],
+                values=levels,
+                # TODO: Replace by WKT that describes "above ground level"
+                vrs="customvrs"
+            ),
             custom=[
                 Custom(
                     id="standard_names",

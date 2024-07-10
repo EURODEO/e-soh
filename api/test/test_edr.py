@@ -71,7 +71,7 @@ def test_get_locations_with_empty_response():
         response = client.get("/collections/observations/locations")
 
         assert response.status_code == 404
-        assert response.json() == {"detail": "Query did not return any features."}
+        assert response.json() == {"detail": "Query did not return any locations."}
 
 
 def test_get_locations_with_query_params():

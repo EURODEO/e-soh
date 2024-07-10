@@ -55,6 +55,18 @@ def convert_to_covjson(observations):
     coverages = []
     data = [_collect_data(md.ts_mdata, md.obs_mdata) for md in observations]
 
+    vcs = {
+        "csAxes": [{
+            "name": {
+                "en": "Height"
+            },
+            "direction": "up",
+            "unit": {
+                "symbol": "m"
+            }
+        }]
+    }
+
     # Need to sort before using groupBy. Also sort on parameter_name to get consistently sorted output
     data.sort(key=lambda x: (x.dom, x.ts_mdata.parameter_name))
     for (lat, lon, level, times), group in groupby(data, lambda x: x.dom):
@@ -63,7 +75,10 @@ def convert_to_covjson(observations):
                 coordinates=["y", "x"],
                 system=ReferenceSystem(type="GeographicCRS", id="http://www.opengis.net/def/crs/EPSG/0/4326"),
             ),
-            # TODO: Add Vertical reference system (if we put `level in 'z' coordinate).
+            ReferenceSystemConnectionObject(
+                coordinates=["z"],
+                system=ReferenceSystem(type="VerticalCRS", description={"en": "Height above ground level"}, **{"cs": vcs}),
+            ),
             ReferenceSystemConnectionObject(
                 coordinates=["t"],
                 system=ReferenceSystem(type="TemporalRS", calendar="Gregorian"),
@@ -93,7 +108,7 @@ def convert_to_covjson(observations):
             parameters[parameter_id] = make_parameter(data.ts_mdata)
 
             ranges[parameter_id] = NdArray(
-                values=values_no_nan, axisNames=["t", "y", "x"], shape=[len(values_no_nan), 1, 1]
+                values=values_no_nan, axisNames=["t", "z", "y", "x"], shape=[len(values_no_nan), 1, 1, 1]
             )
 
         custom_fields = {"rodeo:wigosId": data.ts_mdata.platform}

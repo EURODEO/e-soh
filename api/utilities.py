@@ -154,6 +154,7 @@ async def add_request_parameters(
     if functions:
         request.filter["function"].values.extend(split_and_strip(functions))
 
+    # TODO: Do proper range filtering based on meaning of periods
     if periods:
         request.filter["period"].values.extend(split_and_strip(periods))
 

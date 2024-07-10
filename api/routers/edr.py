@@ -55,6 +55,9 @@ response_fields_needed_for_data_api = [
 # Maybe it would be better to only query a limited set of data instead of everything (meaning 24 hours)
 async def get_locations(
     bbox: Annotated[str | None, Query(example="5.0,52.0,6.0,52.1")] = None,
+    z: Annotated[
+        str | None, Query(description="Define the vertical level to return data from", example="1.25/2.0")
+    ] = None,
     datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
     parameter_name: Annotated[
         str | None,
@@ -71,6 +74,14 @@ async def get_locations(
             "air_temperature:1.5:maximum:PT10M",
         ),
     ] = None,
+    standard_names: Annotated[
+        str | None,
+        Query(description="Comma seperated list of parameter standard_name to query", example="air_temperature"),
+    ] = None,
+    functions: Annotated[
+        str | None, Query(description="Comma seperated list of parameter aggregation functions")
+    ] = None,
+    periods: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation periods")] = None,
 ) -> EDRFeatureCollection:  # Hack to use string
     ts_request = dstore.GetObsRequest(
         temporal_latest=True,
@@ -94,20 +105,22 @@ async def get_locations(
             [dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords],
         )
 
-    await add_request_parameters(ts_request, parameter_name, datetime)
-    ts_response = await get_obs_request(ts_request)
+    await add_request_parameters(ts_request, parameter_name, datetime, standard_names, functions, periods)
+    grpc_response = await get_obs_request(ts_request)
+    # TODO: Move this to datastore
+    observations = filter_observations_for_z(grpc_response.observations, z)
 
-    if len(ts_response.observations) == 0:
+    if len(observations) == 0:
         raise HTTPException(
             status_code=404,
-            detail="Query did not return any features.",
+            detail="Query did not return any locations.",
         )
 
     platform_parameters: DefaultDict[str, Set[str]] = defaultdict(set)
     platform_names: Dict[str, Set[str]] = defaultdict(set)
     platform_coordinates: Dict[str, Set[Tuple[float, float]]] = defaultdict(set)
     all_parameters: Dict[str, Parameter] = {}
-    for obs in ts_response.observations:
+    for obs in observations:
         platform_names[obs.ts_mdata.platform].add(
             obs.ts_mdata.platform_name if obs.ts_mdata.platform_name else f"platform-{obs.ts_mdata.platform}"
         )
