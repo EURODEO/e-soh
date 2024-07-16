@@ -79,9 +79,9 @@ class Content(BaseModel):
         elif "conversion" in std_name_unit_mapping[self.standard_name] and self.unit in (
             conversion := std_name_unit_mapping[self.standard_name]["conversion"]
         ):
-            self.value = (
-                f"{(float(self.value) + conversion[self.unit].get('add', 0)) * conversion[self.unit].get('mul', 1):.2f}"
-            )
+            number_of_descimals = len(self.value.split(".")[1]) if len(self.value.split(".")) == 2 else 0
+            tmp_value = (float(self.value) + conversion[self.unit].get("add", 0)) * conversion[self.unit].get("mul", 1)
+            self.value = f"{tmp_value:.{number_of_descimals}f}"
             self.unit = std_name_unit_mapping[self.standard_name]["unit"]
             return self
         else:
