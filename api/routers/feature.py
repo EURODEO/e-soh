@@ -105,7 +105,7 @@ async def search_timeseries(
 
     time_series = await get_obs_request(obs_request)
 
-    return formatters.metadata_formatters[f](time_series)
+    return formatters.metadata_formatters[f](time_series.observations)
 
 
 @router.get(
@@ -126,7 +126,7 @@ async def get_time_series_by_id(
     )
     time_series = await get_obs_request(obs_request)
 
-    return formatters.metadata_formatters[f](time_series)
+    return formatters.metadata_formatters[f](time_series.observations)
 
 
 @router.get("/dataset", tags=["E-SOH dataset"], include_in_schema=False)

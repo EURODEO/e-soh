@@ -17,6 +17,11 @@
                             52.0548617826
                         ]
                     },
+                    "z": {
+                        "values": [
+                            10.0
+                        ]
+                    },
                     "t": {
                         "values": [
                             "2022-12-31T22:50:00Z",
@@ -42,6 +47,30 @@
                     },
                     {
                         "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "VerticalCRS",
+                            "description": {
+                                "en": "Height above ground level"
+                            },
+                            "cs": {
+                                "csAxes": [
+                                    {
+                                        "name": {
+                                            "en": "Height"
+                                        },
+                                        "direction": "up",
+                                        "unit": {
+                                            "symbol": "m"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "coordinates": [
                             "t"
                         ],
                         "system": {
@@ -52,23 +81,6 @@
                 ]
             },
             "parameters": {
-                "relative_humidity:2.0:mean:PT1M": {
-                    "type": "Parameter",
-                    "description": {
-                        "en": "relative_humidity at 2.0m PT1M mean"
-                    },
-                    "observedProperty": {
-                        "id": "https://vocab.nerc.ac.uk/standard_name/relative_humidity",
-                        "label": {
-                            "en": "relative_humidity:2.0:mean:PT1M"
-                        }
-                    },
-                    "unit": {
-                        "label": {
-                            "en": "%"
-                        }
-                    }
-                },
                 "wind_speed:10:mean:PT10M": {
                     "type": "Parameter",
                     "description": {
@@ -84,43 +96,26 @@
                         "label": {
                             "en": "m s-1"
                         }
-                    }
+                    },
+                    "rodeo:standard_name": "wind_speed",
+                    "rodeo:level": 10.0,
+                    "rodeo:function": "mean",
+                    "rodeo:period": "PT10M"
                 }
             },
             "ranges": {
-                "relative_humidity:2.0:mean:PT1M": {
+                "wind_speed:10:mean:PT10M": {
                     "type": "NdArray",
                     "dataType": "float",
                     "axisNames": [
                         "t",
+                        "z",
                         "y",
                         "x"
                     ],
                     "shape": [
                         7,
                         1,
-                        1
-                    ],
-                    "values": [
-                        56.0,
-                        56.0,
-                        55.0,
-                        58.0,
-                        56.0,
-                        56.0,
-                        57.0
-                    ]
-                },
-                "wind_speed:10:mean:PT10M": {
-                    "type": "NdArray",
-                    "dataType": "float",
-                    "axisNames": [
-                        "t",
-                        "y",
-                        "x"
-                    ],
-                    "shape": [
-                        7,
                         1,
                         1
                     ],
@@ -145,12 +140,17 @@
                 "axes": {
                     "x": {
                         "values": [
-                            5.1797058644882
+                            5.8723225499118
                         ]
                     },
                     "y": {
                         "values": [
-                            52.098821802977
+                            52.0548617826
+                        ]
+                    },
+                    "z": {
+                        "values": [
+                            2.0
                         ]
                     },
                     "t": {
@@ -174,6 +174,30 @@
                         "system": {
                             "type": "GeographicCRS",
                             "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "VerticalCRS",
+                            "description": {
+                                "en": "Height above ground level"
+                            },
+                            "cs": {
+                                "csAxes": [
+                                    {
+                                        "name": {
+                                            "en": "Height"
+                                        },
+                                        "direction": "up",
+                                        "unit": {
+                                            "symbol": "m"
+                                        }
+                                    }
+                                ]
+                            }
                         }
                     },
                     {
@@ -203,8 +227,122 @@
                         "label": {
                             "en": "%"
                         }
+                    },
+                    "rodeo:standard_name": "relative_humidity",
+                    "rodeo:level": 2.0,
+                    "rodeo:function": "mean",
+                    "rodeo:period": "PT1M"
+                }
+            },
+            "ranges": {
+                "relative_humidity:2.0:mean:PT1M": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "z",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        7,
+                        1,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        56.0,
+                        56.0,
+                        55.0,
+                        58.0,
+                        56.0,
+                        56.0,
+                        57.0
+                    ]
+                }
+            },
+            "rodeo:wigosId": "0-20000-0-06275"
+        },
+        {
+            "type": "Coverage",
+            "domain": {
+                "type": "Domain",
+                "domainType": "PointSeries",
+                "axes": {
+                    "x": {
+                        "values": [
+                            5.1797058644882
+                        ]
+                    },
+                    "y": {
+                        "values": [
+                            52.098821802977
+                        ]
+                    },
+                    "z": {
+                        "values": [
+                            10.0
+                        ]
+                    },
+                    "t": {
+                        "values": [
+                            "2022-12-31T22:50:00Z",
+                            "2022-12-31T23:00:00Z",
+                            "2022-12-31T23:10:00Z",
+                            "2022-12-31T23:20:00Z",
+                            "2022-12-31T23:30:00Z",
+                            "2022-12-31T23:40:00Z",
+                            "2022-12-31T23:50:00Z"
+                        ]
                     }
                 },
+                "referencing": [
+                    {
+                        "coordinates": [
+                            "y",
+                            "x"
+                        ],
+                        "system": {
+                            "type": "GeographicCRS",
+                            "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "VerticalCRS",
+                            "description": {
+                                "en": "Height above ground level"
+                            },
+                            "cs": {
+                                "csAxes": [
+                                    {
+                                        "name": {
+                                            "en": "Height"
+                                        },
+                                        "direction": "up",
+                                        "unit": {
+                                            "symbol": "m"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "t"
+                        ],
+                        "system": {
+                            "type": "TemporalRS",
+                            "calendar": "Gregorian"
+                        }
+                    }
+                ]
+            },
+            "parameters": {
                 "wind_speed:10:mean:PT10M": {
                     "type": "Parameter",
                     "description": {
@@ -220,43 +358,26 @@
                         "label": {
                             "en": "m s-1"
                         }
-                    }
+                    },
+                    "rodeo:standard_name": "wind_speed",
+                    "rodeo:level": 10.0,
+                    "rodeo:function": "mean",
+                    "rodeo:period": "PT10M"
                 }
             },
             "ranges": {
-                "relative_humidity:2.0:mean:PT1M": {
+                "wind_speed:10:mean:PT10M": {
                     "type": "NdArray",
                     "dataType": "float",
                     "axisNames": [
                         "t",
+                        "z",
                         "y",
                         "x"
                     ],
                     "shape": [
                         7,
                         1,
-                        1
-                    ],
-                    "values": [
-                        58.0,
-                        58.0,
-                        58.0,
-                        58.0,
-                        58.0,
-                        58.0,
-                        59.0
-                    ]
-                },
-                "wind_speed:10:mean:PT10M": {
-                    "type": "NdArray",
-                    "dataType": "float",
-                    "axisNames": [
-                        "t",
-                        "y",
-                        "x"
-                    ],
-                    "shape": [
-                        7,
                         1,
                         1
                     ],
@@ -268,6 +389,137 @@
                         8.95,
                         9.17,
                         9.4
+                    ]
+                }
+            },
+            "rodeo:wigosId": "0-20000-0-06260"
+        },
+        {
+            "type": "Coverage",
+            "domain": {
+                "type": "Domain",
+                "domainType": "PointSeries",
+                "axes": {
+                    "x": {
+                        "values": [
+                            5.1797058644882
+                        ]
+                    },
+                    "y": {
+                        "values": [
+                            52.098821802977
+                        ]
+                    },
+                    "z": {
+                        "values": [
+                            2.0
+                        ]
+                    },
+                    "t": {
+                        "values": [
+                            "2022-12-31T22:50:00Z",
+                            "2022-12-31T23:00:00Z",
+                            "2022-12-31T23:10:00Z",
+                            "2022-12-31T23:20:00Z",
+                            "2022-12-31T23:30:00Z",
+                            "2022-12-31T23:40:00Z",
+                            "2022-12-31T23:50:00Z"
+                        ]
+                    }
+                },
+                "referencing": [
+                    {
+                        "coordinates": [
+                            "y",
+                            "x"
+                        ],
+                        "system": {
+                            "type": "GeographicCRS",
+                            "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "VerticalCRS",
+                            "description": {
+                                "en": "Height above ground level"
+                            },
+                            "cs": {
+                                "csAxes": [
+                                    {
+                                        "name": {
+                                            "en": "Height"
+                                        },
+                                        "direction": "up",
+                                        "unit": {
+                                            "symbol": "m"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "t"
+                        ],
+                        "system": {
+                            "type": "TemporalRS",
+                            "calendar": "Gregorian"
+                        }
+                    }
+                ]
+            },
+            "parameters": {
+                "relative_humidity:2.0:mean:PT1M": {
+                    "type": "Parameter",
+                    "description": {
+                        "en": "relative_humidity at 2.0m PT1M mean"
+                    },
+                    "observedProperty": {
+                        "id": "https://vocab.nerc.ac.uk/standard_name/relative_humidity",
+                        "label": {
+                            "en": "relative_humidity:2.0:mean:PT1M"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "%"
+                        }
+                    },
+                    "rodeo:standard_name": "relative_humidity",
+                    "rodeo:level": 2.0,
+                    "rodeo:function": "mean",
+                    "rodeo:period": "PT1M"
+                }
+            },
+            "ranges": {
+                "relative_humidity:2.0:mean:PT1M": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "z",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        7,
+                        1,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        58.0,
+                        58.0,
+                        58.0,
+                        58.0,
+                        58.0,
+                        58.0,
+                        59.0
                     ]
                 }
             },
@@ -290,7 +542,11 @@
                 "label": {
                     "en": "%"
                 }
-            }
+            },
+            "rodeo:standard_name": "relative_humidity",
+            "rodeo:level": 2.0,
+            "rodeo:function": "mean",
+            "rodeo:period": "PT1M"
         },
         "wind_speed:10:mean:PT10M": {
             "type": "Parameter",
@@ -307,7 +563,11 @@
                 "label": {
                     "en": "m s-1"
                 }
-            }
+            },
+            "rodeo:standard_name": "wind_speed",
+            "rodeo:level": 10.0,
+            "rodeo:function": "mean",
+            "rodeo:period": "PT10M"
         }
     }
 }

@@ -1,54 +1,320 @@
 {
-    "type": "Coverage",
-    "domain": {
-        "type": "Domain",
-        "domainType": "PointSeries",
-        "axes": {
-            "x": {
-                "values": [
-                    5.1797058644882
+    "type": "CoverageCollection",
+    "coverages": [
+        {
+            "type": "Coverage",
+            "domain": {
+                "type": "Domain",
+                "domainType": "PointSeries",
+                "axes": {
+                    "x": {
+                        "values": [
+                            5.1797058644882
+                        ]
+                    },
+                    "y": {
+                        "values": [
+                            52.098821802977
+                        ]
+                    },
+                    "z": {
+                        "values": [
+                            1.5
+                        ]
+                    },
+                    "t": {
+                        "values": [
+                            "2022-12-31T00:00:00Z",
+                            "2022-12-31T00:10:00Z",
+                            "2022-12-31T00:20:00Z",
+                            "2022-12-31T00:30:00Z",
+                            "2022-12-31T00:40:00Z",
+                            "2022-12-31T00:50:00Z",
+                            "2022-12-31T01:00:00Z",
+                            "2022-12-31T01:10:00Z"
+                        ]
+                    }
+                },
+                "referencing": [
+                    {
+                        "coordinates": [
+                            "y",
+                            "x"
+                        ],
+                        "system": {
+                            "type": "GeographicCRS",
+                            "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "VerticalCRS",
+                            "description": {
+                                "en": "Height above ground level"
+                            },
+                            "cs": {
+                                "csAxes": [
+                                    {
+                                        "name": {
+                                            "en": "Height"
+                                        },
+                                        "direction": "up",
+                                        "unit": {
+                                            "symbol": "m"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "t"
+                        ],
+                        "system": {
+                            "type": "TemporalRS",
+                            "calendar": "Gregorian"
+                        }
+                    }
                 ]
             },
-            "y": {
-                "values": [
-                    52.098821802977
-                ]
+            "parameters": {
+                "air_temperature:1.5:maximum:PT10M": {
+                    "type": "Parameter",
+                    "description": {
+                        "en": "air_temperature at 1.5m PT10M maximum"
+                    },
+                    "observedProperty": {
+                        "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
+                        "label": {
+                            "en": "air_temperature:1.5:maximum:PT10M"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "degrees Celsius"
+                        }
+                    },
+                    "rodeo:standard_name": "air_temperature",
+                    "rodeo:level": 1.5,
+                    "rodeo:function": "maximum",
+                    "rodeo:period": "PT10M"
+                }
             },
-            "t": {
-                "values": [
-                    "2022-12-31T00:00:00Z",
-                    "2022-12-31T00:10:00Z",
-                    "2022-12-31T00:20:00Z",
-                    "2022-12-31T00:30:00Z",
-                    "2022-12-31T00:40:00Z",
-                    "2022-12-31T00:50:00Z",
-                    "2022-12-31T01:00:00Z",
-                    "2022-12-31T01:10:00Z"
-                ]
-            }
+            "ranges": {
+                "air_temperature:1.5:maximum:PT10M": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "z",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        8,
+                        1,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        12.1,
+                        12.1,
+                        12.2,
+                        12.1,
+                        12.1,
+                        12.1,
+                        12.1,
+                        12.0
+                    ]
+                }
+            },
+            "rodeo:wigosId": "0-20000-0-06260"
         },
-        "referencing": [
-            {
-                "coordinates": [
-                    "y",
-                    "x"
-                ],
-                "system": {
-                    "type": "GeographicCRS",
-                    "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+        {
+            "type": "Coverage",
+            "domain": {
+                "type": "Domain",
+                "domainType": "PointSeries",
+                "axes": {
+                    "x": {
+                        "values": [
+                            5.1797058644882
+                        ]
+                    },
+                    "y": {
+                        "values": [
+                            52.098821802977
+                        ]
+                    },
+                    "z": {
+                        "values": [
+                            2.0
+                        ]
+                    },
+                    "t": {
+                        "values": [
+                            "2022-12-31T00:00:00Z",
+                            "2022-12-31T00:10:00Z",
+                            "2022-12-31T00:20:00Z",
+                            "2022-12-31T00:30:00Z",
+                            "2022-12-31T00:40:00Z",
+                            "2022-12-31T00:50:00Z",
+                            "2022-12-31T01:00:00Z",
+                            "2022-12-31T01:10:00Z"
+                        ]
+                    }
+                },
+                "referencing": [
+                    {
+                        "coordinates": [
+                            "y",
+                            "x"
+                        ],
+                        "system": {
+                            "type": "GeographicCRS",
+                            "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "z"
+                        ],
+                        "system": {
+                            "type": "VerticalCRS",
+                            "description": {
+                                "en": "Height above ground level"
+                            },
+                            "cs": {
+                                "csAxes": [
+                                    {
+                                        "name": {
+                                            "en": "Height"
+                                        },
+                                        "direction": "up",
+                                        "unit": {
+                                            "symbol": "m"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "coordinates": [
+                            "t"
+                        ],
+                        "system": {
+                            "type": "TemporalRS",
+                            "calendar": "Gregorian"
+                        }
+                    }
+                ]
+            },
+            "parameters": {
+                "relative_humidity:2.0:mean:PT1M": {
+                    "type": "Parameter",
+                    "description": {
+                        "en": "relative_humidity at 2.0m PT1M mean"
+                    },
+                    "observedProperty": {
+                        "id": "https://vocab.nerc.ac.uk/standard_name/relative_humidity",
+                        "label": {
+                            "en": "relative_humidity:2.0:mean:PT1M"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "%"
+                        }
+                    },
+                    "rodeo:standard_name": "relative_humidity",
+                    "rodeo:level": 2.0,
+                    "rodeo:function": "mean",
+                    "rodeo:period": "PT1M"
+                },
+                "wind_from_direction:2.0:mean:PT10M": {
+                    "type": "Parameter",
+                    "description": {
+                        "en": "wind_from_direction at 2.0m PT10M mean"
+                    },
+                    "observedProperty": {
+                        "id": "https://vocab.nerc.ac.uk/standard_name/wind_from_direction",
+                        "label": {
+                            "en": "wind_from_direction:2.0:mean:PT10M"
+                        }
+                    },
+                    "unit": {
+                        "label": {
+                            "en": "degree"
+                        }
+                    },
+                    "rodeo:standard_name": "wind_from_direction",
+                    "rodeo:level": 2.0,
+                    "rodeo:function": "mean",
+                    "rodeo:period": "PT10M"
                 }
             },
-            {
-                "coordinates": [
-                    "t"
-                ],
-                "system": {
-                    "type": "TemporalRS",
-                    "calendar": "Gregorian"
+            "ranges": {
+                "relative_humidity:2.0:mean:PT1M": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "z",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        8,
+                        1,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        95.0,
+                        94.0,
+                        95.0,
+                        95.0,
+                        95.0,
+                        95.0,
+                        94.0,
+                        94.0
+                    ]
+                },
+                "wind_from_direction:2.0:mean:PT10M": {
+                    "type": "NdArray",
+                    "dataType": "float",
+                    "axisNames": [
+                        "t",
+                        "z",
+                        "y",
+                        "x"
+                    ],
+                    "shape": [
+                        8,
+                        1,
+                        1,
+                        1
+                    ],
+                    "values": [
+                        224.3,
+                        226.0,
+                        228.3,
+                        230.3,
+                        234.9,
+                        237.9,
+                        235.4,
+                        240.0
+                    ]
                 }
-            }
-        ]
-    },
+            },
+            "rodeo:wigosId": "0-20000-0-06260"
+        }
+    ],
     "parameters": {
         "air_temperature:1.5:maximum:PT10M": {
             "type": "Parameter",
@@ -65,7 +331,11 @@
                 "label": {
                     "en": "degrees Celsius"
                 }
-            }
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 1.5,
+            "rodeo:function": "maximum",
+            "rodeo:period": "PT10M"
         },
         "relative_humidity:2.0:mean:PT1M": {
             "type": "Parameter",
@@ -82,7 +352,11 @@
                 "label": {
                     "en": "%"
                 }
-            }
+            },
+            "rodeo:standard_name": "relative_humidity",
+            "rodeo:level": 2.0,
+            "rodeo:function": "mean",
+            "rodeo:period": "PT1M"
         },
         "wind_from_direction:2.0:mean:PT10M": {
             "type": "Parameter",
@@ -99,82 +373,11 @@
                 "label": {
                     "en": "degree"
                 }
-            }
+            },
+            "rodeo:standard_name": "wind_from_direction",
+            "rodeo:level": 2.0,
+            "rodeo:function": "mean",
+            "rodeo:period": "PT10M"
         }
-    },
-    "ranges": {
-        "air_temperature:1.5:maximum:PT10M": {
-            "type": "NdArray",
-            "dataType": "float",
-            "axisNames": [
-                "t",
-                "y",
-                "x"
-            ],
-            "shape": [
-                8,
-                1,
-                1
-            ],
-            "values": [
-                12.1,
-                12.1,
-                12.2,
-                12.1,
-                12.1,
-                12.1,
-                12.1,
-                12.0
-            ]
-        },
-        "relative_humidity:2.0:mean:PT1M": {
-            "type": "NdArray",
-            "dataType": "float",
-            "axisNames": [
-                "t",
-                "y",
-                "x"
-            ],
-            "shape": [
-                8,
-                1,
-                1
-            ],
-            "values": [
-                95.0,
-                94.0,
-                95.0,
-                95.0,
-                95.0,
-                95.0,
-                94.0,
-                94.0
-            ]
-        },
-        "wind_from_direction:2.0:mean:PT10M": {
-            "type": "NdArray",
-            "dataType": "float",
-            "axisNames": [
-                "t",
-                "y",
-                "x"
-            ],
-            "shape": [
-                8,
-                1,
-                1
-            ],
-            "values": [
-                224.3,
-                226.0,
-                228.3,
-                230.3,
-                234.9,
-                237.9,
-                235.4,
-                240.0
-            ]
-        }
-    },
-    "rodeo:wigosId": "0-20000-0-06260"
+    }
 }

@@ -21,6 +21,13 @@ def load_json(expected_path):
     return expected_json
 
 
+# Useful when fixing tests. Don't forget to check the diff!!
+def write_json(path, data):
+    file_path = Path(Path(__file__).parent, path).resolve()
+    with open(file_path, "w") as file:
+        json.dump(data.json(), file, indent=4)
+
+
 def actual_response_is_expected_response(actual_response, expected_json, **kwargs):
     diff = DeepDiff(expected_json, actual_response.json(), **kwargs)
     assert diff == {}
