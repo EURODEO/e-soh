@@ -8,12 +8,12 @@
         "symbol": "W/m2"
     },
     "downwelling_longwave_flux_in_air": {
-        "unit": "kJ/m2",
+        "unit": "W/m2",
         "alias": [
-            "kJm-2",
-            "kJ m-2"
+            "Wm-2",
+            "W m-2"
         ],
-        "symbol": "kJ/m2"
+        "symbol": "W/m2"
     },
     "duration_of_sunshine": {
         "unit": "s",
@@ -36,7 +36,42 @@
         "alias": [
             "W s m-2",
             "Ws m-2",
-            "Wsm-2"
+            "Wsm-2",
+            "J m-2",
+            "Jm-2"
+        ],
+        "symbol": "Ws/m2"
+    },
+    "integral_wrt_time_of_surface_downwelling_shortwave_flux_in_air": {
+        "unit": "Ws/m2",
+        "alias": [
+            "W s m-2",
+            "Ws m-2",
+            "Wsm-2",
+            "J m-2",
+            "Jm-2"
+        ],
+        "symbol": "Ws/m2"
+    },
+    "integral_wrt_time_of_surface_net_downward_longwave_flux": {
+        "unit": "Ws/m2",
+        "alias": [
+            "W s m-2",
+            "Ws m-2",
+            "Wsm-2",
+            "J m-2",
+            "Jm-2"
+        ],
+        "symbol": "Ws/m2"
+    },
+    "integral_wrt_time_of_surface_net_downward_shortwave_flux": {
+        "unit": "Ws/m2",
+        "alias": [
+            "W s m-2",
+            "Ws m-2",
+            "Wsm-2",
+            "J m-2",
+            "Jm-2"
         ],
         "symbol": "Ws/m2"
     },
@@ -278,28 +313,28 @@
         }
     },
     "surface_diffuse_downwelling_shortwave_flux_in_air": {
-        "unit": "kJ/m2",
+        "unit": "W/m2",
         "alias": [
-            "kJm-2",
-            "kJ m-2"
+            "Wm-2",
+            "W m-2"
         ],
-        "symbol": "kJ/m2"
+        "symbol": "W/m2"
     },
     "surface_direct_downwelling_shortwave_flux_in_air": {
-        "unit": "kJ/m2",
+        "unit": "W/m2",
         "alias": [
-            "kJm-2",
-            "kJ m-2"
+            "Wm-2",
+            "W m-2"
         ],
-        "symbol": "kJ/m2"
+        "symbol": "W/m2"
     },
     "surface_downwelling_longwave_flux_in_air": {
-        "unit": "kJ/m2",
+        "unit": "W/m2",
         "alias": [
-            "kJm-2",
-            "kJ m-2"
+            "Wm-2",
+            "W m-2"
         ],
-        "symbol": "kJ/m2"
+        "symbol": "W/m2"
     },
     "surface_downwelling_photosynthetic_photon_flux_in_air": {
         "unit": "umol/sm2",
@@ -318,20 +353,20 @@
         "symbol": "mE/m2"
     },
     "surface_downwelling_shortwave_flux_in_air": {
-        "unit": "kJ/m2",
+        "unit": "W/m2",
         "alias": [
-            "kJm-2",
-            "kJ m-2"
+            "Wm-2",
+            "W m-2"
         ],
-        "symbol": "kJ/m2"
+        "symbol": "W/m2"
     },
     "surface_net_downward_radiative_flux": {
-        "unit": "kJ/m2",
+        "unit": "W/m2",
         "alias": [
-            "kJm-2",
-            "kJ m-2"
+            "Wm-2",
+            "W m-2"
         ],
-        "symbol": "kJ/m2"
+        "symbol": "W/m2"
     },
     "surface_snow_thickness": {
         "unit": "cm",
@@ -355,12 +390,12 @@
         "symbol": "W/m2"
     },
     "surface_upwelling_radiance_in_air": {
-        "unit": "kJ/m2",
+        "unit": "W/m2/sr",
         "alias": [
-            "kJm-2",
-            "kJ m-2"
+            "Wm-2sr-1",
+            "W m-2 sr-1"
         ],
-        "symbol": "kJ/m2"
+        "symbol": "W/m2/sr"
     },
     "surface_upwelling_shortwave_flux_in_air": {
         "unit": "W/m2",
