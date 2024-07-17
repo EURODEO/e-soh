@@ -36,7 +36,42 @@
         "alias": [
             "W s m-2",
             "Ws m-2",
-            "Wsm-2"
+            "Wsm-2",
+            "J m-2",
+            "Jm-2"
+        ],
+        "symbol": "Ws/m2"
+    },
+    "integral_wrt_time_of_surface_downwelling_shortwave_flux_in_air": {
+        "unit": "Ws/m2",
+        "alias": [
+            "W s m-2",
+            "Ws m-2",
+            "Wsm-2",
+            "J m-2",
+            "Jm-2"
+        ],
+        "symbol": "Ws/m2"
+    },
+    "integral_wrt_time_of_surface_net_downward_longwave_flux": {
+        "unit": "Ws/m2",
+        "alias": [
+            "W s m-2",
+            "Ws m-2",
+            "Wsm-2",
+            "J m-2",
+            "Jm-2"
+        ],
+        "symbol": "Ws/m2"
+    },
+    "integral_wrt_time_of_surface_net_downward_shortwave_flux": {
+        "unit": "Ws/m2",
+        "alias": [
+            "W s m-2",
+            "Ws m-2",
+            "Wsm-2",
+            "J m-2",
+            "Jm-2"
         ],
         "symbol": "Ws/m2"
     },
