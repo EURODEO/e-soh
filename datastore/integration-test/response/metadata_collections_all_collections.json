@@ -42,7 +42,7 @@
                     "interval": [
                         [
                             "0",
-                            "third"
+                            "2.50"
                         ]
                     ],
                     "values": [
@@ -53,10 +53,7 @@
                         "1.80",
                         "10",
                         "2.0",
-                        "2.50",
-                        "first",
-                        "second",
-                        "third"
+                        "2.50"
                     ],
                     "vrs": "customvrs"
                 },
@@ -399,48 +396,48 @@
                     "rodeo:function": "point",
                     "rodeo:period": "PT0S"
                 },
-                "cloud_base_altitude:first:point:PT0S": {
+                "cloud_base_altitude:0:point:PT0S": {
                     "type": "Parameter",
-                    "description": "cloud_base_altitude at firstm PT0S point",
+                    "description": "cloud_base_altitude at 0m PT0S point",
                     "unit": {
                         "label": "ft"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/cloud_base_altitude",
-                        "label": "cloud_base_altitude:first:point:PT0S"
+                        "label": "cloud_base_altitude:0:point:PT0S"
                     },
                     "rodeo:standard_name": "cloud_base_altitude",
                     "rodeo:level": 0.0,
                     "rodeo:function": "point",
                     "rodeo:period": "PT0S"
                 },
-                "cloud_base_altitude:second:point:PT0S": {
+                "cloud_base_altitude:1:point:PT0S": {
                     "type": "Parameter",
-                    "description": "cloud_base_altitude at secondm PT0S point",
+                    "description": "cloud_base_altitude at 1m PT0S point",
                     "unit": {
                         "label": "ft"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/cloud_base_altitude",
-                        "label": "cloud_base_altitude:second:point:PT0S"
+                        "label": "cloud_base_altitude:1:point:PT0S"
                     },
                     "rodeo:standard_name": "cloud_base_altitude",
-                    "rodeo:level": 0.0,
+                    "rodeo:level": 1.0,
                     "rodeo:function": "point",
                     "rodeo:period": "PT0S"
                 },
-                "cloud_base_altitude:third:point:PT0S": {
+                "cloud_base_altitude:2.0:point:PT0S": {
                     "type": "Parameter",
-                    "description": "cloud_base_altitude at thirdm PT0S point",
+                    "description": "cloud_base_altitude at 2.0m PT0S point",
                     "unit": {
                         "label": "ft"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/cloud_base_altitude",
-                        "label": "cloud_base_altitude:third:point:PT0S"
+                        "label": "cloud_base_altitude:2.0:point:PT0S"
                     },
                     "rodeo:standard_name": "cloud_base_altitude",
-                    "rodeo:level": 0.0,
+                    "rodeo:level": 2.0,
                     "rodeo:function": "point",
                     "rodeo:period": "PT0S"
                 },
@@ -459,48 +456,48 @@
                     "rodeo:function": "point",
                     "rodeo:period": "PT0S"
                 },
-                "cloud_cover:first:point:PT0S": {
+                "cloud_cover:0:point:PT0S": {
                     "type": "Parameter",
-                    "description": "cloud_cover at firstm PT0S point",
+                    "description": "cloud_cover at 0m PT0S point",
                     "unit": {
                         "label": "octa"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/cloud_cover",
-                        "label": "cloud_cover:first:point:PT0S"
+                        "label": "cloud_cover:0:point:PT0S"
                     },
                     "rodeo:standard_name": "cloud_cover",
                     "rodeo:level": 0.0,
                     "rodeo:function": "point",
                     "rodeo:period": "PT0S"
                 },
-                "cloud_cover:second:point:PT0S": {
+                "cloud_cover:1:point:PT0S": {
                     "type": "Parameter",
-                    "description": "cloud_cover at secondm PT0S point",
+                    "description": "cloud_cover at 1m PT0S point",
                     "unit": {
                         "label": "octa"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/cloud_cover",
-                        "label": "cloud_cover:second:point:PT0S"
+                        "label": "cloud_cover:1:point:PT0S"
                     },
                     "rodeo:standard_name": "cloud_cover",
-                    "rodeo:level": 0.0,
+                    "rodeo:level": 1.0,
                     "rodeo:function": "point",
                     "rodeo:period": "PT0S"
                 },
-                "cloud_cover:third:point:PT0S": {
+                "cloud_cover:2.0:point:PT0S": {
                     "type": "Parameter",
-                    "description": "cloud_cover at thirdm PT0S point",
+                    "description": "cloud_cover at 2.0m PT0S point",
                     "unit": {
                         "label": "octa"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/cloud_cover",
-                        "label": "cloud_cover:third:point:PT0S"
+                        "label": "cloud_cover:2.0:point:PT0S"
                     },
                     "rodeo:standard_name": "cloud_cover",
-                    "rodeo:level": 0.0,
+                    "rodeo:level": 2.0,
                     "rodeo:function": "point",
                     "rodeo:period": "PT0S"
                 },

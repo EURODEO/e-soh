@@ -157,6 +157,7 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
                 trs="datetime",
             ),
             vertical=Vertical(
+                # TODO: Order levels as numbers, not alphabetically
                 interval=[[levels[0], levels[-1]]],
                 values=levels,
                 # TODO: Replace by WKT that describes "above ground level"
