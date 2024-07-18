@@ -55,9 +55,6 @@ response_fields_needed_for_data_api = [
 # Maybe it would be better to only query a limited set of data instead of everything (meaning 24 hours)
 async def get_locations(
     bbox: Annotated[str | None, Query(example="5.0,52.0,6.0,52.1")] = None,
-    # z: Annotated[
-    #     str | None, Query(description="Define the vertical level to return data from", example="1.25/2.0")
-    # ] = None,
     datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
     parameter_name: Annotated[
         str | None,
@@ -190,9 +187,6 @@ async def get_locations(
 )
 async def get_data_location_id(
     location_id: Annotated[str, Path(example="0-20000-0-06260")],
-    # z: Annotated[
-    #     str | None, Query(description="Define the vertical level to return data from", example="1.25/2.0")
-    # ] = None,
     parameter_name: Annotated[
         str | None,
         Query(
@@ -243,9 +237,6 @@ async def get_data_location_id(
 )
 async def get_data_position(
     coords: Annotated[str, Query(example="POINT(5.179705 52.0988218)")],
-    # z: Annotated[
-    #     str | None, Query(description="Define the vertical level to return data from", example="1.25/2.0")
-    # ] = None,
     parameter_name: Annotated[
         str | None,
         Query(
@@ -315,9 +306,6 @@ async def get_data_position(
 )
 async def get_data_area(
     coords: Annotated[str, Query(example="POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))")],
-    # z: Annotated[
-    #     str | None, Query(description="Define the vertical level to return data from", example="1.25/2.0")
-    # ] = None,
     parameter_name: Annotated[
         str | None,
         Query(
