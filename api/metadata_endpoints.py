@@ -11,7 +11,7 @@ from edr_pydantic.collections import Collection
 from edr_pydantic.collections import Collections
 from edr_pydantic.data_queries import DataQueries
 from edr_pydantic.data_queries import EDRQuery
-from edr_pydantic.extent import Custom, Vertical
+from edr_pydantic.extent import Custom
 from edr_pydantic.extent import Extent
 from edr_pydantic.extent import Spatial
 from edr_pydantic.extent import Temporal
@@ -156,19 +156,19 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
                 values=[f"{datetime_to_iso_string(interval_start)}/{datetime_to_iso_string(interval_end)}"],
                 trs="datetime",
             ),
-            vertical=Vertical(
-                # TODO: Order levels as numbers, not alphabetically
-                interval=[[levels[0], levels[-1]]],
-                values=levels,
-                # TODO: Replace by WKT that describes "above ground level"
-                vrs="customvrs"
-            ),
             custom=[
                 Custom(
                     id="standard_names",
                     interval=[[standard_names[0], standard_names[-1]]],
                     values=standard_names,
                     reference="https://vocab.nerc.ac.uk/standard_name/",
+                ),
+                Custom(
+                    id="levels",
+                    # TODO: Order levels as numbers, not alphabetically
+                    interval=[[levels[0], levels[-1]]],
+                    values=levels,
+                    reference="Height of measurement above ground level",
                 ),
                 Custom(
                     id="functions",

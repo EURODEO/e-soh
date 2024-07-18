@@ -38,25 +38,6 @@
                     ],
                     "trs": "datetime"
                 },
-                "vertical": {
-                    "interval": [
-                        [
-                            "0",
-                            "2.50"
-                        ]
-                    ],
-                    "values": [
-                        "0",
-                        "0.1",
-                        "1",
-                        "1.5",
-                        "1.80",
-                        "10",
-                        "2.0",
-                        "2.50"
-                    ],
-                    "vrs": "customvrs"
-                },
                 "custom": [
                     {
                         "id": "standard_names",
@@ -87,6 +68,26 @@
                             "wind_speed_of_gust"
                         ],
                         "reference": "https://vocab.nerc.ac.uk/standard_name/"
+                    },
+                    {
+                        "id": "levels",
+                        "interval": [
+                            [
+                                "0",
+                                "2.50"
+                            ]
+                        ],
+                        "values": [
+                            "0",
+                            "0.1",
+                            "1",
+                            "1.5",
+                            "1.80",
+                            "10",
+                            "2.0",
+                            "2.50"
+                        ],
+                        "reference": "Height of measurement above ground level"
                     },
                     {
                         "id": "functions",
@@ -381,21 +382,6 @@
                     "rodeo:function": "minimum",
                     "rodeo:period": "PT6H"
                 },
-                "cloud_base_altitude:2.0:point:PT0S": {
-                    "type": "Parameter",
-                    "description": "cloud_base_altitude at 2.0m PT0S point",
-                    "unit": {
-                        "label": "ft"
-                    },
-                    "observedProperty": {
-                        "id": "https://vocab.nerc.ac.uk/standard_name/cloud_base_altitude",
-                        "label": "cloud_base_altitude:2.0:point:PT0S"
-                    },
-                    "rodeo:standard_name": "cloud_base_altitude",
-                    "rodeo:level": 2.0,
-                    "rodeo:function": "point",
-                    "rodeo:period": "PT0S"
-                },
                 "cloud_base_altitude:0:point:PT0S": {
                     "type": "Parameter",
                     "description": "cloud_base_altitude at 0m PT0S point",
@@ -437,21 +423,6 @@
                         "label": "cloud_base_altitude:2.0:point:PT0S"
                     },
                     "rodeo:standard_name": "cloud_base_altitude",
-                    "rodeo:level": 2.0,
-                    "rodeo:function": "point",
-                    "rodeo:period": "PT0S"
-                },
-                "cloud_cover:2.0:point:PT0S": {
-                    "type": "Parameter",
-                    "description": "cloud_cover at 2.0m PT0S point",
-                    "unit": {
-                        "label": "octa"
-                    },
-                    "observedProperty": {
-                        "id": "https://vocab.nerc.ac.uk/standard_name/cloud_cover",
-                        "label": "cloud_cover:2.0:point:PT0S"
-                    },
-                    "rodeo:standard_name": "cloud_cover",
                     "rodeo:level": 2.0,
                     "rodeo:function": "point",
                     "rodeo:period": "PT0S"

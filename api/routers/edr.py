@@ -55,9 +55,9 @@ response_fields_needed_for_data_api = [
 # Maybe it would be better to only query a limited set of data instead of everything (meaning 24 hours)
 async def get_locations(
     bbox: Annotated[str | None, Query(example="5.0,52.0,6.0,52.1")] = None,
-    z: Annotated[
-        str | None, Query(description="Define the vertical level to return data from", example="1.25/2.0")
-    ] = None,
+    # z: Annotated[
+    #     str | None, Query(description="Define the vertical level to return data from", example="1.25/2.0")
+    # ] = None,
     datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
     parameter_name: Annotated[
         str | None,
@@ -77,6 +77,10 @@ async def get_locations(
     standard_names: Annotated[
         str | None,
         Query(description="Comma seperated list of parameter standard_name to query", example="air_temperature"),
+    ] = None,
+    levels: Annotated[
+        str | None,
+        Query(description="Define the vertical level to return data from", example="1.25/2.0"),
     ] = None,
     functions: Annotated[
         str | None, Query(description="Comma seperated list of parameter aggregation functions")
@@ -108,7 +112,7 @@ async def get_locations(
     await add_request_parameters(ts_request, parameter_name, datetime, standard_names, functions, periods)
     grpc_response = await get_obs_request(ts_request)
     # TODO: Move this to datastore
-    observations = filter_observations_for_z(grpc_response.observations, z)
+    observations = filter_observations_for_z(grpc_response.observations, levels)
 
     if len(observations) == 0:
         raise HTTPException(
@@ -186,9 +190,9 @@ async def get_locations(
 )
 async def get_data_location_id(
     location_id: Annotated[str, Path(example="0-20000-0-06260")],
-    z: Annotated[
-        str | None, Query(description="Define the vertical level to return data from", example="1.25/2.0")
-    ] = None,
+    # z: Annotated[
+    #     str | None, Query(description="Define the vertical level to return data from", example="1.25/2.0")
+    # ] = None,
     parameter_name: Annotated[
         str | None,
         Query(
@@ -203,6 +207,10 @@ async def get_data_location_id(
     standard_names: Annotated[
         str | None,
         Query(description="Comma seperated list of parameter standard_name to query", example="air_temperature"),
+    ] = None,
+    levels: Annotated[
+        str | None,
+        Query(description="Define the vertical level to return data from", example="1.25/2.0"),
     ] = None,
     functions: Annotated[
         str | None, Query(description="Comma seperated list of parameter aggregation functions")
@@ -220,7 +228,7 @@ async def get_data_location_id(
 
     grpc_response = await get_obs_request(request)
     # TODO: Move this to datastore
-    observations = filter_observations_for_z(grpc_response.observations, z)
+    observations = filter_observations_for_z(grpc_response.observations, levels)
     response = formatters.formatters[f](observations)
 
     return response
@@ -235,9 +243,9 @@ async def get_data_location_id(
 )
 async def get_data_position(
     coords: Annotated[str, Query(example="POINT(5.179705 52.0988218)")],
-    z: Annotated[
-        str | None, Query(description="Define the vertical level to return data from", example="1.25/2.0")
-    ] = None,
+    # z: Annotated[
+    #     str | None, Query(description="Define the vertical level to return data from", example="1.25/2.0")
+    # ] = None,
     parameter_name: Annotated[
         str | None,
         Query(
@@ -252,6 +260,10 @@ async def get_data_position(
     standard_names: Annotated[
         str | None,
         Query(description="Comma seperated list of parameter standard_name to query", example="air_temperature"),
+    ] = None,
+    levels: Annotated[
+        str | None,
+        Query(description="Define the vertical level to return data from", example="1.25/2.0"),
     ] = None,
     functions: Annotated[
         str | None, Query(description="Comma seperated list of parameter aggregation functions")
@@ -288,7 +300,7 @@ async def get_data_position(
 
     grpc_response = await get_obs_request(request)
     # TODO: Move this to datastore
-    observations = filter_observations_for_z(grpc_response.observations, z)
+    observations = filter_observations_for_z(grpc_response.observations, levels)
     response = formatters.formatters[f](observations)
 
     return response
@@ -303,9 +315,9 @@ async def get_data_position(
 )
 async def get_data_area(
     coords: Annotated[str, Query(example="POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))")],
-    z: Annotated[
-        str | None, Query(description="Define the vertical level to return data from", example="1.25/2.0")
-    ] = None,
+    # z: Annotated[
+    #     str | None, Query(description="Define the vertical level to return data from", example="1.25/2.0")
+    # ] = None,
     parameter_name: Annotated[
         str | None,
         Query(
@@ -320,6 +332,10 @@ async def get_data_area(
     standard_names: Annotated[
         str | None,
         Query(description="Comma seperated list of parameter standard_name to query", example="air_temperature"),
+    ] = None,
+    levels: Annotated[
+        str | None,
+        Query(description="Define the vertical level to return data from", example="1.25/2.0"),
     ] = None,
     functions: Annotated[
         str | None, Query(description="Comma seperated list of parameter aggregation functions")
@@ -357,7 +373,7 @@ async def get_data_area(
 
     grpc_response = await get_obs_request(request)
     # TODO: Move this to datastore
-    observations = filter_observations_for_z(grpc_response.observations, z)
+    observations = filter_observations_for_z(grpc_response.observations, levels)
     response = formatters.formatters[f](observations)
 
     return response

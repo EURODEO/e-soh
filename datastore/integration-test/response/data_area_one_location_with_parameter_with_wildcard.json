@@ -14,11 +14,6 @@
                     52.505333893732
                 ]
             },
-            "z": {
-                "values": [
-                    2.0
-                ]
-            },
             "t": {
                 "values": [
                     "2022-12-31T00:00:00Z"
@@ -34,30 +29,6 @@
                 "system": {
                     "type": "GeographicCRS",
                     "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
-                }
-            },
-            {
-                "coordinates": [
-                    "z"
-                ],
-                "system": {
-                    "type": "VerticalCRS",
-                    "description": {
-                        "en": "Height above ground level"
-                    },
-                    "cs": {
-                        "csAxes": [
-                            {
-                                "name": {
-                                    "en": "Height"
-                                },
-                                "direction": "up",
-                                "unit": {
-                                    "symbol": "m"
-                                }
-                            }
-                        ]
-                    }
                 }
             },
             {
@@ -121,12 +92,10 @@
             "dataType": "float",
             "axisNames": [
                 "t",
-                "z",
                 "y",
                 "x"
             ],
             "shape": [
-                1,
                 1,
                 1,
                 1
@@ -140,12 +109,10 @@
             "dataType": "float",
             "axisNames": [
                 "t",
-                "z",
                 "y",
                 "x"
             ],
             "shape": [
-                1,
                 1,
                 1,
                 1

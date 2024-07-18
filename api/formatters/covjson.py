@@ -24,7 +24,7 @@ from utilities import is_float
 
 # mime_type = "application/prs.coverage+json"
 
-Dom = namedtuple("Dom", ["lat", "lon", "level", "times"])
+Dom = namedtuple("Dom", ["lat", "lon", "times"])
 Data = namedtuple("Data", ["dom", "values", "ts_mdata"])
 
 
@@ -55,42 +55,24 @@ def convert_to_covjson(observations):
     coverages = []
     data = [_collect_data(md.ts_mdata, md.obs_mdata) for md in observations]
 
-    vcs = {
-        "csAxes": [{
-            "name": {
-                "en": "Height"
-            },
-            "direction": "up",
-            "unit": {
-                "symbol": "m"
-            }
-        }]
-    }
-
     # Need to sort before using groupBy. Also sort on parameter_name to get consistently sorted output
     data.sort(key=lambda x: (x.dom, x.ts_mdata.parameter_name))
-    for (lat, lon, level, times), group in groupby(data, lambda x: x.dom):
+    for (lat, lon, times), group in groupby(data, lambda x: x.dom):
         referencing = [
             ReferenceSystemConnectionObject(
                 coordinates=["y", "x"],
                 system=ReferenceSystem(type="GeographicCRS", id="http://www.opengis.net/def/crs/EPSG/0/4326"),
             ),
             ReferenceSystemConnectionObject(
-                coordinates=["z"],
-                system=ReferenceSystem(type="VerticalCRS", description={"en": "Height above ground level"}, **{"cs": vcs}),
-            ),
-            ReferenceSystemConnectionObject(
                 coordinates=["t"],
                 system=ReferenceSystem(type="TemporalRS", calendar="Gregorian"),
             ),
         ]
-        z = float(level) if is_float(level) else 0.0
         domain = Domain(
             domainType=DomainType.point_series,
             axes=Axes(
                 x=ValuesAxis[float](values=[lon]),
                 y=ValuesAxis[float](values=[lat]),
-                z=ValuesAxis[float](values=[z]),
                 t=ValuesAxis[AwareDatetime](values=times),
             ),
             referencing=referencing,
@@ -108,7 +90,7 @@ def convert_to_covjson(observations):
             parameters[parameter_id] = make_parameter(data.ts_mdata)
 
             ranges[parameter_id] = NdArray(
-                values=values_no_nan, axisNames=["t", "z", "y", "x"], shape=[len(values_no_nan), 1, 1, 1]
+                values=values_no_nan, axisNames=["t", "y", "x"], shape=[len(values_no_nan), 1, 1]
             )
 
         custom_fields = {"rodeo:wigosId": data.ts_mdata.platform}
@@ -131,4 +113,4 @@ def _collect_data(ts_mdata, obs_mdata):
     )  # HACK: str -> float
     (times, values) = zip(*tuples)
 
-    return Data(Dom(lat, lon, ts_mdata.level, times), values, ts_mdata)
+    return Data(Dom(lat, lon, times), values, ts_mdata)
