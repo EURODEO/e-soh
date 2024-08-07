@@ -159,7 +159,7 @@ async def add_request_parameters(
         request.filter["period"].values.extend(split_and_strip(periods))
 
 
-def get_z_range(z: str | None) -> (float, float):
+def get_z_range(z: str | None) -> tuple[float, float]:
     # it can be z=value1,value2,value3: z=2,10,80 -> not yet implemented for more then one value
     # or z=minimum value/maximum value: z=10/100
     # or z=Rn/min height/height interval: z=R20/100/50  -> not yet implemented
