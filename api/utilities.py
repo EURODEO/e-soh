@@ -202,3 +202,13 @@ def filter_observations_for_z(observations, z):
         obs for obs in observations if is_float(obs.ts_mdata.level) and z_min <= float(obs.ts_mdata.level) <= z_max
     ]
     return observations
+
+
+def numeric_sort_key(value: str) -> float:
+    """
+    Converts a string to a float for comparison, returns infinity if the string is convertible.
+    """
+    try:
+        return float(value)
+    except ValueError:
+        return float("inf")

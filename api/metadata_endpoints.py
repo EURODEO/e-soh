@@ -25,7 +25,7 @@ from grpc_getter import get_extents_request
 from grpc_getter import get_ts_ag_request
 
 import datastore_pb2 as dstore
-from utilities import get_unique_values_for_metadata, is_float
+from utilities import get_unique_values_for_metadata, is_float, numeric_sort_key
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -136,7 +136,7 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
     interval_end = extent_response.temporal_extent.end.ToDatetime(tzinfo=timezone.utc)
 
     # TODO: Check if these make /collections significantly slower. If yes, do we need DB indices on these? And parallel
-    levels = sorted(await get_unique_values_for_metadata("level"))
+    levels = sorted(await get_unique_values_for_metadata("level"), key=numeric_sort_key)
     standard_names = await get_unique_values_for_metadata("standard_name")
     functions = await get_unique_values_for_metadata("function")
     periods = await get_unique_values_for_metadata("period")
@@ -165,7 +165,6 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
                 ),
                 Custom(
                     id="levels",
-                    # TODO: Order levels as numbers, not alphabetically
                     interval=[[levels[0], levels[-1]]],
                     values=levels,
                     reference="Height of measurement above ground level",
