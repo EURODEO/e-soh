@@ -1,4 +1,5 @@
 import sys
+import re
 
 from datetime import datetime
 from datetime import timedelta
@@ -206,9 +207,32 @@ def filter_observations_for_z(observations, z):
 
 def numeric_sort_key(value: str) -> float:
     """
-    Converts a string to a float for comparison, returns infinity if the string is convertible.
+    Converts a string to a float for comparison, returns infinity if the string is not convertible.
     """
     try:
         return float(value)
     except ValueError:
         return float("inf")
+
+
+def iso_8601_duration_to_seconds_sort_key(duration: str) -> int:
+    """
+    Converts an ISO 8601 duration string to seconds for comparison.
+    Can compare day, hour, minute, and second values or a combination
+    """
+    # Regular expression to match the ISO 8601 duration string.
+    # Splits the expression into days, hours, minutes, and seconds
+    # and calculates total_seconds for comparison.
+    pattern = re.compile(r"P(?:(\d+)D)?T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?")
+    match = pattern.match(duration)
+    if not match:
+        # If the duration string is not in the correct format, return the maximum integer value
+        return sys.maxsize
+
+    days = int(match.group(1) or 0)
+    hours = int(match.group(2) or 0)
+    minutes = int(match.group(3) or 0)
+    seconds = int(match.group(4) or 0)
+
+    total_seconds = days * 86400 + hours * 3600 + minutes * 60 + seconds
+    return total_seconds

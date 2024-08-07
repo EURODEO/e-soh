@@ -25,7 +25,7 @@ from grpc_getter import get_extents_request
 from grpc_getter import get_ts_ag_request
 
 import datastore_pb2 as dstore
-from utilities import get_unique_values_for_metadata, is_float, numeric_sort_key
+from utilities import get_unique_values_for_metadata, is_float, numeric_sort_key, iso_8601_duration_to_seconds_sort_key
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -139,7 +139,7 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
     levels = sorted(await get_unique_values_for_metadata("level"), key=numeric_sort_key)
     standard_names = await get_unique_values_for_metadata("standard_name")
     functions = await get_unique_values_for_metadata("function")
-    periods = await get_unique_values_for_metadata("period")
+    periods = sorted(await get_unique_values_for_metadata("period"), key=iso_8601_duration_to_seconds_sort_key)
 
     collection = Collection(
         id="observations",
@@ -167,7 +167,7 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
                     id="levels",
                     interval=[[levels[0], levels[-1]]],
                     values=levels,
-                    reference="Height of measurement above ground level",
+                    reference="Height of measurement above ground level in meters",
                 ),
                 Custom(
                     id="functions",
