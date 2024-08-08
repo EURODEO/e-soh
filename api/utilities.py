@@ -155,9 +155,15 @@ async def add_request_parameters(
     if functions:
         request.filter["function"].values.extend(split_and_strip(functions))
 
-    # TODO: Do proper range filtering based on meaning of periods
     if periods:
-        request.filter["period"].values.extend(split_and_strip(periods))
+        split_on_slash = periods.split("/")
+        if len(split_on_slash) == 1:
+            request.filter["period"].values.extend(split_and_strip(periods))
+        elif len(split_on_slash) == 2:
+            period_range = await get_iso_8601_range(split_on_slash[0].upper(), split_on_slash[1].upper())
+            request.filter["period"].values.extend(period_range)
+        else:
+            raise HTTPException(status_code=400, detail=f"Invalid ISO 8601 range format: {periods}")
 
 
 def get_z_range(z: str | None) -> tuple[float, float]:
@@ -236,3 +242,34 @@ def iso_8601_duration_to_seconds_sort_key(duration: str) -> int:
 
     total_seconds = days * 86400 + hours * 3600 + minutes * 60 + seconds
     return total_seconds
+
+
+async def get_iso_8601_range(start: str, end: str) -> list[str] | None:
+    """
+    Returns a list of ISO 8601 durations between the start and end values.
+    TODO: Add support for closest match if the start or end value is valid, but not found?
+    """
+
+    if not start or not end:
+        raise HTTPException(status_code=400, detail=f"Invalid ISO 8601 period: {start} / {end}")
+
+    try:
+        periods = sorted(await get_unique_values_for_metadata("period"), key=iso_8601_duration_to_seconds_sort_key)
+
+        if start != "..":
+            start_index = periods.index(start)
+        else:
+            start_index = 0
+
+        if end != "..":
+            end_index = periods.index(end)
+        else:
+            end_index = len(periods) - 1
+
+        if start_index > end_index:
+            raise HTTPException(status_code=400, detail=f"Invalid ISO 8601 range: {start} > {end}")
+
+    except ValueError as err:
+        raise HTTPException(status_code=400, detail=f"Invalid ISO 8601 range: {err} of possible period values")
+
+    return periods[start_index : end_index + 1]  # noqa: E203
