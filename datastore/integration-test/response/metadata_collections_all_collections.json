@@ -74,7 +74,7 @@
                         "interval": [
                             [
                                 "0",
-                                "2.50"
+                                "10"
                             ]
                         ],
                         "values": [
@@ -83,11 +83,11 @@
                             "1",
                             "1.5",
                             "1.80",
-                            "10",
                             "2.0",
-                            "2.50"
+                            "2.50",
+                            "10"
                         ],
-                        "reference": "Height of measurement above ground level"
+                        "reference": "Height of measurement above ground level in meters"
                     },
                     {
                         "id": "functions",
@@ -109,19 +109,19 @@
                         "id": "periods",
                         "interval": [
                             [
-                                "PT01H",
-                                "PT6H"
+                                "PT0S",
+                                "PT24H"
                             ]
                         ],
                         "values": [
-                            "PT01H",
                             "PT0S",
+                            "PT1M",
                             "PT10M",
+                            "PT01H",
+                            "PT6H",
                             "PT12H",
                             "PT14H",
-                            "PT1M",
-                            "PT24H",
-                            "PT6H"
+                            "PT24H"
                         ],
                         "reference": "https://en.wikipedia.org/wiki/ISO_8601#Durations"
                     }
