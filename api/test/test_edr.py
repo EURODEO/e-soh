@@ -329,3 +329,45 @@ def test_get_position_with_incorrect_geometry_type():
 
     assert response.status_code == 400
     assert response.json() == {"detail": {"coords": "Invalid geometric type: Polygon"}}
+
+
+def test_get_data_with_incorrect_period_range_format():
+    response = client.get("/collections/observations/locations/0-20000-0-06260?periods=PT10M/PT1H/PT24H")
+
+    assert response.status_code == 400
+    assert response.json() == {"detail": "Invalid ISO 8601 range format: PT10M/PT1H/PT24H"}
+
+
+def test_get_data_with_range_parameter_empty():
+    response = client.get("/collections/observations/locations/0-20000-0-06260?periods=/PT10M")
+
+    assert response.status_code == 400
+    assert response.json() == {"detail": "Invalid ISO 8601 period:  / PT10M"}
+
+
+def test_get_data_with_incorrect_period_range():
+    with patch("utilities.get_ts_ag_request") as mock_get_ts_aq_request, patch(
+        "utilities.get_unique_values_for_metadata"
+    ) as mock_get_unique_values_for_metadata:
+
+        mock_get_ts_aq_request.return_value = None
+        mock_get_unique_values_for_metadata.return_value = ["PT1M", "PT10M", "PT1H"]
+
+        response = client.get("/collections/observations/locations/0-20000-0-06260?periods=PT1H/PT10M")
+
+        assert response.status_code == 400
+        assert response.json() == {"detail": "Invalid ISO 8601 range: PT1H > PT10M"}
+
+
+def test_get_data_with_a_period_not_found_in_datastore():
+    with patch("utilities.get_ts_ag_request") as mock_get_ts_aq_request, patch(
+        "utilities.get_unique_values_for_metadata"
+    ) as mock_get_unique_values_for_metadata:
+
+        mock_get_ts_aq_request.return_value = None
+        mock_get_unique_values_for_metadata.return_value = ["PT1M", "PT10M", "PT1H"]
+
+        response = client.get("/collections/observations/locations/0-20000-0-06260?periods=PT1S/PT1M")
+
+        assert response.status_code == 400
+        assert response.json() == {"detail": "Invalid ISO 8601 range: 'PT1S' is not in list of possible period values"}
