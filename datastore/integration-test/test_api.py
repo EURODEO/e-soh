@@ -113,6 +113,19 @@ def test_from_a_single_collection_get_locations_within_a_bbox():
     actual_response_is_expected_response(actual_response, expected_json)
 
 
+def test_from_a_single_collection_get_locations_within_a_bbox_with_periods_range_filtering():
+    collection_id = "observations"
+    bbox = "5.0,52.0,6.0,52.1"
+    actual_response = requests.get(
+        url=BASE_URL + f"/collections/{collection_id}/locations?bbox={bbox}&periods=PT0S/PT24H"
+    )
+
+    expected_json = load_json("response/data_locations_two_points_with_multiple_parameters.json")
+
+    assert actual_response.status_code == 200
+    actual_response_is_expected_response(actual_response, expected_json)
+
+
 def test_from_a_single_collection_get_locations_within_a_bbox_with_parameter_name_filtering():
     collection_id = "observations"
     bbox = "5.0,52.0,6.0,52.1"
@@ -157,6 +170,43 @@ def test_from_a_single_collection_get_a_single_location():
     )
 
     expected_json = load_json("response/data_locations_one_location_with_three_parameters.json")
+
+    assert actual_response.status_code == 200
+    assert actual_response.headers["Content-Type"] == "application/prs.coverage+json"
+    actual_response_is_expected_response(actual_response, expected_json)
+
+
+def test_from_a_single_collection_get_a_single_location_with_multiple_custom_coverages():
+    collection_id = "observations"
+    location_id = "0-20000-0-06260"
+    standard_names = "air_temperature, wind_speed, dew_point_temperature, duration_of_sunshine"
+    levels = "0/1.8"
+    functions = "maximum, point"
+    periods = "PT1M/PT10M"
+    datetime = "2022-12-31T00:50:00Z/2022-12-31T02:10:00Z"
+    actual_response = requests.get(
+        url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}"
+        f"?standard_names={standard_names}&levels={levels}&functions={functions}"
+        f"&periods={periods}&datetime={datetime}"
+    )
+
+    expected_json = load_json("response/data_position_one_location_with_one_parameter.json")
+
+    assert actual_response.status_code == 200
+    assert actual_response.headers["Content-Type"] == "application/prs.coverage+json"
+    actual_response_is_expected_response(actual_response, expected_json)
+
+
+def test_from_a_single_collection_get_a_single_location_with_period_range_filtering():
+    collection_id = "observations"
+    location_id = "0-20000-0-06260"
+    periods = "PT6H/.."
+    datetime = "2022-12-31T00:00:00Z"
+    actual_response = requests.get(
+        url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}" f"?periods={periods}&datetime={datetime}"
+    )
+
+    expected_json = load_json("response/data_locations_one_location_with_multiple_parameters.json")
 
     assert actual_response.status_code == 200
     assert actual_response.headers["Content-Type"] == "application/prs.coverage+json"

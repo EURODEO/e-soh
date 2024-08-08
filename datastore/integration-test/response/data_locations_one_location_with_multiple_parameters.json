@@ -1,0 +1,506 @@
+{
+    "type": "Coverage",
+    "domain": {
+        "type": "Domain",
+        "domainType": "PointSeries",
+        "axes": {
+            "x": {
+                "values": [
+                    5.1797058644882
+                ]
+            },
+            "y": {
+                "values": [
+                    52.098821802977
+                ]
+            },
+            "t": {
+                "values": [
+                    "2022-12-31T00:00:00Z"
+                ]
+            }
+        },
+        "referencing": [
+            {
+                "coordinates": [
+                    "y",
+                    "x"
+                ],
+                "system": {
+                    "type": "GeographicCRS",
+                    "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                }
+            },
+            {
+                "coordinates": [
+                    "t"
+                ],
+                "system": {
+                    "type": "TemporalRS",
+                    "calendar": "Gregorian"
+                }
+            }
+        ]
+    },
+    "parameters": {
+        "air_temperature:0:minimum:PT12H": {
+            "type": "Parameter",
+            "description": {
+                "en": "air_temperature at 0m PT12H minimum"
+            },
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
+                "label": {
+                    "en": "air_temperature:0:minimum:PT12H"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "degrees Celsius"
+                }
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 0.0,
+            "rodeo:function": "minimum",
+            "rodeo:period": "PT12H"
+        },
+        "air_temperature:0:minimum:PT14H": {
+            "type": "Parameter",
+            "description": {
+                "en": "air_temperature at 0m PT14H minimum"
+            },
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
+                "label": {
+                    "en": "air_temperature:0:minimum:PT14H"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "degrees Celsius"
+                }
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 0.0,
+            "rodeo:function": "minimum",
+            "rodeo:period": "PT14H"
+        },
+        "air_temperature:0:minimum:PT6H": {
+            "type": "Parameter",
+            "description": {
+                "en": "air_temperature at 0m PT6H minimum"
+            },
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
+                "label": {
+                    "en": "air_temperature:0:minimum:PT6H"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "degrees Celsius"
+                }
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 0.0,
+            "rodeo:function": "minimum",
+            "rodeo:period": "PT6H"
+        },
+        "air_temperature:2.0:maximum:PT12H": {
+            "type": "Parameter",
+            "description": {
+                "en": "air_temperature at 2.0m PT12H maximum"
+            },
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
+                "label": {
+                    "en": "air_temperature:2.0:maximum:PT12H"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "degrees Celsius"
+                }
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 2.0,
+            "rodeo:function": "maximum",
+            "rodeo:period": "PT12H"
+        },
+        "air_temperature:2.0:maximum:PT24H": {
+            "type": "Parameter",
+            "description": {
+                "en": "air_temperature at 2.0m PT24H maximum"
+            },
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
+                "label": {
+                    "en": "air_temperature:2.0:maximum:PT24H"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "degrees Celsius"
+                }
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 2.0,
+            "rodeo:function": "maximum",
+            "rodeo:period": "PT24H"
+        },
+        "air_temperature:2.0:maximum:PT6H": {
+            "type": "Parameter",
+            "description": {
+                "en": "air_temperature at 2.0m PT6H maximum"
+            },
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
+                "label": {
+                    "en": "air_temperature:2.0:maximum:PT6H"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "degrees Celsius"
+                }
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 2.0,
+            "rodeo:function": "maximum",
+            "rodeo:period": "PT6H"
+        },
+        "air_temperature:2.0:minimum:PT12H": {
+            "type": "Parameter",
+            "description": {
+                "en": "air_temperature at 2.0m PT12H minimum"
+            },
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
+                "label": {
+                    "en": "air_temperature:2.0:minimum:PT12H"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "degrees Celsius"
+                }
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 2.0,
+            "rodeo:function": "minimum",
+            "rodeo:period": "PT12H"
+        },
+        "air_temperature:2.0:minimum:PT14H": {
+            "type": "Parameter",
+            "description": {
+                "en": "air_temperature at 2.0m PT14H minimum"
+            },
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
+                "label": {
+                    "en": "air_temperature:2.0:minimum:PT14H"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "degrees Celsius"
+                }
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 2.0,
+            "rodeo:function": "minimum",
+            "rodeo:period": "PT14H"
+        },
+        "air_temperature:2.0:minimum:PT6H": {
+            "type": "Parameter",
+            "description": {
+                "en": "air_temperature at 2.0m PT6H minimum"
+            },
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
+                "label": {
+                    "en": "air_temperature:2.0:minimum:PT6H"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "degrees Celsius"
+                }
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 2.0,
+            "rodeo:function": "minimum",
+            "rodeo:period": "PT6H"
+        },
+        "rainfall_amount:2.0:point:PT12H": {
+            "type": "Parameter",
+            "description": {
+                "en": "rainfall_amount at 2.0m PT12H point"
+            },
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/rainfall_amount",
+                "label": {
+                    "en": "rainfall_amount:2.0:point:PT12H"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "mm"
+                }
+            },
+            "rodeo:standard_name": "rainfall_amount",
+            "rodeo:level": 2.0,
+            "rodeo:function": "point",
+            "rodeo:period": "PT12H"
+        },
+        "rainfall_amount:2.0:point:PT24H": {
+            "type": "Parameter",
+            "description": {
+                "en": "rainfall_amount at 2.0m PT24H point"
+            },
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/rainfall_amount",
+                "label": {
+                    "en": "rainfall_amount:2.0:point:PT24H"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "mm"
+                }
+            },
+            "rodeo:standard_name": "rainfall_amount",
+            "rodeo:level": 2.0,
+            "rodeo:function": "point",
+            "rodeo:period": "PT24H"
+        },
+        "rainfall_amount:2.0:point:PT6H": {
+            "type": "Parameter",
+            "description": {
+                "en": "rainfall_amount at 2.0m PT6H point"
+            },
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/rainfall_amount",
+                "label": {
+                    "en": "rainfall_amount:2.0:point:PT6H"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "mm"
+                }
+            },
+            "rodeo:standard_name": "rainfall_amount",
+            "rodeo:level": 2.0,
+            "rodeo:function": "point",
+            "rodeo:period": "PT6H"
+        }
+    },
+    "ranges": {
+        "air_temperature:0:minimum:PT12H": {
+            "type": "NdArray",
+            "dataType": "float",
+            "axisNames": [
+                "t",
+                "y",
+                "x"
+            ],
+            "shape": [
+                1,
+                1,
+                1
+            ],
+            "values": [
+                7.8
+            ]
+        },
+        "air_temperature:0:minimum:PT14H": {
+            "type": "NdArray",
+            "dataType": "float",
+            "axisNames": [
+                "t",
+                "y",
+                "x"
+            ],
+            "shape": [
+                1,
+                1,
+                1
+            ],
+            "values": [
+                6.4
+            ]
+        },
+        "air_temperature:0:minimum:PT6H": {
+            "type": "NdArray",
+            "dataType": "float",
+            "axisNames": [
+                "t",
+                "y",
+                "x"
+            ],
+            "shape": [
+                1,
+                1,
+                1
+            ],
+            "values": [
+                11.7
+            ]
+        },
+        "air_temperature:2.0:maximum:PT12H": {
+            "type": "NdArray",
+            "dataType": "float",
+            "axisNames": [
+                "t",
+                "y",
+                "x"
+            ],
+            "shape": [
+                1,
+                1,
+                1
+            ],
+            "values": [
+                12.9
+            ]
+        },
+        "air_temperature:2.0:maximum:PT24H": {
+            "type": "NdArray",
+            "dataType": "float",
+            "axisNames": [
+                "t",
+                "y",
+                "x"
+            ],
+            "shape": [
+                1,
+                1,
+                1
+            ],
+            "values": [
+                12.9
+            ]
+        },
+        "air_temperature:2.0:maximum:PT6H": {
+            "type": "NdArray",
+            "dataType": "float",
+            "axisNames": [
+                "t",
+                "y",
+                "x"
+            ],
+            "shape": [
+                1,
+                1,
+                1
+            ],
+            "values": [
+                12.9
+            ]
+        },
+        "air_temperature:2.0:minimum:PT12H": {
+            "type": "NdArray",
+            "dataType": "float",
+            "axisNames": [
+                "t",
+                "y",
+                "x"
+            ],
+            "shape": [
+                1,
+                1,
+                1
+            ],
+            "values": [
+                8.2
+            ]
+        },
+        "air_temperature:2.0:minimum:PT14H": {
+            "type": "NdArray",
+            "dataType": "float",
+            "axisNames": [
+                "t",
+                "y",
+                "x"
+            ],
+            "shape": [
+                1,
+                1,
+                1
+            ],
+            "values": [
+                6.8
+            ]
+        },
+        "air_temperature:2.0:minimum:PT6H": {
+            "type": "NdArray",
+            "dataType": "float",
+            "axisNames": [
+                "t",
+                "y",
+                "x"
+            ],
+            "shape": [
+                1,
+                1,
+                1
+            ],
+            "values": [
+                12
+            ]
+        },
+        "rainfall_amount:2.0:point:PT12H": {
+            "type": "NdArray",
+            "dataType": "float",
+            "axisNames": [
+                "t",
+                "y",
+                "x"
+            ],
+            "shape": [
+                1,
+                1,
+                1
+            ],
+            "values": [
+                5.193
+            ]
+        },
+        "rainfall_amount:2.0:point:PT24H": {
+            "type": "NdArray",
+            "dataType": "float",
+            "axisNames": [
+                "t",
+                "y",
+                "x"
+            ],
+            "shape": [
+                1,
+                1,
+                1
+            ],
+            "values": [
+                5.193
+            ]
+        },
+        "rainfall_amount:2.0:point:PT6H": {
+            "type": "NdArray",
+            "dataType": "float",
+            "axisNames": [
+                "t",
+                "y",
+                "x"
+            ],
+            "shape": [
+                1,
+                1,
+                1
+            ],
+            "values": [
+                3.35751
+            ]
+        }
+    },
+    "rodeo:wigosId": "0-20000-0-06260"
+}
