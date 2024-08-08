@@ -1,0 +1,164 @@
+{
+    "type": "Coverage",
+    "domain": {
+        "type": "Domain",
+        "domainType": "PointSeries",
+        "axes": {
+            "x": {
+                "values": [
+                    5.1797058644882
+                ]
+            },
+            "y": {
+                "values": [
+                    52.098821802977
+                ]
+            },
+            "t": {
+                "values": [
+                    "2022-12-31T00:00:00Z"
+                ]
+            }
+        },
+        "referencing": [
+            {
+                "coordinates": [
+                    "y",
+                    "x"
+                ],
+                "system": {
+                    "type": "GeographicCRS",
+                    "id": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                }
+            },
+            {
+                "coordinates": [
+                    "t"
+                ],
+                "system": {
+                    "type": "TemporalRS",
+                    "calendar": "Gregorian"
+                }
+            }
+        ]
+    },
+    "parameters": {
+        "air_temperature:2.0:mean:PT1M": {
+            "type": "Parameter",
+            "description": {
+                "en": "air_temperature at 2.0m PT1M mean"
+            },
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
+                "label": {
+                    "en": "air_temperature:2.0:mean:PT1M"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "degrees Celsius"
+                }
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 2.0,
+            "rodeo:function": "mean",
+            "rodeo:period": "PT1M"
+        },
+        "dew_point_temperature:1.5:mean:PT1M": {
+            "type": "Parameter",
+            "description": {
+                "en": "dew_point_temperature at 1.5m PT1M mean"
+            },
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/dew_point_temperature",
+                "label": {
+                    "en": "dew_point_temperature:1.5:mean:PT1M"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "degrees Celsius"
+                }
+            },
+            "rodeo:standard_name": "dew_point_temperature",
+            "rodeo:level": 1.5,
+            "rodeo:function": "mean",
+            "rodeo:period": "PT1M"
+        },
+        "relative_humidity:2.0:mean:PT1M": {
+            "type": "Parameter",
+            "description": {
+                "en": "relative_humidity at 2.0m PT1M mean"
+            },
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/relative_humidity",
+                "label": {
+                    "en": "relative_humidity:2.0:mean:PT1M"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "%"
+                }
+            },
+            "rodeo:standard_name": "relative_humidity",
+            "rodeo:level": 2.0,
+            "rodeo:function": "mean",
+            "rodeo:period": "PT1M"
+        }
+    },
+    "ranges": {
+        "air_temperature:2.0:mean:PT1M": {
+            "type": "NdArray",
+            "dataType": "float",
+            "axisNames": [
+                "t",
+                "y",
+                "x"
+            ],
+            "shape": [
+                1,
+                1,
+                1
+            ],
+            "values": [
+                12.1
+            ]
+        },
+        "dew_point_temperature:1.5:mean:PT1M": {
+            "type": "NdArray",
+            "dataType": "float",
+            "axisNames": [
+                "t",
+                "y",
+                "x"
+            ],
+            "shape": [
+                1,
+                1,
+                1
+            ],
+            "values": [
+                11.4
+            ]
+        },
+        "relative_humidity:2.0:mean:PT1M": {
+            "type": "NdArray",
+            "dataType": "float",
+            "axisNames": [
+                "t",
+                "y",
+                "x"
+            ],
+            "shape": [
+                1,
+                1,
+                1
+            ],
+            "values": [
+                95
+            ]
+        }
+    },
+    "rodeo:wigosId": "0-20000-0-06260"
+}
