@@ -11,7 +11,6 @@ from google.protobuf.timestamp_pb2 import Timestamp
 from grpc_getter import get_ts_ag_request
 from pydantic import AwareDatetime
 from pydantic import TypeAdapter
-from pydantic import ValidationError
 
 
 def get_datetime_range(datetime_string: str | None) -> Tuple[Timestamp, Timestamp] | None:
@@ -166,25 +165,40 @@ async def add_request_parameters(
             raise HTTPException(status_code=400, detail=f"Invalid ISO 8601 range format: {periods}")
 
 
-def get_z_range(z: str | None) -> tuple[float, float]:
-    # it can be z=value1,value2,value3: z=2,10,80 -> not yet implemented for more then one value
+def get_z_levels_or_range(z: str | None) -> list[float]:
+    """
+    Function for getting the z values from the z parameter.
+    """
+    # it can be z=value1,value2,value3: z=2,10,80
     # or z=minimum value/maximum value: z=10/100
     # or z=Rn/min height/height interval: z=R20/100/50  -> not yet implemented
-    if z:
+    try:
         split_on_slash = z.split("/")
         if len(split_on_slash) == 2:
-            return float(split_on_slash[0]), float(split_on_slash[1])
+            return [float(split_on_slash[0]), float(split_on_slash[1])]
         elif len(split_on_slash) > 2:
-            # TODO
-            raise ValidationError
-        split_on_comma = list(map(float, z.split(",")))
-        if len(split_on_comma) == 1:
-            return float(split_on_comma[0]), float(split_on_comma[0])
+            return get_z_values_from_interval(split_on_slash)
         else:
-            # TODO
-            raise ValidationError
-    else:
-        return -sys.float_info.max, sys.float_info.max
+            return list(map(float, z.split(",")))
+    except ValueError:
+        raise HTTPException(status_code=400, detail=f"Invalid levels value: {z}")
+
+
+def get_z_values_from_interval(interval: list[str]) -> list[float]:
+    """
+    Function for getting the z values from a repeating-interval pattern.
+    """
+    # Make sure the pattern is Rn/n/n
+    # Allow optional decimals in interval and starting value
+    pattern = re.compile(r"^R\d+/\d+(\.\d+)?/\d+(\.\d+)?$")
+    if not pattern.match("/".join(interval)):
+        raise HTTPException(status_code=400, detail=f"Invalid levels repeating-interval: {'/'.join(interval)}")
+
+    amount_of_intervals = int(interval[0][1:])
+    interval_value = float(interval[1])
+    starting_value = float(interval[2])
+
+    return [starting_value + i * interval_value for i in range(amount_of_intervals)]
 
 
 def is_float(element: any) -> bool:
@@ -204,10 +218,19 @@ async def get_unique_values_for_metadata(field: str) -> list[str]:
 
 
 def filter_observations_for_z(observations, z):
-    z_min, z_max = get_z_range(z)
-    observations = [
-        obs for obs in observations if is_float(obs.ts_mdata.level) and z_min <= float(obs.ts_mdata.level) <= z_max
-    ]
+    if z:
+        z_values = get_z_levels_or_range(z)
+        if len(z.split("/")) == 2:
+            z_min, z_max = z_values[0], z_values[1]
+            observations = [
+                obs
+                for obs in observations
+                if is_float(obs.ts_mdata.level) and z_min <= float(obs.ts_mdata.level) <= z_max
+            ]
+        else:
+            observations = [
+                obs for obs in observations if is_float(obs.ts_mdata.level) and float(obs.ts_mdata.level) in z_values
+            ]
     return observations
 
 
