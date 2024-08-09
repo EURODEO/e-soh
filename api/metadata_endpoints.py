@@ -11,6 +11,7 @@ from edr_pydantic.collections import Collection
 from edr_pydantic.collections import Collections
 from edr_pydantic.data_queries import DataQueries
 from edr_pydantic.data_queries import EDRQuery
+from edr_pydantic.extent import Custom
 from edr_pydantic.extent import Extent
 from edr_pydantic.extent import Spatial
 from edr_pydantic.extent import Temporal
@@ -24,6 +25,7 @@ from grpc_getter import get_extents_request
 from grpc_getter import get_ts_ag_request
 
 import datastore_pb2 as dstore
+from utilities import get_unique_values_for_metadata, is_float, numeric_sort_key, iso_8601_duration_to_seconds_sort_key
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -105,6 +107,13 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
 
     for group in ts_response.groups:
         ts = group.combo
+        custom_fields = {
+            "rodeo:standard_name": ts.standard_name,
+            "rodeo:level": float(ts.level) if is_float(ts.level) else 0.0,
+            "rodeo:function": ts.function,
+            "rodeo:period": ts.period,
+        }
+
         parameter = Parameter(
             description=f"{ts.standard_name} at {ts.level}m {ts.period} {ts.function}",
             observedProperty=ObservedProperty(
@@ -112,6 +121,7 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
                 label=ts.parameter_name,
             ),
             unit=Unit(label=ts.unit),
+            **custom_fields,
         )
         # There might be parameter inconsistencies (e.g one station is reporting in Pa, and another in hPa)
         # We always return the "last" parameter definition found (in /locations and collection metadata).
@@ -124,6 +134,12 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
     spatial_extent = extent_response.spatial_extent
     interval_start = extent_response.temporal_extent.start.ToDatetime(tzinfo=timezone.utc)
     interval_end = extent_response.temporal_extent.end.ToDatetime(tzinfo=timezone.utc)
+
+    # TODO: Check if these make /collections significantly slower. If yes, do we need DB indices on these? And parallel
+    levels = sorted(await get_unique_values_for_metadata("level"), key=numeric_sort_key)
+    standard_names = await get_unique_values_for_metadata("standard_name")
+    functions = await get_unique_values_for_metadata("function")
+    periods = sorted(await get_unique_values_for_metadata("period"), key=iso_8601_duration_to_seconds_sort_key)
 
     collection = Collection(
         id="observations",
@@ -140,6 +156,32 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
                 values=[f"{datetime_to_iso_string(interval_start)}/{datetime_to_iso_string(interval_end)}"],
                 trs="datetime",
             ),
+            custom=[
+                Custom(
+                    id="standard_names",
+                    interval=[[standard_names[0], standard_names[-1]]],
+                    values=standard_names,
+                    reference="https://vocab.nerc.ac.uk/standard_name/",
+                ),
+                Custom(
+                    id="levels",
+                    interval=[[levels[0], levels[-1]]],
+                    values=levels,
+                    reference="Height of measurement above ground level in meters",
+                ),
+                Custom(
+                    id="functions",
+                    interval=[[functions[0], functions[-1]]],
+                    values=functions,
+                    reference="Time aggregation functions",
+                ),
+                Custom(
+                    id="periods",
+                    interval=[[periods[0], periods[-1]]],
+                    values=periods,
+                    reference="https://en.wikipedia.org/wiki/ISO_8601#Durations",
+                ),
+            ],
         ),
         data_queries=DataQueries(
             position=EDRQuery(

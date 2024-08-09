@@ -64,7 +64,11 @@
                 "label": {
                     "en": "m s-1"
                 }
-            }
+            },
+            "rodeo:standard_name": "wind_speed",
+            "rodeo:level": 10.0,
+            "rodeo:function": "mean",
+            "rodeo:period": "PT10M"
         }
     },
     "ranges": {

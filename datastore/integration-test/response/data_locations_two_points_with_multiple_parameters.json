@@ -28,14 +28,12 @@
                     "air_temperature:2.0:minimum:PT12H",
                     "air_temperature:2.0:minimum:PT14H",
                     "air_temperature:2.0:minimum:PT6H",
+                    "cloud_base_altitude:0:point:PT0S",
+                    "cloud_base_altitude:1:point:PT0S",
                     "cloud_base_altitude:2.0:point:PT0S",
-                    "cloud_base_altitude:first:point:PT0S",
-                    "cloud_base_altitude:second:point:PT0S",
-                    "cloud_base_altitude:third:point:PT0S",
+                    "cloud_cover:0:point:PT0S",
+                    "cloud_cover:1:point:PT0S",
                     "cloud_cover:2.0:point:PT0S",
-                    "cloud_cover:first:point:PT0S",
-                    "cloud_cover:second:point:PT0S",
-                    "cloud_cover:third:point:PT0S",
                     "dew_point_temperature:1.5:mean:PT1M",
                     "duration_of_sunshine:2.0:point:PT0S",
                     "lwe_precipitation_rate:2.50:mean:PT10M",
@@ -87,14 +85,12 @@
                     "air_temperature:2.0:minimum:PT12H",
                     "air_temperature:2.0:minimum:PT14H",
                     "air_temperature:2.0:minimum:PT6H",
+                    "cloud_base_altitude:0:point:PT0S",
+                    "cloud_base_altitude:1:point:PT0S",
                     "cloud_base_altitude:2.0:point:PT0S",
-                    "cloud_base_altitude:first:point:PT0S",
-                    "cloud_base_altitude:second:point:PT0S",
-                    "cloud_base_altitude:third:point:PT0S",
+                    "cloud_cover:0:point:PT0S",
+                    "cloud_cover:1:point:PT0S",
                     "cloud_cover:2.0:point:PT0S",
-                    "cloud_cover:first:point:PT0S",
-                    "cloud_cover:second:point:PT0S",
-                    "cloud_cover:third:point:PT0S",
                     "dew_point_temperature:1.5:mean:PT1M",
                     "duration_of_sunshine:2.0:point:PT0S",
                     "lwe_precipitation_rate:1.80:mean:PT10M",
@@ -136,7 +132,11 @@
                 "label": {
                     "en": "hPa"
                 }
-            }
+            },
+            "rodeo:standard_name": "air_pressure_at_sea_level",
+            "rodeo:level": 1.0,
+            "rodeo:function": "mean",
+            "rodeo:period": "PT1M"
         },
         "air_temperature:0.1:minimum:PT10M": {
             "type": "Parameter",
@@ -153,7 +153,11 @@
                 "label": {
                     "en": "degrees Celsius"
                 }
-            }
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 0.1,
+            "rodeo:function": "minimum",
+            "rodeo:period": "PT10M"
         },
         "air_temperature:0:minimum:PT12H": {
             "type": "Parameter",
@@ -170,7 +174,11 @@
                 "label": {
                     "en": "degrees Celsius"
                 }
-            }
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 0.0,
+            "rodeo:function": "minimum",
+            "rodeo:period": "PT12H"
         },
         "air_temperature:0:minimum:PT14H": {
             "type": "Parameter",
@@ -187,7 +195,11 @@
                 "label": {
                     "en": "degrees Celsius"
                 }
-            }
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 0.0,
+            "rodeo:function": "minimum",
+            "rodeo:period": "PT14H"
         },
         "air_temperature:0:minimum:PT6H": {
             "type": "Parameter",
@@ -204,7 +216,11 @@
                 "label": {
                     "en": "degrees Celsius"
                 }
-            }
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 0.0,
+            "rodeo:function": "minimum",
+            "rodeo:period": "PT6H"
         },
         "air_temperature:1.5:maximum:PT10M": {
             "type": "Parameter",
@@ -221,7 +237,11 @@
                 "label": {
                     "en": "degrees Celsius"
                 }
-            }
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 1.5,
+            "rodeo:function": "maximum",
+            "rodeo:period": "PT10M"
         },
         "air_temperature:1.5:minimum:PT10M": {
             "type": "Parameter",
@@ -238,7 +258,11 @@
                 "label": {
                     "en": "degrees Celsius"
                 }
-            }
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 1.5,
+            "rodeo:function": "minimum",
+            "rodeo:period": "PT10M"
         },
         "air_temperature:2.0:maximum:PT12H": {
             "type": "Parameter",
@@ -255,7 +279,11 @@
                 "label": {
                     "en": "degrees Celsius"
                 }
-            }
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 2.0,
+            "rodeo:function": "maximum",
+            "rodeo:period": "PT12H"
         },
         "air_temperature:2.0:maximum:PT24H": {
             "type": "Parameter",
@@ -272,7 +300,11 @@
                 "label": {
                     "en": "degrees Celsius"
                 }
-            }
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 2.0,
+            "rodeo:function": "maximum",
+            "rodeo:period": "PT24H"
         },
         "air_temperature:2.0:maximum:PT6H": {
             "type": "Parameter",
@@ -289,7 +321,11 @@
                 "label": {
                     "en": "degrees Celsius"
                 }
-            }
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 2.0,
+            "rodeo:function": "maximum",
+            "rodeo:period": "PT6H"
         },
         "air_temperature:2.0:mean:PT1M": {
             "type": "Parameter",
@@ -306,7 +342,11 @@
                 "label": {
                     "en": "degrees Celsius"
                 }
-            }
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 2.0,
+            "rodeo:function": "mean",
+            "rodeo:period": "PT1M"
         },
         "air_temperature:2.0:minimum:PT12H": {
             "type": "Parameter",
@@ -323,7 +363,11 @@
                 "label": {
                     "en": "degrees Celsius"
                 }
-            }
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 2.0,
+            "rodeo:function": "minimum",
+            "rodeo:period": "PT12H"
         },
         "air_temperature:2.0:minimum:PT14H": {
             "type": "Parameter",
@@ -340,7 +384,11 @@
                 "label": {
                     "en": "degrees Celsius"
                 }
-            }
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 2.0,
+            "rodeo:function": "minimum",
+            "rodeo:period": "PT14H"
         },
         "air_temperature:2.0:minimum:PT6H": {
             "type": "Parameter",
@@ -357,7 +405,53 @@
                 "label": {
                     "en": "degrees Celsius"
                 }
-            }
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 2.0,
+            "rodeo:function": "minimum",
+            "rodeo:period": "PT6H"
+        },
+        "cloud_base_altitude:0:point:PT0S": {
+            "type": "Parameter",
+            "description": {
+                "en": "cloud_base_altitude at 0m PT0S point"
+            },
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/cloud_base_altitude",
+                "label": {
+                    "en": "cloud_base_altitude:0:point:PT0S"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "ft"
+                }
+            },
+            "rodeo:standard_name": "cloud_base_altitude",
+            "rodeo:level": 0.0,
+            "rodeo:function": "point",
+            "rodeo:period": "PT0S"
+        },
+        "cloud_base_altitude:1:point:PT0S": {
+            "type": "Parameter",
+            "description": {
+                "en": "cloud_base_altitude at 1m PT0S point"
+            },
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/cloud_base_altitude",
+                "label": {
+                    "en": "cloud_base_altitude:1:point:PT0S"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "ft"
+                }
+            },
+            "rodeo:standard_name": "cloud_base_altitude",
+            "rodeo:level": 1.0,
+            "rodeo:function": "point",
+            "rodeo:period": "PT0S"
         },
         "cloud_base_altitude:2.0:point:PT0S": {
             "type": "Parameter",
@@ -374,58 +468,53 @@
                 "label": {
                     "en": "ft"
                 }
-            }
+            },
+            "rodeo:standard_name": "cloud_base_altitude",
+            "rodeo:level": 2.0,
+            "rodeo:function": "point",
+            "rodeo:period": "PT0S"
         },
-        "cloud_base_altitude:first:point:PT0S": {
+        "cloud_cover:0:point:PT0S": {
             "type": "Parameter",
             "description": {
-                "en": "cloud_base_altitude at firstm PT0S point"
+                "en": "cloud_cover at 0m PT0S point"
             },
             "observedProperty": {
-                "id": "https://vocab.nerc.ac.uk/standard_name/cloud_base_altitude",
+                "id": "https://vocab.nerc.ac.uk/standard_name/cloud_cover",
                 "label": {
-                    "en": "cloud_base_altitude:first:point:PT0S"
+                    "en": "cloud_cover:0:point:PT0S"
                 }
             },
             "unit": {
                 "label": {
-                    "en": "ft"
+                    "en": "octa"
                 }
-            }
+            },
+            "rodeo:standard_name": "cloud_cover",
+            "rodeo:level": 0.0,
+            "rodeo:function": "point",
+            "rodeo:period": "PT0S"
         },
-        "cloud_base_altitude:second:point:PT0S": {
+        "cloud_cover:1:point:PT0S": {
             "type": "Parameter",
             "description": {
-                "en": "cloud_base_altitude at secondm PT0S point"
+                "en": "cloud_cover at 1m PT0S point"
             },
             "observedProperty": {
-                "id": "https://vocab.nerc.ac.uk/standard_name/cloud_base_altitude",
+                "id": "https://vocab.nerc.ac.uk/standard_name/cloud_cover",
                 "label": {
-                    "en": "cloud_base_altitude:second:point:PT0S"
+                    "en": "cloud_cover:1:point:PT0S"
                 }
             },
             "unit": {
                 "label": {
-                    "en": "ft"
-                }
-            }
-        },
-        "cloud_base_altitude:third:point:PT0S": {
-            "type": "Parameter",
-            "description": {
-                "en": "cloud_base_altitude at thirdm PT0S point"
-            },
-            "observedProperty": {
-                "id": "https://vocab.nerc.ac.uk/standard_name/cloud_base_altitude",
-                "label": {
-                    "en": "cloud_base_altitude:third:point:PT0S"
+                    "en": "octa"
                 }
             },
-            "unit": {
-                "label": {
-                    "en": "ft"
-                }
-            }
+            "rodeo:standard_name": "cloud_cover",
+            "rodeo:level": 1.0,
+            "rodeo:function": "point",
+            "rodeo:period": "PT0S"
         },
         "cloud_cover:2.0:point:PT0S": {
             "type": "Parameter",
@@ -442,58 +531,11 @@
                 "label": {
                     "en": "octa"
                 }
-            }
-        },
-        "cloud_cover:first:point:PT0S": {
-            "type": "Parameter",
-            "description": {
-                "en": "cloud_cover at firstm PT0S point"
             },
-            "observedProperty": {
-                "id": "https://vocab.nerc.ac.uk/standard_name/cloud_cover",
-                "label": {
-                    "en": "cloud_cover:first:point:PT0S"
-                }
-            },
-            "unit": {
-                "label": {
-                    "en": "octa"
-                }
-            }
-        },
-        "cloud_cover:second:point:PT0S": {
-            "type": "Parameter",
-            "description": {
-                "en": "cloud_cover at secondm PT0S point"
-            },
-            "observedProperty": {
-                "id": "https://vocab.nerc.ac.uk/standard_name/cloud_cover",
-                "label": {
-                    "en": "cloud_cover:second:point:PT0S"
-                }
-            },
-            "unit": {
-                "label": {
-                    "en": "octa"
-                }
-            }
-        },
-        "cloud_cover:third:point:PT0S": {
-            "type": "Parameter",
-            "description": {
-                "en": "cloud_cover at thirdm PT0S point"
-            },
-            "observedProperty": {
-                "id": "https://vocab.nerc.ac.uk/standard_name/cloud_cover",
-                "label": {
-                    "en": "cloud_cover:third:point:PT0S"
-                }
-            },
-            "unit": {
-                "label": {
-                    "en": "octa"
-                }
-            }
+            "rodeo:standard_name": "cloud_cover",
+            "rodeo:level": 2.0,
+            "rodeo:function": "point",
+            "rodeo:period": "PT0S"
         },
         "dew_point_temperature:1.5:mean:PT1M": {
             "type": "Parameter",
@@ -510,7 +552,11 @@
                 "label": {
                     "en": "degrees Celsius"
                 }
-            }
+            },
+            "rodeo:standard_name": "dew_point_temperature",
+            "rodeo:level": 1.5,
+            "rodeo:function": "mean",
+            "rodeo:period": "PT1M"
         },
         "duration_of_sunshine:2.0:point:PT0S": {
             "type": "Parameter",
@@ -527,7 +573,11 @@
                 "label": {
                     "en": "min"
                 }
-            }
+            },
+            "rodeo:standard_name": "duration_of_sunshine",
+            "rodeo:level": 2.0,
+            "rodeo:function": "point",
+            "rodeo:period": "PT0S"
         },
         "lwe_precipitation_rate:1.80:mean:PT10M": {
             "type": "Parameter",
@@ -544,7 +594,11 @@
                 "label": {
                     "en": "mm/h"
                 }
-            }
+            },
+            "rodeo:standard_name": "lwe_precipitation_rate",
+            "rodeo:level": 1.8,
+            "rodeo:function": "mean",
+            "rodeo:period": "PT10M"
         },
         "lwe_precipitation_rate:2.50:mean:PT10M": {
             "type": "Parameter",
@@ -561,7 +615,11 @@
                 "label": {
                     "en": "mm/h"
                 }
-            }
+            },
+            "rodeo:standard_name": "lwe_precipitation_rate",
+            "rodeo:level": 2.5,
+            "rodeo:function": "mean",
+            "rodeo:period": "PT10M"
         },
         "placeholder:1.80:point:PT01H": {
             "type": "Parameter",
@@ -578,7 +636,11 @@
                 "label": {
                     "en": "code"
                 }
-            }
+            },
+            "rodeo:standard_name": "placeholder",
+            "rodeo:level": 1.8,
+            "rodeo:function": "point",
+            "rodeo:period": "PT01H"
         },
         "placeholder:1.80:point:PT0S": {
             "type": "Parameter",
@@ -595,7 +657,11 @@
                 "label": {
                     "en": "code"
                 }
-            }
+            },
+            "rodeo:standard_name": "placeholder",
+            "rodeo:level": 1.8,
+            "rodeo:function": "point",
+            "rodeo:period": "PT0S"
         },
         "placeholder:1.80:point:PT10M": {
             "type": "Parameter",
@@ -612,7 +678,11 @@
                 "label": {
                     "en": "code"
                 }
-            }
+            },
+            "rodeo:standard_name": "placeholder",
+            "rodeo:level": 1.8,
+            "rodeo:function": "point",
+            "rodeo:period": "PT10M"
         },
         "placeholder:2.50:point:PT01H": {
             "type": "Parameter",
@@ -629,7 +699,11 @@
                 "label": {
                     "en": "code"
                 }
-            }
+            },
+            "rodeo:standard_name": "placeholder",
+            "rodeo:level": 2.5,
+            "rodeo:function": "point",
+            "rodeo:period": "PT01H"
         },
         "placeholder:2.50:point:PT0S": {
             "type": "Parameter",
@@ -646,7 +720,11 @@
                 "label": {
                     "en": "code"
                 }
-            }
+            },
+            "rodeo:standard_name": "placeholder",
+            "rodeo:level": 2.5,
+            "rodeo:function": "point",
+            "rodeo:period": "PT0S"
         },
         "placeholder:2.50:point:PT10M": {
             "type": "Parameter",
@@ -663,7 +741,11 @@
                 "label": {
                     "en": "code"
                 }
-            }
+            },
+            "rodeo:standard_name": "placeholder",
+            "rodeo:level": 2.5,
+            "rodeo:function": "point",
+            "rodeo:period": "PT10M"
         },
         "precipitation_duration:1.80:point:PT10M": {
             "type": "Parameter",
@@ -680,7 +762,11 @@
                 "label": {
                     "en": "sec"
                 }
-            }
+            },
+            "rodeo:standard_name": "precipitation_duration",
+            "rodeo:level": 1.8,
+            "rodeo:function": "point",
+            "rodeo:period": "PT10M"
         },
         "precipitation_duration:2.0:point:PT10M": {
             "type": "Parameter",
@@ -697,7 +783,11 @@
                 "label": {
                     "en": "sec"
                 }
-            }
+            },
+            "rodeo:standard_name": "precipitation_duration",
+            "rodeo:level": 2.0,
+            "rodeo:function": "point",
+            "rodeo:period": "PT10M"
         },
         "precipitation_duration:2.50:point:PT10M": {
             "type": "Parameter",
@@ -714,7 +804,11 @@
                 "label": {
                     "en": "sec"
                 }
-            }
+            },
+            "rodeo:standard_name": "precipitation_duration",
+            "rodeo:level": 2.5,
+            "rodeo:function": "point",
+            "rodeo:period": "PT10M"
         },
         "precipitation_rate:2.0:mean:PT10M": {
             "type": "Parameter",
@@ -731,7 +825,11 @@
                 "label": {
                     "en": "mm/h"
                 }
-            }
+            },
+            "rodeo:standard_name": "precipitation_rate",
+            "rodeo:level": 2.0,
+            "rodeo:function": "mean",
+            "rodeo:period": "PT10M"
         },
         "rainfall_amount:2.0:point:PT0S": {
             "type": "Parameter",
@@ -748,7 +846,11 @@
                 "label": {
                     "en": "mm"
                 }
-            }
+            },
+            "rodeo:standard_name": "rainfall_amount",
+            "rodeo:level": 2.0,
+            "rodeo:function": "point",
+            "rodeo:period": "PT0S"
         },
         "rainfall_amount:2.0:point:PT12H": {
             "type": "Parameter",
@@ -765,7 +867,11 @@
                 "label": {
                     "en": "mm"
                 }
-            }
+            },
+            "rodeo:standard_name": "rainfall_amount",
+            "rodeo:level": 2.0,
+            "rodeo:function": "point",
+            "rodeo:period": "PT12H"
         },
         "rainfall_amount:2.0:point:PT24H": {
             "type": "Parameter",
@@ -782,7 +888,11 @@
                 "label": {
                     "en": "mm"
                 }
-            }
+            },
+            "rodeo:standard_name": "rainfall_amount",
+            "rodeo:level": 2.0,
+            "rodeo:function": "point",
+            "rodeo:period": "PT24H"
         },
         "rainfall_amount:2.0:point:PT6H": {
             "type": "Parameter",
@@ -799,7 +909,11 @@
                 "label": {
                     "en": "mm"
                 }
-            }
+            },
+            "rodeo:standard_name": "rainfall_amount",
+            "rodeo:level": 2.0,
+            "rodeo:function": "point",
+            "rodeo:period": "PT6H"
         },
         "rainfall_duration:2.0:point:PT0S": {
             "type": "Parameter",
@@ -816,7 +930,11 @@
                 "label": {
                     "en": "min"
                 }
-            }
+            },
+            "rodeo:standard_name": "rainfall_duration",
+            "rodeo:level": 2.0,
+            "rodeo:function": "point",
+            "rodeo:period": "PT0S"
         },
         "relative_humidity:2.0:mean:PT1M": {
             "type": "Parameter",
@@ -833,7 +951,11 @@
                 "label": {
                     "en": "%"
                 }
-            }
+            },
+            "rodeo:standard_name": "relative_humidity",
+            "rodeo:level": 2.0,
+            "rodeo:function": "mean",
+            "rodeo:period": "PT1M"
         },
         "total_downwelling_shortwave_flux_in_air:2.0:mean:PT10M": {
             "type": "Parameter",
@@ -850,7 +972,11 @@
                 "label": {
                     "en": "W m-2"
                 }
-            }
+            },
+            "rodeo:standard_name": "total_downwelling_shortwave_flux_in_air",
+            "rodeo:level": 2.0,
+            "rodeo:function": "mean",
+            "rodeo:period": "PT10M"
         },
         "visibility_in_air:1.80:mean:PT10M": {
             "type": "Parameter",
@@ -867,7 +993,11 @@
                 "label": {
                     "en": "m"
                 }
-            }
+            },
+            "rodeo:standard_name": "visibility_in_air",
+            "rodeo:level": 1.8,
+            "rodeo:function": "mean",
+            "rodeo:period": "PT10M"
         },
         "visibility_in_air:2.50:mean:PT10M": {
             "type": "Parameter",
@@ -884,7 +1014,11 @@
                 "label": {
                     "en": "m"
                 }
-            }
+            },
+            "rodeo:standard_name": "visibility_in_air",
+            "rodeo:level": 2.5,
+            "rodeo:function": "mean",
+            "rodeo:period": "PT10M"
         },
         "wind_from_direction:2.0:mean:PT10M": {
             "type": "Parameter",
@@ -901,7 +1035,11 @@
                 "label": {
                     "en": "degree"
                 }
-            }
+            },
+            "rodeo:standard_name": "wind_from_direction",
+            "rodeo:level": 2.0,
+            "rodeo:function": "mean",
+            "rodeo:period": "PT10M"
         },
         "wind_speed:10:mean:PT10M": {
             "type": "Parameter",
@@ -918,7 +1056,11 @@
                 "label": {
                     "en": "m s-1"
                 }
-            }
+            },
+            "rodeo:standard_name": "wind_speed",
+            "rodeo:level": 10.0,
+            "rodeo:function": "mean",
+            "rodeo:period": "PT10M"
         },
         "wind_speed_of_gust:10:maximum:PT10M": {
             "type": "Parameter",
@@ -935,7 +1077,11 @@
                 "label": {
                     "en": "m s-1"
                 }
-            }
+            },
+            "rodeo:standard_name": "wind_speed_of_gust",
+            "rodeo:level": 10.0,
+            "rodeo:function": "maximum",
+            "rodeo:period": "PT10M"
         }
     }
 }

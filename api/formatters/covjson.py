@@ -20,6 +20,7 @@ from covjson_pydantic.unit import Unit
 from fastapi import HTTPException
 from pydantic import AwareDatetime
 
+from utilities import is_float
 
 # mime_type = "application/prs.coverage+json"
 
@@ -28,7 +29,15 @@ Data = namedtuple("Data", ["dom", "values", "ts_mdata"])
 
 
 def make_parameter(ts_mdata):
+    custom_fields = {
+        "rodeo:standard_name": ts_mdata.standard_name,
+        "rodeo:level": float(ts_mdata.level) if is_float(ts_mdata.level) else 0.0,
+        "rodeo:function": ts_mdata.function,
+        "rodeo:period": ts_mdata.period,
+    }
+
     return Parameter(
+        # TODO: Change description, as we know have the explicit fields?
         description={
             "en": f"{ts_mdata.standard_name} at {ts_mdata.level}m {ts_mdata.period} {ts_mdata.function}",
         },
@@ -37,13 +46,14 @@ def make_parameter(ts_mdata):
             label={"en": ts_mdata.parameter_name},
         ),
         unit=Unit(label={"en": ts_mdata.unit}),
+        **custom_fields,
     )
 
 
-def convert_to_covjson(response):
+def convert_to_covjson(observations):
     # Collect data
     coverages = []
-    data = [_collect_data(md.ts_mdata, md.obs_mdata) for md in response.observations]
+    data = [_collect_data(md.ts_mdata, md.obs_mdata) for md in observations]
 
     # Need to sort before using groupBy. Also sort on parameter_name to get consistently sorted output
     data.sort(key=lambda x: (x.dom, x.ts_mdata.parameter_name))

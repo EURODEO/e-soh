@@ -25,7 +25,7 @@ from response_classes import GeoJsonResponse
 from shapely import geometry
 from shapely import wkt
 from shapely.errors import GEOSException
-from utilities import add_parameter_name_and_datetime
+from utilities import add_request_parameters, filter_observations_for_z
 from utilities import validate_bbox
 
 router = APIRouter(prefix="/collections/observations")
@@ -71,6 +71,18 @@ async def get_locations(
             "air_temperature:1.5:maximum:PT10M",
         ),
     ] = None,
+    standard_names: Annotated[
+        str | None,
+        Query(description="Comma seperated list of parameter standard_name to query", example="air_temperature"),
+    ] = None,
+    levels: Annotated[
+        str | None,
+        Query(description="Define the vertical level to return data from", example="1.25/2.0"),
+    ] = None,
+    functions: Annotated[
+        str | None, Query(description="Comma seperated list of parameter aggregation functions")
+    ] = None,
+    periods: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation periods")] = None,
 ) -> EDRFeatureCollection:  # Hack to use string
     ts_request = dstore.GetObsRequest(
         temporal_latest=True,
@@ -94,20 +106,22 @@ async def get_locations(
             [dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords],
         )
 
-    await add_parameter_name_and_datetime(ts_request, parameter_name, datetime)
-    ts_response = await get_obs_request(ts_request)
+    await add_request_parameters(ts_request, parameter_name, datetime, standard_names, functions, periods)
+    grpc_response = await get_obs_request(ts_request)
+    # TODO: Move this to datastore
+    observations = filter_observations_for_z(grpc_response.observations, levels)
 
-    if len(ts_response.observations) == 0:
+    if len(observations) == 0:
         raise HTTPException(
             status_code=404,
-            detail="Query did not return any features.",
+            detail="Query did not return any locations.",
         )
 
     platform_parameters: DefaultDict[str, Set[str]] = defaultdict(set)
     platform_names: Dict[str, Set[str]] = defaultdict(set)
     platform_coordinates: Dict[str, Set[Tuple[float, float]]] = defaultdict(set)
     all_parameters: Dict[str, Parameter] = {}
-    for obs in ts_response.observations:
+    for obs in observations:
         platform_names[obs.ts_mdata.platform].add(
             obs.ts_mdata.platform_name if obs.ts_mdata.platform_name else f"platform-{obs.ts_mdata.platform}"
         )
@@ -179,17 +193,23 @@ async def get_data_location_id(
             alias="parameter-name",
             description="Comma seperated list of parameter names. Each consists of four components seperated by colons."
             " The components are standard name, level in meters, aggregation function, and period. "
-            "Each of the components can be replaced by the wildcard character `*`. "
-            "To get all the air temperatures measured at 1.5 meter, use `air_temperature:1.5:*:*`.",
-            example="wind_from_direction:2.0:mean:PT10M,"
-            "wind_speed:10:mean:PT10M,"
-            "relative_humidity:2.0:mean:PT1M,"
-            "air_pressure_at_sea_level:1:mean:PT1M,"
-            "air_temperature:1.5:maximum:PT10M",
+            "Each of the components can be replaced by the wildcard character `*`.",
         ),
     ] = None,
     datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
     f: Annotated[formatters.Formats, Query(description="Specify return format.")] = formatters.Formats.covjson,
+    standard_names: Annotated[
+        str | None,
+        Query(description="Comma seperated list of parameter standard_name to query", example="air_temperature"),
+    ] = None,
+    levels: Annotated[
+        str | None,
+        Query(description="Define the vertical level to return data from", example="1.25/2.0"),
+    ] = None,
+    functions: Annotated[
+        str | None, Query(description="Comma seperated list of parameter aggregation functions")
+    ] = None,
+    periods: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation periods")] = None,
 ):
     request = dstore.GetObsRequest(
         filter=dict(
@@ -198,10 +218,14 @@ async def get_data_location_id(
         included_response_fields=response_fields_needed_for_data_api,
     )
 
-    await add_parameter_name_and_datetime(request, parameter_name, datetime)
+    await add_request_parameters(request, parameter_name, datetime, standard_names, functions, periods)
 
-    response = await get_obs_request(request)
-    return formatters.formatters[f](response)
+    grpc_response = await get_obs_request(request)
+    # TODO: Move this to datastore
+    observations = filter_observations_for_z(grpc_response.observations, levels)
+    response = formatters.formatters[f](observations)
+
+    return response
 
 
 @router.get(
@@ -219,17 +243,23 @@ async def get_data_position(
             alias="parameter-name",
             description="Comma seperated list of parameter names. Each consists of four components seperated by colons."
             " The components are standard name, level in meters, aggregation function, and period. "
-            "Each of the components can be replaced by the wildcard character `*`. "
-            "To get all the air temperatures measured at 1.5 meter, use `air_temperature:1.5:*:*`.",
-            example="wind_from_direction:2.0:mean:PT10M,"
-            "wind_speed:10:mean:PT10M,"
-            "relative_humidity:2.0:mean:PT1M,"
-            "air_pressure_at_sea_level:1:mean:PT1M,"
-            "air_temperature:1.5:maximum:PT10M",
+            "Each of the components can be replaced by the wildcard character `*`.",
         ),
     ] = None,
     datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
     f: Annotated[formatters.Formats, Query(description="Specify return format.")] = formatters.Formats.covjson,
+    standard_names: Annotated[
+        str | None,
+        Query(description="Comma seperated list of parameter standard_name to query", example="air_temperature"),
+    ] = None,
+    levels: Annotated[
+        str | None,
+        Query(description="Define the vertical level to return data from", example="1.25/2.0"),
+    ] = None,
+    functions: Annotated[
+        str | None, Query(description="Comma seperated list of parameter aggregation functions")
+    ] = None,
+    periods: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation periods")] = None,
 ):
     try:
         point = wkt.loads(coords)
@@ -257,11 +287,14 @@ async def get_data_position(
         included_response_fields=response_fields_needed_for_data_api,
     )
 
-    await add_parameter_name_and_datetime(request, parameter_name, datetime)
+    await add_request_parameters(request, parameter_name, datetime, standard_names, functions, periods)
 
-    coverages = await get_obs_request(request)
-    coverages = formatters.formatters[f](coverages)
-    return coverages
+    grpc_response = await get_obs_request(request)
+    # TODO: Move this to datastore
+    observations = filter_observations_for_z(grpc_response.observations, levels)
+    response = formatters.formatters[f](observations)
+
+    return response
 
 
 @router.get(
@@ -279,17 +312,23 @@ async def get_data_area(
             alias="parameter-name",
             description="Comma seperated list of parameter names. Each consists of four components seperated by colons."
             " The components are standard name, level in meters, aggregation function, and period. "
-            "Each of the components can be replaced by the wildcard character `*`. "
-            "To get all the air temperatures measured at 1.5 meter, use `air_temperature:1.5:*:*`.",
-            example="wind_from_direction:2.0:mean:PT10M,"
-            "wind_speed:10:mean:PT10M,"
-            "relative_humidity:2.0:mean:PT1M,"
-            "air_pressure_at_sea_level:1:mean:PT1M,"
-            "air_temperature:1.5:maximum:PT10M",
+            "Each of the components can be replaced by the wildcard character `*`.",
         ),
     ] = None,
     datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
     f: Annotated[formatters.Formats, Query(description="Specify return format.")] = formatters.Formats.covjson,
+    standard_names: Annotated[
+        str | None,
+        Query(description="Comma seperated list of parameter standard_name to query", example="air_temperature"),
+    ] = None,
+    levels: Annotated[
+        str | None,
+        Query(description="Define the vertical level to return data from", example="1.25/2.0"),
+    ] = None,
+    functions: Annotated[
+        str | None, Query(description="Comma seperated list of parameter aggregation functions")
+    ] = None,
+    periods: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation periods")] = None,
 ):
     try:
         poly = wkt.loads(coords)
@@ -318,8 +357,11 @@ async def get_data_area(
         included_response_fields=response_fields_needed_for_data_api,
     )
 
-    await add_parameter_name_and_datetime(request, parameter_name, datetime)
+    await add_request_parameters(request, parameter_name, datetime, standard_names, functions, periods)
 
-    coverages = await get_obs_request(request)
-    coverages = formatters.formatters[f](coverages)
-    return coverages
+    grpc_response = await get_obs_request(request)
+    # TODO: Move this to datastore
+    observations = filter_observations_for_z(grpc_response.observations, levels)
+    response = formatters.formatters[f](observations)
+
+    return response

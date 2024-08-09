@@ -65,7 +65,11 @@
                 "label": {
                     "en": "degrees Celsius"
                 }
-            }
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 1.5,
+            "rodeo:function": "maximum",
+            "rodeo:period": "PT10M"
         },
         "relative_humidity:2.0:mean:PT1M": {
             "type": "Parameter",
@@ -82,7 +86,11 @@
                 "label": {
                     "en": "%"
                 }
-            }
+            },
+            "rodeo:standard_name": "relative_humidity",
+            "rodeo:level": 2.0,
+            "rodeo:function": "mean",
+            "rodeo:period": "PT1M"
         },
         "wind_from_direction:2.0:mean:PT10M": {
             "type": "Parameter",
@@ -99,7 +107,11 @@
                 "label": {
                     "en": "degree"
                 }
-            }
+            },
+            "rodeo:standard_name": "wind_from_direction",
+            "rodeo:level": 2.0,
+            "rodeo:function": "mean",
+            "rodeo:period": "PT10M"
         }
     },
     "ranges": {

@@ -1,3 +1,6 @@
+import sys
+import re
+
 from datetime import datetime
 from datetime import timedelta
 from typing import Tuple
@@ -127,7 +130,14 @@ def validate_bbox(bbox: str) -> Tuple[float, float, float, float]:
     return left, bottom, right, top
 
 
-async def add_parameter_name_and_datetime(request, parameter_name: str | None, datetime: str | None):
+async def add_request_parameters(
+    request,
+    parameter_name: str | None,
+    datetime: str | None,
+    standard_names: str | None,
+    functions: str | None,
+    periods: str | None,
+):
     if parameter_name:
         parameter_name = split_and_strip(parameter_name)
         await verify_parameter_names(parameter_name)
@@ -137,3 +147,156 @@ async def add_parameter_name_and_datetime(request, parameter_name: str | None, d
         start, end = get_datetime_range(datetime)
         request.temporal_interval.start.CopyFrom(start)
         request.temporal_interval.end.CopyFrom(end)
+
+    if standard_names:
+        request.filter["standard_name"].values.extend(split_and_strip(standard_names))
+
+    if functions:
+        request.filter["function"].values.extend(split_and_strip(functions))
+
+    if periods:
+        split_on_slash = periods.split("/")
+        if len(split_on_slash) == 1:
+            request.filter["period"].values.extend(split_and_strip(periods))
+        elif len(split_on_slash) == 2:
+            period_range = await get_iso_8601_range(split_on_slash[0].upper(), split_on_slash[1].upper())
+            request.filter["period"].values.extend(period_range)
+        else:
+            raise HTTPException(status_code=400, detail=f"Invalid ISO 8601 range format: {periods}")
+
+
+def get_z_levels_or_range(z: str | None) -> list[float]:
+    """
+    Function for getting the z values from the z parameter.
+    """
+    # it can be z=value1,value2,value3: z=2,10,80
+    # or z=minimum value/maximum value: z=10/100
+    # or z=Rn/min height/height interval: z=R20/100/50  -> not yet implemented
+    try:
+        split_on_slash = z.split("/")
+        if len(split_on_slash) == 2:
+            z_min = float(split_on_slash[0]) if split_on_slash[0] != ".." else float("-inf")
+            z_max = float(split_on_slash[1]) if split_on_slash[1] != ".." else float("inf")
+            return [z_min, z_max]
+        elif len(split_on_slash) > 2:
+            return get_z_values_from_interval(split_on_slash)
+        else:
+            return list(map(float, z.split(",")))
+    except ValueError:
+        raise HTTPException(status_code=400, detail=f"Invalid levels value: {z}")
+
+
+def get_z_values_from_interval(interval: list[str]) -> list[float]:
+    """
+    Function for getting the z values from a repeating-interval pattern.
+    """
+    # Make sure the pattern is Rn/n/n
+    # Allow optional decimals in interval and starting value
+    # TODO: Can the starting value be negative? Can the interval be negative to go in reverse?
+    pattern = re.compile(r"^R\d+/\d+(\.\d+)?/\d+(\.\d+)?$")
+    if not pattern.match("/".join(interval)):
+        raise HTTPException(status_code=400, detail=f"Invalid levels repeating-interval: {'/'.join(interval)}")
+
+    amount_of_intervals = int(interval[0][1:])
+    interval_value = float(interval[1])
+    starting_value = float(interval[2])
+
+    # Round to 3 decimals to avoid floating point errors
+    return [round(starting_value + i * interval_value, 3) for i in range(amount_of_intervals)]
+
+
+def is_float(element: any) -> bool:
+    if element is None:
+        return False
+    try:
+        float(element)
+        return True
+    except ValueError:
+        return False
+
+
+async def get_unique_values_for_metadata(field: str) -> list[str]:
+    request = dstore.GetTSAGRequest(attrs=[field])
+    response = await get_ts_ag_request(request)
+    return sorted([getattr(i.combo, field) for i in response.groups])
+
+
+def filter_observations_for_z(observations, z):
+    if z:
+        z_values = get_z_levels_or_range(z)
+        if len(z.split("/")) == 2:
+            z_min, z_max = z_values[0], z_values[1]
+            observations = [
+                obs
+                for obs in observations
+                if is_float(obs.ts_mdata.level) and z_min <= float(obs.ts_mdata.level) <= z_max
+            ]
+        else:
+            observations = [
+                obs for obs in observations if is_float(obs.ts_mdata.level) and float(obs.ts_mdata.level) in z_values
+            ]
+    return observations
+
+
+def numeric_sort_key(value: str) -> float:
+    """
+    Converts a string to a float for comparison, returns infinity if the string is not convertible.
+    """
+    try:
+        return float(value)
+    except ValueError:
+        return float("inf")
+
+
+def iso_8601_duration_to_seconds_sort_key(duration: str) -> int:
+    """
+    Converts an ISO 8601 duration string to seconds for comparison.
+    Can compare day, hour, minute, and second values or a combination
+    """
+    # Regular expression to match the ISO 8601 duration string.
+    # Splits the expression into days, hours, minutes, and seconds
+    # and calculates total_seconds for comparison.
+    pattern = re.compile(r"P(?:(\d+)D)?T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?")
+    match = pattern.match(duration)
+    if not match:
+        # If the duration string is not in the correct format, return the maximum integer value
+        return sys.maxsize
+
+    days = int(match.group(1) or 0)
+    hours = int(match.group(2) or 0)
+    minutes = int(match.group(3) or 0)
+    seconds = int(match.group(4) or 0)
+
+    total_seconds = days * 86400 + hours * 3600 + minutes * 60 + seconds
+    return total_seconds
+
+
+async def get_iso_8601_range(start: str, end: str) -> list[str] | None:
+    """
+    Returns a list of ISO 8601 durations between the start and end values.
+    TODO: Add support for closest match if the start or end value is valid, but not found?
+    """
+
+    if not start or not end:
+        raise HTTPException(status_code=400, detail=f"Invalid ISO 8601 period: {start} / {end}")
+
+    try:
+        periods = sorted(await get_unique_values_for_metadata("period"), key=iso_8601_duration_to_seconds_sort_key)
+
+        if start != "..":
+            start_index = periods.index(start)
+        else:
+            start_index = 0
+
+        if end != "..":
+            end_index = periods.index(end)
+        else:
+            end_index = len(periods) - 1
+
+        if start_index > end_index:
+            raise HTTPException(status_code=400, detail=f"Invalid ISO 8601 range: {start} > {end}")
+
+    except ValueError as err:
+        raise HTTPException(status_code=400, detail=f"Invalid ISO 8601 range: {err} of possible period values")
+
+    return periods[start_index : end_index + 1]  # noqa: E203

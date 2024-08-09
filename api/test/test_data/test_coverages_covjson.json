@@ -61,7 +61,11 @@
                         "label": {
                             "en": "degrees Celsius"
                         }
-                    }
+                    },
+                    "rodeo:standard_name": "air_temperature",
+                    "rodeo:level": 2.0,
+                    "rodeo:function": "mean",
+                    "rodeo:period": "PT1M"
                 }
             },
             "ranges": {
@@ -145,7 +149,11 @@
                         "label": {
                             "en": "degrees Celsius"
                         }
-                    }
+                    },
+                    "rodeo:standard_name": "air_temperature",
+                    "rodeo:level": 2.0,
+                    "rodeo:function": "mean",
+                    "rodeo:period": "PT1M"
                 }
             },
             "ranges": {
@@ -186,7 +194,11 @@
                 "label": {
                     "en": "degrees Celsius"
                 }
-            }
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 2.0,
+            "rodeo:function": "mean",
+            "rodeo:period": "PT1M"
         }
     }
 }
