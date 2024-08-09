@@ -126,12 +126,39 @@ def test_from_a_single_collection_get_locations_within_a_bbox_with_periods_range
     actual_response_is_expected_response(actual_response, expected_json)
 
 
+def test_from_a_single_collection_get_locations_within_bbox_with_levels_range_filtering():
+    collection_id = "observations"
+    bbox = "5.0,52.0,6.0,52.1"
+    actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/locations?bbox={bbox}&levels=../10.0")
+
+    expected_json = load_json("response/data_locations_two_points_with_multiple_parameters.json")
+
+    assert actual_response.status_code == 200
+    actual_response_is_expected_response(actual_response, expected_json)
+
+
 def test_from_a_single_collection_get_locations_within_a_bbox_with_parameter_name_filtering():
     collection_id = "observations"
     bbox = "5.0,52.0,6.0,52.1"
     parameters = "air_temperature:0.1:minimum:PT10M, air_pressure_at_sea_level:1:mean:PT1M"
     actual_response = requests.get(
         url=BASE_URL + f"/collections/{collection_id}/locations?bbox={bbox}&parameter-name={parameters}"
+    )
+
+    expected_json = load_json("response/data_locations_two_points_with_two_parameters.json")
+
+    assert actual_response.status_code == 200
+    actual_response_is_expected_response(actual_response, expected_json)
+
+
+def test_from_a_single_collection_get_locations_within_a_bbox_with_functions_and_levels_filtering():
+    collection_id = "observations"
+    bbox = "5.0,52.0,6.0,52.1"
+    functions = "minimum, mean"
+    levels = "0.1, 1.0"
+    # parameters = "air_temperature:0.1:minimum:PT10M, air_pressure_at_sea_level:1:mean:PT1M"
+    actual_response = requests.get(
+        url=BASE_URL + f"/collections/{collection_id}/locations?bbox={bbox}" f"&functions={functions}&levels={levels}"
     )
 
     expected_json = load_json("response/data_locations_two_points_with_two_parameters.json")
@@ -305,10 +332,10 @@ def test_from_a_single_collection_get_a_single_position_with_all_available_custo
     actual_response_is_expected_response(actual_response, expected_json)
 
 
-def test_from_a_single_collection_get_a_single_position_with_level_range_filtering():
+def test_from_a_single_collection_get_a_single_position_with_repeating_level_interval_and_period():
     collection_id = "observations"
     coords = "POINT(5.179705 52.0988218)"
-    levels = "1.5/2.0"
+    levels = "R6/0.1/1.5"
     periods = "PT1M"
     datetime = "2022-12-31T00:00:00Z"
     actual_response = requests.get(
