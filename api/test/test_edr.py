@@ -371,3 +371,29 @@ def test_get_data_with_a_period_not_found_in_datastore():
 
         assert response.status_code == 400
         assert response.json() == {"detail": "Invalid ISO 8601 range: 'PT1S' is not in list of possible period values"}
+
+
+def test_get_data_with_invalid_levels_value():
+    with patch("routers.edr.get_obs_request") as mock_get_obs_request:
+
+        # Load with random test data for making a mock_obs_request
+        test_data = load_json("test/test_data/test_coverages_proto.json")
+        mock_get_obs_request.return_value = create_mock_obs_response(test_data)
+
+        response = client.get("/collections/observations/locations/0-20000-0-06260?levels=Z/10")
+
+        assert response.status_code == 400
+        assert response.json() == {"detail": "Invalid levels value: Z/10"}
+
+
+def test_get_data_with_invalid_levels_repeating_interval():
+    with patch("routers.edr.get_obs_request") as mock_get_obs_request:
+
+        # Load with random test data for making a mock_obs_request
+        test_data = load_json("test/test_data/test_coverages_proto.json")
+        mock_get_obs_request.return_value = create_mock_obs_response(test_data)
+
+        response = client.get("/collections/observations/locations/0-20000-0-06260?levels=R10/20/100/10")
+
+        assert response.status_code == 400
+        assert response.json() == {"detail": "Invalid levels repeating-interval: R10/20/100/10"}
