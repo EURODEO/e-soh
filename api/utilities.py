@@ -175,7 +175,9 @@ def get_z_levels_or_range(z: str | None) -> list[float]:
     try:
         split_on_slash = z.split("/")
         if len(split_on_slash) == 2:
-            return [float(split_on_slash[0]), float(split_on_slash[1])]
+            z_min = float(split_on_slash[0]) if split_on_slash[0] != ".." else float("-inf")
+            z_max = float(split_on_slash[1]) if split_on_slash[1] != ".." else float("inf")
+            return [z_min, z_max]
         elif len(split_on_slash) > 2:
             return get_z_values_from_interval(split_on_slash)
         else:
@@ -190,6 +192,7 @@ def get_z_values_from_interval(interval: list[str]) -> list[float]:
     """
     # Make sure the pattern is Rn/n/n
     # Allow optional decimals in interval and starting value
+    # TODO: Can the starting value be negative? Can the interval be negative to go in reverse?
     pattern = re.compile(r"^R\d+/\d+(\.\d+)?/\d+(\.\d+)?$")
     if not pattern.match("/".join(interval)):
         raise HTTPException(status_code=400, detail=f"Invalid levels repeating-interval: {'/'.join(interval)}")
