@@ -3,7 +3,7 @@ from datetime import datetime
 from datetime import timezone
 from typing import Dict
 
-import datastore_pb2 as dstore
+from edr_pydantic.capabilities import ConformanceModel
 from edr_pydantic.capabilities import Contact
 from edr_pydantic.capabilities import LandingPageModel
 from edr_pydantic.capabilities import Provider
@@ -23,6 +23,7 @@ from edr_pydantic.variables import Variables
 from grpc_getter import get_extents_request
 from grpc_getter import get_ts_ag_request
 
+import datastore_pb2 as dstore
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -58,12 +59,37 @@ def get_landing_page(request):
         provider=Provider(name="RODEO", url="https://rodeo-project.eu/"),
         contact=Contact(email="rodeoproject@fmi.fi"),
         links=[
-            Link(href=f"{request.url}", rel="self", title="Landing Page in JSON"),
-            Link(href=f"{request.url}docs", rel="service-desc", title="API description in HTML"),
-            Link(href=f"{request.url}openapi.json", rel="service-desc", title="API description in JSON"),
-            # Link(href=f"{request.url}conformance", rel="data", title="Conformance Declaration in JSON"),
+            Link(href=f"{request.url}", rel="self", title="Landing Page in JSON", type="application/json"),
+            Link(href=f"{request.url}docs", rel="service-doc", title="API description in HTML", type="text/html"),
+            Link(
+                href=f"{request.url}openapi.json",
+                rel="service-desc",
+                title="API description in JSON",
+                type="application/json",
+            ),
+            Link(
+                href=f"{request.url}conformance",
+                rel="conformance",
+                title="Conformance Declaration in JSON",
+                type="application/json",
+            ),
             Link(href=f"{request.url}collections", rel="data", title="Collections metadata in JSON"),
         ],
+    )
+
+
+def get_conformance() -> ConformanceModel:
+    return ConformanceModel(
+        conformsTo=[
+            "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/core",  # B2 - required
+            "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/collections",  # B3 - required
+            "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/json",  # B4
+            "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/edr-geojson",  # B5
+            "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/covjson",  # B7
+            # TODO: Add when there is a conformance class for Open Api Spec 3.1
+            # "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/oas31",  # B9
+            "https://www.opengis.net/spec/ogcapi-edr-1/1.1/conf/queries",  # B10
+        ]
     )
 
 
