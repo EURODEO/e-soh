@@ -1,4 +1,6 @@
 from __future__ import annotations
+import json
+
 
 from typing import List
 from typing import Literal
@@ -10,6 +12,7 @@ from pydantic import constr
 from pydantic import Field
 from pydantic import model_validator
 
+
 with open("api/cf_standard_names_v84.txt", "r") as file:
     standard_names = {line.strip() for line in file}
 
@@ -18,6 +21,9 @@ with open("api/cf_standard_names_alias_v84.txt", "r") as file:
     for i in file:
         i = i.strip().split(":")
         standard_names_alias[i[1]] = i[0]
+
+with open("api/std_name_units.json") as f:
+    std_name_unit_mapping = json.load(f)
 
 
 class Geometry(BaseModel):
@@ -62,9 +68,31 @@ class Content(BaseModel):
         return self
 
     @model_validator(mode="after")
-    def standarize_unit(self) -> Content:
+    def standardize_units(self) -> Content:
+        if self.unit == std_name_unit_mapping[self.standard_name]["unit"]:
+            return self
+        elif (
+            "alias" in std_name_unit_mapping[self.standard_name]
+            and self.unit in std_name_unit_mapping[self.standard_name]["alias"]
+        ):
+            self.unit = std_name_unit_mapping[self.standard_name]["unit"]
+        elif "conversion" in std_name_unit_mapping[self.standard_name] and self.unit in (
+            conversion := std_name_unit_mapping[self.standard_name]["conversion"]
+        ):
+            number_of_decimals = len(self.value.split(".")[1]) if len(self.value.split(".")) == 2 else 0
+            tmp_value = (float(self.value) + conversion[self.unit].get("add", 0)) * conversion[self.unit].get("mul", 1)
+            self.value = f"{tmp_value:.{number_of_decimals}f}"
+            self.unit = std_name_unit_mapping[self.standard_name]["unit"]
+            return self
+        else:
+            raise ValueError(
+                f"Unknown unit or unit alias for {self.standard_name}. Provided unit {self.unit} is unknown."
+            )
 
         return self
+
+    class Config:
+        anystr_strip_whitespace = True
 
 
 class Properties(BaseModel):

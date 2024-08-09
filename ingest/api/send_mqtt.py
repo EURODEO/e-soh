@@ -20,7 +20,7 @@ def connect_mqtt(mqtt_conf: dict):
     client.username_pw_set(mqtt_conf["username"], mqtt_conf["password"])
     client.on_connect = on_connect
     client.tls_set()
-    client.connect(mqtt_conf["host"], 8883)
+    client.connect(mqtt_conf["host"], mqtt_conf["port"])
     return client
 
 

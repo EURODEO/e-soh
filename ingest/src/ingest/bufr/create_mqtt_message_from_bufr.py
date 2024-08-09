@@ -15,7 +15,7 @@ init_oscar_py("./src/ingest/bufr/oscar/oscar_stations_all.json")
 init_bufr_schema_py("./src/ingest/schemas/bufr_to_e_soh_message.json")
 
 
-def build_all_json_payloads_from_bufr(bufr_content: object) -> list[str]:
+def build_all_json_payloads_from_bufr(bufr_content: object) -> list[dict]:
     """
     This function creates the e-soh-message-spec json schema(s) from a BUFR file.
 
