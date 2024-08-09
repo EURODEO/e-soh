@@ -201,7 +201,8 @@ def get_z_values_from_interval(interval: list[str]) -> list[float]:
     interval_value = float(interval[1])
     starting_value = float(interval[2])
 
-    return [starting_value + i * interval_value for i in range(amount_of_intervals)]
+    # Round to 3 decimals to avoid floating point errors
+    return [round(starting_value + i * interval_value, 3) for i in range(amount_of_intervals)]
 
 
 def is_float(element: any) -> bool:
