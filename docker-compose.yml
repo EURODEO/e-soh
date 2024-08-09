@@ -10,8 +10,11 @@ services:
     volumes:
       #      - ts-data:/home/postgres/pgdata/data # for timescale image
       - ts-data:/var/lib/postgresql # for postgres image
-      - ./datastore/database/healthcheck_postgis_uptime.sh:/healthcheck_postgis_uptime.sh # for the healthcheck
+      - ./datastore/database/db.conf:/etc/conf_settings/db.conf:ro
+      - pg_logs:/logs
+      - ./datastore/database/healthcheck_postgis_uptime.sh:/healthcheck_postgis_uptime.sh:ro # for the healthcheck
     environment:
+      - EXTRA_CONF_DIR=/etc/conf_settings
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=mysecretpassword
       - POSTGRES_DB=data
@@ -26,7 +29,7 @@ services:
         ]
       interval: 5s
       timeout: 1s
-      retries: 3
+      retries: 30
       start_period: 30s # Failures in 30 seconds do not mark container as unhealthy
 
   migrate:
@@ -156,10 +159,34 @@ services:
       - DSHOST=store
       - DSPORT=50050
     volumes:
-      - ./datastore/load-test/output:/load-test/output
+      - ./datastore/load-test/output:/load-test/output:rw
     depends_on:
       store:
         condition: service_healthy
 
+  monitoring:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus:rw
+
+  export-db-metrics:
+    image: quay.io/prometheuscommunity/postgres-exporter
+    environment:
+      - DATA_SOURCE_URI=db:5432/data
+      - DATA_SOURCE_USER=postgres
+      - DATA_SOURCE_PASS=mysecretpassword
+    ports:
+      - "9187:9187"
+    volumes:
+      - ./monitoring/postgres_exporter.yml:/postgres_exporter.yml:ro
+    depends_on:
+      db:
+        condition: service_healthy
+
 volumes:
   ts-data:
+  pg_logs:
+  prometheus-data:

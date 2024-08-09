@@ -8,14 +8,30 @@ import (
 	"datastore/storagebackend"
 	"datastore/storagebackend/postgresql"
 	"fmt"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"log"
 	"net"
 	"time"
 
+	// gRPC
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
 	"google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/peer"
+
+	// Monitoring
+	grpc_prometheus "github.com/grpc-ecosystem/go-grpc-middleware/providers/prometheus"
+	//"github.com/grpc-ecosystem/go-grpc-middleware"
+	//"google.golang.org/grpc/ChainUnaryInterceptor"
+	//"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors"
+	//"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/auth"
+	//"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
+	//"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/selector"
+	//"github.com/prometheus/client_golang/prometheus"
+	//"github.com/prometheus/client_golang/prometheus/promhttp"
+	//"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
+	//"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/recovery"
+	//"go.opentelemetry.io/otel/trace"
 
 	_ "expvar"
 	"net/http"
@@ -52,8 +68,41 @@ func main() {
 		return resp, err
 	}
 
-	// create gRPC server
-	server := grpc.NewServer(grpc.UnaryInterceptor(reqTimeLogger))
+	//srvMetrics := grpcprom.NewServerMetrics()
+	//reg := prometheus.NewRegistry()
+	//reg.MustRegister(srvMetrics)
+	//exemplarFromContext := func(ctx context.Context) prometheus.Labels {
+	//	if span := trace.SpanContextFromContext(ctx); span.IsSampled() {
+	//		return prometheus.Labels{"traceID": span.TraceID().String()}
+	//	}
+	//	return nil
+	//}
+	grpcMetrics := grpc_prometheus.NewServerMetrics()
+
+	// create gRPC server with middleware
+	server := grpc.NewServer(
+		grpc.ChainUnaryInterceptor(reqTimeLogger),
+		grpc.ChainUnaryInterceptor(
+			grpcMetrics.UnaryServerInterceptor(),
+		),
+	)
+	//server := grpc.NewServer(
+	//	grpc.ChainUnaryInterceptor(reqTimeLogger),
+	//	grpc.ChainUnaryInterceptor(
+	//		// Order matters e.g. tracing interceptor have to create span first for the later exemplars to work.
+	//		otelgrpc.UnaryServerInterceptor(),
+	//		srvMetrics.UnaryServerInterceptor(grpcprom.WithExemplarFromContext(exemplarFromContext)),
+	//		logging.UnaryServerInterceptor(interceptorLogger(rpcLogger), logging.WithFieldsFromContext(logTraceID)),
+	//		recovery.UnaryServerInterceptor(recovery.WithRecoveryHandler(grpcPanicRecoveryHandler)),
+	//	),
+	//	grpc.ChainStreamInterceptor(
+	//		otelgrpc.StreamServerInterceptor(),
+	//		srvMetrics.StreamServerInterceptor(grpcprom.WithExemplarFromContext(exemplarFromContext)),
+	//		logging.StreamServerInterceptor(interceptorLogger(rpcLogger), logging.WithFieldsFromContext(logTraceID)),
+	//		recovery.StreamServerInterceptor(recovery.WithRecoveryHandler(grpcPanicRecoveryHandler)),
+	//	),
+	//)
+	grpcMetrics.InitializeMetrics(server)
 	grpc_health_v1.RegisterHealthServer(server, health.NewServer())
 
 	// create storage backend
@@ -74,6 +123,12 @@ func main() {
 	if err != nil {
 		log.Fatalf("net.Listen() failed: %v", err)
 	}
+
+	go func() {
+		log.Println("Starting HTTP server for Prometheus metrics on :8080")
+		http.Handle("/metrics", promhttp.Handler())
+		log.Fatal(http.ListenAndServe(":8080", nil))
+	}()
 
 	// serve profiling info
 	log.Printf("serving profiling info\n")
