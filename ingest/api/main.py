@@ -26,6 +26,7 @@ mqtt_configuration = {
     "host": os.getenv("MQTT_HOST"),
     "username": os.getenv("MQTT_USERNAME"),
     "password": os.getenv("MQTT_PASSWORD"),
+    "enable_tls": os.getenv("MQTT_TLS", "False").lower() in ("true", "1", "t"),
     "port": os.getenv("MQTT_PORT", 8883),
 }
 
