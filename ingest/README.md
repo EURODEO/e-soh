@@ -7,6 +7,7 @@
 | MQTT_PASSWORD | String | None | Set password for MQTT |
 | MQTT_TLS | Bool | False | Enable TLS for MQTT connection |
 | MQTT_PORT | Int | 8883 | Set port for MQTT broker |
+| FASTAPI_ROOT_PATH | String | "" | If this api is behind proxy, this need to be set to the root path |
 
 
 ## Dev install
