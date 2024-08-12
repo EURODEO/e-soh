@@ -1,4 +1,12 @@
 # e-soh-event-queue
+## Enviornment variables
+| Variable | Type | Default | Explenation |
+| ---------| ---- | ------- | ----------- |
+| MQTT_HOST | String | None | Set host for MQTT broker |
+| MQTT_USERNAME | String | None | Set username for MQTT |
+| MQTT_PASSWORD | String | None | Set password for MQTT |
+| MQTT_TLS | Bool | False | Enable TLS for MQTT connection |
+| MQTT_PORT | Int | 8883 | Set port for MQTT broker |
 
 
 ## Dev install
