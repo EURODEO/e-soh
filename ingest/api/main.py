@@ -33,7 +33,8 @@ mqtt_configuration = {
 
 ingester = IngestToPipeline(mqtt_conf=mqtt_configuration, uuid_prefix="uuid")
 
-app = FastAPI()
+
+app = FastAPI(root_path=os.getenv("FASTAPI_ROOT_PATH", ""))
 
 
 @app.post("/bufr")
