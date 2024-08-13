@@ -155,14 +155,17 @@ async def add_request_parameters(
         request.filter["function"].values.extend(split_and_strip(functions))
 
     if periods:
-        split_on_slash = periods.split("/")
-        if len(split_on_slash) == 1:
-            request.filter["period"].values.extend(split_and_strip(periods))
-        elif len(split_on_slash) == 2:
-            period_range = await get_iso_8601_range(split_on_slash[0].upper(), split_on_slash[1].upper())
-            request.filter["period"].values.extend(period_range)
-        else:
-            raise HTTPException(status_code=400, detail=f"Invalid ISO 8601 range format: {periods}")
+        request.filter["period"].values.extend(await get_periods_from_request(periods))
+
+
+async def get_periods_from_request(periods: str | None) -> list[str]:
+    split_on_slash = periods.split("/")
+    if len(split_on_slash) == 1:
+        return split_and_strip(periods)
+    elif len(split_on_slash) == 2:
+        return await get_iso_8601_range(split_on_slash[0].upper(), split_on_slash[1].upper())
+    else:
+        raise HTTPException(status_code=400, detail=f"Invalid ISO 8601 range format: {periods}")
 
 
 def get_z_levels_or_range(z: str | None) -> list[float]:
@@ -171,7 +174,7 @@ def get_z_levels_or_range(z: str | None) -> list[float]:
     """
     # it can be z=value1,value2,value3: z=2,10,80
     # or z=minimum value/maximum value: z=10/100
-    # or z=Rn/min height/height interval: z=R20/100/50  -> not yet implemented
+    # or z=Rn/min height/height interval: z=R20/100/50
     try:
         split_on_slash = z.split("/")
         if len(split_on_slash) == 2:
@@ -218,7 +221,7 @@ def is_float(element: any) -> bool:
 async def get_unique_values_for_metadata(field: str) -> list[str]:
     request = dstore.GetTSAGRequest(attrs=[field])
     response = await get_ts_ag_request(request)
-    return sorted([getattr(i.combo, field) for i in response.groups])
+    return [getattr(i.combo, field) for i in response.groups]
 
 
 def filter_observations_for_z(observations, z):
