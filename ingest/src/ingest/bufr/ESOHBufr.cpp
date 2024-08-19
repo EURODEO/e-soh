@@ -423,12 +423,44 @@ std::list<std::string> ESOHBufr::msg() const {
           }
           }
           if (period_update) {
-            int time_period = 0;
-            time_period = getValue(v, time_period);
-            dateupdate = true;
-            std::stringstream ss;
-            ss << period_beg << -time_period << period_end;
-            period_str = ss.str();
+            if (data_category != 2 ||
+                (int_data_subcategory < 4 || int_data_subcategory > 7)) {
+              int time_period = 0;
+              time_period = getValue(v, time_period);
+
+              if (data_category == 2 && int_data_subcategory == 1) {
+                time_period = -time_period;
+                if (period_beg == "PT") {
+                  if (period_end == "S") {
+                    time_disp += time_period;
+                  } else {
+                    if (period_end == "M") {
+                      time_disp += time_period * 60;
+                    } else {
+                      if (period_end == "H") {
+                        time_disp += time_period * 60 * 60;
+                      } else {
+                        lb.addLogEntry(LogEntry(
+                            "Profile datetime is the start of measure!",
+                            LogLevel::WARN, __func__, bufr_id));
+                      }
+                    }
+                  }
+                }
+              } else {
+                if (time_period > 0) {
+                  time_period = -time_period;
+                  lb.addLogEntry(LogEntry("Positive BUFR time period: " +
+                                              std::to_string(time_period) +
+                                              ", at: " + v.toString(),
+                                          LogLevel::WARN, __func__, bufr_id));
+                }
+              }
+              dateupdate = true;
+              std::stringstream ss;
+              ss << period_beg << -time_period << period_end;
+              period_str = ss.str();
+            }
             dateupdate = true;
           }
           if (dateupdate) {
