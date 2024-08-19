@@ -233,8 +233,7 @@ class Properties(BaseModel):
         str,
         StringConstraints(
             to_upper=True,
-            pattern=r"^P(?!$)(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)W)?(?:(\d+)D)?(?:T(?=\d)"
-            r"(?:(\d+)H)?(?:(\d+)M)?(?:(\d+(?:\.\d+)?)S)?)?$",
+            pattern=r"^P(\d+Y)?(\d+M)?(\d+W)?(\d+D)?(T(\d+H)?(\d+M)?(\d+(\.\d+)?S)?)?$",
         ),
     ] = Field(
         ...,
