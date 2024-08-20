@@ -4,7 +4,6 @@ import isodate
 from typing import List
 from typing import Literal
 from typing import Optional
-from pydantic.functional_validators import field_validator
 from pydantic.types import StringConstraints
 from typing_extensions import Annotated
 from dateutil import parser
@@ -331,10 +330,10 @@ class Properties(BaseModel):
 
         return self
 
-    @field_validator("period", mode="after")
-    def transform_period_to_seconds(self, iso8601_duration: str):
+    @model_validator(mode="after")
+    def transform_period_to_seconds(self):
         try:
-            duration = isodate.parse_duration(iso8601_duration)
+            duration = isodate.parse_duration(self.period)
         except isodate.duration.ParsingError:
             raise ValueError("Invalid duration format.")
 
@@ -349,7 +348,8 @@ class Properties(BaseModel):
             # It's a simple timedelta, so just get the total seconds
             total_seconds = duration.total_seconds()
 
-        return int(total_seconds)
+        self.period = int(total_seconds)
+        return self
 
 
 class Link(BaseModel):
