@@ -1,10 +1,10 @@
-from __future__ import annotations
 import json
-
+import isodate
 
 from typing import List
 from typing import Literal
 from typing import Optional
+from pydantic.functional_validators import field_validator
 from pydantic.types import StringConstraints
 from typing_extensions import Annotated
 from dateutil import parser
@@ -330,6 +330,26 @@ class Properties(BaseModel):
         assert 0 < len(blocks[-1]) <= 16, f"In input 'platform', '{self.platform}', last block of WIGOS is to long"
 
         return self
+
+    @field_validator("period", mode="after")
+    def transform_period_to_seconds(self, iso8601_duration: str):
+        try:
+            duration = isodate.parse_duration(iso8601_duration)
+        except isodate.duration.ParsingError:
+            raise ValueError("Invalid duration format.")
+
+        if isinstance(duration, isodate.duration.Duration):
+            # Years and months need special handling
+            years_in_seconds = duration.years * 31556926  # Seconds in year
+            months_in_seconds = duration.months * 2629744  # Seconds in month
+            days_in_seconds = duration.tdelta.days * 24 * 60 * 60
+            seconds_in_seconds = duration.tdelta.seconds
+            total_seconds = years_in_seconds + months_in_seconds + days_in_seconds + seconds_in_seconds
+        else:
+            # It's a simple timedelta, so just get the total seconds
+            total_seconds = duration.total_seconds()
+
+        return int(total_seconds)
 
 
 class Link(BaseModel):
