@@ -297,7 +297,7 @@ class Properties(BaseModel):
     )
 
     @model_validator(mode="after")
-    def check_datetime_iso(self):
+    def check_datetime_iso(self) -> "Properties":
         try:
             dt = parser.isoparse(self.datetime)
         except ValueError:
@@ -310,7 +310,7 @@ class Properties(BaseModel):
         return self
 
     @model_validator(mode="after")
-    def check_level_int_or_float(self):
+    def check_level_int_or_float(self) -> Properties:
         try:
             self.level = str(float(self.level))
         except ValueError:
@@ -318,7 +318,7 @@ class Properties(BaseModel):
         return self
 
     @model_validator(mode="after")
-    def validate_wigos_id(self):
+    def validate_wigos_id(self) -> Properties:
 
         blocks = self.platform.split("-")
         assert len(blocks) == 4, f"Not enough blocks in input 'platform', '{self.platform}'"
