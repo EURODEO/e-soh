@@ -5,10 +5,11 @@ import json
 from typing import List
 from typing import Literal
 from typing import Optional
+from pydantic.types import StringConstraints
+from typing_extensions import Annotated
 from dateutil import parser
 
 from pydantic import BaseModel
-from pydantic import constr
 from pydantic import Field
 from pydantic import model_validator
 
@@ -228,7 +229,13 @@ class Properties(BaseModel):
         ...,
         description=("Instrument level above ground in meters."),
     )
-    period: constr(to_upper=True) = Field(
+    period: Annotated[
+        str,
+        StringConstraints(
+            to_upper=True,
+            pattern=r"^P(\d+Y)?(\d+M)?(\d+W)?(\d+D)?(T(\d+H)?(\d+M)?(\d+(\.\d+)?S)?)?$",
+        ),
+    ] = Field(
         ...,
         description=(
             "Aggregation period for the measurement. Must be provided in ISO8601 duration format."
