@@ -27,14 +27,14 @@ with open("api/std_name_units.json") as f:
     std_name_unit_mapping = json.load(f)
 
 
-class Geometry(BaseModel):
-    type: Literal["Point"]
-    coordinates: Coordinate
-
-
 class Coordinate(BaseModel):
     lat: float
     lon: float
+
+
+class Geometry(BaseModel):
+    type: Literal["Point"]
+    coordinates: Coordinate
 
 
 class Integrity(BaseModel):
@@ -60,7 +60,7 @@ class Content(BaseModel):
     unit: str = Field(..., description="Unit for the data")
 
     @model_validator(mode="after")
-    def check_standard_name_match(self) -> Content:
+    def check_standard_name_match(self):
         if self.standard_name in standard_names_alias:
             self.standard_name = standard_names_alias[self.standard_name]
 
@@ -69,7 +69,7 @@ class Content(BaseModel):
         return self
 
     @model_validator(mode="after")
-    def standardize_units(self) -> Content:
+    def standardize_units(self):
         if self.unit == std_name_unit_mapping[self.standard_name]["unit"]:
             return self
         elif (
@@ -310,7 +310,7 @@ class Properties(BaseModel):
         return self
 
     @model_validator(mode="after")
-    def check_level_int_or_float(self) -> Properties:
+    def check_level_int_or_float(self):
         try:
             self.level = str(float(self.level))
         except ValueError:
@@ -318,7 +318,7 @@ class Properties(BaseModel):
         return self
 
     @model_validator(mode="after")
-    def validate_wigos_id(self) -> Properties:
+    def validate_wigos_id(self):
 
         blocks = self.platform.split("-")
         assert len(blocks) == 4, f"Not enough blocks in input 'platform', '{self.platform}'"
