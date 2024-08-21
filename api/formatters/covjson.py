@@ -32,8 +32,6 @@ def make_parameter(ts_mdata):
     custom_fields = {
         "rodeo:standard_name": ts_mdata.standard_name,
         "rodeo:level": float(ts_mdata.level) if is_float(ts_mdata.level) else 0.0,
-        "rodeo:function": ts_mdata.function,
-        "rodeo:period": ts_mdata.period,
     }
 
     return Parameter(
@@ -45,6 +43,10 @@ def make_parameter(ts_mdata):
             id=f"https://vocab.nerc.ac.uk/standard_name/{ts_mdata.standard_name}",
             label={"en": ts_mdata.parameter_name},
         ),
+        measurementType={
+            "method": ts_mdata.function,
+            "period": ts_mdata.period,
+        },
         unit=Unit(label={"en": ts_mdata.unit}),
         **custom_fields,
     )

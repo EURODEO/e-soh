@@ -61,7 +61,7 @@ async def get_locations(
         Query(
             alias="parameter-name",
             description="Comma seperated list of parameter names. Each consists of four components seperated by colons."
-            " The components are standard name, level in meters, aggregation function, and period. "
+            " The components are standard name, level in meters, aggregation method, and period. "
             "Each of the components can be replaced by the wildcard character `*`. "
             "To get all the air temperatures measured at 1.5 meter, use `air_temperature:1.5:*:*`.",
             example="wind_from_direction:2.0:mean:PT10M,"
@@ -79,9 +79,7 @@ async def get_locations(
         str | None,
         Query(description="Define the vertical level to return data from", example="1.25/2.0"),
     ] = None,
-    functions: Annotated[
-        str | None, Query(description="Comma seperated list of parameter aggregation functions")
-    ] = None,
+    methods: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation methods")] = None,
     periods: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation periods")] = None,
 ) -> EDRFeatureCollection:  # Hack to use string
     ts_request = dstore.GetObsRequest(
@@ -106,7 +104,7 @@ async def get_locations(
             [dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords],
         )
 
-    await add_request_parameters(ts_request, parameter_name, datetime, standard_names, functions, periods)
+    await add_request_parameters(ts_request, parameter_name, datetime, standard_names, methods, periods)
     grpc_response = await get_obs_request(ts_request)
     # TODO: Move this to datastore
     observations = filter_observations_for_z(grpc_response.observations, levels)
@@ -192,7 +190,7 @@ async def get_data_location_id(
         Query(
             alias="parameter-name",
             description="Comma seperated list of parameter names. Each consists of four components seperated by colons."
-            " The components are standard name, level in meters, aggregation function, and period. "
+            " The components are standard name, level in meters, aggregation method, and period. "
             "Each of the components can be replaced by the wildcard character `*`.",
         ),
     ] = None,
@@ -206,9 +204,7 @@ async def get_data_location_id(
         str | None,
         Query(description="Define the vertical level to return data from", example="1.25/2.0"),
     ] = None,
-    functions: Annotated[
-        str | None, Query(description="Comma seperated list of parameter aggregation functions")
-    ] = None,
+    methods: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation methods")] = None,
     periods: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation periods")] = None,
 ):
     request = dstore.GetObsRequest(
@@ -218,7 +214,7 @@ async def get_data_location_id(
         included_response_fields=response_fields_needed_for_data_api,
     )
 
-    await add_request_parameters(request, parameter_name, datetime, standard_names, functions, periods)
+    await add_request_parameters(request, parameter_name, datetime, standard_names, methods, periods)
 
     grpc_response = await get_obs_request(request)
     # TODO: Move this to datastore
@@ -242,7 +238,7 @@ async def get_data_position(
         Query(
             alias="parameter-name",
             description="Comma seperated list of parameter names. Each consists of four components seperated by colons."
-            " The components are standard name, level in meters, aggregation function, and period. "
+            " The components are standard name, level in meters, aggregation method, and period. "
             "Each of the components can be replaced by the wildcard character `*`.",
         ),
     ] = None,
@@ -256,9 +252,7 @@ async def get_data_position(
         str | None,
         Query(description="Define the vertical level to return data from", example="1.25/2.0"),
     ] = None,
-    functions: Annotated[
-        str | None, Query(description="Comma seperated list of parameter aggregation functions")
-    ] = None,
+    methods: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation methods")] = None,
     periods: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation periods")] = None,
 ):
     try:
@@ -287,7 +281,7 @@ async def get_data_position(
         included_response_fields=response_fields_needed_for_data_api,
     )
 
-    await add_request_parameters(request, parameter_name, datetime, standard_names, functions, periods)
+    await add_request_parameters(request, parameter_name, datetime, standard_names, methods, periods)
 
     grpc_response = await get_obs_request(request)
     # TODO: Move this to datastore
@@ -311,7 +305,7 @@ async def get_data_area(
         Query(
             alias="parameter-name",
             description="Comma seperated list of parameter names. Each consists of four components seperated by colons."
-            " The components are standard name, level in meters, aggregation function, and period. "
+            " The components are standard name, level in meters, aggregation method, and period. "
             "Each of the components can be replaced by the wildcard character `*`.",
         ),
     ] = None,
@@ -325,9 +319,7 @@ async def get_data_area(
         str | None,
         Query(description="Define the vertical level to return data from", example="1.25/2.0"),
     ] = None,
-    functions: Annotated[
-        str | None, Query(description="Comma seperated list of parameter aggregation functions")
-    ] = None,
+    methods: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation methods")] = None,
     periods: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation periods")] = None,
 ):
     try:
@@ -357,7 +349,7 @@ async def get_data_area(
         included_response_fields=response_fields_needed_for_data_api,
     )
 
-    await add_request_parameters(request, parameter_name, datetime, standard_names, functions, periods)
+    await add_request_parameters(request, parameter_name, datetime, standard_names, methods, periods)
 
     grpc_response = await get_obs_request(request)
     # TODO: Move this to datastore
