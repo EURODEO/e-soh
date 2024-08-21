@@ -151,14 +151,14 @@ def test_from_a_single_collection_get_locations_within_a_bbox_with_parameter_nam
     actual_response_is_expected_response(actual_response, expected_json)
 
 
-def test_from_a_single_collection_get_locations_within_a_bbox_with_functions_and_levels_filtering():
+def test_from_a_single_collection_get_locations_within_a_bbox_with_methods_and_levels_filtering():
     collection_id = "observations"
     bbox = "5.0,52.0,6.0,52.1"
-    functions = "minimum, mean"
+    methods = "minimum, mean"
     levels = "0.1, 1.0"
     # parameters = "air_temperature:0.1:minimum:PT10M, air_pressure_at_sea_level:1:mean:PT1M"
     actual_response = requests.get(
-        url=BASE_URL + f"/collections/{collection_id}/locations?bbox={bbox}" f"&functions={functions}&levels={levels}"
+        url=BASE_URL + f"/collections/{collection_id}/locations?bbox={bbox}" f"&methods={methods}&levels={levels}"
     )
 
     expected_json = load_json("response/data_locations_two_points_with_two_parameters.json")
@@ -208,12 +208,12 @@ def test_from_a_single_collection_get_a_single_location_with_multiple_custom_cov
     location_id = "0-20000-0-06260"
     standard_names = "air_temperature, wind_speed, dew_point_temperature, duration_of_sunshine"
     levels = "0/1.8"
-    functions = "maximum, point"
+    methods = "maximum, point"
     periods = "PT1M/PT10M"
     datetime = "2022-12-31T00:50:00Z/2022-12-31T02:10:00Z"
     actual_response = requests.get(
         url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}"
-        f"?standard_names={standard_names}&levels={levels}&functions={functions}"
+        f"?standard_names={standard_names}&levels={levels}&methods={methods}"
         f"&periods={periods}&datetime={datetime}"
     )
 
@@ -316,13 +316,13 @@ def test_from_a_single_collection_get_a_single_position_with_all_available_custo
     coords = "POINT(5.179705 52.0988218)"
     standard_names = "air_temperature"
     levels = "1.5"
-    functions = "maximum"
+    methods = "maximum"
     periods = "PT10M"
     datetime = "2022-12-31T00:50:00Z/2022-12-31T02:10:00Z"
     actual_response = requests.get(
         url=BASE_URL + f"/collections/{collection_id}/position"
         f"?coords={coords}&standard_names={standard_names}&levels={levels}"
-        f"&functions={functions}&periods={periods}&datetime={datetime}"
+        f"&methods={methods}&periods={periods}&datetime={datetime}"
     )
 
     expected_json = load_json("response/data_position_one_location_with_one_parameter.json")

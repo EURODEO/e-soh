@@ -63,10 +63,12 @@
                     "en": "degrees Celsius"
                 }
             },
+            "measurementType": {
+                "method": "minimum",
+                "period": "PT10M"
+            },
             "rodeo:standard_name": "air_temperature",
-            "rodeo:level": 0.1,
-            "rodeo:function": "minimum",
-            "rodeo:period": "PT10M"
+            "rodeo:level": 0.1
         },
         "air_temperature:1.5:maximum:PT10M": {
             "type": "Parameter",
@@ -84,10 +86,12 @@
                     "en": "degrees Celsius"
                 }
             },
+            "measurementType": {
+                "method": "maximum",
+                "period": "PT10M"
+            },
             "rodeo:standard_name": "air_temperature",
-            "rodeo:level": 1.5,
-            "rodeo:function": "maximum",
-            "rodeo:period": "PT10M"
+            "rodeo:level": 1.5
         },
         "air_temperature:1.5:minimum:PT10M": {
             "type": "Parameter",
@@ -105,10 +109,12 @@
                     "en": "degrees Celsius"
                 }
             },
+            "measurementType": {
+                "method": "minimum",
+                "period": "PT10M"
+            },
             "rodeo:standard_name": "air_temperature",
-            "rodeo:level": 1.5,
-            "rodeo:function": "minimum",
-            "rodeo:period": "PT10M"
+            "rodeo:level": 1.5
         },
         "air_temperature:2.0:mean:PT1M": {
             "type": "Parameter",
@@ -126,10 +132,12 @@
                     "en": "degrees Celsius"
                 }
             },
+            "measurementType": {
+                "method": "mean",
+                "period": "PT1M"
+            },
             "rodeo:standard_name": "air_temperature",
-            "rodeo:level": 2.0,
-            "rodeo:function": "mean",
-            "rodeo:period": "PT1M"
+            "rodeo:level": 2.0
         },
         "wind_from_direction:2.0:mean:PT10M": {
             "type": "Parameter",
@@ -147,10 +155,12 @@
                     "en": "degree"
                 }
             },
+            "measurementType": {
+                "method": "mean",
+                "period": "PT10M"
+            },
             "rodeo:standard_name": "wind_from_direction",
-            "rodeo:level": 2.0,
-            "rodeo:function": "mean",
-            "rodeo:period": "PT10M"
+            "rodeo:level": 2.0
         }
     }
 }

@@ -59,10 +59,12 @@
                     "en": "degrees Celsius"
                 }
             },
+            "measurementType": {
+                "method": "maximum",
+                "period": "PT6H"
+            },
             "rodeo:standard_name": "air_temperature",
-            "rodeo:level": 2.0,
-            "rodeo:function": "maximum",
-            "rodeo:period": "PT6H"
+            "rodeo:level": 2.0
         },
         "air_temperature:2.0:minimum:PT6H": {
             "type": "Parameter",
@@ -80,10 +82,12 @@
                     "en": "degrees Celsius"
                 }
             },
+            "measurementType": {
+                "method": "minimum",
+                "period": "PT6H"
+            },
             "rodeo:standard_name": "air_temperature",
-            "rodeo:level": 2.0,
-            "rodeo:function": "minimum",
-            "rodeo:period": "PT6H"
+            "rodeo:level": 2.0
         }
     },
     "ranges": {

@@ -90,7 +90,7 @@
                         "reference": "Height of measurement above ground level in meters"
                     },
                     {
-                        "id": "functions",
+                        "id": "methods",
                         "interval": [
                             [
                                 "maximum",
@@ -182,10 +182,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/air_pressure_at_sea_level",
                         "label": "air_pressure_at_sea_level:1:mean:PT1M"
                     },
+                    "measurementType": {
+                        "method": "mean",
+                        "period": "PT1M"
+                    },
                     "rodeo:standard_name": "air_pressure_at_sea_level",
-                    "rodeo:level": 1.0,
-                    "rodeo:function": "mean",
-                    "rodeo:period": "PT1M"
+                    "rodeo:level": 1.0
                 },
                 "air_temperature:0.1:minimum:PT10M": {
                     "type": "Parameter",
@@ -197,10 +199,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                         "label": "air_temperature:0.1:minimum:PT10M"
                     },
+                    "measurementType": {
+                        "method": "minimum",
+                        "period": "PT10M"
+                    },
                     "rodeo:standard_name": "air_temperature",
-                    "rodeo:level": 0.1,
-                    "rodeo:function": "minimum",
-                    "rodeo:period": "PT10M"
+                    "rodeo:level": 0.1
                 },
                 "air_temperature:0:minimum:PT12H": {
                     "type": "Parameter",
@@ -212,10 +216,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                         "label": "air_temperature:0:minimum:PT12H"
                     },
+                    "measurementType": {
+                        "method": "minimum",
+                        "period": "PT12H"
+                    },
                     "rodeo:standard_name": "air_temperature",
-                    "rodeo:level": 0.0,
-                    "rodeo:function": "minimum",
-                    "rodeo:period": "PT12H"
+                    "rodeo:level": 0.0
                 },
                 "air_temperature:0:minimum:PT14H": {
                     "type": "Parameter",
@@ -227,10 +233,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                         "label": "air_temperature:0:minimum:PT14H"
                     },
+                    "measurementType": {
+                        "method": "minimum",
+                        "period": "PT14H"
+                    },
                     "rodeo:standard_name": "air_temperature",
-                    "rodeo:level": 0.0,
-                    "rodeo:function": "minimum",
-                    "rodeo:period": "PT14H"
+                    "rodeo:level": 0.0
                 },
                 "air_temperature:0:minimum:PT6H": {
                     "type": "Parameter",
@@ -242,10 +250,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                         "label": "air_temperature:0:minimum:PT6H"
                     },
+                    "measurementType": {
+                        "method": "minimum",
+                        "period": "PT6H"
+                    },
                     "rodeo:standard_name": "air_temperature",
-                    "rodeo:level": 0.0,
-                    "rodeo:function": "minimum",
-                    "rodeo:period": "PT6H"
+                    "rodeo:level": 0.0
                 },
                 "air_temperature:1.5:maximum:PT10M": {
                     "type": "Parameter",
@@ -257,10 +267,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                         "label": "air_temperature:1.5:maximum:PT10M"
                     },
+                    "measurementType": {
+                        "method": "maximum",
+                        "period": "PT10M"
+                    },
                     "rodeo:standard_name": "air_temperature",
-                    "rodeo:level": 1.5,
-                    "rodeo:function": "maximum",
-                    "rodeo:period": "PT10M"
+                    "rodeo:level": 1.5
                 },
                 "air_temperature:1.5:minimum:PT10M": {
                     "type": "Parameter",
@@ -272,10 +284,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                         "label": "air_temperature:1.5:minimum:PT10M"
                     },
+                    "measurementType": {
+                        "method": "minimum",
+                        "period": "PT10M"
+                    },
                     "rodeo:standard_name": "air_temperature",
-                    "rodeo:level": 1.5,
-                    "rodeo:function": "minimum",
-                    "rodeo:period": "PT10M"
+                    "rodeo:level": 1.5
                 },
                 "air_temperature:2.0:maximum:PT12H": {
                     "type": "Parameter",
@@ -287,10 +301,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                         "label": "air_temperature:2.0:maximum:PT12H"
                     },
+                    "measurementType": {
+                        "method": "maximum",
+                        "period": "PT12H"
+                    },
                     "rodeo:standard_name": "air_temperature",
-                    "rodeo:level": 2.0,
-                    "rodeo:function": "maximum",
-                    "rodeo:period": "PT12H"
+                    "rodeo:level": 2.0
                 },
                 "air_temperature:2.0:maximum:PT24H": {
                     "type": "Parameter",
@@ -302,10 +318,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                         "label": "air_temperature:2.0:maximum:PT24H"
                     },
+                    "measurementType": {
+                        "method": "maximum",
+                        "period": "PT24H"
+                    },
                     "rodeo:standard_name": "air_temperature",
-                    "rodeo:level": 2.0,
-                    "rodeo:function": "maximum",
-                    "rodeo:period": "PT24H"
+                    "rodeo:level": 2.0
                 },
                 "air_temperature:2.0:maximum:PT6H": {
                     "type": "Parameter",
@@ -317,10 +335,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                         "label": "air_temperature:2.0:maximum:PT6H"
                     },
+                    "measurementType": {
+                        "method": "maximum",
+                        "period": "PT6H"
+                    },
                     "rodeo:standard_name": "air_temperature",
-                    "rodeo:level": 2.0,
-                    "rodeo:function": "maximum",
-                    "rodeo:period": "PT6H"
+                    "rodeo:level": 2.0
                 },
                 "air_temperature:2.0:mean:PT1M": {
                     "type": "Parameter",
@@ -332,10 +352,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                         "label": "air_temperature:2.0:mean:PT1M"
                     },
+                    "measurementType": {
+                        "method": "mean",
+                        "period": "PT1M"
+                    },
                     "rodeo:standard_name": "air_temperature",
-                    "rodeo:level": 2.0,
-                    "rodeo:function": "mean",
-                    "rodeo:period": "PT1M"
+                    "rodeo:level": 2.0
                 },
                 "air_temperature:2.0:minimum:PT12H": {
                     "type": "Parameter",
@@ -347,10 +369,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                         "label": "air_temperature:2.0:minimum:PT12H"
                     },
+                    "measurementType": {
+                        "method": "minimum",
+                        "period": "PT12H"
+                    },
                     "rodeo:standard_name": "air_temperature",
-                    "rodeo:level": 2.0,
-                    "rodeo:function": "minimum",
-                    "rodeo:period": "PT12H"
+                    "rodeo:level": 2.0
                 },
                 "air_temperature:2.0:minimum:PT14H": {
                     "type": "Parameter",
@@ -362,10 +386,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                         "label": "air_temperature:2.0:minimum:PT14H"
                     },
+                    "measurementType": {
+                        "method": "minimum",
+                        "period": "PT14H"
+                    },
                     "rodeo:standard_name": "air_temperature",
-                    "rodeo:level": 2.0,
-                    "rodeo:function": "minimum",
-                    "rodeo:period": "PT14H"
+                    "rodeo:level": 2.0
                 },
                 "air_temperature:2.0:minimum:PT6H": {
                     "type": "Parameter",
@@ -377,10 +403,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                         "label": "air_temperature:2.0:minimum:PT6H"
                     },
+                    "measurementType": {
+                        "method": "minimum",
+                        "period": "PT6H"
+                    },
                     "rodeo:standard_name": "air_temperature",
-                    "rodeo:level": 2.0,
-                    "rodeo:function": "minimum",
-                    "rodeo:period": "PT6H"
+                    "rodeo:level": 2.0
                 },
                 "cloud_base_altitude:0:point:PT0S": {
                     "type": "Parameter",
@@ -392,10 +420,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/cloud_base_altitude",
                         "label": "cloud_base_altitude:0:point:PT0S"
                     },
+                    "measurementType": {
+                        "method": "point",
+                        "period": "PT0S"
+                    },
                     "rodeo:standard_name": "cloud_base_altitude",
-                    "rodeo:level": 0.0,
-                    "rodeo:function": "point",
-                    "rodeo:period": "PT0S"
+                    "rodeo:level": 0.0
                 },
                 "cloud_base_altitude:1:point:PT0S": {
                     "type": "Parameter",
@@ -407,10 +437,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/cloud_base_altitude",
                         "label": "cloud_base_altitude:1:point:PT0S"
                     },
+                    "measurementType": {
+                        "method": "point",
+                        "period": "PT0S"
+                    },
                     "rodeo:standard_name": "cloud_base_altitude",
-                    "rodeo:level": 1.0,
-                    "rodeo:function": "point",
-                    "rodeo:period": "PT0S"
+                    "rodeo:level": 1.0
                 },
                 "cloud_base_altitude:2.0:point:PT0S": {
                     "type": "Parameter",
@@ -422,10 +454,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/cloud_base_altitude",
                         "label": "cloud_base_altitude:2.0:point:PT0S"
                     },
+                    "measurementType": {
+                        "method": "point",
+                        "period": "PT0S"
+                    },
                     "rodeo:standard_name": "cloud_base_altitude",
-                    "rodeo:level": 2.0,
-                    "rodeo:function": "point",
-                    "rodeo:period": "PT0S"
+                    "rodeo:level": 2.0
                 },
                 "cloud_cover:0:point:PT0S": {
                     "type": "Parameter",
@@ -437,10 +471,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/cloud_cover",
                         "label": "cloud_cover:0:point:PT0S"
                     },
+                    "measurementType": {
+                        "method": "point",
+                        "period": "PT0S"
+                    },
                     "rodeo:standard_name": "cloud_cover",
-                    "rodeo:level": 0.0,
-                    "rodeo:function": "point",
-                    "rodeo:period": "PT0S"
+                    "rodeo:level": 0.0
                 },
                 "cloud_cover:1:point:PT0S": {
                     "type": "Parameter",
@@ -452,10 +488,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/cloud_cover",
                         "label": "cloud_cover:1:point:PT0S"
                     },
+                    "measurementType": {
+                        "method": "point",
+                        "period": "PT0S"
+                    },
                     "rodeo:standard_name": "cloud_cover",
-                    "rodeo:level": 1.0,
-                    "rodeo:function": "point",
-                    "rodeo:period": "PT0S"
+                    "rodeo:level": 1.0
                 },
                 "cloud_cover:2.0:point:PT0S": {
                     "type": "Parameter",
@@ -467,10 +505,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/cloud_cover",
                         "label": "cloud_cover:2.0:point:PT0S"
                     },
+                    "measurementType": {
+                        "method": "point",
+                        "period": "PT0S"
+                    },
                     "rodeo:standard_name": "cloud_cover",
-                    "rodeo:level": 2.0,
-                    "rodeo:function": "point",
-                    "rodeo:period": "PT0S"
+                    "rodeo:level": 2.0
                 },
                 "dew_point_temperature:1.5:mean:PT1M": {
                     "type": "Parameter",
@@ -482,10 +522,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/dew_point_temperature",
                         "label": "dew_point_temperature:1.5:mean:PT1M"
                     },
+                    "measurementType": {
+                        "method": "mean",
+                        "period": "PT1M"
+                    },
                     "rodeo:standard_name": "dew_point_temperature",
-                    "rodeo:level": 1.5,
-                    "rodeo:function": "mean",
-                    "rodeo:period": "PT1M"
+                    "rodeo:level": 1.5
                 },
                 "duration_of_sunshine:2.0:point:PT0S": {
                     "type": "Parameter",
@@ -497,10 +539,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/duration_of_sunshine",
                         "label": "duration_of_sunshine:2.0:point:PT0S"
                     },
+                    "measurementType": {
+                        "method": "point",
+                        "period": "PT0S"
+                    },
                     "rodeo:standard_name": "duration_of_sunshine",
-                    "rodeo:level": 2.0,
-                    "rodeo:function": "point",
-                    "rodeo:period": "PT0S"
+                    "rodeo:level": 2.0
                 },
                 "lwe_precipitation_rate:1.80:mean:PT10M": {
                     "type": "Parameter",
@@ -512,10 +556,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/lwe_precipitation_rate",
                         "label": "lwe_precipitation_rate:1.80:mean:PT10M"
                     },
+                    "measurementType": {
+                        "method": "mean",
+                        "period": "PT10M"
+                    },
                     "rodeo:standard_name": "lwe_precipitation_rate",
-                    "rodeo:level": 1.8,
-                    "rodeo:function": "mean",
-                    "rodeo:period": "PT10M"
+                    "rodeo:level": 1.8
                 },
                 "lwe_precipitation_rate:2.50:mean:PT10M": {
                     "type": "Parameter",
@@ -527,10 +573,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/lwe_precipitation_rate",
                         "label": "lwe_precipitation_rate:2.50:mean:PT10M"
                     },
+                    "measurementType": {
+                        "method": "mean",
+                        "period": "PT10M"
+                    },
                     "rodeo:standard_name": "lwe_precipitation_rate",
-                    "rodeo:level": 2.5,
-                    "rodeo:function": "mean",
-                    "rodeo:period": "PT10M"
+                    "rodeo:level": 2.5
                 },
                 "placeholder:1.80:point:PT01H": {
                     "type": "Parameter",
@@ -542,10 +590,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/placeholder",
                         "label": "placeholder:1.80:point:PT01H"
                     },
+                    "measurementType": {
+                        "method": "point",
+                        "period": "PT01H"
+                    },
                     "rodeo:standard_name": "placeholder",
-                    "rodeo:level": 1.8,
-                    "rodeo:function": "point",
-                    "rodeo:period": "PT01H"
+                    "rodeo:level": 1.8
                 },
                 "placeholder:1.80:point:PT0S": {
                     "type": "Parameter",
@@ -557,10 +607,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/placeholder",
                         "label": "placeholder:1.80:point:PT0S"
                     },
+                    "measurementType": {
+                        "method": "point",
+                        "period": "PT0S"
+                    },
                     "rodeo:standard_name": "placeholder",
-                    "rodeo:level": 1.8,
-                    "rodeo:function": "point",
-                    "rodeo:period": "PT0S"
+                    "rodeo:level": 1.8
                 },
                 "placeholder:1.80:point:PT10M": {
                     "type": "Parameter",
@@ -572,10 +624,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/placeholder",
                         "label": "placeholder:1.80:point:PT10M"
                     },
+                    "measurementType": {
+                        "method": "point",
+                        "period": "PT10M"
+                    },
                     "rodeo:standard_name": "placeholder",
-                    "rodeo:level": 1.8,
-                    "rodeo:function": "point",
-                    "rodeo:period": "PT10M"
+                    "rodeo:level": 1.8
                 },
                 "placeholder:2.50:point:PT01H": {
                     "type": "Parameter",
@@ -587,10 +641,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/placeholder",
                         "label": "placeholder:2.50:point:PT01H"
                     },
+                    "measurementType": {
+                        "method": "point",
+                        "period": "PT01H"
+                    },
                     "rodeo:standard_name": "placeholder",
-                    "rodeo:level": 2.5,
-                    "rodeo:function": "point",
-                    "rodeo:period": "PT01H"
+                    "rodeo:level": 2.5
                 },
                 "placeholder:2.50:point:PT0S": {
                     "type": "Parameter",
@@ -602,10 +658,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/placeholder",
                         "label": "placeholder:2.50:point:PT0S"
                     },
+                    "measurementType": {
+                        "method": "point",
+                        "period": "PT0S"
+                    },
                     "rodeo:standard_name": "placeholder",
-                    "rodeo:level": 2.5,
-                    "rodeo:function": "point",
-                    "rodeo:period": "PT0S"
+                    "rodeo:level": 2.5
                 },
                 "placeholder:2.50:point:PT10M": {
                     "type": "Parameter",
@@ -617,10 +675,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/placeholder",
                         "label": "placeholder:2.50:point:PT10M"
                     },
+                    "measurementType": {
+                        "method": "point",
+                        "period": "PT10M"
+                    },
                     "rodeo:standard_name": "placeholder",
-                    "rodeo:level": 2.5,
-                    "rodeo:function": "point",
-                    "rodeo:period": "PT10M"
+                    "rodeo:level": 2.5
                 },
                 "precipitation_duration:1.80:point:PT10M": {
                     "type": "Parameter",
@@ -632,10 +692,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/precipitation_duration",
                         "label": "precipitation_duration:1.80:point:PT10M"
                     },
+                    "measurementType": {
+                        "method": "point",
+                        "period": "PT10M"
+                    },
                     "rodeo:standard_name": "precipitation_duration",
-                    "rodeo:level": 1.8,
-                    "rodeo:function": "point",
-                    "rodeo:period": "PT10M"
+                    "rodeo:level": 1.8
                 },
                 "precipitation_duration:2.0:point:PT10M": {
                     "type": "Parameter",
@@ -647,10 +709,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/precipitation_duration",
                         "label": "precipitation_duration:2.0:point:PT10M"
                     },
+                    "measurementType": {
+                        "method": "point",
+                        "period": "PT10M"
+                    },
                     "rodeo:standard_name": "precipitation_duration",
-                    "rodeo:level": 2.0,
-                    "rodeo:function": "point",
-                    "rodeo:period": "PT10M"
+                    "rodeo:level": 2.0
                 },
                 "precipitation_duration:2.50:point:PT10M": {
                     "type": "Parameter",
@@ -662,10 +726,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/precipitation_duration",
                         "label": "precipitation_duration:2.50:point:PT10M"
                     },
+                    "measurementType": {
+                        "method": "point",
+                        "period": "PT10M"
+                    },
                     "rodeo:standard_name": "precipitation_duration",
-                    "rodeo:level": 2.5,
-                    "rodeo:function": "point",
-                    "rodeo:period": "PT10M"
+                    "rodeo:level": 2.5
                 },
                 "precipitation_rate:2.0:mean:PT10M": {
                     "type": "Parameter",
@@ -677,10 +743,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/precipitation_rate",
                         "label": "precipitation_rate:2.0:mean:PT10M"
                     },
+                    "measurementType": {
+                        "method": "mean",
+                        "period": "PT10M"
+                    },
                     "rodeo:standard_name": "precipitation_rate",
-                    "rodeo:level": 2.0,
-                    "rodeo:function": "mean",
-                    "rodeo:period": "PT10M"
+                    "rodeo:level": 2.0
                 },
                 "rainfall_amount:2.0:point:PT0S": {
                     "type": "Parameter",
@@ -692,10 +760,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/rainfall_amount",
                         "label": "rainfall_amount:2.0:point:PT0S"
                     },
+                    "measurementType": {
+                        "method": "point",
+                        "period": "PT0S"
+                    },
                     "rodeo:standard_name": "rainfall_amount",
-                    "rodeo:level": 2.0,
-                    "rodeo:function": "point",
-                    "rodeo:period": "PT0S"
+                    "rodeo:level": 2.0
                 },
                 "rainfall_amount:2.0:point:PT12H": {
                     "type": "Parameter",
@@ -707,10 +777,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/rainfall_amount",
                         "label": "rainfall_amount:2.0:point:PT12H"
                     },
+                    "measurementType": {
+                        "method": "point",
+                        "period": "PT12H"
+                    },
                     "rodeo:standard_name": "rainfall_amount",
-                    "rodeo:level": 2.0,
-                    "rodeo:function": "point",
-                    "rodeo:period": "PT12H"
+                    "rodeo:level": 2.0
                 },
                 "rainfall_amount:2.0:point:PT24H": {
                     "type": "Parameter",
@@ -722,10 +794,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/rainfall_amount",
                         "label": "rainfall_amount:2.0:point:PT24H"
                     },
+                    "measurementType": {
+                        "method": "point",
+                        "period": "PT24H"
+                    },
                     "rodeo:standard_name": "rainfall_amount",
-                    "rodeo:level": 2.0,
-                    "rodeo:function": "point",
-                    "rodeo:period": "PT24H"
+                    "rodeo:level": 2.0
                 },
                 "rainfall_amount:2.0:point:PT6H": {
                     "type": "Parameter",
@@ -737,10 +811,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/rainfall_amount",
                         "label": "rainfall_amount:2.0:point:PT6H"
                     },
+                    "measurementType": {
+                        "method": "point",
+                        "period": "PT6H"
+                    },
                     "rodeo:standard_name": "rainfall_amount",
-                    "rodeo:level": 2.0,
-                    "rodeo:function": "point",
-                    "rodeo:period": "PT6H"
+                    "rodeo:level": 2.0
                 },
                 "rainfall_duration:2.0:point:PT0S": {
                     "type": "Parameter",
@@ -752,10 +828,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/rainfall_duration",
                         "label": "rainfall_duration:2.0:point:PT0S"
                     },
+                    "measurementType": {
+                        "method": "point",
+                        "period": "PT0S"
+                    },
                     "rodeo:standard_name": "rainfall_duration",
-                    "rodeo:level": 2.0,
-                    "rodeo:function": "point",
-                    "rodeo:period": "PT0S"
+                    "rodeo:level": 2.0
                 },
                 "relative_humidity:2.0:mean:PT1M": {
                     "type": "Parameter",
@@ -767,10 +845,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/relative_humidity",
                         "label": "relative_humidity:2.0:mean:PT1M"
                     },
+                    "measurementType": {
+                        "method": "mean",
+                        "period": "PT1M"
+                    },
                     "rodeo:standard_name": "relative_humidity",
-                    "rodeo:level": 2.0,
-                    "rodeo:function": "mean",
-                    "rodeo:period": "PT1M"
+                    "rodeo:level": 2.0
                 },
                 "total_downwelling_shortwave_flux_in_air:2.0:mean:PT10M": {
                     "type": "Parameter",
@@ -782,10 +862,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/total_downwelling_shortwave_flux_in_air",
                         "label": "total_downwelling_shortwave_flux_in_air:2.0:mean:PT10M"
                     },
+                    "measurementType": {
+                        "method": "mean",
+                        "period": "PT10M"
+                    },
                     "rodeo:standard_name": "total_downwelling_shortwave_flux_in_air",
-                    "rodeo:level": 2.0,
-                    "rodeo:function": "mean",
-                    "rodeo:period": "PT10M"
+                    "rodeo:level": 2.0
                 },
                 "visibility_in_air:1.80:mean:PT10M": {
                     "type": "Parameter",
@@ -797,10 +879,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/visibility_in_air",
                         "label": "visibility_in_air:1.80:mean:PT10M"
                     },
+                    "measurementType": {
+                        "method": "mean",
+                        "period": "PT10M"
+                    },
                     "rodeo:standard_name": "visibility_in_air",
-                    "rodeo:level": 1.8,
-                    "rodeo:function": "mean",
-                    "rodeo:period": "PT10M"
+                    "rodeo:level": 1.8
                 },
                 "visibility_in_air:2.50:mean:PT10M": {
                     "type": "Parameter",
@@ -812,10 +896,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/visibility_in_air",
                         "label": "visibility_in_air:2.50:mean:PT10M"
                     },
+                    "measurementType": {
+                        "method": "mean",
+                        "period": "PT10M"
+                    },
                     "rodeo:standard_name": "visibility_in_air",
-                    "rodeo:level": 2.5,
-                    "rodeo:function": "mean",
-                    "rodeo:period": "PT10M"
+                    "rodeo:level": 2.5
                 },
                 "wind_from_direction:2.0:mean:PT10M": {
                     "type": "Parameter",
@@ -827,10 +913,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/wind_from_direction",
                         "label": "wind_from_direction:2.0:mean:PT10M"
                     },
+                    "measurementType": {
+                        "method": "mean",
+                        "period": "PT10M"
+                    },
                     "rodeo:standard_name": "wind_from_direction",
-                    "rodeo:level": 2.0,
-                    "rodeo:function": "mean",
-                    "rodeo:period": "PT10M"
+                    "rodeo:level": 2.0
                 },
                 "wind_speed:10:mean:PT10M": {
                     "type": "Parameter",
@@ -842,10 +930,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed",
                         "label": "wind_speed:10:mean:PT10M"
                     },
+                    "measurementType": {
+                        "method": "mean",
+                        "period": "PT10M"
+                    },
                     "rodeo:standard_name": "wind_speed",
-                    "rodeo:level": 10.0,
-                    "rodeo:function": "mean",
-                    "rodeo:period": "PT10M"
+                    "rodeo:level": 10.0
                 },
                 "wind_speed_of_gust:10:maximum:PT10M": {
                     "type": "Parameter",
@@ -857,10 +947,12 @@
                         "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed_of_gust",
                         "label": "wind_speed_of_gust:10:maximum:PT10M"
                     },
+                    "measurementType": {
+                        "method": "maximum",
+                        "period": "PT10M"
+                    },
                     "rodeo:standard_name": "wind_speed_of_gust",
-                    "rodeo:level": 10.0,
-                    "rodeo:function": "maximum",
-                    "rodeo:period": "PT10M"
+                    "rodeo:level": 10.0
                 }
             }
         }

@@ -67,10 +67,12 @@
                     "en": "degrees Celsius"
                 }
             },
+            "measurementType": {
+                "method": "maximum",
+                "period": "PT10M"
+            },
             "rodeo:standard_name": "air_temperature",
-            "rodeo:level": 1.5,
-            "rodeo:function": "maximum",
-            "rodeo:period": "PT10M"
+            "rodeo:level": 1.5
         }
     },
     "ranges": {
