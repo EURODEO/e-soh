@@ -65,8 +65,8 @@ async def search_timeseries(
     period: Annotated[
         str | None, Query(description="Duration of collection period in ISO8601", example="PT10M")
     ] = None,
-    function: Annotated[
-        str | None, Query(description="Aggregation function used to sample observed property", example="maximum")
+    method: Annotated[
+        str | None, Query(description="Aggregation method used to sample observed property", example="maximum")
     ] = None,
     f: Annotated[
         formatters.Metadata_Formats, Query(description="Specify return format")
@@ -92,7 +92,7 @@ async def search_timeseries(
             instrument=dstore.Strings(values=split_and_strip(instrument) if instrument else None),
             level=dstore.Strings(values=split_and_strip(level) if level else None),
             period=dstore.Strings(values=split_and_strip(period) if period else None),
-            function=dstore.Strings(values=split_and_strip(function) if function else None),
+            function=dstore.Strings(values=split_and_strip(method) if method else None),
         ),
         spatial_polygon=(
             dstore.Polygon(points=[dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords])
