@@ -61,10 +61,12 @@
                     "en": "%"
                 }
             },
+            "measurementType": {
+                "method": "mean",
+                "period": "PT1M"
+            },
             "rodeo:standard_name": "relative_humidity",
-            "rodeo:level": 2.0,
-            "rodeo:function": "mean",
-            "rodeo:period": "PT1M"
+            "rodeo:level": 2.0
         },
         "wind_from_direction:2.0:mean:PT10M": {
             "type": "Parameter",
@@ -82,10 +84,12 @@
                     "en": "degree"
                 }
             },
+            "measurementType": {
+                "method": "mean",
+                "period": "PT10M"
+            },
             "rodeo:standard_name": "wind_from_direction",
-            "rodeo:level": 2.0,
-            "rodeo:function": "mean",
-            "rodeo:period": "PT10M"
+            "rodeo:level": 2.0
         },
         "wind_speed:10:mean:PT10M": {
             "type": "Parameter",
@@ -103,10 +107,12 @@
                     "en": "m s-1"
                 }
             },
+            "measurementType": {
+                "method": "mean",
+                "period": "PT10M"
+            },
             "rodeo:standard_name": "wind_speed",
-            "rodeo:level": 10.0,
-            "rodeo:function": "mean",
-            "rodeo:period": "PT10M"
+            "rodeo:level": 10.0
         }
     },
     "ranges": {

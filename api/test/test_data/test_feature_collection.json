@@ -57,10 +57,12 @@
                     "en": "hPa"
                 }
             },
+            "measurementType": {
+                "method": "mean",
+                "period": "PT1M"
+            },
             "rodeo:standard_name": "air_pressure_at_sea_level",
-            "rodeo:level": 1.0,
-            "rodeo:function": "mean",
-            "rodeo:period": "PT1M"
+            "rodeo:level": 1.0
         },
         "air_temperature:0.1:minimum:PT10M": {
             "type": "Parameter",
@@ -78,10 +80,12 @@
                     "en": "degrees Celsius"
                 }
             },
+            "measurementType": {
+                "method": "minimum",
+                "period": "PT10M"
+            },
             "rodeo:standard_name": "air_temperature",
-            "rodeo:level": 0.1,
-            "rodeo:function": "minimum",
-            "rodeo:period": "PT10M"
+            "rodeo:level": 0.1
         }
     }
 }
