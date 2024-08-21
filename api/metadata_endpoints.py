@@ -110,8 +110,6 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
         custom_fields = {
             "rodeo:standard_name": ts.standard_name,
             "rodeo:level": float(ts.level) if is_float(ts.level) else 0.0,
-            "rodeo:function": ts.function,
-            "rodeo:period": ts.period,
         }
 
         parameter = Parameter(
@@ -120,6 +118,10 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
                 id=f"https://vocab.nerc.ac.uk/standard_name/{ts.standard_name}",
                 label=ts.parameter_name,
             ),
+            measurementType={
+                "method": ts.function,
+                "period": ts.period,
+            },
             unit=Unit(label=ts.unit),
             **custom_fields,
         )
@@ -138,7 +140,7 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
     # TODO: Check if these make /collections significantly slower. If yes, do we need DB indices on these? And parallel
     levels = sorted(await get_unique_values_for_metadata("level"), key=numeric_sort_key)
     standard_names = await get_unique_values_for_metadata("standard_name")
-    functions = await get_unique_values_for_metadata("function")
+    methods = await get_unique_values_for_metadata("function")
     periods = sorted(await get_unique_values_for_metadata("period"), key=iso_8601_duration_to_seconds_sort_key)
 
     collection = Collection(
@@ -170,9 +172,9 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
                     reference="Height of measurement above ground level in meters",
                 ),
                 Custom(
-                    id="functions",
-                    interval=[[functions[0], functions[-1]]],
-                    values=functions,
+                    id="methods",
+                    interval=[[methods[0], methods[-1]]],
+                    values=methods,
                     reference="Time aggregation functions",
                 ),
                 Custom(
