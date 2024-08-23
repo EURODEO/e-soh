@@ -16,6 +16,7 @@ from covjson_pydantic.observed_property import ObservedProperty
 from covjson_pydantic.parameter import Parameter
 from covjson_pydantic.reference_system import ReferenceSystem
 from covjson_pydantic.reference_system import ReferenceSystemConnectionObject
+from edr_pydantic.parameter import MeasurementType
 from covjson_pydantic.unit import Unit
 from fastapi import HTTPException
 from pydantic import AwareDatetime
@@ -43,10 +44,10 @@ def make_parameter(ts_mdata):
             id=f"https://vocab.nerc.ac.uk/standard_name/{ts_mdata.standard_name}",
             label={"en": ts_mdata.parameter_name},
         ),
-        measurementType={
-            "method": ts_mdata.function,
-            "period": ts_mdata.period,
-        },
+        measurementType=MeasurementType(
+            method=ts_mdata.function,
+            period=ts_mdata.period,
+        ),
         unit=Unit(label={"en": ts_mdata.unit}),
         **custom_fields,
     )

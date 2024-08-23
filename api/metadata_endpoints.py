@@ -18,6 +18,7 @@ from edr_pydantic.extent import Temporal
 from edr_pydantic.link import EDRQueryLink
 from edr_pydantic.link import Link
 from edr_pydantic.observed_property import ObservedProperty
+from edr_pydantic.parameter import MeasurementType
 from edr_pydantic.parameter import Parameter
 from edr_pydantic.unit import Unit
 from edr_pydantic.variables import Variables
@@ -118,10 +119,10 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
                 id=f"https://vocab.nerc.ac.uk/standard_name/{ts.standard_name}",
                 label=ts.parameter_name,
             ),
-            measurementType={
-                "method": ts.function,
-                "period": ts.period,
-            },
+            measurementType=MeasurementType(
+                method=ts.function,
+                period=ts.period,
+            ),
             unit=Unit(label=ts.unit),
             **custom_fields,
         )
