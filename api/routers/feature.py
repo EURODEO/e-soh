@@ -3,6 +3,7 @@ from typing import Annotated
 
 import datastore_pb2 as dstore
 import formatters
+from openapi import openapi_examples
 from fastapi import APIRouter
 from fastapi import HTTPException
 from fastapi import Path
@@ -32,11 +33,16 @@ env = Environment(loader=FileSystemLoader("templates"), autoescape=select_autoes
     response_class=GeoJsonResponse,
 )
 async def search_timeseries(
-    bbox: Annotated[str | None, Query(example="5.0,52.0,6.0,52.1")] = None,
+    bbox: Annotated[
+        str | None,
+        Query(
+            openapi_examples=openapi_examples.bbox,
+        ),
+    ] = None,
     datetime: Annotated[
         str | None,
         Query(
-            example="2022-12-31T00:00Z/2023-01-01T00:00Z",
+            openapi_examples=openapi_examples.datetime,
             description="E-SOH database only contains data from the last 24 hours",
         ),
     ] = None,
@@ -44,29 +50,47 @@ async def search_timeseries(
     parameter_name: Annotated[str | None, Query(alias="parameter-name", description="E-SOH parameter name")] = None,
     naming_authority: Annotated[
         str | None,
-        Query(alias="naming-authority", description="Naming authority that created the data", example="no.met"),
+        Query(
+            alias="naming-authority",
+            description="Naming authority that created the data",
+            openapi_examples=openapi_examples.naming_authority,
+        ),
     ] = None,
     institution: Annotated[
         str | None,
-        Query(description="Institution that published the data", example="Norwegian meterological institution"),
+        Query(description="Institution that published the data", openapi_examples=openapi_examples.institution),
     ] = None,
     platform: Annotated[
-        str | None, Query(description="Platform ID, WIGOS or WIGOS equivalent.", example="0-20000-0-01492")
+        str | None,
+        Query(description="Platform ID, WIGOS or WIGOS equivalent.", openapi_examples=openapi_examples.wigos_id),
     ] = None,
     standard_name: Annotated[
-        str | None, Query(alias="standard-name", description="CF 1.9 standard name", example="air_temperature")
+        str | None,
+        Query(
+            alias="standard-name", description="CF 1.9 standard name", openapi_examples=openapi_examples.standard_name
+        ),
     ] = None,
-    unit: Annotated[str | None, Query(description="Unit of observed physical property", example="degC")] = None,
+    unit: Annotated[
+        str | None,
+        Query(description="Unit of observed physical property", openapi_examples=openapi_examples.unit),
+    ] = None,
     instrument: Annotated[str | None, Query(description="Instrument Id")] = None,
     level: Annotated[
         str | None,
-        Query(description="Instruments height above ground or distance below surface, in meters", example=2),
+        Query(
+            description="Instruments height above ground or distance below surface, in meters",
+            openapi_examples=openapi_examples.level,
+        ),
     ] = None,
     period: Annotated[
-        str | None, Query(description="Duration of collection period in ISO8601", example="PT10M")
+        str | None,
+        Query(description="Duration of collection period in ISO8601", openapi_examples=openapi_examples.period),
     ] = None,
     method: Annotated[
-        str | None, Query(description="Aggregation method used to sample observed property", example="maximum")
+        str | None,
+        Query(
+            description="Aggregation method used to sample observed property", openapi_examples=openapi_examples.method
+        ),
     ] = None,
     f: Annotated[
         formatters.Metadata_Formats, Query(description="Specify return format")

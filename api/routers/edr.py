@@ -8,6 +8,8 @@ from typing import Tuple
 
 import datastore_pb2 as dstore
 import formatters
+from openapi import custom_dimension_examples
+from openapi import openapi_examples
 from covjson_pydantic.coverage import Coverage
 from covjson_pydantic.coverage import CoverageCollection
 from covjson_pydantic.parameter import Parameter
@@ -54,8 +56,21 @@ response_fields_needed_for_data_api = [
 # We can currently only query data, even if we only need metadata like for this endpoint
 # Maybe it would be better to only query a limited set of data instead of everything (meaning 24 hours)
 async def get_locations(
-    bbox: Annotated[str | None, Query(example="5.0,52.0,6.0,52.1")] = None,
-    datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
+    bbox: Annotated[
+        str | None,
+        Query(
+            description="Bounding box to query data from. The bounding box is an area defined by two"
+            "longitudes and two latitudes.",
+            openapi_examples=openapi_examples.bbox,
+        ),
+    ] = None,
+    datetime: Annotated[
+        str | None,
+        Query(
+            description="Time range to query data from.",
+            openapi_examples=openapi_examples.datetime,
+        ),
+    ] = None,
     parameter_name: Annotated[
         str | None,
         Query(
@@ -64,23 +79,37 @@ async def get_locations(
             " The components are standard name, level in meters, aggregation method, and period. "
             "Each of the components can be replaced by the wildcard character `*`. "
             "To get all the air temperatures measured at 1.5 meter, use `air_temperature:1.5:*:*`.",
-            example="wind_from_direction:2.0:mean:PT10M,"
-            "wind_speed:10:mean:PT10M,"
-            "relative_humidity:2.0:mean:PT1M,"
-            "air_pressure_at_sea_level:1:mean:PT1M,"
-            "air_temperature:1.5:maximum:PT10M",
+            openapi_examples=openapi_examples.parameter_name,
         ),
     ] = None,
     standard_names: Annotated[
         str | None,
-        Query(description="Comma seperated list of parameter standard_name to query", example="air_temperature"),
+        Query(
+            description="Comma seperated list of parameter standard_name to query",
+            openapi_examples=custom_dimension_examples.standard_name,
+        ),
     ] = None,
     levels: Annotated[
         str | None,
-        Query(description="Define the vertical level to return data from", example="1.25/2.0"),
+        Query(
+            description="Define the vertical level to return data from",
+            openapi_examples=custom_dimension_examples.levels,
+        ),
     ] = None,
-    methods: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation methods")] = None,
-    periods: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation periods")] = None,
+    methods: Annotated[
+        str | None,
+        Query(
+            description="Comma seperated list of parameter aggregation methods",
+            openapi_examples=custom_dimension_examples.methods,
+        ),
+    ] = None,
+    periods: Annotated[
+        str | None,
+        Query(
+            description="Comma seperated list of parameter aggregation periods",
+            openapi_examples=custom_dimension_examples.periods,
+        ),
+    ] = None,
 ) -> EDRFeatureCollection:  # Hack to use string
     ts_request = dstore.GetObsRequest(
         temporal_latest=True,
@@ -184,7 +213,7 @@ async def get_locations(
     response_class=CoverageJsonResponse,
 )
 async def get_data_location_id(
-    location_id: Annotated[str, Path(example="0-20000-0-06260")],
+    location_id: Annotated[str, Path(description="WIGOS id of a station", openapi_examples=openapi_examples.wigos_id)],
     parameter_name: Annotated[
         str | None,
         Query(
@@ -192,20 +221,41 @@ async def get_data_location_id(
             description="Comma seperated list of parameter names. Each consists of four components seperated by colons."
             " The components are standard name, level in meters, aggregation method, and period. "
             "Each of the components can be replaced by the wildcard character `*`.",
+            openapi_examples=openapi_examples.parameter_name,
         ),
     ] = None,
-    datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
+    datetime: Annotated[
+        str | None, Query(description="Time range to query data from.", openapi_examples=openapi_examples.datetime)
+    ] = None,
     f: Annotated[formatters.Formats, Query(description="Specify return format.")] = formatters.Formats.covjson,
     standard_names: Annotated[
         str | None,
-        Query(description="Comma seperated list of parameter standard_name to query", example="air_temperature"),
+        Query(
+            description="Comma seperated list of parameter standard_name to query",
+            openapi_examples=custom_dimension_examples.standard_name,
+        ),
     ] = None,
     levels: Annotated[
         str | None,
-        Query(description="Define the vertical level to return data from", example="1.25/2.0"),
+        Query(
+            description="Define the vertical level to return data from",
+            openapi_examples=custom_dimension_examples.levels,
+        ),
     ] = None,
-    methods: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation methods")] = None,
-    periods: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation periods")] = None,
+    methods: Annotated[
+        str | None,
+        Query(
+            description="Comma seperated list of parameter aggregation methods",
+            openapi_examples=custom_dimension_examples.methods,
+        ),
+    ] = None,
+    periods: Annotated[
+        str | None,
+        Query(
+            description="Comma seperated list of parameter aggregation periods",
+            openapi_examples=custom_dimension_examples.periods,
+        ),
+    ] = None,
 ):
     request = dstore.GetObsRequest(
         filter=dict(
@@ -232,7 +282,7 @@ async def get_data_location_id(
     response_class=CoverageJsonResponse,
 )
 async def get_data_position(
-    coords: Annotated[str, Query(example="POINT(5.179705 52.0988218)")],
+    coords: Annotated[str, Query(description="WKT of a point", openapi_examples=openapi_examples.point)],
     parameter_name: Annotated[
         str | None,
         Query(
@@ -240,20 +290,45 @@ async def get_data_position(
             description="Comma seperated list of parameter names. Each consists of four components seperated by colons."
             " The components are standard name, level in meters, aggregation method, and period. "
             "Each of the components can be replaced by the wildcard character `*`.",
+            openapi_examples=openapi_examples.parameter_name,
         ),
     ] = None,
-    datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
+    datetime: Annotated[
+        str | None,
+        Query(
+            description="Time range to query data from.",
+            openapi_examples=openapi_examples.datetime,
+        ),
+    ] = None,
     f: Annotated[formatters.Formats, Query(description="Specify return format.")] = formatters.Formats.covjson,
     standard_names: Annotated[
         str | None,
-        Query(description="Comma seperated list of parameter standard_name to query", example="air_temperature"),
+        Query(
+            description="Comma seperated list of parameter standard_name to query",
+            openapi_examples=custom_dimension_examples.standard_name,
+        ),
     ] = None,
     levels: Annotated[
         str | None,
-        Query(description="Define the vertical level to return data from", example="1.25/2.0"),
+        Query(
+            description="Define the vertical level to return data from",
+            openapi_examples=custom_dimension_examples.levels,
+        ),
     ] = None,
-    methods: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation methods")] = None,
-    periods: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation periods")] = None,
+    methods: Annotated[
+        str | None,
+        Query(
+            description="Comma seperated list of parameter aggregation methods",
+            openapi_examples=custom_dimension_examples.methods,
+        ),
+    ] = None,
+    periods: Annotated[
+        str | None,
+        Query(
+            description="Comma seperated list of parameter aggregation periods",
+            openapi_examples=custom_dimension_examples.periods,
+        ),
+    ] = None,
 ):
     try:
         point = wkt.loads(coords)
@@ -299,7 +374,9 @@ async def get_data_position(
     response_class=CoverageJsonResponse,
 )
 async def get_data_area(
-    coords: Annotated[str, Query(example="POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))")],
+    coords: Annotated[
+        str, Query(description="WKT polygon coordinates of an area", openapi_examples=openapi_examples.polygon)
+    ],
     parameter_name: Annotated[
         str | None,
         Query(
@@ -307,20 +384,41 @@ async def get_data_area(
             description="Comma seperated list of parameter names. Each consists of four components seperated by colons."
             " The components are standard name, level in meters, aggregation method, and period. "
             "Each of the components can be replaced by the wildcard character `*`.",
+            openapi_examples=openapi_examples.parameter_name,
         ),
     ] = None,
-    datetime: Annotated[str | None, Query(example="2022-12-31T00:00Z/2023-01-01T00:00Z")] = None,
+    datetime: Annotated[
+        str | None, Query(description="Time range to query data from.", openapi_examples=openapi_examples.datetime)
+    ] = None,
     f: Annotated[formatters.Formats, Query(description="Specify return format.")] = formatters.Formats.covjson,
     standard_names: Annotated[
         str | None,
-        Query(description="Comma seperated list of parameter standard_name to query", example="air_temperature"),
+        Query(
+            description="Comma seperated list of parameter standard_name to query",
+            openapi_examples=custom_dimension_examples.standard_name,
+        ),
     ] = None,
     levels: Annotated[
         str | None,
-        Query(description="Define the vertical level to return data from", example="1.25/2.0"),
+        Query(
+            description="Define the vertical level to return data from",
+            openapi_examples=custom_dimension_examples.levels,
+        ),
     ] = None,
-    methods: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation methods")] = None,
-    periods: Annotated[str | None, Query(description="Comma seperated list of parameter aggregation periods")] = None,
+    methods: Annotated[
+        str | None,
+        Query(
+            description="Comma seperated list of parameter aggregation methods",
+            openapi_examples=custom_dimension_examples.methods,
+        ),
+    ] = None,
+    periods: Annotated[
+        str | None,
+        Query(
+            description="Comma seperated list of parameter aggregation periods",
+            openapi_examples=custom_dimension_examples.periods,
+        ),
+    ] = None,
 ):
     try:
         poly = wkt.loads(coords)
