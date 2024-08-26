@@ -1,6 +1,8 @@
 import json
 import isodate
 
+from pydantic.functional_validators import field_validator
+
 from typing import List
 from typing import Literal
 from typing import Optional
@@ -231,7 +233,6 @@ class Properties(BaseModel):
     period: Annotated[
         str,
         StringConstraints(
-            to_upper=True,
             pattern=r"^P(\d+Y)?(\d+M)?(\d+W)?(\d+D)?(T(\d+H)?(\d+M)?(\d+(\.\d+)?S)?)?$",
         ),
     ] = Field(
@@ -294,6 +295,13 @@ class Properties(BaseModel):
     integrity: Optional[Integrity] = Field(
         None, description="Specifies a checksum to be applied to the data to ensure that the download is accurate."
     )
+
+    @field_validator("period", mode="before")
+    @classmethod
+    def capitalize_period(cls, period: str):
+        if isinstance(period, str):
+            return period.upper()
+        return period
 
     @model_validator(mode="after")
     def check_datetime_iso(self) -> "Properties":
