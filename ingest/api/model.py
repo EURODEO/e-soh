@@ -1,6 +1,5 @@
-from __future__ import annotations
 import json
-
+import isodate
 
 from typing import List
 from typing import Literal
@@ -27,14 +26,14 @@ with open("api/std_name_units.json") as f:
     std_name_unit_mapping = json.load(f)
 
 
-class Geometry(BaseModel):
-    type: Literal["Point"]
-    coordinates: Coordinate
-
-
 class Coordinate(BaseModel):
     lat: float
     lon: float
+
+
+class Geometry(BaseModel):
+    type: Literal["Point"]
+    coordinates: Coordinate
 
 
 class Integrity(BaseModel):
@@ -60,7 +59,7 @@ class Content(BaseModel):
     unit: str = Field(..., description="Unit for the data")
 
     @model_validator(mode="after")
-    def check_standard_name_match(self) -> Content:
+    def check_standard_name_match(self):
         if self.standard_name in standard_names_alias:
             self.standard_name = standard_names_alias[self.standard_name]
 
@@ -69,7 +68,7 @@ class Content(BaseModel):
         return self
 
     @model_validator(mode="after")
-    def standardize_units(self) -> Content:
+    def standardize_units(self):
         if self.unit == std_name_unit_mapping[self.standard_name]["unit"]:
             return self
         elif (
@@ -310,7 +309,7 @@ class Properties(BaseModel):
         return self
 
     @model_validator(mode="after")
-    def check_level_int_or_float(self) -> Properties:
+    def check_level_int_or_float(self):
         try:
             self.level = str(float(self.level))
         except ValueError:
@@ -318,7 +317,7 @@ class Properties(BaseModel):
         return self
 
     @model_validator(mode="after")
-    def validate_wigos_id(self) -> Properties:
+    def validate_wigos_id(self):
 
         blocks = self.platform.split("-")
         assert len(blocks) == 4, f"Not enough blocks in input 'platform', '{self.platform}'"
@@ -329,6 +328,27 @@ class Properties(BaseModel):
 
         assert 0 < len(blocks[-1]) <= 16, f"In input 'platform', '{self.platform}', last block of WIGOS is to long"
 
+        return self
+
+    @model_validator(mode="after")
+    def transform_period_to_seconds(self):
+        try:
+            duration = isodate.parse_duration(self.period)
+        except isodate.duration.ParsingError:
+            raise ValueError("Invalid duration format.")
+
+        if isinstance(duration, isodate.duration.Duration):
+            # Years and months need special handling
+            years_in_seconds = duration.years * 31556926  # Seconds in year
+            months_in_seconds = duration.months * 2629744  # Seconds in month
+            days_in_seconds = duration.tdelta.days * 24 * 60 * 60
+            seconds_in_seconds = duration.tdelta.seconds
+            total_seconds = years_in_seconds + months_in_seconds + days_in_seconds + seconds_in_seconds
+        else:
+            # It's a simple timedelta, so just get the total seconds
+            total_seconds = duration.total_seconds()
+
+        self.period = int(total_seconds)
         return self
 
 
