@@ -1,4 +1,3 @@
-import json
 import logging
 from paho.mqtt import client as mqtt_client
 from fastapi import HTTPException
@@ -7,18 +6,25 @@ logger = logging.getLogger(__name__)
 
 
 def connect_mqtt(mqtt_conf: dict):
-    def on_connect(client, userdata, flags, rc, properties):
+
+    def on_connect(client, userdata, flags, rc, properties=None):
         if rc == 0:
-            print("Connected to MQTT Broker!")
+            logger.info("Connected to MQTT Broker!")
         else:
-            print("Failed to connect, return code %d\n", rc)
+            logger.error(f"Failed to connect, return code  {rc}")
+
+    def on_disconnect(client, userdata, flags, rc, properties):
+        logger.warning(f"Disconnected from MQTT broker with result code {str(rc)}")
 
     client = mqtt_client.Client(mqtt_client.CallbackAPIVersion.VERSION2)
+    client.enable_logger(logger)
     client.username_pw_set(mqtt_conf["username"], mqtt_conf["password"])
-    client.on_connect = on_connect
 
     if mqtt_conf["enable_tls"]:
         client.tls_set()
+
+    client.on_connect = on_connect
+    client.on_disconnect = on_disconnect
 
     client.connect(mqtt_conf["host"], mqtt_conf["port"])
     client.loop_start()
@@ -29,10 +35,7 @@ def send_message(topic: str, message: str, client: object):
     if len(topic) != 0:
         mqtt_topic = topic
     try:
-        if isinstance(message, str):
-            client.publish(mqtt_topic, message)
-        else:
-            client.publish(mqtt_topic, json.dumps(message))
+        client.publish(mqtt_topic, message)
 
     except Exception as e:
         logger.critical(str(e))

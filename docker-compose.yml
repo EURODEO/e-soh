@@ -97,6 +97,8 @@ services:
       - MQTT_HOST=${MQTT_HOST}
       - MQTT_USERNAME=${MQTT_USERNAME}
       - MQTT_PASSWORD=${MQTT_PASSWORD}
+      - MQTT_TLS=True
+      - INGEST_LOGLEVEL=${INGEST_LOGLEVEL}
     depends_on:
       store:
         condition: service_healthy
