@@ -1,7 +1,6 @@
 from __future__ import annotations
 import json
 
-
 from typing import List
 from typing import Literal
 from typing import Optional
@@ -93,7 +92,7 @@ class Content(BaseModel):
         return self
 
     class Config:
-        anystr_strip_whitespace = True
+        str_strip_whitespace = True
 
 
 class Properties(BaseModel):
