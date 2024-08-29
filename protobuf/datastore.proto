@@ -11,7 +11,7 @@ option go_package = "./datastore";
 // - A _time series_ is a context defined by a set of metadata (defined in TSMetadata below) that
 //   usually does not vary with observaion (time).
 //
-// - An _observation_ consists of a set of of metadata (defined in ObsMetadata below) that usually
+// - An _observation_ consists of a set of metadata (defined in ObsMetadata below) that usually
 //   varies with observation (time). Note that for simplicity the observation value itself (such as
 //   air temperature value 12.7) is also considered a metadata field (although strictly speaking
 //   this is the only field that is just data, not metadata).
