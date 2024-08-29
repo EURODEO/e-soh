@@ -367,10 +367,10 @@ def test_get_data_with_a_period_not_found_in_datastore():
         mock_get_ts_aq_request.return_value = None
         mock_get_unique_values_for_metadata.return_value = ["PT1M", "PT10M", "PT1H"]
 
-        response = client.get("/collections/observations/locations/0-20000-0-06260?periods=PT1S/PT1M")
+        response = client.get("/collections/observations/locations/0-20000-0-06260?periods=XXXX/PT1M")
 
         assert response.status_code == 400
-        assert response.json() == {"detail": "Invalid ISO 8601 range: 'PT1S' is not in list of possible period values"}
+        assert response.json() == {"detail": "Invalid ISO 8601 duration: XXXX"}
 
 
 def test_get_data_with_invalid_levels_value():

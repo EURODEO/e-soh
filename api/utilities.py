@@ -1,10 +1,12 @@
 import sys
 import re
+import isodate
 
 from datetime import datetime
 from datetime import timedelta
 from typing import Tuple
 
+from isodate import ISO8601Error
 import datastore_pb2 as dstore
 from fastapi import HTTPException
 from google.protobuf.timestamp_pb2 import Timestamp
@@ -274,10 +276,29 @@ def iso_8601_duration_to_seconds_sort_key(duration: str) -> int:
     return total_seconds
 
 
+def iso_8601_duration_to_seconds(period: str) -> int:
+    try:
+        duration = isodate.parse_duration(period)
+    except ISO8601Error:
+        raise ValueError(f"Invalid ISO 8601 duration: {period}")
+
+    if isinstance(period, isodate.duration.Duration):
+        # Years and months need special handling
+        years_in_seconds = duration.years * 31556926  # Seconds in year
+        months_in_seconds = duration.months * 2629744  # Seconds in month
+        days_in_seconds = duration.tdelta.days * 24 * 60 * 60
+        seconds_in_seconds = duration.tdelta.seconds
+        total_seconds = years_in_seconds + months_in_seconds + days_in_seconds + seconds_in_seconds
+    else:
+        # It's a simple timedelta, so just get the total seconds
+        total_seconds = duration.total_seconds()
+
+    return int(total_seconds)
+
+
 async def get_iso_8601_range(start: str, end: str) -> list[str] | None:
     """
     Returns a list of ISO 8601 durations between the start and end values.
-    TODO: Add support for closest match if the start or end value is valid, but not found?
     """
 
     if not start or not end:
@@ -285,21 +306,22 @@ async def get_iso_8601_range(start: str, end: str) -> list[str] | None:
 
     try:
         periods = sorted(await get_unique_values_for_metadata("period"), key=iso_8601_duration_to_seconds_sort_key)
+        periods_with_seconds = ((iso_8601_duration_to_seconds(period), period) for period in periods)
 
         if start != "..":
-            start_index = periods.index(start)
+            start_seconds = iso_8601_duration_to_seconds(start)
         else:
-            start_index = 0
+            start_seconds = 0
 
         if end != "..":
-            end_index = periods.index(end)
+            end_seconds = iso_8601_duration_to_seconds(end)
         else:
-            end_index = len(periods) - 1
+            end_seconds = sys.maxsize
 
-        if start_index > end_index:
+        if start_seconds > end_seconds:
             raise HTTPException(status_code=400, detail=f"Invalid ISO 8601 range: {start} > {end}")
 
     except ValueError as err:
-        raise HTTPException(status_code=400, detail=f"Invalid ISO 8601 range: {err} of possible period values")
+        raise HTTPException(status_code=400, detail=f"{err}")
 
-    return periods[start_index : end_index + 1]  # noqa: E203
+    return list(map(lambda x: x[1], filter(lambda x: start_seconds <= x[0] <= end_seconds, periods_with_seconds)))
