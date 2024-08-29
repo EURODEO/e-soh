@@ -114,7 +114,7 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
         }
 
         parameter = Parameter(
-            description=f"{ts.standard_name} at {ts.level}m {ts.period} {ts.function}",
+            description=f"{ts.standard_name} at {ts.level}m, aggregated over {ts.period} with method '{ts.function}'",
             observedProperty=ObservedProperty(
                 id=f"https://vocab.nerc.ac.uk/standard_name/{ts.standard_name}",
                 label=ts.parameter_name,

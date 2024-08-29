@@ -36,9 +36,9 @@ def make_parameter(ts_mdata):
     }
 
     return Parameter(
-        # TODO: Change description, as we know have the explicit fields?
         description={
-            "en": f"{ts_mdata.standard_name} at {ts_mdata.level}m {ts_mdata.period} {ts_mdata.function}",
+            "en": f"{ts_mdata.standard_name} at {ts_mdata.level}m, "
+            f"aggregated over {ts_mdata.period} with method '{ts_mdata.function}'",
         },
         observedProperty=ObservedProperty(
             id=f"https://vocab.nerc.ac.uk/standard_name/{ts_mdata.standard_name}",

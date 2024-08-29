@@ -49,7 +49,7 @@
                 "air_temperature:2.0:mean:PT1M": {
                     "type": "Parameter",
                     "description": {
-                        "en": "air_temperature at 2.0m PT1M mean"
+                        "en": "air_temperature at 2.0m, aggregated over PT1M with method 'mean'"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
@@ -139,7 +139,7 @@
                 "air_temperature:2.0:mean:PT1M": {
                     "type": "Parameter",
                     "description": {
-                        "en": "air_temperature at 2.0m PT1M mean"
+                        "en": "air_temperature at 2.0m, aggregated over PT1M with method 'mean'"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
@@ -186,7 +186,7 @@
         "air_temperature:2.0:mean:PT1M": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 2.0m PT1M mean"
+                "en": "air_temperature at 2.0m, aggregated over PT1M with method 'mean'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",

@@ -174,7 +174,7 @@
             "parameter_names": {
                 "air_pressure_at_sea_level:1:mean:PT1M": {
                     "type": "Parameter",
-                    "description": "air_pressure_at_sea_level at 1m PT1M mean",
+                    "description": "air_pressure_at_sea_level at 1m, aggregated over PT1M with method 'mean'",
                     "unit": {
                         "label": "hPa"
                     },
@@ -191,7 +191,7 @@
                 },
                 "air_temperature:0.1:minimum:PT10M": {
                     "type": "Parameter",
-                    "description": "air_temperature at 0.1m PT10M minimum",
+                    "description": "air_temperature at 0.1m, aggregated over PT10M with method 'minimum'",
                     "unit": {
                         "label": "degrees Celsius"
                     },
@@ -208,7 +208,7 @@
                 },
                 "air_temperature:0:minimum:PT12H": {
                     "type": "Parameter",
-                    "description": "air_temperature at 0m PT12H minimum",
+                    "description": "air_temperature at 0m, aggregated over PT12H with method 'minimum'",
                     "unit": {
                         "label": "degrees Celsius"
                     },
@@ -225,7 +225,7 @@
                 },
                 "air_temperature:0:minimum:PT14H": {
                     "type": "Parameter",
-                    "description": "air_temperature at 0m PT14H minimum",
+                    "description": "air_temperature at 0m, aggregated over PT14H with method 'minimum'",
                     "unit": {
                         "label": "degrees Celsius"
                     },
@@ -242,7 +242,7 @@
                 },
                 "air_temperature:0:minimum:PT6H": {
                     "type": "Parameter",
-                    "description": "air_temperature at 0m PT6H minimum",
+                    "description": "air_temperature at 0m, aggregated over PT6H with method 'minimum'",
                     "unit": {
                         "label": "degrees Celsius"
                     },
@@ -259,7 +259,7 @@
                 },
                 "air_temperature:1.5:maximum:PT10M": {
                     "type": "Parameter",
-                    "description": "air_temperature at 1.5m PT10M maximum",
+                    "description": "air_temperature at 1.5m, aggregated over PT10M with method 'maximum'",
                     "unit": {
                         "label": "degrees Celsius"
                     },
@@ -276,7 +276,7 @@
                 },
                 "air_temperature:1.5:minimum:PT10M": {
                     "type": "Parameter",
-                    "description": "air_temperature at 1.5m PT10M minimum",
+                    "description": "air_temperature at 1.5m, aggregated over PT10M with method 'minimum'",
                     "unit": {
                         "label": "degrees Celsius"
                     },
@@ -293,7 +293,7 @@
                 },
                 "air_temperature:2.0:maximum:PT12H": {
                     "type": "Parameter",
-                    "description": "air_temperature at 2.0m PT12H maximum",
+                    "description": "air_temperature at 2.0m, aggregated over PT12H with method 'maximum'",
                     "unit": {
                         "label": "degrees Celsius"
                     },
@@ -310,7 +310,7 @@
                 },
                 "air_temperature:2.0:maximum:PT24H": {
                     "type": "Parameter",
-                    "description": "air_temperature at 2.0m PT24H maximum",
+                    "description": "air_temperature at 2.0m, aggregated over PT24H with method 'maximum'",
                     "unit": {
                         "label": "degrees Celsius"
                     },
@@ -327,7 +327,7 @@
                 },
                 "air_temperature:2.0:maximum:PT6H": {
                     "type": "Parameter",
-                    "description": "air_temperature at 2.0m PT6H maximum",
+                    "description": "air_temperature at 2.0m, aggregated over PT6H with method 'maximum'",
                     "unit": {
                         "label": "degrees Celsius"
                     },
@@ -344,7 +344,7 @@
                 },
                 "air_temperature:2.0:mean:PT1M": {
                     "type": "Parameter",
-                    "description": "air_temperature at 2.0m PT1M mean",
+                    "description": "air_temperature at 2.0m, aggregated over PT1M with method 'mean'",
                     "unit": {
                         "label": "degrees Celsius"
                     },
@@ -361,7 +361,7 @@
                 },
                 "air_temperature:2.0:minimum:PT12H": {
                     "type": "Parameter",
-                    "description": "air_temperature at 2.0m PT12H minimum",
+                    "description": "air_temperature at 2.0m, aggregated over PT12H with method 'minimum'",
                     "unit": {
                         "label": "degrees Celsius"
                     },
@@ -378,7 +378,7 @@
                 },
                 "air_temperature:2.0:minimum:PT14H": {
                     "type": "Parameter",
-                    "description": "air_temperature at 2.0m PT14H minimum",
+                    "description": "air_temperature at 2.0m, aggregated over PT14H with method 'minimum'",
                     "unit": {
                         "label": "degrees Celsius"
                     },
@@ -395,7 +395,7 @@
                 },
                 "air_temperature:2.0:minimum:PT6H": {
                     "type": "Parameter",
-                    "description": "air_temperature at 2.0m PT6H minimum",
+                    "description": "air_temperature at 2.0m, aggregated over PT6H with method 'minimum'",
                     "unit": {
                         "label": "degrees Celsius"
                     },
@@ -412,7 +412,7 @@
                 },
                 "cloud_base_altitude:0:point:PT0S": {
                     "type": "Parameter",
-                    "description": "cloud_base_altitude at 0m PT0S point",
+                    "description": "cloud_base_altitude at 0m, aggregated over PT0S with method 'point'",
                     "unit": {
                         "label": "ft"
                     },
@@ -429,7 +429,7 @@
                 },
                 "cloud_base_altitude:1:point:PT0S": {
                     "type": "Parameter",
-                    "description": "cloud_base_altitude at 1m PT0S point",
+                    "description": "cloud_base_altitude at 1m, aggregated over PT0S with method 'point'",
                     "unit": {
                         "label": "ft"
                     },
@@ -446,7 +446,7 @@
                 },
                 "cloud_base_altitude:2.0:point:PT0S": {
                     "type": "Parameter",
-                    "description": "cloud_base_altitude at 2.0m PT0S point",
+                    "description": "cloud_base_altitude at 2.0m, aggregated over PT0S with method 'point'",
                     "unit": {
                         "label": "ft"
                     },
@@ -463,7 +463,7 @@
                 },
                 "cloud_cover:0:point:PT0S": {
                     "type": "Parameter",
-                    "description": "cloud_cover at 0m PT0S point",
+                    "description": "cloud_cover at 0m, aggregated over PT0S with method 'point'",
                     "unit": {
                         "label": "octa"
                     },
@@ -480,7 +480,7 @@
                 },
                 "cloud_cover:1:point:PT0S": {
                     "type": "Parameter",
-                    "description": "cloud_cover at 1m PT0S point",
+                    "description": "cloud_cover at 1m, aggregated over PT0S with method 'point'",
                     "unit": {
                         "label": "octa"
                     },
@@ -497,7 +497,7 @@
                 },
                 "cloud_cover:2.0:point:PT0S": {
                     "type": "Parameter",
-                    "description": "cloud_cover at 2.0m PT0S point",
+                    "description": "cloud_cover at 2.0m, aggregated over PT0S with method 'point'",
                     "unit": {
                         "label": "octa"
                     },
@@ -514,7 +514,7 @@
                 },
                 "dew_point_temperature:1.5:mean:PT1M": {
                     "type": "Parameter",
-                    "description": "dew_point_temperature at 1.5m PT1M mean",
+                    "description": "dew_point_temperature at 1.5m, aggregated over PT1M with method 'mean'",
                     "unit": {
                         "label": "degrees Celsius"
                     },
@@ -531,7 +531,7 @@
                 },
                 "duration_of_sunshine:2.0:point:PT0S": {
                     "type": "Parameter",
-                    "description": "duration_of_sunshine at 2.0m PT0S point",
+                    "description": "duration_of_sunshine at 2.0m, aggregated over PT0S with method 'point'",
                     "unit": {
                         "label": "min"
                     },
@@ -548,7 +548,7 @@
                 },
                 "lwe_precipitation_rate:1.80:mean:PT10M": {
                     "type": "Parameter",
-                    "description": "lwe_precipitation_rate at 1.80m PT10M mean",
+                    "description": "lwe_precipitation_rate at 1.80m, aggregated over PT10M with method 'mean'",
                     "unit": {
                         "label": "mm/h"
                     },
@@ -565,7 +565,7 @@
                 },
                 "lwe_precipitation_rate:2.50:mean:PT10M": {
                     "type": "Parameter",
-                    "description": "lwe_precipitation_rate at 2.50m PT10M mean",
+                    "description": "lwe_precipitation_rate at 2.50m, aggregated over PT10M with method 'mean'",
                     "unit": {
                         "label": "mm/h"
                     },
@@ -582,7 +582,7 @@
                 },
                 "placeholder:1.80:point:PT01H": {
                     "type": "Parameter",
-                    "description": "placeholder at 1.80m PT01H point",
+                    "description": "placeholder at 1.80m, aggregated over PT01H with method 'point'",
                     "unit": {
                         "label": "code"
                     },
@@ -599,7 +599,7 @@
                 },
                 "placeholder:1.80:point:PT0S": {
                     "type": "Parameter",
-                    "description": "placeholder at 1.80m PT0S point",
+                    "description": "placeholder at 1.80m, aggregated over PT0S with method 'point'",
                     "unit": {
                         "label": "code"
                     },
@@ -616,7 +616,7 @@
                 },
                 "placeholder:1.80:point:PT10M": {
                     "type": "Parameter",
-                    "description": "placeholder at 1.80m PT10M point",
+                    "description": "placeholder at 1.80m, aggregated over PT10M with method 'point'",
                     "unit": {
                         "label": "code"
                     },
@@ -633,7 +633,7 @@
                 },
                 "placeholder:2.50:point:PT01H": {
                     "type": "Parameter",
-                    "description": "placeholder at 2.50m PT01H point",
+                    "description": "placeholder at 2.50m, aggregated over PT01H with method 'point'",
                     "unit": {
                         "label": "code"
                     },
@@ -650,7 +650,7 @@
                 },
                 "placeholder:2.50:point:PT0S": {
                     "type": "Parameter",
-                    "description": "placeholder at 2.50m PT0S point",
+                    "description": "placeholder at 2.50m, aggregated over PT0S with method 'point'",
                     "unit": {
                         "label": "code"
                     },
@@ -667,7 +667,7 @@
                 },
                 "placeholder:2.50:point:PT10M": {
                     "type": "Parameter",
-                    "description": "placeholder at 2.50m PT10M point",
+                    "description": "placeholder at 2.50m, aggregated over PT10M with method 'point'",
                     "unit": {
                         "label": "code"
                     },
@@ -684,7 +684,7 @@
                 },
                 "precipitation_duration:1.80:point:PT10M": {
                     "type": "Parameter",
-                    "description": "precipitation_duration at 1.80m PT10M point",
+                    "description": "precipitation_duration at 1.80m, aggregated over PT10M with method 'point'",
                     "unit": {
                         "label": "sec"
                     },
@@ -701,7 +701,7 @@
                 },
                 "precipitation_duration:2.0:point:PT10M": {
                     "type": "Parameter",
-                    "description": "precipitation_duration at 2.0m PT10M point",
+                    "description": "precipitation_duration at 2.0m, aggregated over PT10M with method 'point'",
                     "unit": {
                         "label": "sec"
                     },
@@ -718,7 +718,7 @@
                 },
                 "precipitation_duration:2.50:point:PT10M": {
                     "type": "Parameter",
-                    "description": "precipitation_duration at 2.50m PT10M point",
+                    "description": "precipitation_duration at 2.50m, aggregated over PT10M with method 'point'",
                     "unit": {
                         "label": "sec"
                     },
@@ -735,7 +735,7 @@
                 },
                 "precipitation_rate:2.0:mean:PT10M": {
                     "type": "Parameter",
-                    "description": "precipitation_rate at 2.0m PT10M mean",
+                    "description": "precipitation_rate at 2.0m, aggregated over PT10M with method 'mean'",
                     "unit": {
                         "label": "mm/h"
                     },
@@ -752,7 +752,7 @@
                 },
                 "rainfall_amount:2.0:point:PT0S": {
                     "type": "Parameter",
-                    "description": "rainfall_amount at 2.0m PT0S point",
+                    "description": "rainfall_amount at 2.0m, aggregated over PT0S with method 'point'",
                     "unit": {
                         "label": "mm"
                     },
@@ -769,7 +769,7 @@
                 },
                 "rainfall_amount:2.0:point:PT12H": {
                     "type": "Parameter",
-                    "description": "rainfall_amount at 2.0m PT12H point",
+                    "description": "rainfall_amount at 2.0m, aggregated over PT12H with method 'point'",
                     "unit": {
                         "label": "mm"
                     },
@@ -786,7 +786,7 @@
                 },
                 "rainfall_amount:2.0:point:PT24H": {
                     "type": "Parameter",
-                    "description": "rainfall_amount at 2.0m PT24H point",
+                    "description": "rainfall_amount at 2.0m, aggregated over PT24H with method 'point'",
                     "unit": {
                         "label": "mm"
                     },
@@ -803,7 +803,7 @@
                 },
                 "rainfall_amount:2.0:point:PT6H": {
                     "type": "Parameter",
-                    "description": "rainfall_amount at 2.0m PT6H point",
+                    "description": "rainfall_amount at 2.0m, aggregated over PT6H with method 'point'",
                     "unit": {
                         "label": "mm"
                     },
@@ -820,7 +820,7 @@
                 },
                 "rainfall_duration:2.0:point:PT0S": {
                     "type": "Parameter",
-                    "description": "rainfall_duration at 2.0m PT0S point",
+                    "description": "rainfall_duration at 2.0m, aggregated over PT0S with method 'point'",
                     "unit": {
                         "label": "min"
                     },
@@ -837,7 +837,7 @@
                 },
                 "relative_humidity:2.0:mean:PT1M": {
                     "type": "Parameter",
-                    "description": "relative_humidity at 2.0m PT1M mean",
+                    "description": "relative_humidity at 2.0m, aggregated over PT1M with method 'mean'",
                     "unit": {
                         "label": "%"
                     },
@@ -854,7 +854,7 @@
                 },
                 "total_downwelling_shortwave_flux_in_air:2.0:mean:PT10M": {
                     "type": "Parameter",
-                    "description": "total_downwelling_shortwave_flux_in_air at 2.0m PT10M mean",
+                    "description": "total_downwelling_shortwave_flux_in_air at 2.0m, aggregated over PT10M with method 'mean'",
                     "unit": {
                         "label": "W m-2"
                     },
@@ -871,7 +871,7 @@
                 },
                 "visibility_in_air:1.80:mean:PT10M": {
                     "type": "Parameter",
-                    "description": "visibility_in_air at 1.80m PT10M mean",
+                    "description": "visibility_in_air at 1.80m, aggregated over PT10M with method 'mean'",
                     "unit": {
                         "label": "m"
                     },
@@ -888,7 +888,7 @@
                 },
                 "visibility_in_air:2.50:mean:PT10M": {
                     "type": "Parameter",
-                    "description": "visibility_in_air at 2.50m PT10M mean",
+                    "description": "visibility_in_air at 2.50m, aggregated over PT10M with method 'mean'",
                     "unit": {
                         "label": "m"
                     },
@@ -905,7 +905,7 @@
                 },
                 "wind_from_direction:2.0:mean:PT10M": {
                     "type": "Parameter",
-                    "description": "wind_from_direction at 2.0m PT10M mean",
+                    "description": "wind_from_direction at 2.0m, aggregated over PT10M with method 'mean'",
                     "unit": {
                         "label": "degree"
                     },
@@ -922,7 +922,7 @@
                 },
                 "wind_speed:10:mean:PT10M": {
                     "type": "Parameter",
-                    "description": "wind_speed at 10m PT10M mean",
+                    "description": "wind_speed at 10m, aggregated over PT10M with method 'mean'",
                     "unit": {
                         "label": "m s-1"
                     },
@@ -939,7 +939,7 @@
                 },
                 "wind_speed_of_gust:10:maximum:PT10M": {
                     "type": "Parameter",
-                    "description": "wind_speed_of_gust at 10m PT10M maximum",
+                    "description": "wind_speed_of_gust at 10m, aggregated over PT10M with method 'maximum'",
                     "unit": {
                         "label": "m s-1"
                     },
