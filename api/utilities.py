@@ -203,11 +203,11 @@ def get_z_values_from_interval(interval: list[str]) -> list[float]:
         raise HTTPException(status_code=400, detail=f"Invalid levels repeating-interval: {'/'.join(interval)}")
 
     amount_of_intervals = int(interval[0][1:])
-    interval_value = float(interval[1])
-    starting_value = float(interval[2])
+    min_height = float(interval[1])
+    increment_value = float(interval[2])
 
     # Round to 3 decimals to avoid floating point errors
-    return [round(starting_value + i * interval_value, 3) for i in range(amount_of_intervals)]
+    return [round(min_height + i * increment_value, 3) for i in range(amount_of_intervals)]
 
 
 def is_float(element: any) -> bool:

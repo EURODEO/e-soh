@@ -335,7 +335,7 @@ def test_from_a_single_collection_get_a_single_position_with_all_available_custo
 def test_from_a_single_collection_get_a_single_position_with_repeating_level_interval_and_period():
     collection_id = "observations"
     coords = "POINT(5.179705 52.0988218)"
-    levels = "R6/0.1/1.5"
+    levels = "R6/1.5/0.1"
     periods = "PT1M"
     datetime = "2022-12-31T00:00:00Z"
     actual_response = requests.get(
