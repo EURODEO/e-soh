@@ -1,4 +1,4 @@
-standard_name = {
+standard_names = {
     "Default": {
         "value": "",
     },

@@ -10,6 +10,7 @@ import datastore_pb2 as dstore
 import formatters
 from openapi import custom_dimension_examples
 from openapi import openapi_examples
+from openapi import edr_query_parameter_descriptions
 from covjson_pydantic.coverage import Coverage
 from covjson_pydantic.coverage import CoverageCollection
 from covjson_pydantic.parameter import Parameter
@@ -59,15 +60,14 @@ async def get_locations(
     bbox: Annotated[
         str | None,
         Query(
-            description="Bounding box to query data from. The bounding box is an area defined by two"
-            "longitudes and two latitudes.",
+            description=edr_query_parameter_descriptions.bbox,
             openapi_examples=openapi_examples.bbox,
         ),
     ] = None,
     datetime: Annotated[
         str | None,
         Query(
-            description="Time range to query data from.",
+            description=edr_query_parameter_descriptions.datetime,
             openapi_examples=openapi_examples.datetime,
         ),
     ] = None,
@@ -75,38 +75,35 @@ async def get_locations(
         str | None,
         Query(
             alias="parameter-name",
-            description="Comma seperated list of parameter names. Each consists of four components seperated by colons."
-            " The components are standard name, level in meters, aggregation method, and period. "
-            "Each of the components can be replaced by the wildcard character `*`. "
-            "To get all the air temperatures measured at 1.5 meter, use `air_temperature:1.5:*:*`.",
+            description=edr_query_parameter_descriptions.parameter_name,
             openapi_examples=openapi_examples.parameter_name,
         ),
     ] = None,
     standard_names: Annotated[
         str | None,
         Query(
-            description="Comma seperated list of parameter standard_name to query",
-            openapi_examples=custom_dimension_examples.standard_name,
+            description=edr_query_parameter_descriptions.standard_names,
+            openapi_examples=custom_dimension_examples.standard_names,
         ),
     ] = None,
     levels: Annotated[
         str | None,
         Query(
-            description="Define the vertical level to return data from",
+            description=edr_query_parameter_descriptions.levels,
             openapi_examples=custom_dimension_examples.levels,
         ),
     ] = None,
     methods: Annotated[
         str | None,
         Query(
-            description="Comma seperated list of parameter aggregation methods",
+            description=edr_query_parameter_descriptions.methods,
             openapi_examples=custom_dimension_examples.methods,
         ),
     ] = None,
     periods: Annotated[
         str | None,
         Query(
-            description="Comma seperated list of parameter aggregation periods",
+            description=edr_query_parameter_descriptions.periods,
             openapi_examples=custom_dimension_examples.periods,
         ),
     ] = None,
@@ -213,46 +210,49 @@ async def get_locations(
     response_class=CoverageJsonResponse,
 )
 async def get_data_location_id(
-    location_id: Annotated[str, Path(description="WIGOS id of a station", openapi_examples=openapi_examples.wigos_id)],
+    location_id: Annotated[
+        str, Path(description=edr_query_parameter_descriptions.wigos_id, openapi_examples=openapi_examples.wigos_id)
+    ],
     parameter_name: Annotated[
         str | None,
         Query(
             alias="parameter-name",
-            description="Comma seperated list of parameter names. Each consists of four components seperated by colons."
-            " The components are standard name, level in meters, aggregation method, and period. "
-            "Each of the components can be replaced by the wildcard character `*`.",
+            description=edr_query_parameter_descriptions.parameter_name,
             openapi_examples=openapi_examples.parameter_name,
         ),
     ] = None,
     datetime: Annotated[
-        str | None, Query(description="Time range to query data from.", openapi_examples=openapi_examples.datetime)
+        str | None,
+        Query(description=edr_query_parameter_descriptions.datetime, openapi_examples=openapi_examples.datetime),
     ] = None,
-    f: Annotated[formatters.Formats, Query(description="Specify return format.")] = formatters.Formats.covjson,
+    f: Annotated[
+        formatters.Formats, Query(description=edr_query_parameter_descriptions.format)
+    ] = formatters.Formats.covjson,
     standard_names: Annotated[
         str | None,
         Query(
-            description="Comma seperated list of parameter standard_name to query",
-            openapi_examples=custom_dimension_examples.standard_name,
+            description=edr_query_parameter_descriptions.standard_names,
+            openapi_examples=custom_dimension_examples.standard_names,
         ),
     ] = None,
     levels: Annotated[
         str | None,
         Query(
-            description="Define the vertical level to return data from",
+            description=edr_query_parameter_descriptions.levels,
             openapi_examples=custom_dimension_examples.levels,
         ),
     ] = None,
     methods: Annotated[
         str | None,
         Query(
-            description="Comma seperated list of parameter aggregation methods",
+            description=edr_query_parameter_descriptions.methods,
             openapi_examples=custom_dimension_examples.methods,
         ),
     ] = None,
     periods: Annotated[
         str | None,
         Query(
-            description="Comma seperated list of parameter aggregation periods",
+            description=edr_query_parameter_descriptions.periods,
             openapi_examples=custom_dimension_examples.periods,
         ),
     ] = None,
@@ -282,50 +282,52 @@ async def get_data_location_id(
     response_class=CoverageJsonResponse,
 )
 async def get_data_position(
-    coords: Annotated[str, Query(description="WKT of a point", openapi_examples=openapi_examples.point)],
+    coords: Annotated[
+        str, Query(description=edr_query_parameter_descriptions.point, openapi_examples=openapi_examples.point)
+    ],
     parameter_name: Annotated[
         str | None,
         Query(
             alias="parameter-name",
-            description="Comma seperated list of parameter names. Each consists of four components seperated by colons."
-            " The components are standard name, level in meters, aggregation method, and period. "
-            "Each of the components can be replaced by the wildcard character `*`.",
+            description=edr_query_parameter_descriptions.parameter_name,
             openapi_examples=openapi_examples.parameter_name,
         ),
     ] = None,
     datetime: Annotated[
         str | None,
         Query(
-            description="Time range to query data from.",
+            description=edr_query_parameter_descriptions.datetime,
             openapi_examples=openapi_examples.datetime,
         ),
     ] = None,
-    f: Annotated[formatters.Formats, Query(description="Specify return format.")] = formatters.Formats.covjson,
+    f: Annotated[
+        formatters.Formats, Query(description=edr_query_parameter_descriptions.format)
+    ] = formatters.Formats.covjson,
     standard_names: Annotated[
         str | None,
         Query(
-            description="Comma seperated list of parameter standard_name to query",
-            openapi_examples=custom_dimension_examples.standard_name,
+            description=edr_query_parameter_descriptions.standard_names,
+            openapi_examples=custom_dimension_examples.standard_names,
         ),
     ] = None,
     levels: Annotated[
         str | None,
         Query(
-            description="Define the vertical level to return data from",
+            description=edr_query_parameter_descriptions.levels,
             openapi_examples=custom_dimension_examples.levels,
         ),
     ] = None,
     methods: Annotated[
         str | None,
         Query(
-            description="Comma seperated list of parameter aggregation methods",
+            description=edr_query_parameter_descriptions.methods,
             openapi_examples=custom_dimension_examples.methods,
         ),
     ] = None,
     periods: Annotated[
         str | None,
         Query(
-            description="Comma seperated list of parameter aggregation periods",
+            description=edr_query_parameter_descriptions.periods,
             openapi_examples=custom_dimension_examples.periods,
         ),
     ] = None,
@@ -375,47 +377,48 @@ async def get_data_position(
 )
 async def get_data_area(
     coords: Annotated[
-        str, Query(description="WKT polygon coordinates of an area", openapi_examples=openapi_examples.polygon)
+        str, Query(description=edr_query_parameter_descriptions.area, openapi_examples=openapi_examples.polygon)
     ],
     parameter_name: Annotated[
         str | None,
         Query(
             alias="parameter-name",
-            description="Comma seperated list of parameter names. Each consists of four components seperated by colons."
-            " The components are standard name, level in meters, aggregation method, and period. "
-            "Each of the components can be replaced by the wildcard character `*`.",
+            description=edr_query_parameter_descriptions.parameter_name,
             openapi_examples=openapi_examples.parameter_name,
         ),
     ] = None,
     datetime: Annotated[
-        str | None, Query(description="Time range to query data from.", openapi_examples=openapi_examples.datetime)
+        str | None,
+        Query(description=edr_query_parameter_descriptions.datetime, openapi_examples=openapi_examples.datetime),
     ] = None,
-    f: Annotated[formatters.Formats, Query(description="Specify return format.")] = formatters.Formats.covjson,
+    f: Annotated[
+        formatters.Formats, Query(description=edr_query_parameter_descriptions.format)
+    ] = formatters.Formats.covjson,
     standard_names: Annotated[
         str | None,
         Query(
-            description="Comma seperated list of parameter standard_name to query",
-            openapi_examples=custom_dimension_examples.standard_name,
+            description=edr_query_parameter_descriptions.standard_names,
+            openapi_examples=custom_dimension_examples.standard_names,
         ),
     ] = None,
     levels: Annotated[
         str | None,
         Query(
-            description="Define the vertical level to return data from",
+            description=edr_query_parameter_descriptions.levels,
             openapi_examples=custom_dimension_examples.levels,
         ),
     ] = None,
     methods: Annotated[
         str | None,
         Query(
-            description="Comma seperated list of parameter aggregation methods",
+            description=edr_query_parameter_descriptions.methods,
             openapi_examples=custom_dimension_examples.methods,
         ),
     ] = None,
     periods: Annotated[
         str | None,
         Query(
-            description="Comma seperated list of parameter aggregation periods",
+            description=edr_query_parameter_descriptions.periods,
             openapi_examples=custom_dimension_examples.periods,
         ),
     ] = None,
