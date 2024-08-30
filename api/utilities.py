@@ -170,7 +170,7 @@ async def get_periods_from_request(periods: str | None) -> list[str]:
         raise HTTPException(status_code=400, detail=f"Invalid ISO 8601 range format: {periods}")
 
 
-def get_z_levels_or_range(z: str | None) -> tuple[float] | list[float]:
+def get_z_levels_or_range(z: str | None) -> tuple[float, float] | list[float]:
     """
     Function for getting the z values from the z parameter.
     """
@@ -182,7 +182,7 @@ def get_z_levels_or_range(z: str | None) -> tuple[float] | list[float]:
         if len(split_on_slash) == 2:
             z_min = float(split_on_slash[0]) if split_on_slash[0] != ".." else float("-inf")
             z_max = float(split_on_slash[1]) if split_on_slash[1] != ".." else float("inf")
-            return (z_min, z_max)
+            return z_min, z_max
         elif len(split_on_slash) > 2:
             return get_z_values_from_interval(split_on_slash)
         else:
