@@ -28,7 +28,8 @@ from response_classes import GeoJsonResponse
 from shapely import geometry
 from shapely import wkt
 from shapely.errors import GEOSException
-from utilities import add_request_parameters, filter_observations_for_z
+from utilities import add_request_parameters
+from utilities import filter_observations_for_z
 from utilities import validate_bbox
 
 router = APIRouter(prefix="/collections/observations")
