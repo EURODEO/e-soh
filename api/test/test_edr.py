@@ -397,3 +397,14 @@ def test_get_data_with_invalid_levels_repeating_interval():
 
         assert response.status_code == 400
         assert response.json() == {"detail": "Invalid levels repeating-interval: R10/20/100/10"}
+
+
+def test_get_data_with_period_range_without_existing_data():
+    with patch("utilities.get_unique_values_for_metadata") as mock_get_unique_values_for_metadata:
+
+        mock_get_unique_values_for_metadata.return_value = ["PT1M", "PT10M", "PT1H", "PT12H", "PT24H"]
+
+        response = client.get("/collections/observations/position?coords=POINT(5.179705 52.0988218)&periods=PT3H/PT6H")
+
+        assert response.status_code == 404
+        assert response.json() == {"detail": "Requested data not found."}

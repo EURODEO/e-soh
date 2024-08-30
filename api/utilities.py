@@ -309,4 +309,9 @@ async def get_iso_8601_range(start: str, end: str) -> list[str] | None:
     except ValueError as err:
         raise HTTPException(status_code=400, detail=f"{err}")
 
-    return list(map(lambda x: x[1], filter(lambda x: start_seconds <= x[0] <= end_seconds, periods_with_seconds)))
+    range = list(map(lambda x: x[1], filter(lambda x: start_seconds <= x[0] <= end_seconds, periods_with_seconds)))
+
+    if len(range) == 0:
+        raise HTTPException(status_code=404, detail="Requested data not found.")
+
+    return range

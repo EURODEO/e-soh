@@ -401,6 +401,19 @@ def test_from_a_single_collection_get_an_area_with_parameter_with_wildcard():
     actual_response_is_expected_response(actual_response, expected_json)
 
 
+def test_from_a_single_collection_get_an_area_with_non_existing_periods():
+    collection_id = "observations"
+    coords = "POLYGON((4.0 52.4, 4.7 52.4,4.7 52.6,4.0 52.6, 4.0 52.4))"
+    actual_response = requests.get(
+        url=BASE_URL + f"/collections/{collection_id}/area" f"?coords={coords}&periods=PT7H/PT7H"
+    )
+
+    expected_json = load_json("response/404_not_found.json")
+
+    assert actual_response.status_code == 404
+    actual_response_is_expected_response(actual_response, expected_json)
+
+
 def test_items_get_area():
     collection_id = "observations"
     bbox = "4.5,52.4,4.6,52.57"
