@@ -160,7 +160,7 @@ if __name__ == "__main__":
             "instrument": "test",
             "level": "2.0",
             "function": "point",
-            "period": "PT0S",
+            "period": 0,
             "lat": 59.91,
             "lon": 10.75,
         }

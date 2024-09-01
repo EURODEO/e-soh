@@ -23,7 +23,7 @@ func (sbe *PostgreSQL) Description() string {
 	return "PostgreSQL database"
 }
 
-// setTSUniqueMainCols extracts into tsStringMdataPBNamesUnique the columns comprising constraint
+// setTSUniqueMainCols extracts into tsMdataPBNamesUnique the columns comprising constraint
 // unique_main in table time_series.
 //
 // Returns nil upon success, otherwise error.
@@ -68,10 +68,10 @@ func (sbe *PostgreSQL) setTSUniqueMainCols() error {
 		return fmt.Errorf("'%s' didn't match regexp pattern '%s'", result, pattern)
 	}
 
-	// create tsStringMdataPBNamesUnique
-	tsStringMdataPBNamesUnique = strings.Split(matches[1], ",")
-	for i := 0; i < len(tsStringMdataPBNamesUnique); i++ {
-		tsStringMdataPBNamesUnique[i] = strings.TrimSpace(tsStringMdataPBNamesUnique[i])
+	// create tsMdataPBNamesUnique
+	tsMdataPBNamesUnique = strings.Split(matches[1], ",")
+	for i := 0; i < len(tsMdataPBNamesUnique); i++ {
+		tsMdataPBNamesUnique[i] = strings.TrimSpace(tsMdataPBNamesUnique[i])
 	}
 
 	return nil
@@ -171,7 +171,7 @@ func NewPostgreSQL() (*PostgreSQL, error) {
 // getTSColNames returns time series metadata column names.
 func getTSColNames() []string {
 
-	// initialize cols with non-string metadata
+	// initialize cols with non-reflectable metadata
 	cols := []string{
 		"link_href",
 		"link_rel",
@@ -180,7 +180,10 @@ func getTSColNames() []string {
 		"link_title",
 	}
 
-	// complete cols with string metadata (handleable with reflection)
+	// extend cols with reflectable metadata of type int64
+	cols = append(cols, tsInt64MdataPBNames...)
+
+	// complete cols with reflectable metadata of type string
 	cols = append(cols, tsStringMdataPBNames...)
 
 	return cols
@@ -189,7 +192,7 @@ func getTSColNames() []string {
 // getTSColNamesUnique returns the fields defined in constraint unique_main in table
 // time_series.
 func getTSColNamesUnique() []string {
-	return tsStringMdataPBNamesUnique
+	return tsMdataPBNamesUnique
 }
 
 // getTSColNamesUniqueCompl returns the complement of the set of fields defined in constraint
@@ -268,8 +271,8 @@ func addWhereCondMatchAnyPattern(
 	*whereExpr = append(*whereExpr, fmt.Sprintf("(%s)", strings.Join(whereExprOR, " OR ")))
 }
 
-// getMdataFilter derives from stringFilterInfos the expression used in a WHERE clause for
-// "match any" filtering on a set of attributes.
+// getStringMdataFilterFromFilterInfos derives from filterInfos the expression used in a WHERE
+// clause for "match any" filtering on a set of attributes.
 //
 // The expression will be of the form
 //
@@ -282,11 +285,12 @@ func addWhereCondMatchAnyPattern(
 // Values to be used for query placeholders are appended to phVals.
 //
 // Returns expression.
-func getMdataFilter(stringFilterInfos []stringFilterInfo, phVals *[]interface{}) string {
+func getStringMdataFilterFromFilterInfos(
+	filterInfos []stringFilterInfo, phVals *[]interface{}) string {
 
 	whereExprAND := []string{}
 
-	for _, sfi := range stringFilterInfos {
+	for _, sfi := range filterInfos {
 		addWhereCondMatchAnyPattern(
 			sfi.colName, sfi.patterns, &whereExprAND, phVals)
 	}
@@ -299,8 +303,28 @@ func getMdataFilter(stringFilterInfos []stringFilterInfo, phVals *[]interface{})
 	return whereExpr
 }
 
+// getInt64MdataFilter creates from 'filter' the int64 metadata filter used for querying
+// observations or extensions.
+//
+// Values to be used for query placeholders are appended to phVals.
+//
+// Returns upon success (int64 metadata filter used in a 'WHERE ... AND ...' clause (possibly
+// just 'TRUE'), nil), otherwise (..., error).
+func getInt64MdataFilter(
+	filter map[string]*datastore.Strings, phVals *[]interface{}) (string, error) {
+
+	// TODO
+	_, _ = filter, phVals
+
+	// ---> The contents in filter will support int64-related syntax (such as range search) for
+	// reflectable fields of type int64. NOTE: string-related syntax (such as wildcard-matching)
+	// should also be supported by generated SQL that casts int64 to string!
+
+	return "TRUE", nil // FOR NOW
+}
+
 // getStringMdataFilter creates from 'filter' the string metadata filter used for querying
-// extentions.
+// observations or extensions.
 //
 // Values to be used for query placeholders are appended to phVals.
 //
@@ -312,7 +336,7 @@ func getStringMdataFilter(
 	stringFilterInfos := []stringFilterInfo{}
 
 	for fieldName, ptnObj := range filter {
-		tableName, err := getTableNameFromField(fieldName)
+		tableName, err := getTableNameFromStringField(fieldName)
 		if err != nil {
 			return "", fmt.Errorf("getTableNameFromField() failed: %v", err)
 		}
@@ -325,7 +349,7 @@ func getStringMdataFilter(
 		}
 	}
 
-	return getMdataFilter(stringFilterInfos, phVals), nil
+	return getStringMdataFilterFromFilterInfos(stringFilterInfos, phVals), nil
 }
 
 // cleanup performs various cleanup tasks, like removing old observations from the database.

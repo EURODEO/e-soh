@@ -11,7 +11,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-// createExtQueryVals creates from request values used for querying extentions.
+// createExtQueryVals creates from request values used for querying extensions.
 //
 // Values to be used for query placeholders are appended to phVals.
 //

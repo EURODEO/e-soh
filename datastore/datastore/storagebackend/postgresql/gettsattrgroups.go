@@ -78,13 +78,18 @@ func getTSMdata(colVals map[string]interface{}) (*datastore.TSMetadata, error) {
 		}
 
 		switch field.Kind() {
+		case reflect.Int64:
+			val0, ok := val.(int64)
+			if ok { // NOTE: !ok in this case would typically mean a nil value resulting from a
+				// NULL in the corresponding database column
+				field.SetInt(val0)
+			}
 		case reflect.String:
 			val0, ok := val.(string)
 			if ok { // NOTE: !ok in this case would typically mean a nil value resulting from a
 				// NULL in the corresponding database column
 				field.SetString(val0)
 			}
-
 		default:
 			return nil, fmt.Errorf(
 				"unsupported type: %v (val: %v; type: %T; goName: %s; pbName: %s)",
@@ -171,6 +176,8 @@ func getCombo(tsMdata1 *datastore.TSMetadata, goNames []string) (*datastore.TSMe
 		}
 
 		switch field1.Kind() {
+		case reflect.Int64:
+			field2.SetInt(field1.Int())
 		case reflect.String:
 			field2.SetString(field1.String())
 		default:
