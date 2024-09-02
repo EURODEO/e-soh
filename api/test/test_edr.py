@@ -71,7 +71,7 @@ def test_get_locations_with_empty_response():
         response = client.get("/collections/observations/locations")
 
         assert response.status_code == 404
-        assert response.json() == {"detail": "Query did not return any features."}
+        assert response.json() == {"detail": "Query did not return any locations."}
 
 
 def test_get_locations_with_query_params():
@@ -329,3 +329,82 @@ def test_get_position_with_incorrect_geometry_type():
 
     assert response.status_code == 400
     assert response.json() == {"detail": {"coords": "Invalid geometric type: Polygon"}}
+
+
+def test_get_data_with_incorrect_period_range_format():
+    response = client.get("/collections/observations/locations/0-20000-0-06260?periods=PT10M/PT1H/PT24H")
+
+    assert response.status_code == 400
+    assert response.json() == {"detail": "Invalid ISO 8601 range format: PT10M/PT1H/PT24H"}
+
+
+def test_get_data_with_range_parameter_empty():
+    response = client.get("/collections/observations/locations/0-20000-0-06260?periods=/PT10M")
+
+    assert response.status_code == 400
+    assert response.json() == {"detail": "Invalid ISO 8601 period:  / PT10M"}
+
+
+def test_get_data_with_incorrect_period_range():
+    with patch("utilities.get_ts_ag_request") as mock_get_ts_aq_request, patch(
+        "utilities.get_unique_values_for_metadata"
+    ) as mock_get_unique_values_for_metadata:
+
+        mock_get_ts_aq_request.return_value = None
+        mock_get_unique_values_for_metadata.return_value = ["PT1M", "PT10M", "PT1H"]
+
+        response = client.get("/collections/observations/locations/0-20000-0-06260?periods=PT1H/PT10M")
+
+        assert response.status_code == 400
+        assert response.json() == {"detail": "Invalid ISO 8601 range: PT1H > PT10M"}
+
+
+def test_get_data_with_a_period_not_found_in_datastore():
+    with patch("utilities.get_ts_ag_request") as mock_get_ts_aq_request, patch(
+        "utilities.get_unique_values_for_metadata"
+    ) as mock_get_unique_values_for_metadata:
+
+        mock_get_ts_aq_request.return_value = None
+        mock_get_unique_values_for_metadata.return_value = ["PT1M", "PT10M", "PT1H"]
+
+        response = client.get("/collections/observations/locations/0-20000-0-06260?periods=XXXX/PT1M")
+
+        assert response.status_code == 400
+        assert response.json() == {"detail": "Invalid ISO 8601 duration: XXXX"}
+
+
+def test_get_data_with_invalid_levels_value():
+    with patch("routers.edr.get_obs_request") as mock_get_obs_request:
+
+        # Load with random test data for making a mock_obs_request
+        test_data = load_json("test/test_data/test_coverages_proto.json")
+        mock_get_obs_request.return_value = create_mock_obs_response(test_data)
+
+        response = client.get("/collections/observations/locations/0-20000-0-06260?levels=Z/10")
+
+        assert response.status_code == 400
+        assert response.json() == {"detail": "Invalid levels value: Z/10"}
+
+
+def test_get_data_with_invalid_levels_repeating_interval():
+    with patch("routers.edr.get_obs_request") as mock_get_obs_request:
+
+        # Load with random test data for making a mock_obs_request
+        test_data = load_json("test/test_data/test_coverages_proto.json")
+        mock_get_obs_request.return_value = create_mock_obs_response(test_data)
+
+        response = client.get("/collections/observations/locations/0-20000-0-06260?levels=R10/20/100/10")
+
+        assert response.status_code == 400
+        assert response.json() == {"detail": "Invalid levels repeating-interval: R10/20/100/10"}
+
+
+def test_get_data_with_period_range_without_existing_data():
+    with patch("utilities.get_unique_values_for_metadata") as mock_get_unique_values_for_metadata:
+
+        mock_get_unique_values_for_metadata.return_value = ["PT1M", "PT10M", "PT1H", "PT12H", "PT24H"]
+
+        response = client.get("/collections/observations/position?coords=POINT(5.179705 52.0988218)&periods=PT3H/PT6H")
+
+        assert response.status_code == 404
+        assert response.json() == {"detail": "Requested data not found."}

@@ -13,13 +13,17 @@ def _make_properties(ts):
         else ts.ts_mdata.platform_vocabulary
     )
 
+    # TODO: Remove when return is 'method' instead of 'function'
+    if "function" in ts_metadata:
+        ts_metadata["method"] = ts_metadata.pop("function")
+
     if "platform_name" not in ts_metadata:
         ts_metadata["platform_name"] = f'platform-{ts_metadata["platform"]}'
 
     return ts_metadata
 
 
-def convert_to_geojson(response):
+def convert_to_geojson(observations):
     """
     Will only generate geoJSON for stationary timeseries
     """
@@ -36,7 +40,7 @@ def convert_to_geojson(response):
                 ],
             ),
         )
-        for ts in sorted(response.observations, key=lambda ts: ts.ts_mdata.timeseries_id)
+        for ts in sorted(observations, key=lambda ts: ts.ts_mdata.timeseries_id)
     ]
     if not features:
         raise HTTPException(404, detail="Query did not return any time series.")
