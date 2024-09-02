@@ -231,7 +231,7 @@ func getObsTimeFilter(tspec common.TemporalSpec) string {
 }
 
 // TODO: move to postgresql.go since only used there?
-type stringFilterInfo struct {
+type filterInfo struct {
 	colName  string
 	patterns []string
 }
@@ -344,22 +344,6 @@ func getGeoFilter(
 	return fmt.Sprintf("(%s) AND (%s)", polygonExpr, circleExpr), nil
 }
 
-// getTableNameFromStringField gets the database table name associated with fieldName of column
-// type string.
-//
-// Returns (table name, nil) upon success, otherwise (..., error).
-func getTableNameFromStringField(fieldName string) (string, error) {
-
-	tableName, found := pbString2table[fieldName]
-	if !found {
-		return "", fmt.Errorf(
-			"no such field: %s; available fields: %s",
-			fieldName, strings.Join(pbString2tableKeys, ", "))
-	}
-
-	return tableName, nil
-}
-
 // createObsQueryVals creates from request and tspec values used for querying observations.
 //
 // Values to be used for query placeholders are appended to phVals.
@@ -390,15 +374,20 @@ func createObsQueryVals(
 		return "", "", "", "", "", fmt.Errorf("getGeoFilter() failed: %v", err)
 	}
 
-	int64MdataFilter, err := getInt64MdataFilter(request.GetFilter(), phVals)
-	if err != nil {
-		return "", "", "", "", "", fmt.Errorf("getInt64MdataFilter() failed: %v", err)
+	// --- BEGIN filters for reflectable metadata (of type int64 or string) -------------
+
+	for fieldName := range request.GetFilter() {
+		if !supReflFilterFields.Contains(fieldName) {
+			return "", "", "", "", "", fmt.Errorf(
+				"no such field: %s; available fields: %s",
+				fieldName, strings.Join(supReflFilterFieldsSorted, ", "))
+		}
 	}
 
-	stringMdataFilter, err := getStringMdataFilter(request.GetFilter(), phVals)
-	if err != nil {
-		return "", "", "", "", "", fmt.Errorf("getStringMdataFilter() failed: %v", err)
-	}
+	int64MdataFilter := getInt64MdataFilter(request.GetFilter(), phVals)
+	stringMdataFilter := getStringMdataFilter(request.GetFilter(), phVals)
+
+	// --- END filters for reflectable metadata (of type int64 or string) -------------
 
 	return distinctSpec, timeFilter, geoFilter, int64MdataFilter, stringMdataFilter, nil
 }
