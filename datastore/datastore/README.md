@@ -278,6 +278,13 @@ $ grpcurl -d '{"temporal_latest": true, "included_response_fields": ["platform",
 ...
 ```
 
+### Retrieve all wind speed observations that are either within level range [500, 1500] or exactly at level 2000 (level typically being centimeters above ground)
+
+```text
+$ grpcurl -d '{"filter": {"standard_name": {"values": ["wind_speed"]}, "level": {"values": ["500/1500", "2000"]}}}' -plaintext -proto protobuf/datastore.proto 127.0.0.1:50050 datastore.Datastore.GetObservations
+...
+```
+
 ### List unique occurrences of time series metadata attribute 'standard_name'
 
 ```text
