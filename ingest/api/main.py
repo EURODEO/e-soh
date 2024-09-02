@@ -1,6 +1,5 @@
 import logging
 import os
-import sys
 
 from fastapi import FastAPI
 from fastapi import UploadFile
@@ -11,9 +10,16 @@ from api.ingest import IngestToPipeline
 from api.model import JsonMessageSchema
 from api.messages import build_json_payload
 
+log_level = os.environ.get("INGEST_LOGLEVEL", "INFO")
 
+formatter = logging.Formatter("[%(asctime)s] [%(name)s] [%(levelname)s] %(message)s")
+stream_handler = logging.StreamHandler()
+stream_handler.setLevel(log_level)
+stream_handler.setFormatter(formatter)
+
+# Set logging level and handlers
+logging.basicConfig(level=log_level, handlers=[stream_handler])
 logger = logging.getLogger(__name__)
-logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
 
 
 class Response(BaseModel):
@@ -30,9 +36,7 @@ mqtt_configuration = {
     "port": int(os.getenv("MQTT_PORT", 8883)),
 }
 
-
 ingester = IngestToPipeline(mqtt_conf=mqtt_configuration, uuid_prefix="uuid")
-
 
 app = FastAPI(root_path=os.getenv("FASTAPI_ROOT_PATH", ""))
 

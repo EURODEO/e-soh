@@ -11,7 +11,7 @@ option go_package = "./datastore";
 // - A _time series_ is a context defined by a set of metadata (defined in TSMetadata below) that
 //   usually does not vary with observaion (time).
 //
-// - An _observation_ consists of a set of of metadata (defined in ObsMetadata below) that usually
+// - An _observation_ consists of a set of metadata (defined in ObsMetadata below) that usually
 //   varies with observation (time). Note that for simplicity the observation value itself (such as
 //   air temperature value 12.7) is also considered a metadata field (although strictly speaking
 //   this is the only field that is just data, not metadata).
@@ -77,11 +77,11 @@ message Link {
 }
 
 message TSMetadata {
-  // --- BEGIN non-string metadata -----------------
+  // --- BEGIN non-reflectable metadata -----------------
   repeated Link links = 1;
-  // --- END non-string metadata -----------------
+  // --- END non-reflectable metadata -----------------
 
-  // --- BEGIN string metadata (handleable with reflection) -----------------
+  // --- BEGIN reflectable metadata (of type int64 or string) -----------------
   string version = 2;
   string type = 3;
   string title = 4;
@@ -103,9 +103,9 @@ message TSMetadata {
   string platform_name = 20 [json_name = "platform_name"];
   string standard_name = 21 [json_name = "standard_name"];
   string unit = 22;
-  string level = 23;
+  int64 level = 23;
   string function = 24;
-  string period = 25;
+  int64 period = 25;
   string instrument = 26;
   string instrument_vocabulary = 27 [json_name = "instrument_vocabulary"];
   string parameter_name = 28 [json_name = "parameter_name"];
@@ -114,11 +114,11 @@ message TSMetadata {
   // instrument); typically a hash of those
   string timeseries_id = 29 [json_name = "timeseries_id"];
 
-  // --- END string metadata -----------------
+  // --- END reflectable metadata -----------------
 }
 
 message ObsMetadata {
-  // --- BEGIN non-string metadata -----------------
+  // --- BEGIN non-reflectable metadata -----------------
   oneof geometry {
     Point geo_point = 1 [json_name = "geo_point"];
     Polygon geo_polygon = 2 [json_name = "geo_polygon"];
@@ -128,14 +128,14 @@ message ObsMetadata {
     //TimeInterval obstime_interval = 4 [json_name = "obstime_interval"]; -- unsupported for now
   }
   google.protobuf.Timestamp pubtime = 5;
-  // --- END non-string metadata -----------------
+  // --- END non-reflectable metadata -----------------
 
-  // --- BEGIN string metadata (handleable with reflection) -----------------
+  // --- BEGIN reflectable metadata (of type int64 or string)
   string id = 6;
   string data_id = 7 [json_name = "data_id"];
   string history = 8;
   string processing_level = 10 [json_name = "processing_level"];
-  // --- END string metadata -----------------
+  // --- END reflectable metadata -----------------
 
   string value = 11; // obs value (not metadata in a strict sense)
 }
@@ -170,7 +170,7 @@ message Strings {
 }
 
 message GetObsRequest {
-  // --- BEGIN non-string metadata -------------------------
+  // --- BEGIN filters for non-reflectable metadata -------------------------
 
   // --- BEGIN temporal spec ----------------------------------
   bool temporal_latest = 1;
@@ -194,9 +194,9 @@ message GetObsRequest {
   // search wrt. TSMetadata.links
   // TODO - needs special handling
 
-  // --- END non-string metadata -------------------------
+  // --- END filters for non-reflectable metadata -------------------------
 
-  // --- BEGIN string metadata (handleable with reflection) -------------------------
+  // --- BEGIN filter for reflectable metadata of type int64 or string -------------------------
 
   // general filter
   // - map keys must correspond exactly with string field names in TSMetadata or ObsMetadata
@@ -204,7 +204,7 @@ message GetObsRequest {
   //   at least one of these values for F may be returned
   map<string, Strings> filter = 5;
 
-  // --- END string metadata (handleable with reflection) -------------------------
+  // --- END filter for reflectable metadata of type int64 or string -------------------------
 
   // Fields to include in GetObsResponse.
   // Case 1: included_response_fields is omitted or empty=> implicitly include all available fields.
@@ -212,8 +212,8 @@ message GetObsRequest {
   //   Each field must be one of the following:
   //     * a reflection-handleable string field in TSMetadata (like 'keywords')
   //       or ObsMetadata (like 'history')
-  //     * 'links' (non-string field in TSMedatata)
-  //     * 'geo_point' (non-string field in ObsMetadata)
+  //     * 'links' (non-reflectable field in TSMedatata)
+  //     * 'geo_point' (non-reflectable field in ObsMetadata)
   //     * 'obstime_instant' (--- '' ---)
   //     * 'pubtime' (--- '' ---)
   //     * 'value' (non-reflection handleable string field in ObsMetadata)
@@ -257,7 +257,7 @@ message GetTSAGResponse {
 //---------------------------------------------------------------------------
 
 message GetExtentsRequest {
-  // --- BEGIN string metadata (handleable with reflection) -------------------------
+  // --- BEGIN filter for reflectable metadata of type int64 or string -------------------------
 
   // general filter
   // - map keys must correspond exactly with string field names in TSMetadata or ObsMetadata
@@ -265,7 +265,7 @@ message GetExtentsRequest {
   //   at least one of these values for F may be returned
   map<string, Strings> filter = 1;
 
-  // --- END string metadata (handleable with reflection) -------------------------
+  // --- END filter for reflectable metadata of type int64 or string -------------------------
 }
 
 message GetExtentsResponse {

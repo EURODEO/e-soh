@@ -16,7 +16,7 @@ def test_single_parameter_convert():
     compare_data = load_json("test/test_data/test_single_covjson.json")
 
     response = create_mock_obs_response(test_data)
-    coverage_collection = convert_to_covjson(response)
+    coverage_collection = convert_to_covjson(response.observations)
 
     assert coverage_collection is not None
 
@@ -49,7 +49,7 @@ def test_multiple_parameter_convert():
 
     response = create_mock_obs_response(test_data)
 
-    coverage_collection = convert_to_covjson(response)
+    coverage_collection = convert_to_covjson(response.observations)
 
     assert coverage_collection is not None
 
@@ -78,7 +78,7 @@ def test_single_parameter_area_convert():
 
     response = create_mock_obs_response(test_data)
 
-    coverage_collection = convert_to_covjson(response)
+    coverage_collection = convert_to_covjson(response.observations)
 
     assert coverage_collection is not None
 
@@ -104,7 +104,7 @@ def test_empty_response_convert():
     # Expect to get an HTTPException with status code of 404 and detail of
     # "Requested data not found." when converting an empty response
     with pytest.raises(HTTPException) as exception_info:
-        convert_to_covjson(response)
+        convert_to_covjson(response.observations)
 
     assert exception_info.value.detail == "Requested data not found."
     assert exception_info.value.status_code == 404

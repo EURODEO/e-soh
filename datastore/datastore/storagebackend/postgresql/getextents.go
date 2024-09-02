@@ -11,29 +11,26 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-// createExtQueryVals creates from request values used for querying extentions.
+// createExtQueryVals creates from request values used for querying extensions.
 //
 // Values to be used for query placeholders are appended to phVals.
 //
-// Upon success the function returns two values:
+// Returns:
 // - time filter used in a 'WHERE ... AND ...' clause
-// - string metadata ... ditto
-// - nil,
-// otherwise (..., ..., error).
+// - filter for reflectable metadata fields of type int64 ... ditto
+// - filter for reflectable metadata fields of type string ... ditto
 func createExtQueryVals(request *datastore.GetExtentsRequest, phVals *[]interface{}) (
-	string, string, error) {
+	string, string, string) {
 
 	loTime, hiTime := common.GetValidTimeRange()
 	timeFilter := fmt.Sprintf(`
 		((obstime_instant >= to_timestamp(%d)) AND (obstime_instant <= to_timestamp(%d)))
 	`, loTime.Unix(), hiTime.Unix())
 
-	stringMdataFilter, err := getStringMdataFilter(request.GetFilter(), phVals)
-	if err != nil {
-		return "", "", fmt.Errorf("getStringMdataFilter() failed: %v", err)
-	}
+	int64MdataFilter := getInt64MdataFilter(request.GetFilter(), phVals)
+	stringMdataFilter := getStringMdataFilter(request.GetFilter(), phVals)
 
-	return timeFilter, stringMdataFilter, nil
+	return timeFilter, int64MdataFilter, stringMdataFilter
 }
 
 // GetExtents ... (see documentation in StorageBackend interface)
@@ -42,10 +39,7 @@ func (sbe *PostgreSQL) GetExtents(request *datastore.GetExtentsRequest) (
 
 	// get values needed for query
 	phVals := []interface{}{} // placeholder values
-	timeFilter, stringMdataFilter, err := createExtQueryVals(request, &phVals)
-	if err != nil {
-		return nil, codes.Internal, fmt.Sprintf("createQueryVals() failed: %v", err)
-	}
+	timeFilter, int64MdataFilter, stringMdataFilter := createExtQueryVals(request, &phVals)
 
 	query := fmt.Sprintf(`
 		SELECT temp_min, temp_max,
@@ -56,9 +50,9 @@ func (sbe *PostgreSQL) GetExtents(request *datastore.GetExtentsRequest) (
 			FROM observation
 			JOIN time_series ON observation.ts_id = time_series.id
 			JOIN geo_point ON observation.geo_point_id = geo_point.id
-			WHERE %s AND %s
+			WHERE %s AND %s AND %s
 		) t
-	`, timeFilter, stringMdataFilter)
+	`, timeFilter, int64MdataFilter, stringMdataFilter)
 
 	row := sbe.Db.QueryRow(query, phVals...)
 
@@ -67,7 +61,7 @@ func (sbe *PostgreSQL) GetExtents(request *datastore.GetExtentsRequest) (
 		xmin, ymin, xmax, ymax float64
 	)
 
-	err = row.Scan(&start, &end, &xmin, &ymin, &xmax, &ymax)
+	err := row.Scan(&start, &end, &xmin, &ymin, &xmax, &ymax)
 	if !start.Valid { // indicates no matching rows found!
 		return nil, codes.NotFound, "no matching data to compute extensions for"
 	} else if err != nil {
