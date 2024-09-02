@@ -37,7 +37,7 @@ CREATE TABLE time_series (
 	platform_name TEXT,
 	standard_name TEXT NOT NULL, -- UMC
 	unit TEXT,
-	level TEXT NOT NULL, -- UMC
+	level BIGINT NOT NULL, -- UMC
 	function TEXT NOT NULL, -- UMC
 	period BIGINT NOT NULL, -- UMC
 	instrument TEXT NOT NULL, -- UMC

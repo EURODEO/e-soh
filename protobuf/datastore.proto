@@ -103,7 +103,7 @@ message TSMetadata {
   string platform_name = 20 [json_name = "platform_name"];
   string standard_name = 21 [json_name = "standard_name"];
   string unit = 22;
-  string level = 23;
+  int64 level = 23;
   string function = 24;
   int64 period = 25;
   string instrument = 26;
