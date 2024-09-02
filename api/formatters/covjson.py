@@ -16,10 +16,12 @@ from covjson_pydantic.observed_property import ObservedProperty
 from covjson_pydantic.parameter import Parameter
 from covjson_pydantic.reference_system import ReferenceSystem
 from covjson_pydantic.reference_system import ReferenceSystemConnectionObject
+from edr_pydantic.parameter import MeasurementType
 from covjson_pydantic.unit import Unit
 from fastapi import HTTPException
 from pydantic import AwareDatetime
 
+from utilities import is_float
 
 # mime_type = "application/prs.coverage+json"
 
@@ -28,22 +30,33 @@ Data = namedtuple("Data", ["dom", "values", "ts_mdata"])
 
 
 def make_parameter(ts_mdata):
+    custom_fields = {
+        "rodeo:standard_name": ts_mdata.standard_name,
+        "rodeo:level": float(ts_mdata.level) if is_float(ts_mdata.level) else 0.0,
+    }
+
     return Parameter(
         description={
-            "en": f"{ts_mdata.standard_name} at {ts_mdata.level}m {ts_mdata.period} {ts_mdata.function}",
+            "en": f"{ts_mdata.standard_name} at {ts_mdata.level}m, "
+            f"aggregated over {ts_mdata.period} with method '{ts_mdata.function}'",
         },
         observedProperty=ObservedProperty(
             id=f"https://vocab.nerc.ac.uk/standard_name/{ts_mdata.standard_name}",
             label={"en": ts_mdata.parameter_name},
         ),
+        measurementType=MeasurementType(
+            method=ts_mdata.function,
+            period=ts_mdata.period,
+        ),
         unit=Unit(label={"en": ts_mdata.unit}),
+        **custom_fields,
     )
 
 
-def convert_to_covjson(response):
+def convert_to_covjson(observations):
     # Collect data
     coverages = []
-    data = [_collect_data(md.ts_mdata, md.obs_mdata) for md in response.observations]
+    data = [_collect_data(md.ts_mdata, md.obs_mdata) for md in observations]
 
     # Need to sort before using groupBy. Also sort on parameter_name to get consistently sorted output
     data.sort(key=lambda x: (x.dom, x.ts_mdata.parameter_name))

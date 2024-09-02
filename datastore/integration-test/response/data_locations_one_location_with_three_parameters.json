@@ -53,7 +53,7 @@
         "air_temperature:1.5:maximum:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 1.5m PT10M maximum"
+                "en": "air_temperature at 1.5m, aggregated over PT10M with method 'maximum'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
@@ -65,12 +65,18 @@
                 "label": {
                     "en": "degrees Celsius"
                 }
-            }
+            },
+            "measurementType": {
+                "method": "maximum",
+                "period": "PT10M"
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 1.5
         },
         "relative_humidity:2.0:mean:PT1M": {
             "type": "Parameter",
             "description": {
-                "en": "relative_humidity at 2.0m PT1M mean"
+                "en": "relative_humidity at 2.0m, aggregated over PT1M with method 'mean'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/relative_humidity",
@@ -82,12 +88,18 @@
                 "label": {
                     "en": "%"
                 }
-            }
+            },
+            "measurementType": {
+                "method": "mean",
+                "period": "PT1M"
+            },
+            "rodeo:standard_name": "relative_humidity",
+            "rodeo:level": 2.0
         },
         "wind_from_direction:2.0:mean:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "wind_from_direction at 2.0m PT10M mean"
+                "en": "wind_from_direction at 2.0m, aggregated over PT10M with method 'mean'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/wind_from_direction",
@@ -99,7 +111,13 @@
                 "label": {
                     "en": "degree"
                 }
-            }
+            },
+            "measurementType": {
+                "method": "mean",
+                "period": "PT10M"
+            },
+            "rodeo:standard_name": "wind_from_direction",
+            "rodeo:level": 2.0
         }
     },
     "ranges": {

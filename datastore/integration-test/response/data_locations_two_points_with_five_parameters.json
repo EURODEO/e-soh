@@ -1,0 +1,166 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.1797058644882,
+                    52.098821802977
+                ]
+            },
+            "properties": {
+                "name": "DE BILT AWS",
+                "detail": "https://oscar.wmo.int/surface/rest/api/search/station?wigosId=0-20000-0-06260",
+                "parameter-name": [
+                    "air_temperature:0.1:minimum:PT10M",
+                    "air_temperature:1.5:maximum:PT10M",
+                    "air_temperature:1.5:minimum:PT10M",
+                    "air_temperature:2.0:mean:PT1M",
+                    "wind_from_direction:2.0:mean:PT10M"
+                ]
+            },
+            "id": "0-20000-0-06260"
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    5.8723225499118,
+                    52.0548617826
+                ]
+            },
+            "properties": {
+                "name": "DEELEN",
+                "detail": "https://oscar.wmo.int/surface/rest/api/search/station?wigosId=0-20000-0-06275",
+                "parameter-name": [
+                    "air_temperature:0.1:minimum:PT10M",
+                    "air_temperature:1.5:maximum:PT10M",
+                    "air_temperature:1.5:minimum:PT10M",
+                    "air_temperature:2.0:mean:PT1M",
+                    "wind_from_direction:2.0:mean:PT10M"
+                ]
+            },
+            "id": "0-20000-0-06275"
+        }
+    ],
+    "parameters": {
+        "air_temperature:0.1:minimum:PT10M": {
+            "type": "Parameter",
+            "description": {
+                "en": "air_temperature at 0.1m, aggregated over PT10M with method 'minimum'"
+            },
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
+                "label": {
+                    "en": "air_temperature:0.1:minimum:PT10M"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "degrees Celsius"
+                }
+            },
+            "measurementType": {
+                "method": "minimum",
+                "period": "PT10M"
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 0.1
+        },
+        "air_temperature:1.5:maximum:PT10M": {
+            "type": "Parameter",
+            "description": {
+                "en": "air_temperature at 1.5m, aggregated over PT10M with method 'maximum'"
+            },
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
+                "label": {
+                    "en": "air_temperature:1.5:maximum:PT10M"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "degrees Celsius"
+                }
+            },
+            "measurementType": {
+                "method": "maximum",
+                "period": "PT10M"
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 1.5
+        },
+        "air_temperature:1.5:minimum:PT10M": {
+            "type": "Parameter",
+            "description": {
+                "en": "air_temperature at 1.5m, aggregated over PT10M with method 'minimum'"
+            },
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
+                "label": {
+                    "en": "air_temperature:1.5:minimum:PT10M"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "degrees Celsius"
+                }
+            },
+            "measurementType": {
+                "method": "minimum",
+                "period": "PT10M"
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 1.5
+        },
+        "air_temperature:2.0:mean:PT1M": {
+            "type": "Parameter",
+            "description": {
+                "en": "air_temperature at 2.0m, aggregated over PT1M with method 'mean'"
+            },
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
+                "label": {
+                    "en": "air_temperature:2.0:mean:PT1M"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "degrees Celsius"
+                }
+            },
+            "measurementType": {
+                "method": "mean",
+                "period": "PT1M"
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 2.0
+        },
+        "wind_from_direction:2.0:mean:PT10M": {
+            "type": "Parameter",
+            "description": {
+                "en": "wind_from_direction at 2.0m, aggregated over PT10M with method 'mean'"
+            },
+            "observedProperty": {
+                "id": "https://vocab.nerc.ac.uk/standard_name/wind_from_direction",
+                "label": {
+                    "en": "wind_from_direction:2.0:mean:PT10M"
+                }
+            },
+            "unit": {
+                "label": {
+                    "en": "degree"
+                }
+            },
+            "measurementType": {
+                "method": "mean",
+                "period": "PT10M"
+            },
+            "rodeo:standard_name": "wind_from_direction",
+            "rodeo:level": 2.0
+        }
+    }
+}

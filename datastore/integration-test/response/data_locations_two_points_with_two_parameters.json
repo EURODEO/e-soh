@@ -44,7 +44,7 @@
         "air_pressure_at_sea_level:1:mean:PT1M": {
             "type": "Parameter",
             "description": {
-                "en": "air_pressure_at_sea_level at 1m PT1M mean"
+                "en": "air_pressure_at_sea_level at 1m, aggregated over PT1M with method 'mean'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_pressure_at_sea_level",
@@ -56,12 +56,18 @@
                 "label": {
                     "en": "hPa"
                 }
-            }
+            },
+            "measurementType": {
+                "method": "mean",
+                "period": "PT1M"
+            },
+            "rodeo:standard_name": "air_pressure_at_sea_level",
+            "rodeo:level": 1.0
         },
         "air_temperature:0.1:minimum:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 0.1m PT10M minimum"
+                "en": "air_temperature at 0.1m, aggregated over PT10M with method 'minimum'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
@@ -73,7 +79,13 @@
                 "label": {
                     "en": "degrees Celsius"
                 }
-            }
+            },
+            "measurementType": {
+                "method": "minimum",
+                "period": "PT10M"
+            },
+            "rodeo:standard_name": "air_temperature",
+            "rodeo:level": 0.1
         }
     }
 }
