@@ -25,6 +25,14 @@ option go_package = "./datastore";
 // - In the below message definitions, all field names that contain underscores needs to
 //   have [json_name = "..."] specified, otherwise e.g. 'a_b' will be formatted as 'aB' in the
 //   output.
+//
+// - Metadata fields are categorized into reflectable or non-reflectable. A reflectable metadata
+//   field has type int64 or string and can be handled dynamically in the datastore code using
+//   reflection (https://en.wikipedia.org/wiki/Reflective_programming). The big advantage of this
+//   is that it becomes very easy to modify the set of reflectable metadata fields as it requires
+//   only two simple operations: 1) add/remove the field in the protobuf definition (this file!),
+//   and 2) add/remove the corresponding field in the database schema. In other words, no literal
+//   references to such fields are needed in the rest of the code.
 
 service Datastore {
   // insert observations into the storage (or update existing ones)
@@ -199,9 +207,34 @@ message GetObsRequest {
   // --- BEGIN filter for reflectable metadata of type int64 or string -------------------------
 
   // general filter
-  // - map keys must correspond exactly with string field names in TSMetadata or ObsMetadata
-  // - if map key F is specified (where F is for example 'platform'), only observations that match
-  //   at least one of these values for F may be returned
+  //
+  // - The map key must correspond exactly with a reflectable field name in TSMetadata or
+  //   ObsMetadata (for example 'institution' or 'level' in TSMedatata, or 'processing_level' in
+  //   ObsMetadata).
+  //
+  // - The map value for key F is a list of patterns. Only observations with an F that matches at
+  //   least one of these patterns may be returned.
+  //
+  // - The match condition for a pattern P depends on the type of the map key F:
+  //
+  //   Case 1 - string:
+  //       The value V of F matches P in a case-insensitive way and with P optionally containing
+  //       asterisks to represent zero or more characters.
+  //       Example: for F='institution', V='MET Norway', the following values for P will match:
+  //       'MET Norway', 'met norway', 'MET*', '*et*'.
+  //
+  //   Case 2 - int64:
+  //
+  //       Case 2.1: P has the form 'lo/hi' where lo and hi are both int64s, and the value V of F
+  //           matches P if lo <= V <= hi.
+  //           Example: for F='level', V='10', the following values for P will match:
+  //           '10/10', '-10/10', '9/10', '10/11'.
+  //
+  //       Case 2.2: If P is not an integer interval like in Case 2.1, then the value V of F
+  //           is converted to a string and matched against P just like in Case 1.
+  //           Example: for F='level', V='10', the following values for P will match:
+  //           '10', '1*', '*0', '*'.
+  //
   map<string, Strings> filter = 5;
 
   // --- END filter for reflectable metadata of type int64 or string -------------------------
@@ -210,8 +243,8 @@ message GetObsRequest {
   // Case 1: included_response_fields is omitted or empty=> implicitly include all available fields.
   // Case 2: included_response_fields contains one or more fields =>
   //   Each field must be one of the following:
-  //     * a reflection-handleable string field in TSMetadata (like 'keywords')
-  //       or ObsMetadata (like 'history')
+  //     * a reflectable string field in TSMetadata (like 'keywords') or ObsMetadata (like
+  //       'history')
   //     * 'links' (non-reflectable field in TSMedatata)
   //     * 'geo_point' (non-reflectable field in ObsMetadata)
   //     * 'obstime_instant' (--- '' ---)

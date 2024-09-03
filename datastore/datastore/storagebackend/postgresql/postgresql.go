@@ -289,10 +289,6 @@ func addWhereCondMatchAnyPatternForInt64(
 
 	index := len(*phVals)
 	for _, ptn := range patterns {
-
-		// TODO: check if ptn matches ("<int>/<int>") and if so generate a range filter,
-		// otherwise treat ptn as an arbitrary string with optional *, and generate expr
-		// accordingly.
 		if from, to, ok := getInt64Range(ptn); ok {
 			index += 2
 			expr := fmt.Sprintf("((%s >= $%d) AND (%s <= $%d))", colName, index - 1, colName, index)
