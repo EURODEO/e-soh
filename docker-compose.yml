@@ -190,6 +190,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    command: "--collector.stat_statements"
 
 volumes:
   ts-data:
