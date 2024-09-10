@@ -1,4 +1,3 @@
-version: "3.8"
 name: datastore
 
 services:
@@ -10,8 +9,10 @@ services:
     volumes:
       #      - ts-data:/home/postgres/pgdata/data # for timescale image
       - ts-data:/var/lib/postgresql # for postgres image
-      - ./datastore/database/db.conf:/etc/conf_settings/db.conf:ro
-      - pg_logs:/logs
+#      - ./datastore/database/custom.conf:/etc/postgresql/15/main/custom.conf:ro
+#      - ./datastore/database/extra.conf:/settings/extra.conf:ro
+      - ./datastore/database/extra.conf:/etc/conf_settings/extra.conf:ro
+      - pg_logs:/log
       - ./datastore/database/healthcheck_postgis_uptime.sh:/healthcheck_postgis_uptime.sh:ro # for the healthcheck
     environment:
       - EXTRA_CONF_DIR=/etc/conf_settings
@@ -31,6 +32,10 @@ services:
       timeout: 1s
       retries: 30
       start_period: 30s # Failures in 30 seconds do not mark container as unhealthy
+#    command: ["-c", "config_file=/etc/postgresql/15/main/custom.conf && postgres restart"]
+#    command: >
+#      -c "echo 'include ''custom.conf''' >> /etc/postgresql/15/main/postgresql.conf
+#      && postgres"
 
   migrate:
     build:
