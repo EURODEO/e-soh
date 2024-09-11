@@ -304,6 +304,11 @@ class Properties(BaseModel):
         return period
 
     @model_validator(mode="after")
+    def convert_to_cm(self):
+        self.level = int(int(self.level) * 100)
+        return self
+
+    @model_validator(mode="after")
     def check_datetime_iso(self) -> "Properties":
         try:
             dt = parser.isoparse(self.datetime)
