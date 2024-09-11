@@ -79,7 +79,7 @@ services:
       - DSHOST=store
       - DSPORT=50050
       - FORWARDED_ALLOW_IPS=${FORWARDED_ALLOW_IPS:-127.0.0.1}
-      - GUNICORN_CMD_ARGS="--bind 0.0.0.0:8000 --workers=4 --access-logfile - "
+      - GUNICORN_CMD_ARGS=--bind 0.0.0.0:8000 --workers=4 --access-logfile -
     depends_on:
       store:
         condition: service_healthy
@@ -111,8 +111,8 @@ services:
       - MQTT_USERNAME=${MQTT_USERNAME}
       - MQTT_PASSWORD=${MQTT_PASSWORD}
       - MQTT_TLS=True
-      - INGEST_LOGLEVEL=${INGEST_LOGLEVEL}
-      - GUNICORN_CMD_ARGS="--bind 0.0.0.0:8001 --workers=4 --access-logfile - "
+      - INGEST_LOGLEVEL
+      - GUNICORN_CMD_ARGS=--bind 0.0.0.0:8001 --workers=4 --access-logfile -
     depends_on:
       store:
         condition: service_healthy
