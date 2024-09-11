@@ -1,14 +1,14 @@
-version: '3.8'
+version: "3.8"
 name: datastore
 
 services:
   db:
-#    image: timescale/timescaledb-ha:pg15-latest
-    image: kartoza/postgis:15  # Use this instead of the official image as it has an arm64 image
+    #    image: timescale/timescaledb-ha:pg15-latest
+    image: kartoza/postgis:15 # Use this instead of the official image as it has an arm64 image
     ports:
       - "5433:5432"
     volumes:
-#      - ts-data:/home/postgres/pgdata/data # for timescale image
+      #      - ts-data:/home/postgres/pgdata/data # for timescale image
       - ts-data:/var/lib/postgresql # for postgres image
       - ./datastore/database/healthcheck_postgis_uptime.sh:/healthcheck_postgis_uptime.sh # for the healthcheck
     environment:
@@ -18,17 +18,28 @@ services:
     restart: on-failure
     healthcheck:
       # HACK Due to the installation of Postgis extension the database is restarted, the healthcheck checks if the database is up for longer than specified time.
-      test: ["CMD-SHELL", "/healthcheck_postgis_uptime.sh postgresql://postgres:mysecretpassword@localhost/data 10 second"]
+      test:
+        [
+          "CMD-SHELL",
+          "/healthcheck_postgis_uptime.sh postgresql://postgres:mysecretpassword@localhost/data 10 second",
+        ]
       interval: 5s
       timeout: 1s
       retries: 3
-      start_period: 30s   # Failures in 30 seconds do not mark container as unhealthy
+      start_period: 30s # Failures in 30 seconds do not mark container as unhealthy
 
   migrate:
     image: migrate/migrate:4
     volumes:
       - ./datastore/migrate/data/migrations:/data/migrations
-    command: ["-path", "/data/migrations", "-database", "postgres://postgres:mysecretpassword@db:5432/data?sslmode=disable", "up"]
+    command:
+      [
+        "-path",
+        "/data/migrations",
+        "-database",
+        "postgres://postgres:mysecretpassword@db:5432/data?sslmode=disable",
+        "up",
+      ]
     depends_on:
       db:
         condition: service_healthy
@@ -49,7 +60,8 @@ services:
       - PUTOBSLIMIT=$PUTOBSLIMIT
     restart: on-failure
     healthcheck:
-      test: [ "CMD-SHELL", "exit $(/bin/grpc_health_probe -addr=localhost:50050)" ]
+      test:
+        ["CMD-SHELL", "exit $(/bin/grpc_health_probe -addr=localhost:50050)"]
       interval: 5s
       timeout: 1s
       retries: 15
@@ -62,23 +74,24 @@ services:
     build:
       context: api
     ports:
-        - "8008:8000"
+      - "8008:8000"
     environment:
       - DSHOST=store
       - DSPORT=50050
       - FORWARDED_ALLOW_IPS=${FORWARDED_ALLOW_IPS:-127.0.0.1}
+      - GUNICORN_CMD_ARGS="--bind 0.0.0.0:8000 --workers=4 --access-logfile - "
     depends_on:
       store:
         condition: service_healthy
     healthcheck:
-      test: [ "CMD-SHELL", "curl --fail http://localhost:8000/health || exit 1" ]
+      test: ["CMD-SHELL", "curl --fail http://localhost:8000/health || exit 1"]
       interval: 5s
       timeout: 1s
       retries: 3
-      start_period: 30s   # Failures in 30 seconds do not mark container as unhealthy
+      start_period: 30s # Failures in 30 seconds do not mark container as unhealthy
 
   api-unit:
-    profiles: [ "test" ]
+    profiles: ["test"]
     build:
       context: api
       dockerfile: unit.Dockerfile
@@ -99,6 +112,7 @@ services:
       - MQTT_PASSWORD=${MQTT_PASSWORD}
       - MQTT_TLS=True
       - INGEST_LOGLEVEL=${INGEST_LOGLEVEL}
+      - GUNICORN_CMD_ARGS="--bind 0.0.0.0:8001 --workers=4 --access-logfile - "
     depends_on:
       store:
         condition: service_healthy
@@ -139,7 +153,7 @@ services:
         condition: service_healthy
 
   performance:
-    profiles: [ "test" ]
+    profiles: ["test"]
     build:
       context: datastore/load-test
     environment:
