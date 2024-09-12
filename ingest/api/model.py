@@ -226,7 +226,7 @@ class Properties(BaseModel):
         None,
         description="Controlled vocabulary for the names used in the 'instrument' attribute.",
     )
-    level: str = Field(
+    level: str | int | float = Field(
         ...,
         description=("Instrument level above ground in meters."),
     )
