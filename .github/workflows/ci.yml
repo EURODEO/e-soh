@@ -136,8 +136,8 @@ jobs:
       - name: Run Tests
         run: |
           cd ingest
-          mkdir -p /tmp/metrics && PROMETHEUS_MULTIPROC_DIR=/tmp/metrics
-          python -m pytest -v --timeout=60
+          mkdir -p /tmp/metrics
+          PROMETHEUS_MULTIPROC_DIR=/tmp/metrics python -m pytest -v --timeout=60
 
   publish-test-results:
     needs: test-datastore
