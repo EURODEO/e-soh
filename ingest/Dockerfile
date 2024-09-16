@@ -40,5 +40,9 @@ RUN python "api/generate_standard_name.py"
 
 # hadolint ignore=DL3013
 RUN pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir --upgrade "${DOCKER_PATH}/"
+    && pip install --no-cache-dir --upgrade "${DOCKER_PATH}/" \
+    && mkdir -p /tmp/metrics
+
+ENV PROMETHEUS_MULTIPROC_DIR=/tmp/metrics
+
 CMD ["gunicorn", "api.main:app", "--worker-class=uvicorn.workers.UvicornWorker"]
