@@ -28,6 +28,9 @@ RUN python -m grpc_tools.protoc  \
 
 COPY "." "${DOCKER_PATH}/"
 
+# Create folder for metrics
+ENV PROMETHEUS_MULTIPROC_DIR=/tmp/metrics
+RUN mkdir -p /tmp/metrics
 
 WORKDIR "${DOCKER_PATH}"
 CMD ["gunicorn", "main:app", "--worker-class=uvicorn.workers.UvicornWorker"]
