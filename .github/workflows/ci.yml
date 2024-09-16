@@ -125,6 +125,7 @@ jobs:
           pip install -r ./ingest/requirements.txt
           pip install ./ingest
           cd ./ingest && python3 api/generate_standard_name.py
+          mkdir -p /tmp/metrics && PROMETHEUS_MULTIPROC_DIR=/tmp/metrics
 
       - name: Copy Protobuf file to api directory and build
         run: |
