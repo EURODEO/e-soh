@@ -9,9 +9,7 @@ services:
     volumes:
       #      - ts-data:/home/postgres/pgdata/data # for timescale image
       - ts-data:/var/lib/postgresql # for postgres image
-#      - ./datastore/database/custom.conf:/etc/postgresql/15/main/custom.conf:ro
-#      - ./datastore/database/extra.conf:/settings/extra.conf:ro
-      - ./datastore/database/extra.conf:/etc/conf_settings/extra.conf:ro
+      - ./datastore/database/extra.conf:/etc/conf_settings/extra.conf:ro  # Extra Postgres configuration
       - pg_logs:/log
       - ./datastore/database/healthcheck_postgis_uptime.sh:/healthcheck_postgis_uptime.sh:ro # for the healthcheck
     environment:
@@ -32,10 +30,6 @@ services:
       timeout: 1s
       retries: 30
       start_period: 30s # Failures in 30 seconds do not mark container as unhealthy
-#    command: ["-c", "config_file=/etc/postgresql/15/main/custom.conf && postgres restart"]
-#    command: >
-#      -c "echo 'include ''custom.conf''' >> /etc/postgresql/15/main/postgresql.conf
-#      && postgres"
 
   migrate:
     build:
@@ -169,15 +163,15 @@ services:
       store:
         condition: service_healthy
 
-  monitoring:
+  prometheus:
     image: prom/prometheus
     ports:
       - "9090:9090"
     volumes:
-      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-      - prometheus-data:/prometheus:rw
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
 
-  export-db-metrics:
+  prometheus-postgres-exporter:
     image: quay.io/prometheuscommunity/postgres-exporter
     environment:
       - DATA_SOURCE_URI=db:5432/data
@@ -186,13 +180,28 @@ services:
     ports:
       - "9187:9187"
     volumes:
-      - ./monitoring/postgres_exporter.yml:/postgres_exporter.yml:ro
+      - ./prometheus/postgres_exporter.yml:/postgres_exporter.yml:ro
     depends_on:
       db:
         condition: service_healthy
-    command: "--collector.stat_statements"
+    command: ["--collector.stat_statements", "--collector.stat_user_tables", "--collector.stat_activity_autovacuum"]
+
+  grafana:
+    image: grafana/grafana-oss:11.2.0
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=mysecretpassword
+    volumes:
+      - grafana-storage:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+    depends_on:
+      - prometheus
 
 volumes:
   ts-data:
   pg_logs:
   prometheus-data:
+  grafana-storage:
