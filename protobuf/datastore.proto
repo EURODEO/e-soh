@@ -26,7 +26,7 @@ option go_package = "./datastore";
 //   have [json_name = "..."] specified, otherwise e.g. 'a_b' will be formatted as 'aB' in the
 //   output.
 //
-// - Metadata fields are categorized into reflectable or non-reflectable. A reflectable metadata
+// - Metadata fields are categorized into reflectable and non-reflectable. A reflectable metadata
 //   field has type int64 or string and can be handled dynamically in the datastore code using
 //   reflection (https://en.wikipedia.org/wiki/Reflective_programming). The big advantage of this
 //   is that it becomes very easy to modify the set of reflectable metadata fields as it requires
