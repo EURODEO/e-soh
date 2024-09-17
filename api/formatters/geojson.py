@@ -3,6 +3,7 @@ from geojson_pydantic import Feature
 from geojson_pydantic import FeatureCollection
 from geojson_pydantic import Point
 
+from utilities import seconds_to_iso_8601_duration
 
 def _make_properties(ts):
     ts_metadata = {key.name: value for key, value in ts.ts_mdata.ListFields() if value}
@@ -12,6 +13,9 @@ def _make_properties(ts):
         if not ts.ts_mdata.platform_vocabulary
         else ts.ts_mdata.platform_vocabulary
     )
+
+    ts_metadata["level"] = str(ts.ts_mdata.level / 100)
+    ts_metadata["period"] = seconds_to_iso_8601_duration(ts.ts_mdata.period)
 
     # TODO: Remove when return is 'method' instead of 'function'
     if "function" in ts_metadata:

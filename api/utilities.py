@@ -281,6 +281,17 @@ def iso_8601_duration_to_seconds(period: str) -> int:
     return int(total_seconds)
 
 
+def seconds_to_iso_8601_duration(seconds: int) -> str:
+    duration = isodate.Duration(seconds=seconds)
+    iso_duration = isodate.duration_isoformat(duration)
+
+    # iso_duration defaults to P0D when seconds is 0
+    if iso_duration == "P0D":
+        iso_duration = "PT0S"
+
+    return iso_duration
+
+
 async def get_iso_8601_range(start: str, end: str) -> list[str] | None:
     """
     Returns a list of ISO 8601 durations between the start and end values.

@@ -21,7 +21,7 @@ from covjson_pydantic.unit import Unit
 from fastapi import HTTPException
 from pydantic import AwareDatetime
 
-from utilities import is_float
+from utilities import seconds_to_iso_8601_duration
 
 # mime_type = "application/prs.coverage+json"
 
@@ -30,15 +30,18 @@ Data = namedtuple("Data", ["dom", "values", "ts_mdata"])
 
 
 def make_parameter(ts_mdata):
+    level = ts_mdata.level / 100
+    period = seconds_to_iso_8601_duration(ts_mdata.period)
+
     custom_fields = {
         "rodeo:standard_name": ts_mdata.standard_name,
-        "rodeo:level": float(ts_mdata.level) if is_float(ts_mdata.level) else 0.0,
+        "rodeo:level": level,
     }
 
     return Parameter(
         description={
-            "en": f"{ts_mdata.standard_name} at {ts_mdata.level}m, "
-            f"aggregated over {ts_mdata.period} with method '{ts_mdata.function}'",
+            "en": f"{ts_mdata.standard_name} at {level}m, "
+            f"aggregated over {period} with method '{ts_mdata.function}'",
         },
         observedProperty=ObservedProperty(
             id=f"https://vocab.nerc.ac.uk/standard_name/{ts_mdata.standard_name}",
@@ -46,7 +49,7 @@ def make_parameter(ts_mdata):
         ),
         measurementType=MeasurementType(
             method=ts_mdata.function,
-            period=ts_mdata.period,
+            period=period,
         ),
         unit=Unit(label={"en": ts_mdata.unit}),
         **custom_fields,
