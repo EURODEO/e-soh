@@ -6,10 +6,10 @@
                 "platform_name": "DE BILT AWS",
                 "standard_name": "air_pressure_at_sea_level",
                 "unit": "hPa",
-                "level": "1",
+                "level": 100,
                 "function": "mean",
-                "period": "PT1M",
-                "parameter_name": "air_pressure_at_sea_level:1:mean:PT1M"
+                "period": 60,
+                "parameter_name": "air_pressure_at_sea_level:1.0:mean:PT1M"
             },
             "obs_mdata": [
                 {
@@ -26,10 +26,10 @@
                 "platform_name": "DEELEN",
                 "standard_name": "air_pressure_at_sea_level",
                 "unit": "hPa",
-                "level": "1",
+                "level": 100,
                 "function": "mean",
-                "period": "PT1M",
-                "parameter_name": "air_pressure_at_sea_level:1:mean:PT1M"
+                "period": 60,
+                "parameter_name": "air_pressure_at_sea_level:1.0:mean:PT1M"
             },
             "obs_mdata": [
                 {
@@ -46,9 +46,9 @@
                 "platform_name": "DE BILT AWS",
                 "standard_name": "air_temperature",
                 "unit": "degrees Celsius",
-                "level": "0.1",
+                "level": 10,
                 "function": "minimum",
-                "period": "PT10M",
+                "period": 600,
                 "parameter_name": "air_temperature:0.1:minimum:PT10M"
             },
             "obs_mdata": [
@@ -66,9 +66,9 @@
                 "platform_name": "DEELEN",
                 "standard_name": "air_temperature",
                 "unit": "degrees Celsius",
-                "level": "0.1",
+                "level": 10,
                 "function": "minimum",
-                "period": "PT10M",
+                "period": 600,
                 "parameter_name": "air_temperature:0.1:minimum:PT10M"
             },
             "obs_mdata": [
