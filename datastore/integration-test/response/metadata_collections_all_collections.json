@@ -73,19 +73,19 @@
                         "id": "levels",
                         "interval": [
                             [
-                                "0",
-                                "10"
+                                "0.0",
+                                "10.0"
                             ]
                         ],
                         "values": [
-                            "0",
+                            "0.0",
                             "0.1",
-                            "1",
+                            "1.0",
                             "1.5",
-                            "1.80",
+                            "1.8",
                             "2.0",
-                            "2.50",
-                            "10"
+                            "2.5",
+                            "10.0"
                         ],
                         "reference": "Height of measurement above ground level in meters"
                     },
@@ -117,7 +117,7 @@
                             "PT0S",
                             "PT1M",
                             "PT10M",
-                            "PT01H",
+                            "PT1H",
                             "PT6H",
                             "PT12H",
                             "PT14H",
@@ -172,15 +172,15 @@
                 "CoverageJSON"
             ],
             "parameter_names": {
-                "air_pressure_at_sea_level:1:mean:PT1M": {
+                "air_pressure_at_sea_level:1.0:mean:PT1M": {
                     "type": "Parameter",
-                    "description": "air_pressure_at_sea_level at 1m, aggregated over PT1M with method 'mean'",
+                    "description": "air_pressure_at_sea_level at 1.0m, aggregated over PT1M with method 'mean'",
                     "unit": {
                         "label": "hPa"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/air_pressure_at_sea_level",
-                        "label": "air_pressure_at_sea_level:1:mean:PT1M"
+                        "label": "air_pressure_at_sea_level:1.0:mean:PT1M"
                     },
                     "measurementType": {
                         "method": "mean",
@@ -206,15 +206,15 @@
                     "rodeo:standard_name": "air_temperature",
                     "rodeo:level": 0.1
                 },
-                "air_temperature:0:minimum:PT12H": {
+                "air_temperature:0.0:minimum:PT12H": {
                     "type": "Parameter",
-                    "description": "air_temperature at 0m, aggregated over PT12H with method 'minimum'",
+                    "description": "air_temperature at 0.0m, aggregated over PT12H with method 'minimum'",
                     "unit": {
                         "label": "degrees Celsius"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
-                        "label": "air_temperature:0:minimum:PT12H"
+                        "label": "air_temperature:0.0:minimum:PT12H"
                     },
                     "measurementType": {
                         "method": "minimum",
@@ -223,15 +223,15 @@
                     "rodeo:standard_name": "air_temperature",
                     "rodeo:level": 0.0
                 },
-                "air_temperature:0:minimum:PT14H": {
+                "air_temperature:0.0:minimum:PT14H": {
                     "type": "Parameter",
-                    "description": "air_temperature at 0m, aggregated over PT14H with method 'minimum'",
+                    "description": "air_temperature at 0.0m, aggregated over PT14H with method 'minimum'",
                     "unit": {
                         "label": "degrees Celsius"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
-                        "label": "air_temperature:0:minimum:PT14H"
+                        "label": "air_temperature:0.0:minimum:PT14H"
                     },
                     "measurementType": {
                         "method": "minimum",
@@ -240,15 +240,15 @@
                     "rodeo:standard_name": "air_temperature",
                     "rodeo:level": 0.0
                 },
-                "air_temperature:0:minimum:PT6H": {
+                "air_temperature:0.0:minimum:PT6H": {
                     "type": "Parameter",
-                    "description": "air_temperature at 0m, aggregated over PT6H with method 'minimum'",
+                    "description": "air_temperature at 0.0m, aggregated over PT6H with method 'minimum'",
                     "unit": {
                         "label": "degrees Celsius"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
-                        "label": "air_temperature:0:minimum:PT6H"
+                        "label": "air_temperature:0.0:minimum:PT6H"
                     },
                     "measurementType": {
                         "method": "minimum",
@@ -410,15 +410,15 @@
                     "rodeo:standard_name": "air_temperature",
                     "rodeo:level": 2.0
                 },
-                "cloud_base_altitude:0:point:PT0S": {
+                "cloud_base_altitude:0.0:point:PT0S": {
                     "type": "Parameter",
-                    "description": "cloud_base_altitude at 0m, aggregated over PT0S with method 'point'",
+                    "description": "cloud_base_altitude at 0.0m, aggregated over PT0S with method 'point'",
                     "unit": {
                         "label": "ft"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/cloud_base_altitude",
-                        "label": "cloud_base_altitude:0:point:PT0S"
+                        "label": "cloud_base_altitude:0.0:point:PT0S"
                     },
                     "measurementType": {
                         "method": "point",
@@ -427,15 +427,15 @@
                     "rodeo:standard_name": "cloud_base_altitude",
                     "rodeo:level": 0.0
                 },
-                "cloud_base_altitude:1:point:PT0S": {
+                "cloud_base_altitude:1.0:point:PT0S": {
                     "type": "Parameter",
-                    "description": "cloud_base_altitude at 1m, aggregated over PT0S with method 'point'",
+                    "description": "cloud_base_altitude at 1.0m, aggregated over PT0S with method 'point'",
                     "unit": {
                         "label": "ft"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/cloud_base_altitude",
-                        "label": "cloud_base_altitude:1:point:PT0S"
+                        "label": "cloud_base_altitude:1.0:point:PT0S"
                     },
                     "measurementType": {
                         "method": "point",
@@ -461,15 +461,15 @@
                     "rodeo:standard_name": "cloud_base_altitude",
                     "rodeo:level": 2.0
                 },
-                "cloud_cover:0:point:PT0S": {
+                "cloud_cover:0.0:point:PT0S": {
                     "type": "Parameter",
-                    "description": "cloud_cover at 0m, aggregated over PT0S with method 'point'",
+                    "description": "cloud_cover at 0.0m, aggregated over PT0S with method 'point'",
                     "unit": {
                         "label": "octa"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/cloud_cover",
-                        "label": "cloud_cover:0:point:PT0S"
+                        "label": "cloud_cover:0.0:point:PT0S"
                     },
                     "measurementType": {
                         "method": "point",
@@ -478,15 +478,15 @@
                     "rodeo:standard_name": "cloud_cover",
                     "rodeo:level": 0.0
                 },
-                "cloud_cover:1:point:PT0S": {
+                "cloud_cover:1.0:point:PT0S": {
                     "type": "Parameter",
-                    "description": "cloud_cover at 1m, aggregated over PT0S with method 'point'",
+                    "description": "cloud_cover at 1.0m, aggregated over PT0S with method 'point'",
                     "unit": {
                         "label": "octa"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/cloud_cover",
-                        "label": "cloud_cover:1:point:PT0S"
+                        "label": "cloud_cover:1.0:point:PT0S"
                     },
                     "measurementType": {
                         "method": "point",
@@ -546,15 +546,15 @@
                     "rodeo:standard_name": "duration_of_sunshine",
                     "rodeo:level": 2.0
                 },
-                "lwe_precipitation_rate:1.80:mean:PT10M": {
+                "lwe_precipitation_rate:1.8:mean:PT10M": {
                     "type": "Parameter",
-                    "description": "lwe_precipitation_rate at 1.80m, aggregated over PT10M with method 'mean'",
+                    "description": "lwe_precipitation_rate at 1.8m, aggregated over PT10M with method 'mean'",
                     "unit": {
                         "label": "mm/h"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/lwe_precipitation_rate",
-                        "label": "lwe_precipitation_rate:1.80:mean:PT10M"
+                        "label": "lwe_precipitation_rate:1.8:mean:PT10M"
                     },
                     "measurementType": {
                         "method": "mean",
@@ -563,15 +563,15 @@
                     "rodeo:standard_name": "lwe_precipitation_rate",
                     "rodeo:level": 1.8
                 },
-                "lwe_precipitation_rate:2.50:mean:PT10M": {
+                "lwe_precipitation_rate:2.5:mean:PT10M": {
                     "type": "Parameter",
-                    "description": "lwe_precipitation_rate at 2.50m, aggregated over PT10M with method 'mean'",
+                    "description": "lwe_precipitation_rate at 2.5m, aggregated over PT10M with method 'mean'",
                     "unit": {
                         "label": "mm/h"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/lwe_precipitation_rate",
-                        "label": "lwe_precipitation_rate:2.50:mean:PT10M"
+                        "label": "lwe_precipitation_rate:2.5:mean:PT10M"
                     },
                     "measurementType": {
                         "method": "mean",
@@ -580,32 +580,32 @@
                     "rodeo:standard_name": "lwe_precipitation_rate",
                     "rodeo:level": 2.5
                 },
-                "placeholder:1.80:point:PT01H": {
+                "placeholder:1.8:point:PT1H": {
                     "type": "Parameter",
-                    "description": "placeholder at 1.80m, aggregated over PT01H with method 'point'",
+                    "description": "placeholder at 1.8m, aggregated over PT1H with method 'point'",
                     "unit": {
                         "label": "code"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/placeholder",
-                        "label": "placeholder:1.80:point:PT01H"
+                        "label": "placeholder:1.8:point:PT1H"
                     },
                     "measurementType": {
                         "method": "point",
-                        "period": "PT01H"
+                        "period": "PT1H"
                     },
                     "rodeo:standard_name": "placeholder",
                     "rodeo:level": 1.8
                 },
-                "placeholder:1.80:point:PT0S": {
+                "placeholder:1.8:point:PT0S": {
                     "type": "Parameter",
-                    "description": "placeholder at 1.80m, aggregated over PT0S with method 'point'",
+                    "description": "placeholder at 1.8m, aggregated over PT0S with method 'point'",
                     "unit": {
                         "label": "code"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/placeholder",
-                        "label": "placeholder:1.80:point:PT0S"
+                        "label": "placeholder:1.8:point:PT0S"
                     },
                     "measurementType": {
                         "method": "point",
@@ -614,15 +614,15 @@
                     "rodeo:standard_name": "placeholder",
                     "rodeo:level": 1.8
                 },
-                "placeholder:1.80:point:PT10M": {
+                "placeholder:1.8:point:PT10M": {
                     "type": "Parameter",
-                    "description": "placeholder at 1.80m, aggregated over PT10M with method 'point'",
+                    "description": "placeholder at 1.8m, aggregated over PT10M with method 'point'",
                     "unit": {
                         "label": "code"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/placeholder",
-                        "label": "placeholder:1.80:point:PT10M"
+                        "label": "placeholder:1.8:point:PT10M"
                     },
                     "measurementType": {
                         "method": "point",
@@ -631,32 +631,32 @@
                     "rodeo:standard_name": "placeholder",
                     "rodeo:level": 1.8
                 },
-                "placeholder:2.50:point:PT01H": {
+                "placeholder:2.5:point:PT1H": {
                     "type": "Parameter",
-                    "description": "placeholder at 2.50m, aggregated over PT01H with method 'point'",
+                    "description": "placeholder at 2.5m, aggregated over PT1H with method 'point'",
                     "unit": {
                         "label": "code"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/placeholder",
-                        "label": "placeholder:2.50:point:PT01H"
+                        "label": "placeholder:2.5:point:PT1H"
                     },
                     "measurementType": {
                         "method": "point",
-                        "period": "PT01H"
+                        "period": "PT1H"
                     },
                     "rodeo:standard_name": "placeholder",
                     "rodeo:level": 2.5
                 },
-                "placeholder:2.50:point:PT0S": {
+                "placeholder:2.5:point:PT0S": {
                     "type": "Parameter",
-                    "description": "placeholder at 2.50m, aggregated over PT0S with method 'point'",
+                    "description": "placeholder at 2.5m, aggregated over PT0S with method 'point'",
                     "unit": {
                         "label": "code"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/placeholder",
-                        "label": "placeholder:2.50:point:PT0S"
+                        "label": "placeholder:2.5:point:PT0S"
                     },
                     "measurementType": {
                         "method": "point",
@@ -665,15 +665,15 @@
                     "rodeo:standard_name": "placeholder",
                     "rodeo:level": 2.5
                 },
-                "placeholder:2.50:point:PT10M": {
+                "placeholder:2.5:point:PT10M": {
                     "type": "Parameter",
-                    "description": "placeholder at 2.50m, aggregated over PT10M with method 'point'",
+                    "description": "placeholder at 2.5m, aggregated over PT10M with method 'point'",
                     "unit": {
                         "label": "code"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/placeholder",
-                        "label": "placeholder:2.50:point:PT10M"
+                        "label": "placeholder:2.5:point:PT10M"
                     },
                     "measurementType": {
                         "method": "point",
@@ -682,15 +682,15 @@
                     "rodeo:standard_name": "placeholder",
                     "rodeo:level": 2.5
                 },
-                "precipitation_duration:1.80:point:PT10M": {
+                "precipitation_duration:1.8:point:PT10M": {
                     "type": "Parameter",
-                    "description": "precipitation_duration at 1.80m, aggregated over PT10M with method 'point'",
+                    "description": "precipitation_duration at 1.8m, aggregated over PT10M with method 'point'",
                     "unit": {
                         "label": "sec"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/precipitation_duration",
-                        "label": "precipitation_duration:1.80:point:PT10M"
+                        "label": "precipitation_duration:1.8:point:PT10M"
                     },
                     "measurementType": {
                         "method": "point",
@@ -716,15 +716,15 @@
                     "rodeo:standard_name": "precipitation_duration",
                     "rodeo:level": 2.0
                 },
-                "precipitation_duration:2.50:point:PT10M": {
+                "precipitation_duration:2.5:point:PT10M": {
                     "type": "Parameter",
-                    "description": "precipitation_duration at 2.50m, aggregated over PT10M with method 'point'",
+                    "description": "precipitation_duration at 2.5m, aggregated over PT10M with method 'point'",
                     "unit": {
                         "label": "sec"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/precipitation_duration",
-                        "label": "precipitation_duration:2.50:point:PT10M"
+                        "label": "precipitation_duration:2.5:point:PT10M"
                     },
                     "measurementType": {
                         "method": "point",
@@ -869,15 +869,15 @@
                     "rodeo:standard_name": "total_downwelling_shortwave_flux_in_air",
                     "rodeo:level": 2.0
                 },
-                "visibility_in_air:1.80:mean:PT10M": {
+                "visibility_in_air:1.8:mean:PT10M": {
                     "type": "Parameter",
-                    "description": "visibility_in_air at 1.80m, aggregated over PT10M with method 'mean'",
+                    "description": "visibility_in_air at 1.8m, aggregated over PT10M with method 'mean'",
                     "unit": {
                         "label": "m"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/visibility_in_air",
-                        "label": "visibility_in_air:1.80:mean:PT10M"
+                        "label": "visibility_in_air:1.8:mean:PT10M"
                     },
                     "measurementType": {
                         "method": "mean",
@@ -886,15 +886,15 @@
                     "rodeo:standard_name": "visibility_in_air",
                     "rodeo:level": 1.8
                 },
-                "visibility_in_air:2.50:mean:PT10M": {
+                "visibility_in_air:2.5:mean:PT10M": {
                     "type": "Parameter",
-                    "description": "visibility_in_air at 2.50m, aggregated over PT10M with method 'mean'",
+                    "description": "visibility_in_air at 2.5m, aggregated over PT10M with method 'mean'",
                     "unit": {
                         "label": "m"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/visibility_in_air",
-                        "label": "visibility_in_air:2.50:mean:PT10M"
+                        "label": "visibility_in_air:2.5:mean:PT10M"
                     },
                     "measurementType": {
                         "method": "mean",
@@ -920,15 +920,15 @@
                     "rodeo:standard_name": "wind_from_direction",
                     "rodeo:level": 2.0
                 },
-                "wind_speed:10:mean:PT10M": {
+                "wind_speed:10.0:mean:PT10M": {
                     "type": "Parameter",
-                    "description": "wind_speed at 10m, aggregated over PT10M with method 'mean'",
+                    "description": "wind_speed at 10.0m, aggregated over PT10M with method 'mean'",
                     "unit": {
                         "label": "m s-1"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed",
-                        "label": "wind_speed:10:mean:PT10M"
+                        "label": "wind_speed:10.0:mean:PT10M"
                     },
                     "measurementType": {
                         "method": "mean",
@@ -937,15 +937,15 @@
                     "rodeo:standard_name": "wind_speed",
                     "rodeo:level": 10.0
                 },
-                "wind_speed_of_gust:10:maximum:PT10M": {
+                "wind_speed_of_gust:10.0:maximum:PT10M": {
                     "type": "Parameter",
-                    "description": "wind_speed_of_gust at 10m, aggregated over PT10M with method 'maximum'",
+                    "description": "wind_speed_of_gust at 10.0m, aggregated over PT10M with method 'maximum'",
                     "unit": {
                         "label": "m s-1"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed_of_gust",
-                        "label": "wind_speed_of_gust:10:maximum:PT10M"
+                        "label": "wind_speed_of_gust:10.0:maximum:PT10M"
                     },
                     "measurementType": {
                         "method": "maximum",

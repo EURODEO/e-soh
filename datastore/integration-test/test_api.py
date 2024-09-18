@@ -140,7 +140,7 @@ def test_from_a_single_collection_get_locations_within_bbox_with_levels_range_fi
 def test_from_a_single_collection_get_locations_within_a_bbox_with_parameter_name_filtering():
     collection_id = "observations"
     bbox = "5.0,52.0,6.0,52.1"
-    parameters = "air_temperature:0.1:minimum:PT10M, air_pressure_at_sea_level:1:mean:PT1M"
+    parameters = "air_temperature:0.1:minimum:PT10M, air_pressure_at_sea_level:1.0:mean:PT1M"
     actual_response = requests.get(
         url=BASE_URL + f"/collections/{collection_id}/locations?bbox={bbox}&parameter-name={parameters}"
     )
@@ -262,13 +262,13 @@ def test_that_the_order_of_the_parameters_in_the_response_is_always_the_same():
     """
     collection_id = "observations"
     location_id = "0-20000-0-06260"
-    parameters = " wind_from_direction:2.0:mean:PT10M,wind_speed:10:mean:PT10M ,  relative_humidity:2.0:mean:PT1M"
+    parameters = " wind_from_direction:2.0:mean:PT10M,wind_speed:10.0:mean:PT10M ,  relative_humidity:2.0:mean:PT1M"
     first_response = requests.get(
         url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}" f"?parameter-name={parameters}"
     )
 
     parameters_2 = (
-        " relative_humidity:2.0:mean:PT1M, wind_speed:10:mean:PT10M,   wind_from_direction:2.0:mean:PT10M    "
+        " relative_humidity:2.0:mean:PT1M, wind_speed:10.0:mean:PT10M,   wind_from_direction:2.0:mean:PT10M    "
     )
     second_response = requests.get(
         url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}" f"?parameter-name={parameters_2}"
@@ -353,7 +353,7 @@ def test_from_a_single_collection_get_a_single_position_with_repeating_level_int
 def test_from_a_single_collection_get_an_area_with_two_parameters():
     collection_id = "observations"
     coords = "POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))"
-    parameters = "relative_humidity:2.0:mean:PT1M ,   wind_speed:10:mean:PT10M"
+    parameters = "relative_humidity:2.0:mean:PT1M ,   wind_speed:10.0:mean:PT10M"
     datetime = "2022-12-31T22:50:00Z/.."
     actual_response = requests.get(
         url=BASE_URL + f"/collections/{collection_id}/area"
