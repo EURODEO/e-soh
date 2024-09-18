@@ -10,7 +10,7 @@ services:
       #      - ts-data:/home/postgres/pgdata/data # for timescale image
       - ts-data:/var/lib/postgresql # for postgres image
       - ./datastore/database/extra.conf:/etc/conf_settings/extra.conf:ro  # Extra Postgres configuration
-      - pg_logs:/log
+      - ./datastore/database/logs:/logs:rw
       - ./datastore/database/healthcheck_postgis_uptime.sh:/healthcheck_postgis_uptime.sh:ro # for the healthcheck
     environment:
       - EXTRA_CONF_DIR=/etc/conf_settings
@@ -195,13 +195,12 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=mysecretpassword
     volumes:
       - grafana-storage:/var/lib/grafana
-      - ./grafana/provisioning:/etc/grafana/provisioning
-      - ./grafana/dashboards:/var/lib/grafana/dashboards
+      - ./grafana/provisioning:/etc/grafana/provisioning:rw
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:rw
     depends_on:
       - prometheus
 
 volumes:
   ts-data:
-  pg_logs:
   prometheus-data:
   grafana-storage:
