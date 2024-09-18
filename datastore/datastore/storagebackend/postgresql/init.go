@@ -246,10 +246,13 @@ func init() { // automatically called once on program startup (on first import o
 		}
 	}
 
-	// create supIncRespFields and supIncRespFieldsValues
+	// create supIncRespFields and supIncRespFieldsCSV
 	supIncRespFields = common.StringSet{}
 	// --- BEGIN TSMetadata fields -------------------
 	for _, f := range tsStringMdataPBNames {
+		supIncRespFields.Set(f)
+	}
+	for _, f := range tsInt64MdataPBNames {
 		supIncRespFields.Set(f)
 	}
 	supIncRespFields.Set("links")
