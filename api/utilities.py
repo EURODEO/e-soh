@@ -152,6 +152,7 @@ async def add_request_parameters(
 
     if standard_names:
         request.filter["standard_name"].values.extend(split_and_strip(standard_names))
+        request.filter["level"].values.extend(get_z_levels_or_range(levels))
 
     if methods:
         request.filter["function"].values.extend(split_and_strip(methods))
@@ -163,7 +164,7 @@ async def add_request_parameters(
 async def get_periods_from_request(periods: str | None) -> list[str]:
     split_on_slash = periods.split("/")
     if len(split_on_slash) == 1:
-        return split_and_strip(periods)
+        return [str(iso_8601_duration_to_seconds(period)) for period in split_and_strip(periods)]
     elif len(split_on_slash) == 2:
         return await get_iso_8601_range(split_on_slash[0].upper(), split_on_slash[1].upper())
     else:
@@ -306,9 +307,6 @@ async def get_iso_8601_range(start: str, end: str) -> list[str] | None:
         raise HTTPException(status_code=400, detail=f"Invalid ISO 8601 period: {start} / {end}")
 
     try:
-        periods = sorted(await get_unique_values_for_metadata("period"), key=iso_8601_duration_to_seconds_sort_key)
-        periods_with_seconds = ((iso_8601_duration_to_seconds(period), period) for period in periods)
-
         if start != "..":
             start_seconds = iso_8601_duration_to_seconds(start)
         else:
@@ -325,9 +323,4 @@ async def get_iso_8601_range(start: str, end: str) -> list[str] | None:
     except ValueError as err:
         raise HTTPException(status_code=400, detail=f"{err}")
 
-    range = list(map(lambda x: x[1], filter(lambda x: start_seconds <= x[0] <= end_seconds, periods_with_seconds)))
-
-    if len(range) == 0:
-        raise HTTPException(status_code=404, detail="Requested data not found.")
-
-    return range
+    return [f'{start_seconds}/{end_seconds}']

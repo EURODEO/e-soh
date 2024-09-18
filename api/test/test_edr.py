@@ -400,7 +400,12 @@ def test_get_data_with_invalid_levels_repeating_interval():
 
 
 def test_get_data_with_period_range_without_existing_data():
-    with patch("utilities.get_unique_values_for_metadata") as mock_get_unique_values_for_metadata:
+    with patch("routers.edr.get_obs_request") as mock_get_obs_request, patch(
+        "utilities.get_unique_values_for_metadata") as mock_get_unique_values_for_metadata:
+
+        test_data = load_json("test/test_data/test_empty_proto.json")
+
+        mock_get_obs_request.return_value = create_mock_obs_response(test_data)
 
         mock_get_unique_values_for_metadata.return_value = ["PT1M", "PT10M", "PT1H", "PT12H", "PT24H"]
 
