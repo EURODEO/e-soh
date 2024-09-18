@@ -189,7 +189,7 @@ def generate_parameter_name(standard_name, long_name, station_id, station_name, 
     elif param_id == "ww-10":
         period = "PT10M"
     elif param_id == "ww":
-        period = "PT01H"
+        period = "PT1H"
 
     period_as_seconds = iso_8601_duration_to_seconds(period)
     return standard_name, level, function, period, period_as_seconds
