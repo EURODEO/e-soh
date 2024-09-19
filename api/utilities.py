@@ -268,9 +268,9 @@ def seconds_to_iso_8601_duration(seconds: int) -> str:
     return iso_duration
 
 
-def get_iso_8601_range(start: str, end: str) -> list[str] | None:
+def get_iso_8601_range(start: str, end: str) -> str:
     """
-    Returns a list of ISO 8601 durations between the start and end values.
+    Returns a range in seconds from two ISO 8601 periods.
     """
 
     if not start or not end:
@@ -293,4 +293,4 @@ def get_iso_8601_range(start: str, end: str) -> list[str] | None:
     except ValueError as err:
         raise HTTPException(status_code=400, detail=f"{err}")
 
-    return [f"{start_seconds}/{end_seconds}"]
+    return f"{start_seconds}/{end_seconds}"
