@@ -6,8 +6,6 @@ from pydantic.functional_validators import field_validator
 from typing import List
 from typing import Literal
 from typing import Optional
-from pydantic.types import StringConstraints
-from typing_extensions import Annotated
 from dateutil import parser
 from datetime import timedelta
 
@@ -231,12 +229,7 @@ class Properties(BaseModel):
         ...,
         description=("Instrument level above ground in meters."),
     )
-    period: Annotated[
-        str,
-        StringConstraints(
-            pattern=r"^P(\d+Y)?(\d+M)?(\d+W)?(\d+D)?(T(\d+H)?(\d+M)?(\d+(\.\d+)?S)?)?$",
-        ),
-    ] = Field(
+    period: str = Field(
         ...,
         description=(
             "Aggregation period for the measurement. Must be provided in ISO8601 duration format."
