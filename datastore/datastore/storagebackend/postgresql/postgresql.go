@@ -262,39 +262,94 @@ func addWhereCondMatchAnyPatternForInt64(
 		return // nothing to do
 	}
 
-	// getInt64Range checks of ptn is of the form '<int64>/<int64>', in which case
-	// (from, to, true) is returned, otherwise (..., ..., false) is returned.
-	getInt64Range := func(ptn string) (int64, int64, bool) {
+	// getInt64RangeBoth checks if ptn is of the form '<int64>/<int64>', in which case
+	// (lo, hi, true) is returned, otherwise (..., ..., false) is returned.
+	getInt64RangeBoth := func(ptn string) (int64, int64, bool) {
 
-		sm := int64RangeRE.FindStringSubmatch(strings.TrimSpace(ptn))
+		sm := int64RangeREBoth.FindStringSubmatch(strings.TrimSpace(ptn))
 		if len(sm) == 3 {
-			from, err := strconv.ParseInt(sm[1], 10, 64)
+			lo, err := strconv.ParseInt(sm[1], 10, 64)
 			if err != nil {
 				return -1, -1, false
 			}
 
-			to, err := strconv.ParseInt(sm[2], 10, 64)
+			hi, err := strconv.ParseInt(sm[2], 10, 64)
 			if err != nil {
 				return -1, -1, false
 			}
 
-			return from, to, true
+			return lo, hi, true
 		}
 
 		return -1, -1, false
 	}
 
+	// getInt64RangeLo checks if ptn is of the form '<int64>/..', in which case (lo, true) is
+	// returned, otherwise (..., false) is returned.
+	getInt64RangeLo := func(ptn string) (int64, bool) {
+
+		sm := int64RangeRELo.FindStringSubmatch(strings.TrimSpace(ptn))
+		if len(sm) == 2 {
+			lo, err := strconv.ParseInt(sm[1], 10, 64)
+			if err != nil {
+				return -1, false
+			}
+
+			return lo, true
+		}
+
+		return -1, false
+	}
+
+	// getInt64RangeHi checks if ptn is of the form '../<int64>', in which case (hi, true) is
+	// returned, otherwise (..., false) is returned.
+	getInt64RangeHi := func(ptn string) (int64, bool) {
+
+		sm := int64RangeREHi.FindStringSubmatch(strings.TrimSpace(ptn))
+		if len(sm) == 2 {
+			hi, err := strconv.ParseInt(sm[1], 10, 64)
+			if err != nil {
+				return -1, false
+			}
+
+			return hi, true
+		}
+
+		return -1, false
+	}
+
+	// getInt64RangeNone checks if ptn is of the form '../..', in which case true is returned,
+	// otherwise false is returned.
+	getInt64RangeNone := func(ptn string) bool {
+
+		sm := int64RangeRENone.FindStringSubmatch(strings.TrimSpace(ptn))
+		return len(sm) == 1
+	}
 
 	whereExprOR := []string{}
 
 	index := len(*phVals)
 	for _, ptn := range patterns {
-		if from, to, ok := getInt64Range(ptn); ok {
+		if lo, hi, ok := getInt64RangeBoth(ptn); ok { // both lower and upper limit
 			index += 2
-			expr := fmt.Sprintf("((%s >= $%d) AND (%s <= $%d))", colName, index - 1, colName, index)
+			expr := fmt.Sprintf("((%s >= $%d) AND (%s <= $%d))", colName, index-1, colName, index)
 			whereExprOR = append(whereExprOR, expr)
-			*phVals = append(*phVals, from, to)
-		} else {
+			*phVals = append(*phVals, lo, hi)
+		} else if lo, ok := getInt64RangeLo(ptn); ok { // no upper limit
+			index++
+			expr := fmt.Sprintf("(%s >= $%d)", colName, index)
+			whereExprOR = append(whereExprOR, expr)
+			*phVals = append(*phVals, lo)
+		} else if hi, ok := getInt64RangeHi(ptn); ok { // no lower limit
+			index++
+			expr := fmt.Sprintf("(%s <= $%d)", colName, index)
+			whereExprOR = append(whereExprOR, expr)
+			*phVals = append(*phVals, hi)
+		} else if ok := getInt64RangeNone(ptn); ok {
+			// disable int range filtering, but note that we still don't want to fall
+			// back to regular string matching!
+			whereExprOR = append(whereExprOR, "TRUE")
+		} else { // fall back to regular string matching
 			index++
 			expr := fmt.Sprintf("(lower(%s::text) LIKE lower($%d))", colName, index)
 			whereExprOR = append(whereExprOR, expr)
