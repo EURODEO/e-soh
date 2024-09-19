@@ -70,7 +70,7 @@ class IngestToPipeline:
                 )
                 try:
                     send_message(topic, msg, self.client)
-                    logger.info("Succesfully published to mqtt")
+                    logger.debug("Succesfully published to mqtt")
                 except Exception as e:
                     logger.error("Failed to publish to mqtt, " + "\n" + str(e))
                     raise HTTPException(

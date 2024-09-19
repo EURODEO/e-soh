@@ -9,6 +9,7 @@ from typing import List
 from api.ingest import IngestToPipeline
 from api.model import JsonMessageSchema
 from api.messages import build_json_payload
+from api.api_metrics import add_metrics
 
 log_level = os.environ.get("INGEST_LOGLEVEL", "INFO")
 
@@ -39,6 +40,7 @@ mqtt_configuration = {
 ingester = IngestToPipeline(mqtt_conf=mqtt_configuration, uuid_prefix="uuid")
 
 app = FastAPI(root_path=os.getenv("FASTAPI_ROOT_PATH", ""))
+add_metrics(app)
 
 
 @app.post("/bufr")
