@@ -29,8 +29,8 @@ def build_grpc_messages(msg: str) -> None:
         elif i in msg["properties"]["content"]:
             setattr(ts_metadata, i, msg["properties"]["content"][i])
 
-    level = ts_metadata.level
-    period = ts_metadata.period
+    level = str(ts_metadata.level)
+    period = str(ts_metadata.period)
     function = ts_metadata.function
     standard_name = ts_metadata.standard_name
     parameter_name = ":".join([standard_name, level, function, period])
