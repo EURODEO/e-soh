@@ -85,8 +85,11 @@ var (
 	supIncRespFields    common.StringSet
 	supIncRespFieldsCSV string
 
-	// regular expression for an int64 range
-	int64RangeRE *regexp.Regexp
+	// regular expression for int64 range forms
+	int64RangeREBoth *regexp.Regexp // "<int64>/<int64>""
+	int64RangeRELo *regexp.Regexp // "<int64>/.."
+	int64RangeREHi *regexp.Regexp // "../<int64>"
+	int64RangeRENone *regexp.Regexp // "../.."
 )
 
 // initCleanupInterval initializes cleanupInterval.
@@ -270,6 +273,9 @@ func init() { // automatically called once on program startup (on first import o
 	sort.Strings(sIRFVals)
 	supIncRespFieldsCSV = strings.Join(sIRFVals, ", ")
 
-	// create int64RangeRE
-	int64RangeRE = regexp.MustCompile("^(-?[0-9]+)/(-?[0-9]+)$")
+	// create int64RangeRE*
+	int64RangeREBoth = regexp.MustCompile(`^(-?[0-9]+)/(-?[0-9]+)$`)
+	int64RangeRELo = regexp.MustCompile(`^(-?[0-9]+)/\.\.$`)
+	int64RangeREHi = regexp.MustCompile(`^\.\./(-?[0-9]+)$`)
+	int64RangeRENone = regexp.MustCompile(`^\.\./\.\.$`)
 }

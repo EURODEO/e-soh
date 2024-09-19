@@ -218,6 +218,7 @@ message GetObsRequest {
   // - The match condition for a pattern P depends on the type of the map key F:
   //
   //   Case 1 - string:
+  //
   //       The value V of F matches P in a case-insensitive way and with P optionally containing
   //       asterisks to represent zero or more characters.
   //       Example: for F='institution', V='MET Norway', the following values for P will match:
