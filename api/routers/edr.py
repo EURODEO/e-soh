@@ -29,7 +29,6 @@ from shapely import geometry
 from shapely import wkt
 from shapely.errors import GEOSException
 from utilities import add_request_parameters
-from utilities import filter_observations_for_z
 from utilities import validate_bbox
 
 router = APIRouter(prefix="/collections/observations")
@@ -131,10 +130,10 @@ async def get_locations(
             [dstore.Point(lat=coord[1], lon=coord[0]) for coord in poly.exterior.coords],
         )
 
-    await add_request_parameters(ts_request, parameter_name, datetime, standard_names, methods, periods)
+    await add_request_parameters(ts_request, parameter_name, datetime, standard_names, levels, methods, periods)
+
     grpc_response = await get_obs_request(ts_request)
-    # TODO: Move this to datastore
-    observations = filter_observations_for_z(grpc_response.observations, levels)
+    observations = grpc_response.observations
 
     if len(observations) == 0:
         raise HTTPException(
@@ -265,11 +264,10 @@ async def get_data_location_id(
         included_response_fields=response_fields_needed_for_data_api,
     )
 
-    await add_request_parameters(request, parameter_name, datetime, standard_names, methods, periods)
+    await add_request_parameters(request, parameter_name, datetime, standard_names, levels, methods, periods)
 
     grpc_response = await get_obs_request(request)
-    # TODO: Move this to datastore
-    observations = filter_observations_for_z(grpc_response.observations, levels)
+    observations = grpc_response.observations
     response = formatters.formatters[f](observations)
 
     return response
@@ -359,11 +357,10 @@ async def get_data_position(
         included_response_fields=response_fields_needed_for_data_api,
     )
 
-    await add_request_parameters(request, parameter_name, datetime, standard_names, methods, periods)
+    await add_request_parameters(request, parameter_name, datetime, standard_names, levels, methods, periods)
 
     grpc_response = await get_obs_request(request)
-    # TODO: Move this to datastore
-    observations = filter_observations_for_z(grpc_response.observations, levels)
+    observations = grpc_response.observations
     response = formatters.formatters[f](observations)
 
     return response
@@ -451,11 +448,10 @@ async def get_data_area(
         included_response_fields=response_fields_needed_for_data_api,
     )
 
-    await add_request_parameters(request, parameter_name, datetime, standard_names, methods, periods)
+    await add_request_parameters(request, parameter_name, datetime, standard_names, levels, methods, periods)
 
     grpc_response = await get_obs_request(request)
-    # TODO: Move this to datastore
-    observations = filter_observations_for_z(grpc_response.observations, levels)
+    observations = grpc_response.observations
     response = formatters.formatters[f](observations)
 
     return response

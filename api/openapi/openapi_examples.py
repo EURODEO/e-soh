@@ -29,9 +29,9 @@ parameter_name = {
     "List": {
         "summary": "Comma separated list",
         "value": "wind_from_direction:2.0:mean:PT10M,"
-        "wind_speed:10:mean:PT10M,"
+        "wind_speed:10.0:mean:PT10M,"
         "relative_humidity:2.0:mean:PT1M,"
-        "air_pressure_at_sea_level:1:mean:PT1M,"
+        "air_pressure_at_sea_level:1.0:mean:PT1M,"
         "air_temperature:1.5:maximum:PT10M",
     },
     "Wildcard": {

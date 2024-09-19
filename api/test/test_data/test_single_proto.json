@@ -6,10 +6,10 @@
                 "platform_name": "GRONINGEN AP EELDE",
                 "standard_name": "wind_speed",
                 "unit": "m s-1",
-                "level": "10",
+                "level": 1000,
                 "function": "mean",
-                "period": "PT10M",
-                "parameter_name": "wind_speed:10:mean:PT10M",
+                "period": 600,
+                "parameter_name": "wind_speed:10.0:mean:PT10M",
                 "timeseries_id": "d036b10ac4f6e62049b9a496f04e0a81"
             },
             "obs_mdata": [

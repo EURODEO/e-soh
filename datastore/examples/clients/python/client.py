@@ -158,13 +158,14 @@ if __name__ == "__main__":
             "value": "12.7",
             "title": "Air Temperature",
             "instrument": "test",
-            "level": "2.0",
+            "level": 200,
             "function": "point",
             "period": 0,
             "lat": 59.91,
             "lon": 10.75,
         }
-        mdata["parameter_name"] = "_".join([mdata["standard_name"], mdata["level"], mdata["function"], mdata["period"]])
+
+        mdata["parameter_name"] = "_".join([mdata["standard_name"], str(mdata["level"]/100), mdata["function"], "PT0S"])
 
         # run tests
         test_put_obs(stub, mdata)
