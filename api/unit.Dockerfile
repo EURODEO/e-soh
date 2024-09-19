@@ -29,13 +29,17 @@ RUN python -m grpc_tools.protoc  \
 
 COPY "." "${DOCKER_PATH}/"
 
+# Create folder for metrics
+ENV PROMETHEUS_MULTIPROC_DIR=/tmp/metrics
+RUN mkdir -p /tmp/metrics
+
 WORKDIR "${DOCKER_PATH}"
 CMD ["/bin/sh", "-c", "{ python -m pytest \
-        --timeout=60 \
-        --junitxml=./output/pytest.xml \
-        --cov-report=term-missing \
-        --cov=. \
-        --cov-config=./test/.coveragerc 2>&1; \
-            echo $? > ./output/exit-code; } | \
-            tee ./output/pytest-coverage.txt; \
-            exit $(cat ./output/exit-code)"]
+    --timeout=60 \
+    --junitxml=./output/pytest.xml \
+    --cov-report=term-missing \
+    --cov=. \
+    --cov-config=./test/.coveragerc 2>&1; \
+    echo $? > ./output/exit-code; } | \
+    tee ./output/pytest-coverage.txt; \
+    exit $(cat ./output/exit-code)"]
