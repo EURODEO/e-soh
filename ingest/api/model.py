@@ -9,6 +9,7 @@ from typing import Optional
 from pydantic.types import StringConstraints
 from typing_extensions import Annotated
 from dateutil import parser
+from datetime import timedelta
 
 from pydantic import BaseModel
 from pydantic import Field
@@ -305,7 +306,7 @@ class Properties(BaseModel):
 
     @model_validator(mode="after")
     def convert_to_cm(self):
-        self.level = int(int(self.level) * 100)
+        self.level = int(float(self.level) * 100)
         return self
 
     @model_validator(mode="after")
@@ -319,14 +320,6 @@ class Properties(BaseModel):
 
         if dt.tzname() != "UTC":
             raise ValueError(f"Input datetime, {self.datetime}, is not in UTC timezone")
-        return self
-
-    @model_validator(mode="after")
-    def check_level_int_or_float(self):
-        try:
-            self.level = str(float(self.level))
-        except ValueError:
-            raise ValueError(f"Input level(str), '{self.level}', doesn't represent a valid integer or float")
         return self
 
     @model_validator(mode="after")
@@ -350,16 +343,12 @@ class Properties(BaseModel):
         except isodate.duration.ParsingError:
             raise ValueError("Invalid duration format.")
 
-        if isinstance(duration, isodate.duration.Duration):
-            # Years and months need special handling
-            years_in_seconds = duration.years * 31556926  # Seconds in year
-            months_in_seconds = duration.months * 2629744  # Seconds in month
-            days_in_seconds = duration.tdelta.days * 24 * 60 * 60
-            seconds_in_seconds = duration.tdelta.seconds
-            total_seconds = years_in_seconds + months_in_seconds + days_in_seconds + seconds_in_seconds
-        else:
+        if isinstance(duration, timedelta):
             # It's a simple timedelta, so just get the total seconds
             total_seconds = duration.total_seconds()
+
+        else:
+            raise ValueError("Duration not convertable to seconds.")
 
         self.period = int(total_seconds)
         return self
