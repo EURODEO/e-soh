@@ -166,12 +166,15 @@ async def add_request_parameters(
 
 def get_periods_from_request(periods: str) -> list[str]:
     split_on_slash = periods.split("/")
-    if len(split_on_slash) == 1:
-        return [str(iso_8601_duration_to_seconds(period)) for period in split_and_strip(periods)]
-    elif len(split_on_slash) == 2:
-        return get_iso_8601_range(split_on_slash[0].upper(), split_on_slash[1].upper())
-    else:
-        raise HTTPException(status_code=400, detail=f"Invalid ISO 8601 range format: {periods}")
+    try:
+        if len(split_on_slash) == 1:
+            return [str(iso_8601_duration_to_seconds(period)) for period in split_and_strip(periods)]
+        elif len(split_on_slash) == 2:
+            return get_iso_8601_range(split_on_slash[0], split_on_slash[1])
+        else:
+            raise HTTPException(status_code=400, detail=f"Invalid ISO 8601 range format: {periods}")
+    except ValueError as err:
+        raise HTTPException(status_code=400, detail=f"{err}")
 
 
 def get_z_levels_or_range(z: str) -> list[str]:
@@ -195,7 +198,7 @@ def get_z_levels_or_range(z: str) -> list[str]:
         raise HTTPException(status_code=400, detail=f"Invalid levels value: {z}")
 
 
-def get_z_values_from_interval(interval: list[str]) -> list[float]:
+def get_z_values_from_interval(interval: list[str]) -> list[str]:
     """
     Function for getting the z values from a repeating-interval pattern.
     """
@@ -231,7 +234,7 @@ async def get_unique_values_for_metadata(field: str) -> list[str]:
 
 def iso_8601_duration_to_seconds(period: str) -> int:
     try:
-        duration = isodate.parse_duration(period)
+        duration = isodate.parse_duration(period.upper())
     except ISO8601Error:
         raise ValueError(f"Invalid ISO 8601 duration: {period}")
 
