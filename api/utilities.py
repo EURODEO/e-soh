@@ -164,18 +164,17 @@ async def add_request_parameters(
         request.filter["period"].values.extend(get_periods_or_range(periods))
 
 
-def get_periods_or_range(periods: str) -> list[str] | str:
+def get_periods_or_range(periods: str) -> list[str]:
     """
-    Function for getting the periods as a list of seconds or a periods range
+    Function for getting the periods filter list as a list of period ranges or
+    periods
     """
-    split_on_slash = periods.split("/")
+    periods = split_and_strip(periods)
     try:
-        if len(split_on_slash) == 1:
-            return [str(iso_8601_duration_to_seconds(period)) for period in split_and_strip(periods)]
-        elif len(split_on_slash) == 2:
-            return [get_iso_8601_range(split_on_slash[0], split_on_slash[1])]
-        else:
-            raise HTTPException(status_code=400, detail=f"Invalid ISO 8601 range format: {periods}")
+        return [
+            get_iso_8601_range(period) if "/" in period else str(iso_8601_duration_to_seconds(period))
+            for period in periods
+        ]
     except ValueError as err:
         raise HTTPException(status_code=400, detail=f"{err}")
 
@@ -271,11 +270,16 @@ def seconds_to_iso_8601_duration(seconds: int) -> str:
     return iso_duration
 
 
-def get_iso_8601_range(start: str, end: str) -> str:
+def get_iso_8601_range(range: str) -> str:
     """
     Returns a range in seconds from two ISO 8601 periods.
     """
 
+    split_on_slash = range.split("/")
+    if len(split_on_slash) != 2:
+        raise HTTPException(status_code=400, detail=f"Invalid ISO 8601 range format: {range}")
+
+    start, end = split_on_slash[0], split_on_slash[1]
     if not start or not end:
         raise HTTPException(status_code=400, detail=f"Invalid ISO 8601 period: {start} / {end}")
 
