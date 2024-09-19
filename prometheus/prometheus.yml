@@ -12,4 +12,4 @@ scrape_configs:
       - targets: ["prometheus-postgres-exporter:9187"]
   - job_name: store
     static_configs:
-      - targets: [ 'store:8080' ]
+      - targets: [ 'store:8081' ]

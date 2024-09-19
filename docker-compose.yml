@@ -48,6 +48,7 @@ services:
     ports:
       - "50050:50050"
       - "6060:6060" # for flame graphing
+      - "8081:8081"
     environment:
       - PGHOST=db
       - PGPORT=5432

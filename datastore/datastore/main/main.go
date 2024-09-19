@@ -8,7 +8,9 @@ import (
 	"datastore/storagebackend"
 	"datastore/storagebackend/postgresql"
 	"fmt"
+	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"go.opentelemetry.io/otel/trace"
 	"log"
 	"net"
 	"time"
@@ -68,40 +70,31 @@ func main() {
 		return resp, err
 	}
 
-	//srvMetrics := grpcprom.NewServerMetrics()
-	//reg := prometheus.NewRegistry()
-	//reg.MustRegister(srvMetrics)
-	//exemplarFromContext := func(ctx context.Context) prometheus.Labels {
-	//	if span := trace.SpanContextFromContext(ctx); span.IsSampled() {
-	//		return prometheus.Labels{"traceID": span.TraceID().String()}
-	//	}
-	//	return nil
-	//}
-	grpcMetrics := grpc_prometheus.NewServerMetrics()
+	grpcMetrics := grpc_prometheus.NewServerMetrics(
+		grpc_prometheus.WithServerHandlingTimeHistogram(
+			grpc_prometheus.WithHistogramBuckets([]float64{0.001, 0.01, 0.1, 0.3, 0.6, 1, 3, 6, 9, 20, 30, 60, 90, 120}),
+		),
+	)
+	reg := prometheus.NewRegistry()
+	reg.MustRegister(grpcMetrics)
+	exemplarFromContext := func(ctx context.Context) prometheus.Labels {
+		if span := trace.SpanContextFromContext(ctx); span.IsSampled() {
+			return prometheus.Labels{"traceID": span.TraceID().String()}
+		}
+		return nil
+	}
 
 	// create gRPC server with middleware
 	server := grpc.NewServer(
-		grpc.ChainUnaryInterceptor(reqTimeLogger),
 		grpc.ChainUnaryInterceptor(
-			grpcMetrics.UnaryServerInterceptor(),
+			reqTimeLogger,
+			grpcMetrics.UnaryServerInterceptor(grpc_prometheus.WithExemplarFromContext(exemplarFromContext)),
+		),
+		grpc.ChainStreamInterceptor(
+			grpcMetrics.StreamServerInterceptor(grpc_prometheus.WithExemplarFromContext(exemplarFromContext)),
 		),
 	)
-	//server := grpc.NewServer(
-	//	grpc.ChainUnaryInterceptor(reqTimeLogger),
-	//	grpc.ChainUnaryInterceptor(
-	//		// Order matters e.g. tracing interceptor have to create span first for the later exemplars to work.
-	//		otelgrpc.UnaryServerInterceptor(),
-	//		srvMetrics.UnaryServerInterceptor(grpcprom.WithExemplarFromContext(exemplarFromContext)),
-	//		logging.UnaryServerInterceptor(interceptorLogger(rpcLogger), logging.WithFieldsFromContext(logTraceID)),
-	//		recovery.UnaryServerInterceptor(recovery.WithRecoveryHandler(grpcPanicRecoveryHandler)),
-	//	),
-	//	grpc.ChainStreamInterceptor(
-	//		otelgrpc.StreamServerInterceptor(),
-	//		srvMetrics.StreamServerInterceptor(grpcprom.WithExemplarFromContext(exemplarFromContext)),
-	//		logging.StreamServerInterceptor(interceptorLogger(rpcLogger), logging.WithFieldsFromContext(logTraceID)),
-	//		recovery.StreamServerInterceptor(recovery.WithRecoveryHandler(grpcPanicRecoveryHandler)),
-	//	),
-	//)
+
 	grpcMetrics.InitializeMetrics(server)
 	grpc_health_v1.RegisterHealthServer(server, health.NewServer())
 
@@ -124,16 +117,27 @@ func main() {
 		log.Fatalf("net.Listen() failed: %v", err)
 	}
 
-	go func() {
-		log.Println("Starting HTTP server for Prometheus metrics on :8080")
-		http.Handle("/metrics", promhttp.Handler())
-		log.Fatal(http.ListenAndServe(":8080", nil))
-	}()
-
 	// serve profiling info
 	log.Printf("serving profiling info\n")
 	go func() {
 		http.ListenAndServe("0.0.0.0:6060", nil)
+	}()
+
+	go func() {
+		httpSrv := &http.Server{Addr: "0.0.0.0:8081"}
+		m := http.NewServeMux()
+		//log.Println("Starting HTTP server for Prometheus metrics on :8081")
+		// Create HTTP handler for Prometheus metrics.
+		m.Handle("/metrics", promhttp.HandlerFor(
+			reg,
+			promhttp.HandlerOpts{
+				// Opt into OpenMetrics e.g. to support exemplars.
+				EnableOpenMetrics: true,
+			},
+		))
+		httpSrv.Handler = m
+		log.Println("Starting HTTP server for Prometheus metrics on :8081")
+		log.Fatal(httpSrv.ListenAndServe())
 	}()
 
 	// serve incoming requests
