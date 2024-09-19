@@ -21,7 +21,7 @@ from covjson_pydantic.unit import Unit
 from fastapi import HTTPException
 from pydantic import AwareDatetime
 
-from utilities import seconds_to_iso_8601_duration
+from utilities import seconds_to_iso_8601_duration, convert_cm_to_m
 
 # mime_type = "application/prs.coverage+json"
 
@@ -30,7 +30,7 @@ Data = namedtuple("Data", ["dom", "values", "ts_mdata"])
 
 
 def make_parameter(ts_mdata):
-    level = ts_mdata.level / 100
+    level = convert_cm_to_m(ts_mdata.level)
     period = seconds_to_iso_8601_duration(ts_mdata.period)
 
     custom_fields = {

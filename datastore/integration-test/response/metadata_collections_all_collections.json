@@ -73,19 +73,19 @@
                         "id": "levels",
                         "interval": [
                             [
-                                "0.0",
-                                "10.0"
+                                0.0,
+                                10.0
                             ]
                         ],
                         "values": [
-                            "0.0",
-                            "0.1",
-                            "1.0",
-                            "1.5",
-                            "1.8",
-                            "2.0",
-                            "2.5",
-                            "10.0"
+                            0.0,
+                            0.1,
+                            1.0,
+                            1.5,
+                            1.8,
+                            2.0,
+                            2.5,
+                            10.0
                         ],
                         "reference": "Height of measurement above ground level in meters"
                     },

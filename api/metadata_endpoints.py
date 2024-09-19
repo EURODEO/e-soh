@@ -26,7 +26,7 @@ from grpc_getter import get_extents_request
 from grpc_getter import get_ts_ag_request
 
 import datastore_pb2 as dstore
-from utilities import get_unique_values_for_metadata, seconds_to_iso_8601_duration
+from utilities import get_unique_values_for_metadata, seconds_to_iso_8601_duration, convert_cm_to_m
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -108,7 +108,7 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
 
     for group in ts_response.groups:
         ts = group.combo
-        level = ts.level / 100
+        level = convert_cm_to_m(ts.level)
         period = seconds_to_iso_8601_duration(ts.period)
 
         custom_fields = {
@@ -142,7 +142,7 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
     interval_end = extent_response.temporal_extent.end.ToDatetime(tzinfo=timezone.utc)
 
     # TODO: Check if these make /collections significantly slower. If yes, do we need DB indices on these? And parallel
-    levels = [str(level / 100) for level in await get_unique_values_for_metadata("level")]
+    levels = [convert_cm_to_m(level) for level in await get_unique_values_for_metadata("level")]
     standard_names = await get_unique_values_for_metadata("standard_name")
     methods = await get_unique_values_for_metadata("function")
     periods = [seconds_to_iso_8601_duration(period) for period in await get_unique_values_for_metadata("period")]
