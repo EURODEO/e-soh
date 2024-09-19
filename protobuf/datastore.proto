@@ -225,13 +225,27 @@ message GetObsRequest {
   //
   //   Case 2 - int64:
   //
-  //       Case 2.1: P has the form 'lo/hi' where lo and hi are both int64s, and the value V of F
+  //       Case 2.1: P has the form 'lo/hi', where lo and hi are both int64s, and the value V of F
   //           matches P if lo <= V <= hi.
   //           Example: for F='level', V='10', the following values for P will match:
   //           '10/10', '-10/10', '9/10', '10/11'.
   //
-  //       Case 2.2: If P is not an integer interval like in Case 2.1, then the value V of F
-  //           is converted to a string and matched against P just like in Case 1.
+  //       Case 2.2: P has the form '../hi', where hi is an int64, and the value V of F matches P
+  //           if V <= hi.
+  //           Example: for F='level', V='10', the following values for P will match:
+  //           '../10', '../11'.
+  //
+  //       Case 2.3: P has the form 'lo/..', where lo is an int64, and the value V of F matches P
+  //           if lo <= V.
+  //           Example: for F='level', V='10', the following values for P will match:
+  //           '10/..', '9/..'.
+  //
+  //       Case 2.4: P has the form '../..' and any value V of F matches P. NOTE: this is the
+  //           default behavior and is thus never required to be explicitly specified (it is
+  //           supported for completeness/consistency).
+  //
+  //       Case 2.5: If P is not any of the integer interval forms of Case 2.1..4, then the value
+  //           V of F is converted to a string and matched against P just like in Case 1.
   //           Example: for F='level', V='10', the following values for P will match:
   //           '10', '1*', '*0', '*'.
   //
