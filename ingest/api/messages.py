@@ -35,9 +35,9 @@ def build_messages(message: object, uuid_prefix: str):
             json_msg["properties"]["naming_authority"]
             + json_msg["properties"]["platform"]
             + json_msg["properties"]["content"]["standard_name"]
-            + json_msg["properties"]["level"]
+            + str(json_msg["properties"]["level"])
             + json_msg["properties"]["function"]
-            + json_msg["properties"]["period"]
+            + str(json_msg["properties"]["period"])
         )
         timeseries_id = hashlib.md5(timeseries_id_string.encode()).hexdigest()
         json_msg["properties"]["timeseries_id"] = timeseries_id
