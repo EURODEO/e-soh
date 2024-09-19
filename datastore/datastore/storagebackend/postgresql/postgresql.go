@@ -332,7 +332,7 @@ func addWhereCondMatchAnyPatternForInt64(
 	for _, ptn := range patterns {
 		if lo, hi, ok := getInt64RangeBoth(ptn); ok { // both lower and upper limit
 			index += 2
-			expr := fmt.Sprintf("((%s >= $%d) AND (%s <= $%d))", colName, index - 1, colName, index)
+			expr := fmt.Sprintf("((%s >= $%d) AND (%s <= $%d))", colName, index-1, colName, index)
 			whereExprOR = append(whereExprOR, expr)
 			*phVals = append(*phVals, lo, hi)
 		} else if lo, ok := getInt64RangeLo(ptn); ok { // no upper limit
