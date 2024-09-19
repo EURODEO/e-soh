@@ -161,16 +161,19 @@ async def add_request_parameters(
         request.filter["function"].values.extend(split_and_strip(methods))
 
     if periods:
-        request.filter["period"].values.extend(get_periods_from_request(periods))
+        request.filter["period"].values.extend(get_periods_or_range(periods))
 
 
-def get_periods_from_request(periods: str) -> list[str]:
+def get_periods_or_range(periods: str) -> list[str] | str:
+    """
+    Function for getting the periods as a list of seconds or a periods range
+    """
     split_on_slash = periods.split("/")
     try:
         if len(split_on_slash) == 1:
             return [str(iso_8601_duration_to_seconds(period)) for period in split_and_strip(periods)]
         elif len(split_on_slash) == 2:
-            return get_iso_8601_range(split_on_slash[0], split_on_slash[1])
+            return [get_iso_8601_range(split_on_slash[0], split_on_slash[1])]
         else:
             raise HTTPException(status_code=400, detail=f"Invalid ISO 8601 range format: {periods}")
     except ValueError as err:
@@ -179,7 +182,7 @@ def get_periods_from_request(periods: str) -> list[str]:
 
 def get_z_levels_or_range(z: str) -> list[str]:
     """
-    Function for getting the z values from the z parameter.
+    Function for getting the levels as a list or a range
     """
     # it can be z=value1,value2,value3: z=2,10,80
     # or z=minimum value/maximum value: z=10/100
@@ -187,13 +190,13 @@ def get_z_levels_or_range(z: str) -> list[str]:
     try:
         split_on_slash = z.split("/")
         if len(split_on_slash) == 2:
-            z_min = int(float(split_on_slash[0]) * 100) if split_on_slash[0] != ".." else -sys.maxsize - 1
-            z_max = int(float(split_on_slash[1]) * 100) if split_on_slash[1] != ".." else sys.maxsize
+            z_min = convert_m_to_cm(split_on_slash[0]) if split_on_slash[0] != ".." else -sys.maxsize - 1
+            z_max = convert_m_to_cm(split_on_slash[1]) if split_on_slash[1] != ".." else sys.maxsize
             return [f"{z_min}/{z_max}"]
         elif len(split_on_slash) > 2:
             return get_z_values_from_interval(split_on_slash)
         else:
-            return [str(int(float(level) * 100)) for level in z.split(",")]
+            return [convert_m_to_cm(level) for level in z.split(",")]
     except ValueError:
         raise HTTPException(status_code=400, detail=f"Invalid levels value: {z}")
 
@@ -294,3 +297,17 @@ def get_iso_8601_range(start: str, end: str) -> str:
         raise HTTPException(status_code=400, detail=f"{err}")
 
     return f"{start_seconds}/{end_seconds}"
+
+
+def convert_m_to_cm(m: str) -> str:
+    """
+    Function for converting a meters str to centimeters str
+    """
+    return str(int(float(m) * 100))
+
+
+def convert_cm_to_m(cm: int) -> float:
+    """
+    Function for converting a centimeters int to meters float
+    """
+    return cm / 100
