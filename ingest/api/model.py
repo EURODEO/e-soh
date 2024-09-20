@@ -236,6 +236,7 @@ class Properties(BaseModel):
             "https://www.iso.org/iso-8601-date-and-time-format.html"
         ),
     )
+    period_int: int = Field(None, exclude_from_schema=True)
     function: Literal[
         "point",
         "sum",
@@ -343,7 +344,7 @@ class Properties(BaseModel):
         else:
             raise ValueError("Duration not convertable to seconds.")
 
-        self.period = int(total_seconds)
+        self.period_int = int(total_seconds)
         return self
 
 
