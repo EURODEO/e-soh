@@ -211,7 +211,7 @@ class Properties(BaseModel):
             "Indicate controlled vocabulary used in platform_vocabulary."
         ),
     )
-    platform_name: Optional[str] = Field(..., description=("Human readable name for the platform."))
+    platform_name: Optional[str] = Field(None, description=("Human readable name for the platform."))
     platform_vocabulary: Optional[str] = Field(
         None,
         description="Controlled vocabulary for the names used in the 'platform' attribute.",
