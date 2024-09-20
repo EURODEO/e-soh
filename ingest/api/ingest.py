@@ -2,6 +2,7 @@ import logging
 from typing import Union
 
 import grpc
+import json
 
 from fastapi import HTTPException
 
@@ -78,7 +79,7 @@ class IngestToPipeline:
                 msg["properties"]["level"] = level_string
                 msg["properties"]["period"] = period_iso
                 try:
-                    send_message(topic, msg, self.client)
+                    send_message(topic, json.dump(msg), self.client)
                     logger.info("Succesfully published to mqtt")
                 except Exception as e:
                     logger.error("Failed to publish to mqtt, " + "\n" + str(e))
