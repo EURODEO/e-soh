@@ -18,7 +18,7 @@
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
-    "id": 2,
+    "id": 3,
     "links": [],
     "panels": [
         {
@@ -641,6 +641,10 @@
                             {
                                 "id": "custom.minWidth",
                                 "value": 400
+                            },
+                            {
+                                "id": "custom.inspect",
+                                "value": true
                             }
                         ]
                     }
@@ -756,6 +760,10 @@
                             {
                                 "id": "custom.minWidth",
                                 "value": 400
+                            },
+                            {
+                                "id": "custom.inspect",
+                                "value": true
                             }
                         ]
                     }
@@ -886,7 +894,8 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "green"
+                                "color": "green",
+                                "value": null
                             },
                             {
                                 "color": "red",
@@ -1000,7 +1009,8 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "green"
+                                "color": "green",
+                                "value": null
                             },
                             {
                                 "color": "red",
@@ -1141,7 +1151,8 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "green"
+                                "color": "green",
+                                "value": null
                             },
                             {
                                 "color": "red",
@@ -1243,7 +1254,8 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "green"
+                                "color": "green",
+                                "value": null
                             },
                             {
                                 "color": "red",
@@ -1391,7 +1403,8 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "green"
+                                "color": "green",
+                                "value": null
                             },
                             {
                                 "color": "red",
@@ -1469,7 +1482,8 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "green"
+                                "color": "green",
+                                "value": null
                             }
                         ]
                     },
@@ -1669,6 +1683,6 @@
     "timezone": "browser",
     "title": "Database Performance",
     "uid": "adxl34wpc3if4a",
-    "version": 10,
+    "version": 2,
     "weekStart": ""
 }
