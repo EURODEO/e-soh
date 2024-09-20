@@ -26,13 +26,11 @@ def build_messages(message: object, uuid_prefix: str):
     # Set message publication time in RFC3339 format
     # Create UUID for the message, and state message format version
     for json_msg in message:
-        period_iso_8601 = json_msg["properties"]["period"]
-        period = json_msg["properties"]["period_convertable"]
+        period = json_msg["properties"]["period_int"]
         message_uuid = f"{uuid_prefix}:{str(uuid.uuid4())}"
         json_msg["id"] = message_uuid
         json_msg["properties"]["data_id"] = message_uuid
         json_msg["properties"]["period"] = period
-        json_msg["properties"]["period_convertable"] = period_iso_8601
         #  MD5 hash of a join on naming_authority, platform, standard_name, level,function and period.
         timeseries_id_string = (
             json_msg["properties"]["naming_authority"]
