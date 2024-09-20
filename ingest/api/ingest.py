@@ -2,6 +2,7 @@ import logging
 from typing import Union
 
 import grpc
+import isodate
 
 from fastapi import HTTPException
 
@@ -36,6 +37,24 @@ class IngestToPipeline:
                 logger.error("Failed to establish connection to mqtt, " + "\n" + str(e))
                 raise e
 
+    def seconds_to_iso_8601_duration(seconds: int) -> str:
+        duration = isodate.Duration(seconds=seconds)
+        iso_duration = isodate.duration_isoformat(duration)
+
+        # Use PT24H instead of P1D
+        if iso_duration == "P1D":
+            iso_duration = "PT24H"
+
+        # iso_duration defaults to P0D when seconds is 0
+        if iso_duration == "P0D":
+            iso_duration = "PT0S"
+
+        return iso_duration
+
+    def convert_to_meter(level: int) -> str:
+
+        level = str(float(level) / 100)
+
     async def ingest(self, message: Union[str, object]):
         """
         This method will interpret call all methods for deciding input type, build the mqtt messages, and
@@ -68,6 +87,12 @@ class IngestToPipeline:
                     + "/"
                     + msg["properties"]["content"]["standard_name"]
                 )
+
+                # modify the period back to iso format and level back to meter
+                period_iso = self.seconds_to_iso_8601_duration(msg["properties"]["period"])
+                level_string = self.convert_to_meter(msg["properties"]["level"])
+                msg["properties"]["level"] = level_string
+                msg["properties"]["period"] = period_iso
                 try:
                     send_message(topic, msg, self.client)
                     logger.info("Succesfully published to mqtt")
