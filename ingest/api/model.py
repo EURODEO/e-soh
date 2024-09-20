@@ -206,11 +206,12 @@ class Properties(BaseModel):
     platform: str = Field(
         ...,
         description=(
-            "Name of the platform(s) that supported the sensor data used to create this data set or product. "
+            "WIGOS-ID of the platform(s) that supported the sensor data used to create this data set or product. "
             "Platforms can be of any type, including satellite, ship, station, aircraft or other. "
             "Indicate controlled vocabulary used in platform_vocabulary."
         ),
     )
+    platform_name: Optional[str] = Field(..., description=("Human readable name for the platform."))
     platform_vocabulary: Optional[str] = Field(
         None,
         description="Controlled vocabulary for the names used in the 'platform' attribute.",
