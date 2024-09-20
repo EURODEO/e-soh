@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"go.opentelemetry.io/otel/trace"
 	"log"
 	"net"
 	"time"
@@ -22,18 +21,8 @@ import (
 	"google.golang.org/grpc/peer"
 
 	// Monitoring
+	"datastore/metrics"
 	grpc_prometheus "github.com/grpc-ecosystem/go-grpc-middleware/providers/prometheus"
-	//"github.com/grpc-ecosystem/go-grpc-middleware"
-	//"google.golang.org/grpc/ChainUnaryInterceptor"
-	//"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors"
-	//"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/auth"
-	//"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
-	//"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/selector"
-	//"github.com/prometheus/client_golang/prometheus"
-	//"github.com/prometheus/client_golang/prometheus/promhttp"
-	//"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
-	//"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/recovery"
-	//"go.opentelemetry.io/otel/trace"
 
 	_ "expvar"
 	"net/http"
@@ -76,22 +65,22 @@ func main() {
 		),
 	)
 	reg := prometheus.NewRegistry()
-	reg.MustRegister(grpcMetrics)
-	exemplarFromContext := func(ctx context.Context) prometheus.Labels {
-		if span := trace.SpanContextFromContext(ctx); span.IsSampled() {
-			return prometheus.Labels{"traceID": span.TraceID().String()}
-		}
-		return nil
-	}
+	reg.MustRegister(
+		grpcMetrics,
+		promservermetrics.ActiveConnections,
+		promservermetrics.UptimeCounter,
+		promservermetrics.ResponseSizeSummary,
+	)
+
+	go promservermetrics.TrackUptime()
 
 	// create gRPC server with middleware
 	server := grpc.NewServer(
 		grpc.ChainUnaryInterceptor(
 			reqTimeLogger,
-			grpcMetrics.UnaryServerInterceptor(grpc_prometheus.WithExemplarFromContext(exemplarFromContext)),
-		),
-		grpc.ChainStreamInterceptor(
-			grpcMetrics.StreamServerInterceptor(grpc_prometheus.WithExemplarFromContext(exemplarFromContext)),
+			promservermetrics.ConnectionUnaryInterceptor,
+			promservermetrics.ResponseSizeUnaryInterceptor,
+			grpcMetrics.UnaryServerInterceptor(),
 		),
 	)
 
@@ -123,15 +112,14 @@ func main() {
 		http.ListenAndServe("0.0.0.0:6060", nil)
 	}()
 
+	// serve go metrics for monitoring
 	go func() {
 		httpSrv := &http.Server{Addr: "0.0.0.0:8081"}
 		m := http.NewServeMux()
-		//log.Println("Starting HTTP server for Prometheus metrics on :8081")
 		// Create HTTP handler for Prometheus metrics.
 		m.Handle("/metrics", promhttp.HandlerFor(
 			reg,
 			promhttp.HandlerOpts{
-				// Opt into OpenMetrics e.g. to support exemplars.
 				EnableOpenMetrics: true,
 			},
 		))
