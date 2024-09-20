@@ -546,7 +546,13 @@ func cleanup(db *sql.DB) error {
 
 // considerCleanup considers if cleanup() should be called.
 func considerCleanup(db *sql.DB) error {
+
 	// call cleanup() if at least cleanupInterval has passed since the last time it was called
+
+	// ensure atomic access to lastCleanupTime
+	lctMutex.Lock()
+	defer lctMutex.Unlock()
+
 	if time.Since(lastCleanupTime) > cleanupInterval {
 		if err := cleanup(db); err != nil {
 			return fmt.Errorf("cleanup() failed: %v", err)
