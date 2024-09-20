@@ -461,6 +461,8 @@ func getStringMdataFilter(filter map[string]*datastore.Strings, phVals *[]interf
 // cleanup performs various cleanup tasks, like removing old observations from the database.
 func cleanup(db *sql.DB) error {
 
+	var err error
+
 	// start transaction
 	tx, err := db.Begin()
 	if err != nil {
@@ -468,20 +470,69 @@ func cleanup(db *sql.DB) error {
 	}
 	defer tx.Rollback()
 
-	// remove observations outside valid range
-	loTime, hiTime := common.GetValidTimeRange()
-	cmd := fmt.Sprintf(`
-		DELETE FROM observation
-		WHERE (obstime_instant < to_timestamp(%d))
-		   OR (obstime_instant > to_timestamp(%d))
-	`, loTime.Unix(), hiTime.Unix())
-	_, err = tx.Exec(cmd)
-	if err != nil {
-		return fmt.Errorf("tx.Exec() failed: %v", err)
+	// --- BEGIN define removal functions ----------------------------------
+
+	rmObsOutsideValidRange := func() error {
+
+		loTime, hiTime := common.GetValidTimeRange()
+		cmd := fmt.Sprintf(`
+			DELETE FROM observation
+			WHERE (obstime_instant < to_timestamp(%d))
+			   OR (obstime_instant > to_timestamp(%d))
+		`, loTime.Unix(), hiTime.Unix())
+
+		_, err = tx.Exec(cmd)
+		if err != nil {
+			return fmt.Errorf(
+				"tx.Exec() failed when removing observations outside valid range: %v", err)
+		}
+
+		return nil
 	}
 
-	// DELETE FROM time_series WHERE <no FK refs from observation anymore> ... TODO!
-	// DELETE FROM geo_points WHERE <no FK refs from observation anymore> ... TODO!
+	rmUnrefRows := func(tableName, fkName string) error {
+
+		cmd := fmt.Sprintf(`
+			DELETE FROM %s
+			WHERE id in (
+				SELECT id FROM %s t WHERE NOT EXISTS (
+					SELECT FROM observation obs WHERE %s = t.id
+				)
+			)
+		`, tableName, tableName, fkName)
+
+		_, err = tx.Exec(cmd)
+		if err != nil {
+			return fmt.Errorf(
+				"tx.Exec() failed when removing unreferenced rows from %s: %v", tableName, err)
+		}
+
+		return nil
+	}
+
+	// --- END define removal functions ----------------------------------
+
+	// --- BEGIN apply removal functions ------------------------------------------
+
+	// remove observations outside valid range
+	err = rmObsOutsideValidRange()
+	if err != nil {
+		return fmt.Errorf("rmObsOutsideValidRange() failed: %v", err)
+	}
+
+	// remove time series that are no longer referenced by any observation
+	err = rmUnrefRows("time_series", "ts_id")
+	if err != nil {
+		return fmt.Errorf("rmUnrefRows(time_series) failed: %v", err)
+	}
+
+	// remove geo points that are no longer referenced by any observation
+	err = rmUnrefRows("geo_point", "geo_point_id")
+	if err != nil {
+		return fmt.Errorf("rmUnrefRows(geo_point) failed: %v", err)
+	}
+
+	// --- END apply removal functions ------------------------------------------
 
 	// commit transaction
 	if err = tx.Commit(); err != nil {
