@@ -227,13 +227,12 @@ def get_z_values_from_interval(interval: list[str]) -> list[str]:
     return [str(min_height + i * increment_value) for i in range(amount_of_intervals)]
 
 
-def get_z_values_from_range(range: str) -> list[str]:
+def get_z_values_from_range(range: list[str]) -> list[str]:
     """
     Function for getting the z values from a range.
     """
-    start, end = range[0], range[1]
-    z_min = convert_m_to_cm(start) if start != ".." else start
-    z_max = convert_m_to_cm(end) if end != ".." else end
+    z_min = convert_m_to_cm(range[0]) if range[0] != ".." else range[0]
+    z_max = convert_m_to_cm(range[1]) if range[1] != ".." else range[1]
 
     return [f"{z_min}/{z_max}"]
 
