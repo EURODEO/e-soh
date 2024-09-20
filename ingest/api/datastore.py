@@ -36,7 +36,6 @@ def build_grpc_messages(msg: str) -> None:
     standard_name = ts_metadata.standard_name
     parameter_name = hashlib.md5(":".join([standard_name, level, function, period]).encode()).hexdigest()
 
-    timeseries_id = hashlib.md5(timeseries_id_string.encode()).hexdigest()
     setattr(ts_metadata, "parameter_name", parameter_name)
 
     observation_data = dstore.ObsMetadata()
