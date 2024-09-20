@@ -5,7 +5,6 @@ import (
 	"datastore/common"
 	"datastore/datastore"
 	"fmt"
-	"log"
 	"reflect"
 	"strings"
 
@@ -457,9 +456,8 @@ func (sbe *PostgreSQL) PutObservations(request *datastore.PutObsRequest) (codes.
 		}
 	}
 
-	if err := considerCleanup(sbe.Db); err != nil {
-		log.Printf("WARNING: considerCleanup() failed: %v", err)
-	}
+	// run cleanup asynchronously to allow this function to return immediately
+	go considerCleanup(sbe.Db)
 
 	return codes.OK, ""
 }

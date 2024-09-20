@@ -5,6 +5,7 @@ import (
 	"datastore/common"
 	"datastore/datastore"
 	"fmt"
+	"log"
 	"regexp"
 	"strconv"
 	"strings"
@@ -545,7 +546,7 @@ func cleanup(db *sql.DB) error {
 }
 
 // considerCleanup considers if cleanup() should be called.
-func considerCleanup(db *sql.DB) error {
+func considerCleanup(db *sql.DB) {
 
 	// call cleanup() if at least cleanupInterval has passed since the last time it was called
 
@@ -555,9 +556,7 @@ func considerCleanup(db *sql.DB) error {
 
 	if time.Since(lastCleanupTime) > cleanupInterval {
 		if err := cleanup(db); err != nil {
-			return fmt.Errorf("cleanup() failed: %v", err)
+			log.Printf("cleanup() failed: %v", err)
 		}
 	}
-
-	return nil
 }
