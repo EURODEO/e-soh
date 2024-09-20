@@ -1,4 +1,3 @@
-import sys
 import re
 import isodate
 
@@ -306,22 +305,20 @@ def get_iso_8601_range(range: str) -> str:
 
     try:
         if start != "..":
-            start_seconds = iso_8601_duration_to_seconds(start)
-        else:
-            start_seconds = 0
+            start = iso_8601_duration_to_seconds(start)
 
         if end != "..":
-            end_seconds = iso_8601_duration_to_seconds(end)
-        else:
-            end_seconds = sys.maxsize
+            end = iso_8601_duration_to_seconds(end)
 
-        if start_seconds > end_seconds:
-            raise HTTPException(status_code=400, detail=f"Invalid ISO 8601 range: {start} > {end}")
+        if start != ".." and end != ".." and start > end:
+            raise HTTPException(
+                status_code=400, detail=f"Invalid ISO 8601 range: {split_on_slash[0]} > {split_on_slash[1]}"
+            )
 
     except ValueError as err:
         raise HTTPException(status_code=400, detail=f"{err}")
 
-    return f"{start_seconds}/{end_seconds}"
+    return f"{start}/{end}"
 
 
 def convert_m_to_cm(m: str) -> str:
