@@ -257,13 +257,7 @@ message GetTSAGResponse {
 //---------------------------------------------------------------------------
 
 message GetExtentsRequest {
-  // --- BEGIN string metadata (handleable with reflection) -------------------------
-
-  // general filter
-  // - map keys must correspond exactly with string field names in TSMetadata or ObsMetadata
-  // - if map key F is specified (where F is for example 'platform'), only observations that match
-  //   at least one of these values for F may be returned
-  map<string, Strings> filter = 1;
+  // No parameters
 
   // --- END string metadata (handleable with reflection) -------------------------
 }
