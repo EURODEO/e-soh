@@ -2,7 +2,6 @@ import logging
 from typing import Union
 
 import grpc
-import isodate
 
 from fastapi import HTTPException
 
@@ -12,7 +11,6 @@ from api.send_mqtt import connect_mqtt, send_message
 from api.grpc_putter import putObsRequest
 
 import datastore_pb2 as dstore
-
 
 logger = logging.getLogger(__name__)
 
@@ -37,21 +35,7 @@ class IngestToPipeline:
                 logger.error("Failed to establish connection to mqtt, " + "\n" + str(e))
                 raise e
 
-    def seconds_to_iso_8601_duration(seconds: int) -> str:
-        duration = isodate.Duration(seconds=seconds)
-        iso_duration = isodate.duration_isoformat(duration)
-
-        # Use PT24H instead of P1D
-        if iso_duration == "P1D":
-            iso_duration = "PT24H"
-
-        # iso_duration defaults to P0D when seconds is 0
-        if iso_duration == "P0D":
-            iso_duration = "PT0S"
-
-        return iso_duration
-
-    def convert_to_meter(level: int) -> str:
+    def convert_to_meter(self, level: int) -> str:
 
         level = str(float(level) / 100)
 
@@ -89,7 +73,7 @@ class IngestToPipeline:
                 )
 
                 # modify the period back to iso format and level back to meter
-                period_iso = self.seconds_to_iso_8601_duration(msg["properties"]["period"])
+                period_iso = msg["properties"]["period_convertable"]
                 level_string = self.convert_to_meter(msg["properties"]["level"])
                 msg["properties"]["level"] = level_string
                 msg["properties"]["period"] = period_iso
