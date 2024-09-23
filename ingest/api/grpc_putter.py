@@ -1,5 +1,6 @@
 import logging
 import os
+import json
 
 from functools import cache
 
@@ -12,7 +13,23 @@ logger = logging.getLogger(__name__)
 
 @cache
 def get_grpc_stub():
-    channel = grpc.aio.insecure_channel(f"{os.getenv('DSHOST', 'store')}:{os.getenv('DSPORT', '50050')}")
+    grpc_config = json.dumps(
+        {
+            "methodConfig": {
+                "retryPolicy": {
+                    "maxAttempts": 10,
+                    "initialBackoff": "0.1s",
+                    "maxBackoff": "60s",
+                    "backoffMultiplier": 2,
+                    "retryAbleStatusCodes": ["INTERNAL"],
+                }
+            }
+        }
+    )
+    channel = grpc.aio.insecure_channel(
+        f"{os.getenv('DSHOST', 'store')}:{os.getenv('DSPORT', '50050')}", options=[("grpc.service_config", grpc_config)]
+    )
+
     return dstore_grpc.DatastoreStub(channel)
 
 
