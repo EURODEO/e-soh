@@ -7,7 +7,6 @@ from utilities import seconds_to_iso_8601_duration
 from utilities import convert_cm_to_m
 
 
-
 def _make_properties(ts):
     ts_metadata = {key.name: value for key, value in ts.ts_mdata.ListFields() if value}
 
