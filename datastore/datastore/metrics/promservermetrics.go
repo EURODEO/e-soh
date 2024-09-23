@@ -34,8 +34,9 @@ var (
 )
 
 func TrackUptime() {
+	// Increment the uptime every second
 	for {
-		UptimeCounter.Inc() // Increment the uptime every second
+		UptimeCounter.Inc()
 		time.Sleep(1 * time.Second)
 	}
 }
@@ -49,14 +50,13 @@ func ConnectionUnaryInterceptor(ctx context.Context, req interface{}, info *grpc
 func ResponseSizeUnaryInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
 	resp, err = handler(ctx, req)
 
-	// Measure the response size if response is not nil
 	if resp != nil {
 		responseSize := float64(len(resp.(interface{ String() string }).String()))
 
-		// Record the response size in the summary for quantile calculations
 		ResponseSizeSummary.WithLabelValues(info.FullMethod).Observe(responseSize)
 
-		// Calculate the total sum and count for mean calculation
+		// Used a mutex to synchronise the access for the responseSizeSum and responseSizeCount.
+		// To prevent race conditions and multiple goroutines accessing the variables at the same time.
 		responseSizeMu.Lock()
 		responseSizeSum[info.FullMethod] += responseSize
 		responseSizeCount[info.FullMethod]++

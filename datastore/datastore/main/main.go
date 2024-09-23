@@ -112,15 +112,14 @@ func main() {
 		http.ListenAndServe("0.0.0.0:6060", nil)
 	}()
 
+	// serve go metrics for monitoring
 	go func() {
 		httpSrv := &http.Server{Addr: "0.0.0.0:8081"}
 		m := http.NewServeMux()
-		//log.Println("Starting HTTP server for Prometheus metrics on :8081")
 		// Create HTTP handler for Prometheus metrics.
 		m.Handle("/metrics", promhttp.HandlerFor(
 			reg,
 			promhttp.HandlerOpts{
-				// Opt into OpenMetrics e.g. to support exemplars.
 				EnableOpenMetrics: true,
 			},
 		))
