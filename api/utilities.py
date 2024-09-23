@@ -1,10 +1,10 @@
-import sys
 import re
 import isodate
 
 from datetime import datetime
 from datetime import timedelta
 from typing import Tuple
+from itertools import chain
 
 from isodate import ISO8601Error
 import datastore_pb2 as dstore
@@ -181,21 +181,30 @@ def get_periods_or_range(periods: str) -> list[str]:
 
 def get_z_levels_or_range(z: str) -> list[str]:
     """
-    Function for getting the levels as a list or a range
+    Function for getting the levels filters as a list of levels, ranges
+    or range intervals
     """
     # it can be z=value1,value2,value3: z=2,10,80
     # or z=minimum value/maximum value: z=10/100
     # or z=Rn/min height/height interval: z=R20/100/50
+    # or a combination of the above: z=10,30/100,200,300,R20/100/50
+
+    values = [level_or_range.split("/") for level_or_range in split_and_strip(z)]
     try:
-        split_on_slash = z.split("/")
-        if len(split_on_slash) == 2:
-            z_min = convert_m_to_cm(split_on_slash[0]) if split_on_slash[0] != ".." else -sys.maxsize - 1
-            z_max = convert_m_to_cm(split_on_slash[1]) if split_on_slash[1] != ".." else sys.maxsize
-            return [f"{z_min}/{z_max}"]
-        elif len(split_on_slash) > 2:
-            return get_z_values_from_interval(split_on_slash)
-        else:
-            return [convert_m_to_cm(level) for level in z.split(",")]
+        nested_filters = [
+            (
+                get_z_values_from_interval(level_or_range)
+                if len(level_or_range) > 2
+                else (
+                    get_z_values_from_range(level_or_range)
+                    if len(level_or_range) == 2
+                    else [convert_m_to_cm(level_or_range[0])]
+                )
+            )
+            for level_or_range in values
+        ]
+        # Return the flattened list of level filters
+        return list(chain(*nested_filters))
     except ValueError:
         raise HTTPException(status_code=400, detail=f"Invalid levels value: {z}")
 
@@ -216,6 +225,16 @@ def get_z_values_from_interval(interval: list[str]) -> list[str]:
     increment_value = int(float(interval[2]) * 100)
 
     return [str(min_height + i * increment_value) for i in range(amount_of_intervals)]
+
+
+def get_z_values_from_range(range: list[str]) -> list[str]:
+    """
+    Function for getting the z values from a range.
+    """
+    z_min = convert_m_to_cm(range[0]) if range[0] != ".." else range[0]
+    z_max = convert_m_to_cm(range[1]) if range[1] != ".." else range[1]
+
+    return [f"{z_min}/{z_max}"]
 
 
 def is_float(element: any) -> bool:
@@ -285,22 +304,20 @@ def get_iso_8601_range(range: str) -> str:
 
     try:
         if start != "..":
-            start_seconds = iso_8601_duration_to_seconds(start)
-        else:
-            start_seconds = 0
+            start = iso_8601_duration_to_seconds(start)
 
         if end != "..":
-            end_seconds = iso_8601_duration_to_seconds(end)
-        else:
-            end_seconds = sys.maxsize
+            end = iso_8601_duration_to_seconds(end)
 
-        if start_seconds > end_seconds:
-            raise HTTPException(status_code=400, detail=f"Invalid ISO 8601 range: {start} > {end}")
+        if start != ".." and end != ".." and start > end:
+            raise HTTPException(
+                status_code=400, detail=f"Invalid ISO 8601 range: {split_on_slash[0]} > {split_on_slash[1]}"
+            )
 
     except ValueError as err:
         raise HTTPException(status_code=400, detail=f"{err}")
 
-    return f"{start_seconds}/{end_seconds}"
+    return f"{start}/{end}"
 
 
 def convert_m_to_cm(m: str) -> str:
