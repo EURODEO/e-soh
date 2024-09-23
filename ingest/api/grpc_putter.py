@@ -15,15 +15,18 @@ logger = logging.getLogger(__name__)
 def get_grpc_stub():
     grpc_config = json.dumps(
         {
-            "methodConfig": {
-                "retryPolicy": {
-                    "maxAttempts": 5,
-                    "initialBackoff": "0.5s",
-                    "maxBackoff": "8s",
-                    "backoffMultiplier": 2,
-                    "retryAbleStatusCodes": ["INTERNAL", "UNAVAILABLE"],
+            "methodConfig": [
+                {
+                    "name": [{}],
+                    "retryPolicy": {
+                        "maxAttempts": 5,
+                        "initialBackoff": "0.5s",
+                        "maxBackoff": "8s",
+                        "backoffMultiplier": 2,
+                        "retryableStatusCodes": ["INTERNAL", "UNAVAILABLE"],
+                    },
                 }
-            }
+            ]
         }
     )
     channel = grpc.aio.insecure_channel(
@@ -40,4 +43,4 @@ async def putObsRequest(put_obs_request):
         logger.debug("RPC call succeeded.")
     except grpc.aio.AioRpcError as grpc_error:
         logger.critical(f"RPC call failed: {grpc_error.code()}\n{grpc_error.details()}")
-        raise HTTPException(detail=grpc_error.details(), status_code=400)
+        raise HTTPException(detail=f"GRPC_ERROR:{grpc_error.details()}", status_code=400)
