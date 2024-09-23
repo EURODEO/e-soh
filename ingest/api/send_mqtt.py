@@ -1,4 +1,5 @@
 import logging
+import json
 from paho.mqtt import client as mqtt_client
 from fastapi import HTTPException
 
@@ -35,8 +36,13 @@ def send_message(topic: str, message: str, client: object):
     if len(topic) != 0:
         mqtt_topic = topic
     try:
-        client.publish(mqtt_topic, message)
+        if isinstance(message, dict):
+            client.publish(mqtt_topic, json.dumps(message))
+        elif isinstance(message, (str, bytes)):
+            client.publish(mqtt_topic, message)
+        else:
+            raise TypeError("Mqtt message of unknown type")
 
     except Exception as e:
-        logger.critical(str(e))
+        logger.critical(str(e), message, type(message))
         raise HTTPException(status_code=500, detail="Failed to publish to mqtt")

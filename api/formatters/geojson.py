@@ -3,7 +3,9 @@ from geojson_pydantic import Feature
 from geojson_pydantic import FeatureCollection
 from geojson_pydantic import Point
 
-from utilities import seconds_to_iso_8601_duration, convert_cm_to_m
+from utilities import seconds_to_iso_8601_duration
+from utilities import convert_cm_to_m
+
 
 
 def _make_properties(ts):

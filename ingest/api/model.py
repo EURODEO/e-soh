@@ -205,11 +205,12 @@ class Properties(BaseModel):
     platform: str = Field(
         ...,
         description=(
-            "Name of the platform(s) that supported the sensor data used to create this data set or product. "
+            "WIGOS-ID of the platform(s) that supported the sensor data used to create this data set or product. "
             "Platforms can be of any type, including satellite, ship, station, aircraft or other. "
             "Indicate controlled vocabulary used in platform_vocabulary."
         ),
     )
+    platform_name: Optional[str] = Field(None, description=("Human readable name for the platform."))
     platform_vocabulary: Optional[str] = Field(
         None,
         description="Controlled vocabulary for the names used in the 'platform' attribute.",
@@ -236,6 +237,7 @@ class Properties(BaseModel):
             "https://www.iso.org/iso-8601-date-and-time-format.html"
         ),
     )
+    period_int: int = Field(None, exclude_from_schema=True)
     function: Literal[
         "point",
         "sum",
@@ -343,7 +345,7 @@ class Properties(BaseModel):
         else:
             raise ValueError("Duration not convertable to seconds.")
 
-        self.period = int(total_seconds)
+        self.period_int = int(total_seconds)
         return self
 
 

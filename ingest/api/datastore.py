@@ -35,7 +35,6 @@ def build_grpc_messages(msg: str) -> None:
     function = ts_metadata.function
     standard_name = ts_metadata.standard_name
     parameter_name = hashlib.md5(":".join([standard_name, level, function, period]).encode()).hexdigest()
-
     setattr(ts_metadata, "parameter_name", parameter_name)
 
     observation_data = dstore.ObsMetadata()
