@@ -165,7 +165,9 @@ if __name__ == "__main__":
             "lon": 10.75,
         }
 
-        mdata["parameter_name"] = "_".join([mdata["standard_name"], str(mdata["level"]/100), mdata["function"], "PT0S"])
+        mdata["parameter_name"] = "_".join(
+            [mdata["standard_name"], str(mdata["level"] / 100), mdata["function"], "PT0S"]
+        )
 
         # run tests
         test_put_obs(stub, mdata)
