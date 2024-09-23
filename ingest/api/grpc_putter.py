@@ -21,7 +21,7 @@ def get_grpc_stub():
                     "initialBackoff": "0.1s",
                     "maxBackoff": "10s",
                     "backoffMultiplier": 2,
-                    "retryAbleStatusCodes": ["INTERNAL"],
+                    "retryAbleStatusCodes": ["INTERNAL", "UNAVAILABLE"],
                 }
             }
         }
