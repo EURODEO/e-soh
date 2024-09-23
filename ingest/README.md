@@ -1,13 +1,18 @@
 # e-soh-event-queue
 ## Enviornment variables
-| Variable | Type | Default | Explenation |
-| ---------| ---- | ------- | ----------- |
-| MQTT_HOST | String | None | Set host for MQTT broker |
-| MQTT_USERNAME | String | None | Set username for MQTT |
-| MQTT_PASSWORD | String | None | Set password for MQTT |
-| MQTT_TLS | Bool | False | Enable TLS for MQTT connection |
-| MQTT_PORT | Int | 8883 | Set port for MQTT broker |
-| FASTAPI_ROOT_PATH | String | "" | If this api is behind proxy, this need to be set to the root path |
+
+| Variable                   | Default Value              | Description                                                                 |
+|----------------------------|----------------------------|-----------------------------------------------------------------------------|
+| `DSHOST`                   | `store`                    | Host address for the data store. Defaults to `store` if not set.            |
+| `DSPORT`                   | `50050`                    | Port for the data store connection. Defaults to `50050` if not set.         |
+| `MQTT_HOST`                |                            | Host address for the MQTT broker.                                           |
+| `MQTT_USERNAME`            |                            | Username for authentication with the MQTT broker.                           |
+| `MQTT_PASSWORD`            |                            | Password for authentication with the MQTT broker.                           |
+| `MQTT_TLS`                 | `True`                     | Whether to use TLS (True/False) for the MQTT connection. Defaults to `True`.|
+| `PROMETHEUS_MULTIPROC_DIR` | `/tmp/metrics`             | Directory for Prometheus multiprocess mode metrics. Defaults to `/tmp/metrics`. |
+| `INGEST_LOGLEVEL`          |                            | Logging level for the ingestion process.                                     |
+| `GUNICORN_CMD_ARGS`        |                            | Command-line arguments for configuring Gunicorn, a Python WSGI HTTP Server.  |
+| `FASTAPI_ROOT_PATH`        |                            | If this api is behind proxy, this need to be set to the root path |
 
 
 ## Dev install

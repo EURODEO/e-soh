@@ -15,6 +15,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=mysecretpassword
       - POSTGRES_DB=data
+    shm_size: 312m
     restart: on-failure
     healthcheck:
       # HACK Due to the installation of Postgis extension the database is restarted, the healthcheck checks if the database is up for longer than specified time.

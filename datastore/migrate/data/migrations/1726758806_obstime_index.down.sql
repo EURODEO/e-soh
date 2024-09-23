@@ -1,0 +1,1 @@
+DROP INDEX CONCURRENTLY observation_obstim_instant;

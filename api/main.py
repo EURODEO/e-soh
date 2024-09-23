@@ -14,6 +14,8 @@ from routers import edr
 from routers import feature
 from utilities import create_url_from_request
 
+from export_metrics import add_metrics
+
 
 def setup_logging():
     logger = logging.getLogger()
@@ -30,6 +32,7 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI(swagger_ui_parameters={"tryItOutEnabled": True})
 app.add_middleware(BrotliMiddleware)
+add_metrics(app)
 
 
 @app.get(
