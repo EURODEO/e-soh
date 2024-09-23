@@ -167,6 +167,16 @@ func NewPostgreSQL() (*PostgreSQL, error) {
 	setUpsertTSInsertCmd()
 	setUpsertTSSelectCmd()
 
+	// cleanup the database at regular intervals
+	ticker := time.NewTicker(cleanupInterval)
+	go func() {
+		for range ticker.C {
+			if err = cleanup(sbe.Db); err != nil {
+				log.Printf("cleanup() failed: %v", err)
+			}
+		}
+	}()
+
 	return sbe, nil
 }
 
@@ -540,23 +550,5 @@ func cleanup(db *sql.DB) error {
 		return fmt.Errorf("tx.Commit() failed: %v", err)
 	}
 
-	lastCleanupTime = time.Now()
-
 	return nil
-}
-
-// considerCleanup considers if cleanup() should be called.
-func considerCleanup(db *sql.DB) {
-
-	// call cleanup() if at least cleanupInterval has passed since the last time it was called
-
-	// ensure atomic access to lastCleanupTime
-	lctMutex.Lock()
-	defer lctMutex.Unlock()
-
-	if time.Since(lastCleanupTime) > cleanupInterval {
-		if err := cleanup(db); err != nil {
-			log.Printf("cleanup() failed: %v", err)
-		}
-	}
 }

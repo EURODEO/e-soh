@@ -456,8 +456,5 @@ func (sbe *PostgreSQL) PutObservations(request *datastore.PutObsRequest) (codes.
 		}
 	}
 
-	// run cleanup asynchronously to allow this function to return immediately
-	go considerCleanup(sbe.Db)
-
 	return codes.OK, ""
 }
