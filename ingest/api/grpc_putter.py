@@ -19,7 +19,7 @@ def get_grpc_stub():
                 "retryPolicy": {
                     "maxAttempts": 10,
                     "initialBackoff": "0.1s",
-                    "maxBackoff": "60s",
+                    "maxBackoff": "10s",
                     "backoffMultiplier": 2,
                     "retryAbleStatusCodes": ["INTERNAL"],
                 }
