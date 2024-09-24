@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 
 @cache
 def get_grpc_stub():
+    options = []
     grpc_config = json.dumps(
         {
             "methodConfig": [
@@ -23,14 +24,16 @@ def get_grpc_stub():
                         "initialBackoff": "0.5s",
                         "maxBackoff": "8s",
                         "backoffMultiplier": 2,
-                        "retryableStatusCodes": ["INTERNAL", "UNAVAILABLE"],
+                        "retryableStatusCodes": ["INTERNAL", "UNAVAILABLE", "OUT_OF_RANGE"],
                     },
                 }
             ]
         }
     )
+    options.append(("grpc.enable_retries", 1))
+    options.append(("grpc.service_config", grpc_config))
     channel = grpc.aio.insecure_channel(
-        f"{os.getenv('DSHOST', 'store')}:{os.getenv('DSPORT', '50050')}", options=[("grpc.service_config", grpc_config)]
+        f"{os.getenv('DSHOST', 'store')}:{os.getenv('DSPORT', '50050')}", options=options
     )
 
     return dstore_grpc.DatastoreStub(channel)
