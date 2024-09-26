@@ -55,6 +55,7 @@ class IngestToPipeline:
     def convert_to_meter(self, level: int) -> str:
 
         level = str(float(level) / 100)
+        return level
 
     async def ingest(self, message: Union[str, object]):
         """
