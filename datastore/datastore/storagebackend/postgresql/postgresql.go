@@ -369,13 +369,11 @@ func cleanup(db *sql.DB) error {
 	rmUnrefRows := func(tableName, fkName string) error {
 
 		cmd := fmt.Sprintf(`
-			DELETE FROM %s
-			WHERE id in (
-				SELECT id FROM %s t WHERE NOT EXISTS (
-					SELECT FROM observation obs WHERE %s = t.id
-				)
+			DELETE FROM %s t
+			WHERE NOT EXISTS (
+				SELECT FROM observation WHERE %s = t.id
 			)
-		`, tableName, tableName, fkName)
+		`, tableName, fkName)
 
 		_, err = db.Exec(cmd)
 		if err != nil {
