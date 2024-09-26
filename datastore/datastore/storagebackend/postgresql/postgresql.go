@@ -345,12 +345,7 @@ func cleanup(db *sql.DB) error {
 	log.Println("db cleanup started")
 	start := time.Now()
 
-	// start transaction
-	tx, err := db.Begin()
-	if err != nil {
-		return fmt.Errorf("db.Begin() failed: %v", err)
-	}
-	defer tx.Rollback()
+	var err error
 
 	// --- BEGIN define removal functions ----------------------------------
 
@@ -362,7 +357,7 @@ func cleanup(db *sql.DB) error {
 			WHERE (obstime_instant < to_timestamp(%d)) OR (obstime_instant > to_timestamp(%d))
 		`, loTime.Unix(), hiTime.Unix())
 
-		_, err = tx.Exec(cmd)
+		_, err = db.Exec(cmd)
 		if err != nil {
 			return fmt.Errorf(
 				"tx.Exec() failed when removing observations outside valid range: %v", err)
@@ -382,7 +377,7 @@ func cleanup(db *sql.DB) error {
 			)
 		`, tableName, tableName, fkName)
 
-		_, err = tx.Exec(cmd)
+		_, err = db.Exec(cmd)
 		if err != nil {
 			return fmt.Errorf(
 				"tx.Exec() failed when removing unreferenced rows from %s: %v", tableName, err)
@@ -414,11 +409,6 @@ func cleanup(db *sql.DB) error {
 	}
 
 	// --- END apply removal functions ------------------------------------------
-
-	// commit transaction
-	if err = tx.Commit(); err != nil {
-		return fmt.Errorf("tx.Commit() failed: %v", err)
-	}
 
 	log.Printf("db cleanup complete after %v", time.Since(start))
 
