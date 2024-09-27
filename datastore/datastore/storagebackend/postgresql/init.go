@@ -15,7 +15,6 @@ import (
 // package variables (only accessible within postgresql package)
 var (
 	cleanupInterval time.Duration // minimum time period between calls to cleanup()
-	lastCleanupTime time.Time     // time of last call to cleanup()
 
 	putObsLimit int // max # of observations in a single call to PutObservations
 
@@ -101,7 +100,6 @@ func initPutObsLimit() {
 func init() { // automatically called once on program startup (on first import of this package)
 
 	initCleanupInterval()
-	lastCleanupTime = time.Time{}
 
 	initPutObsLimit()
 

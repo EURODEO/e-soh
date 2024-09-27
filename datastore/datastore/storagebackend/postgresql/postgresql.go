@@ -5,6 +5,7 @@ import (
 	"datastore/common"
 	"datastore/datastore"
 	"fmt"
+	"log"
 	"regexp"
 	"strings"
 	"time"
@@ -164,6 +165,16 @@ func NewPostgreSQL() (*PostgreSQL, error) {
 
 	setUpsertTSInsertCmd()
 	setUpsertTSSelectCmd()
+
+	// cleanup the database at regular intervals
+	ticker := time.NewTicker(cleanupInterval)
+	go func() {
+		for range ticker.C {
+			if err = cleanup(sbe.Db); err != nil {
+				log.Printf("cleanup() failed: %v", err)
+			}
+		}
+	}()
 
 	return sbe, nil
 }
@@ -331,46 +342,73 @@ func getStringMdataFilter(
 // cleanup performs various cleanup tasks, like removing old observations from the database.
 func cleanup(db *sql.DB) error {
 
-	// start transaction
-	tx, err := db.Begin()
-	if err != nil {
-		return fmt.Errorf("db.Begin() failed: %v", err)
+	log.Println("db cleanup started")
+	start := time.Now()
+
+	var err error
+
+	// --- BEGIN define removal functions ----------------------------------
+
+	rmObsOutsideValidRange := func() error {
+
+		loTime, hiTime := common.GetValidTimeRange()
+		cmd := fmt.Sprintf(`
+			DELETE FROM observation
+			WHERE (obstime_instant < to_timestamp(%d)) OR (obstime_instant > to_timestamp(%d))
+		`, loTime.Unix(), hiTime.Unix())
+
+		_, err = db.Exec(cmd)
+		if err != nil {
+			return fmt.Errorf(
+				"tx.Exec() failed when removing observations outside valid range: %v", err)
+		}
+
+		return nil
 	}
-	defer tx.Rollback()
+
+	rmUnrefRows := func(tableName, fkName string) error {
+
+		cmd := fmt.Sprintf(`
+			DELETE FROM %s t
+			WHERE NOT EXISTS (
+				SELECT FROM observation WHERE %s = t.id
+			)
+		`, tableName, fkName)
+
+		_, err = db.Exec(cmd)
+		if err != nil {
+			return fmt.Errorf(
+				"tx.Exec() failed when removing unreferenced rows from %s: %v", tableName, err)
+		}
+
+		return nil
+	}
+
+	// --- END define removal functions ----------------------------------
+
+	// --- BEGIN apply removal functions ------------------------------------------
 
 	// remove observations outside valid range
-	loTime, hiTime := common.GetValidTimeRange()
-	cmd := fmt.Sprintf(`
-		DELETE FROM observation
-		WHERE (obstime_instant < to_timestamp(%d))
-		   OR (obstime_instant > to_timestamp(%d))
-	`, loTime.Unix(), hiTime.Unix())
-	_, err = tx.Exec(cmd)
+	err = rmObsOutsideValidRange()
 	if err != nil {
-		return fmt.Errorf("tx.Exec() failed: %v", err)
+		return fmt.Errorf("rmObsOutsideValidRange() failed: %v", err)
 	}
 
-	// DELETE FROM time_series WHERE <no FK refs from observation anymore> ... TODO!
-	// DELETE FROM geo_points WHERE <no FK refs from observation anymore> ... TODO!
-
-	// commit transaction
-	if err = tx.Commit(); err != nil {
-		return fmt.Errorf("tx.Commit() failed: %v", err)
+	// remove time series that are no longer referenced by any observation
+	err = rmUnrefRows("time_series", "ts_id")
+	if err != nil {
+		return fmt.Errorf("rmUnrefRows(time_series) failed: %v", err)
 	}
 
-	lastCleanupTime = time.Now()
-
-	return nil
-}
-
-// considerCleanup considers if cleanup() should be called.
-func considerCleanup(db *sql.DB) error {
-	// call cleanup() if at least cleanupInterval has passed since the last time it was called
-	if time.Since(lastCleanupTime) > cleanupInterval {
-		if err := cleanup(db); err != nil {
-			return fmt.Errorf("cleanup() failed: %v", err)
-		}
+	// remove geo points that are no longer referenced by any observation
+	err = rmUnrefRows("geo_point", "geo_point_id")
+	if err != nil {
+		return fmt.Errorf("rmUnrefRows(geo_point) failed: %v", err)
 	}
+
+	// --- END apply removal functions ------------------------------------------
+
+	log.Printf("db cleanup complete after %v", time.Since(start))
 
 	return nil
 }
