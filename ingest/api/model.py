@@ -8,6 +8,7 @@ from typing import Literal
 from typing import Optional
 from dateutil import parser
 from datetime import timedelta
+from isodate import ISO8601Error
 
 from pydantic import BaseModel
 from pydantic import Field
@@ -335,9 +336,8 @@ class Properties(BaseModel):
     def transform_period_to_seconds(self):
         try:
             duration = isodate.parse_duration(self.period)
-        except isodate.duration.ParsingError:
-            raise ValueError("Invalid duration format.")
-
+        except ISO8601Error:
+            raise ValueError(f"Invalid ISO 8601 duration: {self.period}")
         if isinstance(duration, timedelta):
             # It's a simple timedelta, so just get the total seconds
             total_seconds = duration.total_seconds()
