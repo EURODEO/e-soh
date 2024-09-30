@@ -63,8 +63,9 @@ uint64_t NorBufrIO::findBytes(char *buf, unsigned int buf_size, const char *seq,
                               unsigned int size) {
   uint64_t j = 0;
   char c;
-  while (j < size && j < buf_size) {
-    c = buf[j];
+  uint64_t position = 0;
+  while (j < size && position < buf_size) {
+    c = buf[position];
     if (c == seq[j]) {
       ++j;
     } else {
@@ -74,8 +75,9 @@ uint64_t NorBufrIO::findBytes(char *buf, unsigned int buf_size, const char *seq,
         j = 0;
       }
     }
+    ++position;
   }
-  return (j < size ? ULONG_MAX : j);
+  return (j < size ? ULONG_MAX : position - size);
 }
 
 uint64_t NorBufrIO::getBytes(uint8_t *buffer, int size) {
