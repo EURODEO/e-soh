@@ -246,7 +246,9 @@ std::list<std::string> ESOHBufr::msg() const {
                   LogEntry("Missing WMO Station number after WMO block",
                            LogLevel::WARN, __func__, bufr_id));
             }
-            wigos_id.setWmoId(wmo_block * 1000 + wmo_station);
+            if (!wigos_id.getWigosLocalId().size()) {
+              wigos_id.setWmoId(wmo_block * 1000 + wmo_station);
+            }
             skip_platform = false;
             // platform_check = true;
             break;
