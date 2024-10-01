@@ -6,7 +6,6 @@ require google.golang.org/grpc v1.64.0
 
 require (
 	github.com/cridenour/go-postgis v1.0.0
-	github.com/golang/protobuf v1.5.4
 	google.golang.org/protobuf v1.34.1
 )
 
