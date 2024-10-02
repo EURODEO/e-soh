@@ -33,7 +33,9 @@ def actual_response_is_expected_response(actual_response, expected_json, **kwarg
     assert diff == {}
     # TODO: maybe this check should be a unit test instead of integration.
     # Deep diff does not check dict keys for order, manually validate if the order is correct.
-    validate_if_the_dict_keys_are_in_alphabetic_order(actual_response=actual_response, expected_json=expected_json)
+    validate_if_the_dict_keys_are_in_alphabetic_order(
+        actual_response=actual_response, expected_json=expected_json
+    )
 
 
 def validate_if_the_dict_keys_are_in_alphabetic_order(actual_response, expected_json):
@@ -53,14 +55,22 @@ def validate_if_the_dict_keys_are_in_alphabetic_order(actual_response, expected_
     if actual_json.get("coverages") or expected_json.get("coverages"):
         actual_coverages = actual_json["coverages"]
         expected_coverages = expected_json["coverages"]
-        for actual_covjson, expected_covjson in zip(actual_coverages, expected_coverages):
-            assert list(actual_covjson["ranges"].keys()) == list(expected_covjson["ranges"].keys())
-            assert list(actual_covjson["parameters"].keys()) == list(expected_covjson["parameters"].keys())
+        for actual_covjson, expected_covjson in zip(
+            actual_coverages, expected_coverages
+        ):
+            assert list(actual_covjson["ranges"].keys()) == list(
+                expected_covjson["ranges"].keys()
+            )
+            assert list(actual_covjson["parameters"].keys()) == list(
+                expected_covjson["parameters"].keys()
+            )
 
 
 def test_that_a_collection_of_all_collections_is_the_same_as_a_single_collection():
     response_all_collections = requests.get(url=BASE_URL + "/collections")
-    response_single_collection = requests.get(url=BASE_URL + "/collections/observations")
+    response_single_collection = requests.get(
+        url=BASE_URL + "/collections/observations"
+    )
 
     assert response_all_collections.status_code == 200
     assert response_single_collection.status_code == 200
@@ -78,7 +88,9 @@ def test_get_all_collections():
     expected_json = load_json("response/metadata_collections_all_collections.json")
 
     assert actual_response.status_code == 200
-    actual_response_is_expected_response(actual_response, expected_json, exclude_regex_paths=r"\['href'\]$")
+    actual_response_is_expected_response(
+        actual_response, expected_json, exclude_regex_paths=r"\['href'\]$"
+    )
 
 
 def test_get_conformance():
@@ -95,19 +107,27 @@ def test_get_a_single_existing_collection():
     actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}")
 
     # Use all_collections to reduce duplication.
-    expected_json = load_json("response/metadata_collections_all_collections.json")["collections"][0]
+    expected_json = load_json("response/metadata_collections_all_collections.json")[
+        "collections"
+    ][0]
     expected_json["links"][0]["rel"] = "self"
 
     assert actual_response.status_code == 200
-    actual_response_is_expected_response(actual_response, expected_json, exclude_regex_paths=r"\['href'\]$")
+    actual_response_is_expected_response(
+        actual_response, expected_json, exclude_regex_paths=r"\['href'\]$"
+    )
 
 
 def test_from_a_single_collection_get_locations_within_a_bbox():
     collection_id = "observations"
     bbox = "5.0,52.0,6.0,52.1"
-    actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/locations?bbox={bbox}")
+    actual_response = requests.get(
+        url=BASE_URL + f"/collections/{collection_id}/locations?bbox={bbox}"
+    )
 
-    expected_json = load_json("response/data_locations_two_points_with_multiple_parameters.json")
+    expected_json = load_json(
+        "response/data_locations_two_points_with_multiple_parameters.json"
+    )
 
     assert actual_response.status_code == 200
     actual_response_is_expected_response(actual_response, expected_json)
@@ -117,10 +137,13 @@ def test_from_a_single_collection_get_locations_within_a_bbox_with_periods_range
     collection_id = "observations"
     bbox = "5.0,52.0,6.0,52.1"
     actual_response = requests.get(
-        url=BASE_URL + f"/collections/{collection_id}/locations?bbox={bbox}&periods=PT0S/PT24H"
+        url=BASE_URL
+        + f"/collections/{collection_id}/locations?bbox={bbox}&periods=PT0S/PT24H"
     )
 
-    expected_json = load_json("response/data_locations_two_points_with_multiple_parameters.json")
+    expected_json = load_json(
+        "response/data_locations_two_points_with_multiple_parameters.json"
+    )
 
     assert actual_response.status_code == 200
     actual_response_is_expected_response(actual_response, expected_json)
@@ -129,9 +152,14 @@ def test_from_a_single_collection_get_locations_within_a_bbox_with_periods_range
 def test_from_a_single_collection_get_locations_within_bbox_with_levels_range_filtering():
     collection_id = "observations"
     bbox = "5.0,52.0,6.0,52.1"
-    actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/locations?bbox={bbox}&levels=../10.0")
+    actual_response = requests.get(
+        url=BASE_URL
+        + f"/collections/{collection_id}/locations?bbox={bbox}&levels=../10.0"
+    )
 
-    expected_json = load_json("response/data_locations_two_points_with_multiple_parameters.json")
+    expected_json = load_json(
+        "response/data_locations_two_points_with_multiple_parameters.json"
+    )
 
     assert actual_response.status_code == 200
     actual_response_is_expected_response(actual_response, expected_json)
@@ -140,12 +168,17 @@ def test_from_a_single_collection_get_locations_within_bbox_with_levels_range_fi
 def test_from_a_single_collection_get_locations_within_a_bbox_with_parameter_name_filtering():
     collection_id = "observations"
     bbox = "5.0,52.0,6.0,52.1"
-    parameters = "air_temperature:0.1:minimum:PT10M, air_pressure_at_sea_level:1:mean:PT1M"
+    parameters = (
+        "air_temperature:0.1:minimum:PT10M, air_pressure_at_sea_level:1:mean:PT1M"
+    )
     actual_response = requests.get(
-        url=BASE_URL + f"/collections/{collection_id}/locations?bbox={bbox}&parameter-name={parameters}"
+        url=BASE_URL
+        + f"/collections/{collection_id}/locations?bbox={bbox}&parameter-name={parameters}"
     )
 
-    expected_json = load_json("response/data_locations_two_points_with_two_parameters.json")
+    expected_json = load_json(
+        "response/data_locations_two_points_with_two_parameters.json"
+    )
 
     assert actual_response.status_code == 200
     actual_response_is_expected_response(actual_response, expected_json)
@@ -158,10 +191,13 @@ def test_from_a_single_collection_get_locations_within_a_bbox_with_methods_and_l
     levels = "0.1, 1.0"
     # parameters = "air_temperature:0.1:minimum:PT10M, air_pressure_at_sea_level:1:mean:PT1M"
     actual_response = requests.get(
-        url=BASE_URL + f"/collections/{collection_id}/locations?bbox={bbox}" f"&methods={methods}&levels={levels}"
+        url=BASE_URL + f"/collections/{collection_id}/locations?bbox={bbox}"
+        f"&methods={methods}&levels={levels}"
     )
 
-    expected_json = load_json("response/data_locations_two_points_with_two_parameters.json")
+    expected_json = load_json(
+        "response/data_locations_two_points_with_two_parameters.json"
+    )
 
     assert actual_response.status_code == 200
     actual_response_is_expected_response(actual_response, expected_json)
@@ -174,11 +210,14 @@ def test_from_a_single_collection_get_locations_within_a_bbox_with_period_and_st
     standard_names = "air_temperature, wind_from_direction"
     datetime = "2022-12-31T00:50:00Z/2022-12-31T02:10:00Z"
     actual_response = requests.get(
-        url=BASE_URL + f"/collections/{collection_id}/locations?bbox={bbox}&standard_names={standard_names}"
+        url=BASE_URL
+        + f"/collections/{collection_id}/locations?bbox={bbox}&standard_names={standard_names}"
         f"&periods={periods}&datetime={datetime}"
     )
 
-    expected_json = load_json("response/data_locations_two_points_with_five_parameters.json")
+    expected_json = load_json(
+        "response/data_locations_two_points_with_five_parameters.json"
+    )
 
     assert actual_response.status_code == 200
     actual_response_is_expected_response(actual_response, expected_json)
@@ -187,16 +226,16 @@ def test_from_a_single_collection_get_locations_within_a_bbox_with_period_and_st
 def test_from_a_single_collection_get_a_single_location():
     collection_id = "observations"
     location_id = "0-20000-0-06260"
-    parameters = (
-        "air_temperature:1.5:maximum:PT10M , wind_from_direction:2.0:mean:PT10M,relative_humidity:2.0:mean:PT1M"
-    )
+    parameters = "air_temperature:1.5:maximum:PT10M , wind_from_direction:2.0:mean:PT10M,relative_humidity:2.0:mean:PT1M"
     datetime = "../2022-12-31T01:10:00Z"
     actual_response = requests.get(
         url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}"
         f"?parameter-name={parameters}&datetime={datetime}"
     )
 
-    expected_json = load_json("response/data_locations_one_location_with_three_parameters.json")
+    expected_json = load_json(
+        "response/data_locations_one_location_with_three_parameters.json"
+    )
 
     assert actual_response.status_code == 200
     assert actual_response.headers["Content-Type"] == "application/prs.coverage+json"
@@ -206,7 +245,9 @@ def test_from_a_single_collection_get_a_single_location():
 def test_from_a_single_collection_get_a_single_location_with_multiple_custom_coverages():
     collection_id = "observations"
     location_id = "0-20000-0-06260"
-    standard_names = "air_temperature, wind_speed, dew_point_temperature, duration_of_sunshine"
+    standard_names = (
+        "air_temperature, wind_speed, dew_point_temperature, duration_of_sunshine"
+    )
     levels = "0/1.8"
     methods = "maximum, point"
     periods = "PT1M/PT10M"
@@ -217,7 +258,9 @@ def test_from_a_single_collection_get_a_single_location_with_multiple_custom_cov
         f"&periods={periods}&datetime={datetime}"
     )
 
-    expected_json = load_json("response/data_position_one_location_with_one_parameter.json")
+    expected_json = load_json(
+        "response/data_position_one_location_with_one_parameter.json"
+    )
 
     assert actual_response.status_code == 200
     assert actual_response.headers["Content-Type"] == "application/prs.coverage+json"
@@ -230,10 +273,13 @@ def test_from_a_single_collection_get_a_single_location_with_period_range_filter
     periods = "PT6H/.."
     datetime = "2022-12-31T00:00:00Z"
     actual_response = requests.get(
-        url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}" f"?periods={periods}&datetime={datetime}"
+        url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}"
+        f"?periods={periods}&datetime={datetime}"
     )
 
-    expected_json = load_json("response/data_locations_one_location_with_multiple_parameters.json")
+    expected_json = load_json(
+        "response/data_locations_one_location_with_multiple_parameters.json"
+    )
 
     assert actual_response.status_code == 200
     assert actual_response.headers["Content-Type"] == "application/prs.coverage+json"
@@ -246,7 +292,8 @@ def test_from_a_single_collection_get_a_single_location_with_standard_name_filte
     # Use a standard name that exists in the system but not for this location.
     standard_names = "wind_from_direction"
     actual_response = requests.get(
-        url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}?standard_names={standard_names}"
+        url=BASE_URL
+        + f"/collections/{collection_id}/locations/{location_id}?standard_names={standard_names}"
     )
 
     expected_json = load_json("response/404_not_found.json")
@@ -264,14 +311,14 @@ def test_that_the_order_of_the_parameters_in_the_response_is_always_the_same():
     location_id = "0-20000-0-06260"
     parameters = " wind_from_direction:2.0:mean:PT10M,wind_speed:10:mean:PT10M ,  relative_humidity:2.0:mean:PT1M"
     first_response = requests.get(
-        url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}" f"?parameter-name={parameters}"
+        url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}"
+        f"?parameter-name={parameters}"
     )
 
-    parameters_2 = (
-        " relative_humidity:2.0:mean:PT1M, wind_speed:10:mean:PT10M,   wind_from_direction:2.0:mean:PT10M    "
-    )
+    parameters_2 = " relative_humidity:2.0:mean:PT1M, wind_speed:10:mean:PT10M,   wind_from_direction:2.0:mean:PT10M    "
     second_response = requests.get(
-        url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}" f"?parameter-name={parameters_2}"
+        url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}"
+        f"?parameter-name={parameters_2}"
     )
 
     assert first_response.status_code == 200
@@ -285,7 +332,8 @@ def test_from_a_single_collection_get_a_single_location_which_does_not_exist():
     location_id = "does-not-exist"
     parameters = "does-not-exist"
     actual_response = requests.get(
-        url=BASE_URL + f"/collections/{collection_id}/locations/{location_id}?parameter-name={parameters}"
+        url=BASE_URL
+        + f"/collections/{collection_id}/locations/{location_id}?parameter-name={parameters}"
     )
 
     expected_json = load_json("response/400_unknown_parameter_name.json")
@@ -304,7 +352,9 @@ def test_from_a_single_collection_get_a_single_position_with_one_parameter():
         f"?coords={coords}&parameter-name={parameters}&datetime={datetime}"
     )
 
-    expected_json = load_json("response/data_position_one_location_with_one_parameter.json")
+    expected_json = load_json(
+        "response/data_position_one_location_with_one_parameter.json"
+    )
 
     assert actual_response.status_code == 200
     assert actual_response.headers["Content-Type"] == "application/prs.coverage+json"
@@ -325,7 +375,9 @@ def test_from_a_single_collection_get_a_single_position_with_all_available_custo
         f"&methods={methods}&periods={periods}&datetime={datetime}"
     )
 
-    expected_json = load_json("response/data_position_one_location_with_one_parameter.json")
+    expected_json = load_json(
+        "response/data_position_one_location_with_one_parameter.json"
+    )
 
     assert actual_response.status_code == 200
     assert actual_response.headers["Content-Type"] == "application/prs.coverage+json"
@@ -343,7 +395,9 @@ def test_from_a_single_collection_get_a_single_position_with_repeating_level_int
         f"?coords={coords}&levels={levels}&periods={periods}&datetime={datetime}"
     )
 
-    expected_json = load_json("response/data_position_one_location_with_three_parameters.json")
+    expected_json = load_json(
+        "response/data_position_one_location_with_three_parameters.json"
+    )
 
     assert actual_response.status_code == 200
     assert actual_response.headers["Content-Type"] == "application/prs.coverage+json"
@@ -360,7 +414,9 @@ def test_from_a_single_collection_get_an_area_with_two_parameters():
         f"?coords={coords}&parameter-name={parameters}&datetime={datetime}"
     )
 
-    expected_json = load_json("response/data_area_two_locations_with_two_parameters.json")
+    expected_json = load_json(
+        "response/data_area_two_locations_with_two_parameters.json"
+    )
 
     assert actual_response.status_code == 200
     assert actual_response.headers["Content-Type"] == "application/prs.coverage+json"
@@ -377,7 +433,9 @@ def test_from_a_single_collection_get_an_area_with_standard_name_filtering():
         f"?coords={coords}&standard_names={standard_names}&datetime={datetime}"
     )
 
-    expected_json = load_json("response/data_area_two_locations_with_two_parameters.json")
+    expected_json = load_json(
+        "response/data_area_two_locations_with_two_parameters.json"
+    )
 
     assert actual_response.status_code == 200
     assert actual_response.headers["Content-Type"] == "application/prs.coverage+json"
@@ -394,7 +452,9 @@ def test_from_a_single_collection_get_an_area_with_parameter_with_wildcard():
         f"?coords={coords}&parameter-name={parameters}&datetime={datetime}"
     )
 
-    expected_json = load_json("response/data_area_one_location_with_parameter_with_wildcard.json")
+    expected_json = load_json(
+        "response/data_area_one_location_with_parameter_with_wildcard.json"
+    )
 
     assert actual_response.status_code == 200
     assert actual_response.headers["Content-Type"] == "application/prs.coverage+json"
@@ -405,7 +465,8 @@ def test_from_a_single_collection_get_an_area_with_non_existing_periods():
     collection_id = "observations"
     coords = "POLYGON((4.0 52.4, 4.7 52.4,4.7 52.6,4.0 52.6, 4.0 52.4))"
     actual_response = requests.get(
-        url=BASE_URL + f"/collections/{collection_id}/area" f"?coords={coords}&periods=PT7H/PT7H"
+        url=BASE_URL + f"/collections/{collection_id}/area"
+        f"?coords={coords}&periods=PT7H/PT7H"
     )
 
     expected_json = load_json("response/404_not_found.json")
@@ -417,7 +478,9 @@ def test_from_a_single_collection_get_an_area_with_non_existing_periods():
 def test_items_get_area():
     collection_id = "observations"
     bbox = "4.5,52.4,4.6,52.57"
-    actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items?bbox={bbox}")
+    actual_response = requests.get(
+        url=BASE_URL + f"/collections/{collection_id}/items?bbox={bbox}"
+    )
 
     assert actual_response.status_code == 200
     assert actual_response.headers["Content-Type"] == "application/geo+json"
@@ -428,7 +491,9 @@ def test_items_get_area():
 def test_items_get_id():
     collection_id = "observations"
     timeseries_id = "f0d06231a6508f281dbdaea0b5000220"
-    actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items/{timeseries_id}")
+    actual_response = requests.get(
+        url=BASE_URL + f"/collections/{collection_id}/items/{timeseries_id}"
+    )
 
     assert actual_response.status_code == 200
     assert actual_response.headers["Content-Type"] == "application/geo+json"
@@ -441,7 +506,8 @@ def test_items_get_area_with_one_parameter_name():
     bbox = "5.7,52.0,6.0,52.059"
     parameter_name = "air_temperature:2.0:minimum:PT12H"
     actual_response = requests.get(
-        url=BASE_URL + f"/collections/{collection_id}/items?bbox={bbox}&parameter-name={parameter_name}"
+        url=BASE_URL
+        + f"/collections/{collection_id}/items?bbox={bbox}&parameter-name={parameter_name}"
     )
 
     assert actual_response.status_code == 200
@@ -453,7 +519,9 @@ def test_items_get_area_with_one_parameter_name():
 def test_items_get_one_platform():
     collection_id = "observations"
     platform = "0-20000-0-06225"
-    actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items?platform={platform}")
+    actual_response = requests.get(
+        url=BASE_URL + f"/collections/{collection_id}/items?platform={platform}"
+    )
 
     assert actual_response.status_code == 200
     assert actual_response.headers["Content-Type"] == "application/geo+json"
@@ -478,7 +546,8 @@ def test_items_dont_set_bbox_or_platform():
     collection_id = "observations"
     parameter_name = "this_parameter_name_does_not_exist"
     actual_response = requests.get(
-        url=BASE_URL + f"/collections/{collection_id}/items" f"?parameter-name={parameter_name}"
+        url=BASE_URL + f"/collections/{collection_id}/items"
+        f"?parameter-name={parameter_name}"
     )
 
     assert actual_response.status_code == 400
@@ -489,8 +558,19 @@ def test_items_dont_set_bbox_or_platform():
 def test_items_no_data_return():
     collection_id = "observations"
     bbox = "-49.394531,22.593726,-36.386719,31.503629"
-    actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items" f"?bbox={bbox}")
+    actual_response = requests.get(
+        url=BASE_URL + f"/collections/{collection_id}/items" f"?bbox={bbox}"
+    )
 
     assert actual_response.status_code == 404
     expected_json = load_json("response/items_no_data_found.json")
     actual_response_is_expected_response(actual_response, expected_json)
+
+
+def test_get_dataset():
+    collection_id = "observations"
+    actual_response = requests.get(
+        url=BASE_URL + f"/collections/{collection_id}/dataset"
+    )
+
+    assert actual_response.status_code == 200
