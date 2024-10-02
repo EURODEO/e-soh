@@ -640,14 +640,14 @@ uint64_t NorBufr::fromBuffer(char *ext_buf, u_int64_t ext_buf_pos,
   if (n >= ext_buf_size) {
     lb.addLogEntry(
         LogEntry("No more BUFR messages", LogLevel::WARN, __func__, bufr_id));
-    return 0;
+    return n;
   }
 
   // Section0 length
   uint64_t slen = 8;
   uint8_t sec0[slen];
-  if (ext_buf_pos + slen < ext_buf_size) {
-    memcpy(sec0, ext_buf + ext_buf_pos, slen);
+  if (ext_buf_pos + n + slen < ext_buf_size) {
+    memcpy(sec0, ext_buf + ext_buf_pos + n, slen);
   }
 
   len = NorBufrIO::getBytes(sec0 + 4, 3);
@@ -660,8 +660,8 @@ uint64_t NorBufr::fromBuffer(char *ext_buf, u_int64_t ext_buf_pos,
   buffer = new uint8_t[len];
   memcpy(buffer, sec0, slen);
 
-  if (ext_buf_pos + len <= ext_buf_size) {
-    memcpy(buffer + slen, ext_buf + ext_buf_pos + slen, len - slen);
+  if (ext_buf_pos + n + len <= ext_buf_size) {
+    memcpy(buffer + slen, ext_buf + ext_buf_pos + n + slen, len - slen);
   }
 
   int offset = checkBuffer();
