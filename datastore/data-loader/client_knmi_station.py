@@ -6,6 +6,7 @@ import os
 import re
 import uuid
 import isodate
+from datetime import timedelta
 from hashlib import md5
 from multiprocessing import cpu_count
 from pathlib import Path
@@ -34,16 +35,10 @@ def iso_8601_duration_to_seconds(period: str) -> int:
     except ISO8601Error:
         raise ValueError(f"Invalid ISO 8601 duration: {period}")
 
-    if isinstance(period, isodate.duration.Duration):
-        # Years and months need special handling
-        years_in_seconds = duration.years * 31556926  # Seconds in year
-        months_in_seconds = duration.months * 2629744  # Seconds in month
-        days_in_seconds = duration.tdelta.days * 24 * 60 * 60
-        seconds_in_seconds = duration.tdelta.seconds
-        total_seconds = years_in_seconds + months_in_seconds + days_in_seconds + seconds_in_seconds
-    else:
-        # It's a simple timedelta, so just get the total seconds
+    if isinstance(duration, timedelta):
         total_seconds = duration.total_seconds()
+    else:
+        raise ValueError("Duration not convertable to seconds.")
 
     return int(total_seconds)
 

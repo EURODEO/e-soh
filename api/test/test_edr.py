@@ -399,14 +399,14 @@ def test_get_data_with_invalid_levels_repeating_interval():
         assert response.json() == {"detail": "Invalid levels repeating-interval: R10/20/100/10"}
 
 
-def test_get_data_with_period_range_without_existing_data():
+def test_get_data_with_lowercase_period_range_without_existing_data():
     with patch("routers.edr.get_obs_request") as mock_get_obs_request:
 
         test_data = load_json("test/test_data/test_empty_proto.json")
 
         mock_get_obs_request.return_value = create_mock_obs_response(test_data)
 
-        response = client.get("/collections/observations/position?coords=POINT(5.179705 52.0988218)&periods=pt3h/PT6H")
+        response = client.get("/collections/observations/position?coords=POINT(5.179705 52.0988218)&periods=p1m/P1Y")
 
         assert response.status_code == 404
         assert response.json() == {"detail": "Requested data not found."}
