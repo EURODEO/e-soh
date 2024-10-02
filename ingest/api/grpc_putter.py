@@ -1,5 +1,6 @@
 import logging
 import os
+import json
 
 from functools import cache
 
@@ -12,7 +13,29 @@ logger = logging.getLogger(__name__)
 
 @cache
 def get_grpc_stub():
-    channel = grpc.aio.insecure_channel(f"{os.getenv('DSHOST', 'store')}:{os.getenv('DSPORT', '50050')}")
+    options = []
+    grpc_config = json.dumps(
+        {
+            "methodConfig": [
+                {
+                    "name": [{}],
+                    "retryPolicy": {
+                        "maxAttempts": 5,
+                        "initialBackoff": "0.5s",
+                        "maxBackoff": "8s",
+                        "backoffMultiplier": 2,
+                        "retryableStatusCodes": ["INTERNAL", "UNAVAILABLE", "OUT_OF_RANGE"],
+                    },
+                }
+            ]
+        }
+    )
+    options.append(("grpc.enable_retries", 1))
+    options.append(("grpc.service_config", grpc_config))
+    channel = grpc.aio.insecure_channel(
+        f"{os.getenv('DSHOST', 'store')}:{os.getenv('DSPORT', '50050')}", options=options
+    )
+
     return dstore_grpc.DatastoreStub(channel)
 
 
@@ -23,4 +46,4 @@ async def putObsRequest(put_obs_request):
         logger.debug("RPC call succeeded.")
     except grpc.aio.AioRpcError as grpc_error:
         logger.critical(f"RPC call failed: {grpc_error.code()}\n{grpc_error.details()}")
-        raise HTTPException(detail=grpc_error.details(), status_code=400)
+        raise HTTPException(detail=f"GRPC_ERROR:{grpc_error.details()}", status_code=400)
