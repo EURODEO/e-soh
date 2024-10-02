@@ -494,3 +494,10 @@ def test_items_no_data_return():
     assert actual_response.status_code == 404
     expected_json = load_json("response/items_no_data_found.json")
     actual_response_is_expected_response(actual_response, expected_json)
+
+
+def test_get_dataset():
+    collection_id = "observations"
+    actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/dataset")
+
+    assert actual_response.status_code == 200
