@@ -240,7 +240,7 @@ def iso_8601_duration_to_seconds(period: str) -> int:
     except ISO8601Error:
         raise ValueError(f"Invalid ISO 8601 duration: {period}")
 
-    if isinstance(period, isodate.duration.Duration):
+    if isinstance(duration, isodate.duration.Duration):
         # Years and months need special handling
         years_in_seconds = duration.years * 31556926  # Seconds in year
         months_in_seconds = duration.months * 2629744  # Seconds in month
