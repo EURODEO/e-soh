@@ -306,8 +306,6 @@ message GetTSAGResponse {
 
 message GetExtentsRequest {
   // No parameters
-
-  // --- END string metadata (handleable with reflection) -------------------------
 }
 
 message GetExtentsResponse {
