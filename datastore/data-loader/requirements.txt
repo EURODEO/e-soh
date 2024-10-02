@@ -12,6 +12,8 @@ grpcio==1.62.2
     # via grpcio-tools
 grpcio-tools==1.62.2
     # via -r ./requirements.in
+isodate==0.6.1
+    # via -r ./requirements.in
 netcdf4==1.6.5
     # via -r ./requirements.in
 numpy==1.26.4
@@ -31,7 +33,9 @@ python-dateutil==2.9.0.post0
 pytz==2024.1
     # via pandas
 six==1.16.0
-    # via python-dateutil
+    # via
+    #   isodate
+    #   python-dateutil
 tzdata==2024.1
     # via pandas
 xarray==2023.12.0

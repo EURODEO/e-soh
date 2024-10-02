@@ -5,7 +5,9 @@ import (
 	"datastore/common"
 	"datastore/datastore"
 	"fmt"
+	"log"
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 
@@ -23,7 +25,7 @@ func (sbe *PostgreSQL) Description() string {
 	return "PostgreSQL database"
 }
 
-// setTSUniqueMainCols extracts into tsStringMdataPBNamesUnique the columns comprising constraint
+// setTSUniqueMainCols extracts into tsMdataPBNamesUnique the columns comprising constraint
 // unique_main in table time_series.
 //
 // Returns nil upon success, otherwise error.
@@ -68,10 +70,10 @@ func (sbe *PostgreSQL) setTSUniqueMainCols() error {
 		return fmt.Errorf("'%s' didn't match regexp pattern '%s'", result, pattern)
 	}
 
-	// create tsStringMdataPBNamesUnique
-	tsStringMdataPBNamesUnique = strings.Split(matches[1], ",")
-	for i := 0; i < len(tsStringMdataPBNamesUnique); i++ {
-		tsStringMdataPBNamesUnique[i] = strings.TrimSpace(tsStringMdataPBNamesUnique[i])
+	// create tsMdataPBNamesUnique
+	tsMdataPBNamesUnique = strings.Split(matches[1], ",")
+	for i := 0; i < len(tsMdataPBNamesUnique); i++ {
+		tsMdataPBNamesUnique[i] = strings.TrimSpace(tsMdataPBNamesUnique[i])
 	}
 
 	return nil
@@ -165,13 +167,23 @@ func NewPostgreSQL() (*PostgreSQL, error) {
 	setUpsertTSInsertCmd()
 	setUpsertTSSelectCmd()
 
+	// cleanup the database at regular intervals
+	ticker := time.NewTicker(cleanupInterval)
+	go func() {
+		for range ticker.C {
+			if err = cleanup(sbe.Db); err != nil {
+				log.Printf("cleanup() failed: %v", err)
+			}
+		}
+	}()
+
 	return sbe, nil
 }
 
 // getTSColNames returns time series metadata column names.
 func getTSColNames() []string {
 
-	// initialize cols with non-string metadata
+	// initialize cols with non-reflectable metadata
 	cols := []string{
 		"link_href",
 		"link_rel",
@@ -180,7 +192,10 @@ func getTSColNames() []string {
 		"link_title",
 	}
 
-	// complete cols with string metadata (handleable with reflection)
+	// extend cols with reflectable metadata of type int64
+	cols = append(cols, tsInt64MdataPBNames...)
+
+	// complete cols with reflectable metadata of type string
 	cols = append(cols, tsStringMdataPBNames...)
 
 	return cols
@@ -189,7 +204,7 @@ func getTSColNames() []string {
 // getTSColNamesUnique returns the fields defined in constraint unique_main in table
 // time_series.
 func getTSColNamesUnique() []string {
-	return tsStringMdataPBNamesUnique
+	return tsMdataPBNamesUnique
 }
 
 // getTSColNamesUniqueCompl returns the complement of the set of fields defined in constraint
@@ -244,11 +259,124 @@ func createSetFilter(colName string, vals []string) string {
 	return fmt.Sprintf("(%s IN (%s))", colName, strings.Join(vals, ","))
 }
 
-// addWhereCondMatchAnyPattern appends to whereExpr an expression of the form
+// addWhereCondMatchAnyPatternForInt64 appends to whereExpr an expression of the form
 // "(cond1 OR cond2 OR ... OR condN)" where condi tests if the ith pattern in patterns matches
-// colName. Matching is case-insensitive and an asterisk in a pattern matches zero or more
-// arbitrary characters. The patterns with '*' replaced with '%' are appended to phVals.
-func addWhereCondMatchAnyPattern(
+// colName assumed to be of type int64/BIGINT. A pattern of the form <int64>/<int64> generates
+// a range filter directly on the int type where the from and to values are appended to phVals.
+// Otherwise the function generates an expression where the pattern is matched agains a text-version
+// of the int type in a case-insensitive way. In this case an asterisk in a pattern matches zero or
+// more arbitrary characters, and patterns with '*' replaced with '%' are appended to phVals.
+func addWhereCondMatchAnyPatternForInt64(
+	colName string, patterns []string, whereExpr *[]string, phVals *[]interface{}) {
+
+	if (patterns == nil) || (len(patterns) == 0) {
+		return // nothing to do
+	}
+
+	// getInt64RangeBoth checks if ptn is of the form '<int64>/<int64>', in which case
+	// (lo, hi, true) is returned, otherwise (..., ..., false) is returned.
+	getInt64RangeBoth := func(ptn string) (int64, int64, bool) {
+
+		sm := int64RangeREBoth.FindStringSubmatch(strings.TrimSpace(ptn))
+		if len(sm) == 3 {
+			lo, err := strconv.ParseInt(sm[1], 10, 64)
+			if err != nil {
+				return -1, -1, false
+			}
+
+			hi, err := strconv.ParseInt(sm[2], 10, 64)
+			if err != nil {
+				return -1, -1, false
+			}
+
+			return lo, hi, true
+		}
+
+		return -1, -1, false
+	}
+
+	// getInt64RangeLo checks if ptn is of the form '<int64>/..', in which case (lo, true) is
+	// returned, otherwise (..., false) is returned.
+	getInt64RangeLo := func(ptn string) (int64, bool) {
+
+		sm := int64RangeRELo.FindStringSubmatch(strings.TrimSpace(ptn))
+		if len(sm) == 2 {
+			lo, err := strconv.ParseInt(sm[1], 10, 64)
+			if err != nil {
+				return -1, false
+			}
+
+			return lo, true
+		}
+
+		return -1, false
+	}
+
+	// getInt64RangeHi checks if ptn is of the form '../<int64>', in which case (hi, true) is
+	// returned, otherwise (..., false) is returned.
+	getInt64RangeHi := func(ptn string) (int64, bool) {
+
+		sm := int64RangeREHi.FindStringSubmatch(strings.TrimSpace(ptn))
+		if len(sm) == 2 {
+			hi, err := strconv.ParseInt(sm[1], 10, 64)
+			if err != nil {
+				return -1, false
+			}
+
+			return hi, true
+		}
+
+		return -1, false
+	}
+
+	// getInt64RangeNone checks if ptn is of the form '../..', in which case true is returned,
+	// otherwise false is returned.
+	getInt64RangeNone := func(ptn string) bool {
+
+		sm := int64RangeRENone.FindStringSubmatch(strings.TrimSpace(ptn))
+		return len(sm) == 1
+	}
+
+	whereExprOR := []string{}
+
+	index := len(*phVals)
+	for _, ptn := range patterns {
+		if lo, hi, ok := getInt64RangeBoth(ptn); ok { // both lower and upper limit
+			index += 2
+			expr := fmt.Sprintf("((%s >= $%d) AND (%s <= $%d))", colName, index-1, colName, index)
+			whereExprOR = append(whereExprOR, expr)
+			*phVals = append(*phVals, lo, hi)
+		} else if lo, ok := getInt64RangeLo(ptn); ok { // no upper limit
+			index++
+			expr := fmt.Sprintf("(%s >= $%d)", colName, index)
+			whereExprOR = append(whereExprOR, expr)
+			*phVals = append(*phVals, lo)
+		} else if hi, ok := getInt64RangeHi(ptn); ok { // no lower limit
+			index++
+			expr := fmt.Sprintf("(%s <= $%d)", colName, index)
+			whereExprOR = append(whereExprOR, expr)
+			*phVals = append(*phVals, hi)
+		} else if ok := getInt64RangeNone(ptn); ok {
+			// disable int range filtering, but note that we still don't want to fall
+			// back to regular string matching!
+			whereExprOR = append(whereExprOR, "TRUE")
+		} else { // fall back to regular string matching
+			index++
+			expr := fmt.Sprintf("(lower(%s::text) LIKE lower($%d))", colName, index)
+			whereExprOR = append(whereExprOR, expr)
+			*phVals = append(*phVals, strings.ReplaceAll(ptn, "*", "%"))
+		}
+	}
+
+	*whereExpr = append(*whereExpr, fmt.Sprintf("(%s)", strings.Join(whereExprOR, " OR ")))
+}
+
+// addWhereCondMatchAnyPatternForString appends to whereExpr an expression of the form
+// "(cond1 OR cond2 OR ... OR condN)" where condi tests if the ith pattern in patterns matches
+// colName assumed to be of type string/TEXT. Matching is case-insensitive and an asterisk in a
+// pattern matches zero or more arbitrary characters. The patterns with '*' replaced with '%' are
+// appended to phVals.
+func addWhereCondMatchAnyPatternForString(
 	colName string, patterns []string, whereExpr *[]string, phVals *[]interface{}) {
 
 	if (patterns == nil) || (len(patterns) == 0) {
@@ -268,8 +396,9 @@ func addWhereCondMatchAnyPattern(
 	*whereExpr = append(*whereExpr, fmt.Sprintf("(%s)", strings.Join(whereExprOR, " OR ")))
 }
 
-// getMdataFilter derives from stringFilterInfos the expression used in a WHERE clause for
-// "match any" filtering on a set of attributes.
+// getInt64MdataFilterFromFilterInfos derives from filterInfos the expression used in a WHERE
+// clause for "match any" filtering on a set of attributes. The whereExprGenerator defines the
+// expression at the lowest level, and typically depends on the type (typically int64 or string).
 //
 // The expression will be of the form
 //
@@ -282,13 +411,14 @@ func addWhereCondMatchAnyPattern(
 // Values to be used for query placeholders are appended to phVals.
 //
 // Returns expression.
-func getMdataFilter(stringFilterInfos []stringFilterInfo, phVals *[]interface{}) string {
+func getMdataFilterFromFilterInfos(
+	filterInfos []filterInfo, phVals *[]interface{},
+	whereExprGenerator func(string, []string, *[]string, *[]interface{})) string {
 
 	whereExprAND := []string{}
 
-	for _, sfi := range stringFilterInfos {
-		addWhereCondMatchAnyPattern(
-			sfi.colName, sfi.patterns, &whereExprAND, phVals)
+	for _, sfi := range filterInfos {
+		whereExprGenerator(sfi.colName, sfi.patterns, &whereExprAND, phVals)
 	}
 
 	whereExpr := "TRUE" // by default, don't filter
@@ -299,78 +429,116 @@ func getMdataFilter(stringFilterInfos []stringFilterInfo, phVals *[]interface{})
 	return whereExpr
 }
 
-// getStringMdataFilter creates from 'filter' the string metadata filter used for querying
-// extentions.
-//
+// getMdataFilter creates from 'filter' the metadata filter used for querying observations or
+// extensions.
 // Values to be used for query placeholders are appended to phVals.
+// pbType2table defines field->table mapping for the type in question.
+// whereExprGenerator defines the expression at the lowest level for the type in question.
 //
-// Returns upon success (string metadata filter used in a 'WHERE ... AND ...' clause (possibly
-// just 'TRUE'), nil), otherwise (..., error).
-func getStringMdataFilter(
-	filter map[string]*datastore.Strings, phVals *[]interface{}) (string, error) {
+// Returns a metadata filter for a 'WHERE ... AND ...' clause (possibly just 'TRUE').
+func getMdataFilter(
+	filter map[string]*datastore.Strings, phVals *[]interface{},
+	pbType2table map[string]string,
+	whereExprGenerator func(string, []string, *[]string, *[]interface{})) string {
 
-	stringFilterInfos := []stringFilterInfo{}
+	filterInfos := []filterInfo{}
 
 	for fieldName, ptnObj := range filter {
-		tableName, err := getTableNameFromField(fieldName)
-		if err != nil {
-			return "", fmt.Errorf("getTableNameFromField() failed: %v", err)
-		}
-		patterns := ptnObj.GetValues()
-		if len(patterns) > 0 {
-			stringFilterInfos = append(stringFilterInfos, stringFilterInfo{
-				colName:  fmt.Sprintf("%s.%s", tableName, fieldName),
-				patterns: patterns,
-			})
+		tableName, found := pbType2table[fieldName]
+		if found {
+			patterns := ptnObj.GetValues()
+			if len(patterns) > 0 {
+				filterInfos = append(filterInfos, filterInfo{
+					colName:  fmt.Sprintf("%s.%s", tableName, fieldName),
+					patterns: patterns,
+				})
+			}
 		}
 	}
 
-	return getMdataFilter(stringFilterInfos, phVals), nil
+	return getMdataFilterFromFilterInfos(filterInfos, phVals, whereExprGenerator)
+}
+
+// getInt64MdataFilter is a convenience wrapper around getMdataFilter for type int64.
+func getInt64MdataFilter(filter map[string]*datastore.Strings, phVals *[]interface{}) string {
+	return getMdataFilter(filter, phVals, pbInt642table, addWhereCondMatchAnyPatternForInt64)
+}
+
+// getStringMdataFilter is a convenience wrapper around getMdataFilter for type string.
+func getStringMdataFilter(filter map[string]*datastore.Strings, phVals *[]interface{}) string {
+	return getMdataFilter(filter, phVals, pbString2table, addWhereCondMatchAnyPatternForString)
 }
 
 // cleanup performs various cleanup tasks, like removing old observations from the database.
 func cleanup(db *sql.DB) error {
 
-	// start transaction
-	tx, err := db.Begin()
-	if err != nil {
-		return fmt.Errorf("db.Begin() failed: %v", err)
+	log.Println("db cleanup started")
+	start := time.Now()
+
+	var err error
+
+	// --- BEGIN define removal functions ----------------------------------
+
+	rmObsOutsideValidRange := func() error {
+
+		loTime, hiTime := common.GetValidTimeRange()
+		cmd := fmt.Sprintf(`
+			DELETE FROM observation
+			WHERE (obstime_instant < to_timestamp(%d)) OR (obstime_instant > to_timestamp(%d))
+		`, loTime.Unix(), hiTime.Unix())
+
+		_, err = db.Exec(cmd)
+		if err != nil {
+			return fmt.Errorf(
+				"tx.Exec() failed when removing observations outside valid range: %v", err)
+		}
+
+		return nil
 	}
-	defer tx.Rollback()
+
+	rmUnrefRows := func(tableName, fkName string) error {
+
+		cmd := fmt.Sprintf(`
+			DELETE FROM %s t
+			WHERE NOT EXISTS (
+				SELECT FROM observation WHERE %s = t.id
+			)
+		`, tableName, fkName)
+
+		_, err = db.Exec(cmd)
+		if err != nil {
+			return fmt.Errorf(
+				"tx.Exec() failed when removing unreferenced rows from %s: %v", tableName, err)
+		}
+
+		return nil
+	}
+
+	// --- END define removal functions ----------------------------------
+
+	// --- BEGIN apply removal functions ------------------------------------------
 
 	// remove observations outside valid range
-	loTime, hiTime := common.GetValidTimeRange()
-	cmd := fmt.Sprintf(`
-		DELETE FROM observation
-		WHERE (obstime_instant < to_timestamp(%d))
-		   OR (obstime_instant > to_timestamp(%d))
-	`, loTime.Unix(), hiTime.Unix())
-	_, err = tx.Exec(cmd)
+	err = rmObsOutsideValidRange()
 	if err != nil {
-		return fmt.Errorf("tx.Exec() failed: %v", err)
+		return fmt.Errorf("rmObsOutsideValidRange() failed: %v", err)
 	}
 
-	// DELETE FROM time_series WHERE <no FK refs from observation anymore> ... TODO!
-	// DELETE FROM geo_points WHERE <no FK refs from observation anymore> ... TODO!
-
-	// commit transaction
-	if err = tx.Commit(); err != nil {
-		return fmt.Errorf("tx.Commit() failed: %v", err)
+	// remove time series that are no longer referenced by any observation
+	err = rmUnrefRows("time_series", "ts_id")
+	if err != nil {
+		return fmt.Errorf("rmUnrefRows(time_series) failed: %v", err)
 	}
 
-	lastCleanupTime = time.Now()
-
-	return nil
-}
-
-// considerCleanup considers if cleanup() should be called.
-func considerCleanup(db *sql.DB) error {
-	// call cleanup() if at least cleanupInterval has passed since the last time it was called
-	if time.Since(lastCleanupTime) > cleanupInterval {
-		if err := cleanup(db); err != nil {
-			return fmt.Errorf("cleanup() failed: %v", err)
-		}
+	// remove geo points that are no longer referenced by any observation
+	err = rmUnrefRows("geo_point", "geo_point_id")
+	if err != nil {
+		return fmt.Errorf("rmUnrefRows(geo_point) failed: %v", err)
 	}
+
+	// --- END apply removal functions ------------------------------------------
+
+	log.Printf("db cleanup complete after %v", time.Since(start))
 
 	return nil
 }
