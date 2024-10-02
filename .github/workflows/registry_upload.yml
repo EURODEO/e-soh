@@ -72,7 +72,7 @@ jobs:
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
             type=ref,event=tag,enable={{is_default_branch}}
             type=semver,pattern={{version}}
-            
+
 
       - name: Install just
         run: ./ci/scripts/install-just.sh
