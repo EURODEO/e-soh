@@ -1,14 +1,14 @@
-from __future__ import annotations
 import json
+import isodate
 
 from pydantic.functional_validators import field_validator
 
 from typing import List
 from typing import Literal
 from typing import Optional
-from pydantic.types import StringConstraints
-from typing_extensions import Annotated
 from dateutil import parser
+from datetime import timedelta
+from isodate import ISO8601Error
 
 from pydantic import BaseModel
 from pydantic import Field
@@ -28,14 +28,14 @@ with open("api/std_name_units.json") as f:
     std_name_unit_mapping = json.load(f)
 
 
-class Geometry(BaseModel):
-    type: Literal["Point"]
-    coordinates: Coordinate
-
-
 class Coordinate(BaseModel):
     lat: float
     lon: float
+
+
+class Geometry(BaseModel):
+    type: Literal["Point"]
+    coordinates: Coordinate
 
 
 class Integrity(BaseModel):
@@ -61,7 +61,7 @@ class Content(BaseModel):
     unit: str = Field(..., description="Unit for the data")
 
     @model_validator(mode="after")
-    def check_standard_name_match(self) -> Content:
+    def check_standard_name_match(self):
         if self.standard_name in standard_names_alias:
             self.standard_name = standard_names_alias[self.standard_name]
 
@@ -70,7 +70,7 @@ class Content(BaseModel):
         return self
 
     @model_validator(mode="after")
-    def standardize_units(self) -> Content:
+    def standardize_units(self):
         if self.unit == std_name_unit_mapping[self.standard_name]["unit"]:
             return self
         elif (
@@ -227,22 +227,18 @@ class Properties(BaseModel):
         None,
         description="Controlled vocabulary for the names used in the 'instrument' attribute.",
     )
-    level: str = Field(
+    level: str | int | float = Field(
         ...,
         description=("Instrument level above ground in meters."),
     )
-    period: Annotated[
-        str,
-        StringConstraints(
-            pattern=r"^P(\d+Y)?(\d+M)?(\d+W)?(\d+D)?(T(\d+H)?(\d+M)?(\d+(\.\d+)?S)?)?$",
-        ),
-    ] = Field(
+    period: str = Field(
         ...,
         description=(
             "Aggregation period for the measurement. Must be provided in ISO8601 duration format."
             "https://www.iso.org/iso-8601-date-and-time-format.html"
         ),
     )
+    period_int: int = Field(None, exclude_from_schema=True)
     function: Literal[
         "point",
         "sum",
@@ -305,6 +301,11 @@ class Properties(BaseModel):
         return period
 
     @model_validator(mode="after")
+    def convert_to_cm(self):
+        self.level = int(float(self.level) * 100)
+        return self
+
+    @model_validator(mode="after")
     def check_datetime_iso(self) -> "Properties":
         try:
             dt = parser.isoparse(self.datetime)
@@ -318,15 +319,7 @@ class Properties(BaseModel):
         return self
 
     @model_validator(mode="after")
-    def check_level_int_or_float(self) -> Properties:
-        try:
-            self.level = str(float(self.level))
-        except ValueError:
-            raise ValueError(f"Input level(str), '{self.level}', doesn't represent a valid integer or float")
-        return self
-
-    @model_validator(mode="after")
-    def validate_wigos_id(self) -> Properties:
+    def validate_wigos_id(self):
 
         blocks = self.platform.split("-")
         assert len(blocks) == 4, f"Not enough blocks in input 'platform', '{self.platform}'"
@@ -337,6 +330,22 @@ class Properties(BaseModel):
 
         assert 0 < len(blocks[-1]) <= 16, f"In input 'platform', '{self.platform}', last block of WIGOS is to long"
 
+        return self
+
+    @model_validator(mode="after")
+    def transform_period_to_seconds(self):
+        try:
+            duration = isodate.parse_duration(self.period)
+        except ISO8601Error:
+            raise ValueError(f"Invalid ISO 8601 duration: {self.period}")
+        if isinstance(duration, timedelta):
+            # It's a simple timedelta, so just get the total seconds
+            total_seconds = duration.total_seconds()
+
+        else:
+            raise ValueError("Duration not convertable to seconds.")
+
+        self.period_int = int(total_seconds)
         return self
 
 

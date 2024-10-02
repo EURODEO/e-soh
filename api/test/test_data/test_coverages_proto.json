@@ -5,9 +5,9 @@
                 "platform": "0-20000-0-06257",
                 "standard_name": "air_temperature",
                 "unit": "degrees Celsius",
-                "level": "2.0",
+                "level": 200,
                 "function": "mean",
-                "period": "PT1M",
+                "period": 60,
                 "parameter_name": "air_temperature:2.0:mean:PT1M",
                 "timeseries_id": "d036b10ac4f6e62049b9a496f04e0a82"
             },
@@ -27,9 +27,9 @@
                 "platform": "0-20000-0-06269",
                 "standard_name": "air_temperature",
                 "unit": "degrees Celsius",
-                "level": "2.0",
+                "level": 200,
                 "function": "mean",
-                "period": "PT1M",
+                "period": 60,
                 "parameter_name": "air_temperature:2.0:mean:PT1M",
                 "timeseries_id": "d036b10ac4f6e62049b9a496f04e0a86"
             },

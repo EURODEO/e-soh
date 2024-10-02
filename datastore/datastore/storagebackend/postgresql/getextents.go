@@ -5,80 +5,79 @@ import (
 	"datastore/common"
 	"datastore/datastore"
 	"fmt"
-	"time"
 
 	_ "github.com/lib/pq"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-// getTemporalExtent gets the current temporal extent of all observations in the storage.
-func getTemporalExtent(db *sql.DB) (*datastore.TimeInterval, error) {
-	query := "SELECT min(obstime_instant), max(obstime_instant) FROM observation"
-	row := db.QueryRow(query)
-
-	var start, end time.Time
-
-	err := row.Scan(&start, &end)
-	if err != nil {
-		return nil, fmt.Errorf("row.Scan() failed: %v", err)
-	}
+// createExtQueryVals creates from request values used for querying extensions.
+//
+// Values to be used for query placeholders are appended to phVals.
+//
+// Returns:
+// - time filter used in a 'WHERE ... AND ...' clause
+// - filter for reflectable metadata fields of type int64 ... ditto
+// - filter for reflectable metadata fields of type string ... ditto
+func createExtQueryVals(request *datastore.GetExtentsRequest, phVals *[]interface{}) (
+	string, string, string) {
 
 	loTime, hiTime := common.GetValidTimeRange()
-	if start.Before(loTime) {
-		start = loTime
-	}
-	if end.After(hiTime) {
-		end = hiTime
-	}
+	timeFilter := fmt.Sprintf(`
+		((obstime_instant >= to_timestamp(%d)) AND (obstime_instant <= to_timestamp(%d)))
+	`, loTime.Unix(), hiTime.Unix())
 
-	return &datastore.TimeInterval{
-		Start: timestamppb.New(start),
-		End:   timestamppb.New(end),
-	}, nil
-}
+	int64MdataFilter := getInt64MdataFilter(request.GetFilter(), phVals)
+	stringMdataFilter := getStringMdataFilter(request.GetFilter(), phVals)
 
-// getSpatialExtent gets the current horizontally spatial extent of all observations in the storage.
-func getSpatialExtent(db *sql.DB) (*datastore.BoundingBox, error) {
-	query := `
-		SELECT ST_XMin(ext), ST_YMin(ext), ST_XMax(ext), ST_YMax(ext)
-		FROM (SELECT ST_Extent(point::geometry) AS ext FROM geo_point) t
-	`
-	row := db.QueryRow(query)
-
-	var xmin, ymin, xmax, ymax float64
-
-	err := row.Scan(&xmin, &ymin, &xmax, &ymax)
-	if err != nil {
-		return nil, fmt.Errorf("row.Scan() failed: %v", err)
-	}
-
-	return &datastore.BoundingBox{
-		Left:   xmin,
-		Bottom: ymin,
-		Right:  xmax,
-		Top:    ymax,
-	}, nil
+	return timeFilter, int64MdataFilter, stringMdataFilter
 }
 
 // GetExtents ... (see documentation in StorageBackend interface)
-func (sbe *PostgreSQL) GetExtents(_ *datastore.GetExtentsRequest) (
+func (sbe *PostgreSQL) GetExtents(request *datastore.GetExtentsRequest) (
 	*datastore.GetExtentsResponse, codes.Code, string) {
 
-	var err error
+	// get values needed for query
+	phVals := []interface{}{} // placeholder values
+	timeFilter, int64MdataFilter, stringMdataFilter := createExtQueryVals(request, &phVals)
 
-	temporalExtent, err := getTemporalExtent(sbe.Db)
-	if err != nil {
-		return nil, codes.Internal, fmt.Sprintf("getTemporalExtent() failed: %v", err)
-	}
+	query := fmt.Sprintf(`
+		SELECT temp_min, temp_max,
+			ST_XMin(spat_ext), ST_YMin(spat_ext), ST_XMax(spat_ext), ST_YMax(spat_ext)
+		FROM (
+			SELECT min(obstime_instant) AS temp_min, max(obstime_instant) AS temp_max,
+				ST_Extent(point::geometry) AS spat_ext
+			FROM observation
+			JOIN time_series ON observation.ts_id = time_series.id
+			JOIN geo_point ON observation.geo_point_id = geo_point.id
+			WHERE %s AND %s AND %s
+		) t
+	`, timeFilter, int64MdataFilter, stringMdataFilter)
 
-	spatialExtent, err := getSpatialExtent(sbe.Db)
-	if err != nil {
-		return nil, codes.Internal, fmt.Sprintf("getSpatialExtent() failed: %v", err)
+	row := sbe.Db.QueryRow(query, phVals...)
+
+	var (
+		start, end             sql.NullTime
+		xmin, ymin, xmax, ymax float64
+	)
+
+	err := row.Scan(&start, &end, &xmin, &ymin, &xmax, &ymax)
+	if !start.Valid { // indicates no matching rows found!
+		return nil, codes.NotFound, "no matching data to compute extensions for"
+	} else if err != nil {
+		return nil, codes.Internal, fmt.Sprintf("row.Scan() failed: %v", err)
 	}
 
 	return &datastore.GetExtentsResponse{
-		TemporalExtent: temporalExtent,
-		SpatialExtent:  spatialExtent,
+		TemporalExtent: &datastore.TimeInterval{
+			Start: timestamppb.New(start.Time),
+			End:   timestamppb.New(end.Time),
+		},
+		SpatialExtent: &datastore.BoundingBox{
+			Left:   xmin,
+			Bottom: ymin,
+			Right:  xmax,
+			Top:    ymax,
+		},
 	}, codes.OK, ""
 }

@@ -23,16 +23,16 @@ def test_single_parameter_convert():
     assert type(coverage_collection) is Coverage
 
     # Assert that the coverage collection has the correct parameter
-    assert "wind_speed:10:mean:PT10M" in coverage_collection.parameters.keys()
+    assert "wind_speed:10.0:mean:PT10M" in coverage_collection.parameters.keys()
 
     # Check that correct values exist in the coverage collection
-    assert 9.21 in coverage_collection.ranges["wind_speed:10:mean:PT10M"].values
+    assert 9.21 in coverage_collection.ranges["wind_speed:10.0:mean:PT10M"].values
 
     assert len(coverage_collection.domain.axes.t.values) == 7
 
     # Number of time points should match with the number of observation values
     assert len(coverage_collection.domain.axes.t.values) == len(
-        coverage_collection.ranges["wind_speed:10:mean:PT10M"].values
+        coverage_collection.ranges["wind_speed:10.0:mean:PT10M"].values
     )
 
     # compare the coverage collection with the compare data
@@ -57,13 +57,13 @@ def test_multiple_parameter_convert():
 
     # Check that the coverage collection has the correct parameters
     assert (
-        set(["wind_from_direction:2.0:mean:PT10M", "wind_speed:10:mean:PT10M", "relative_humidity:2.0:mean:PT1M"])
+        set(["wind_from_direction:2.0:mean:PT10M", "wind_speed:10.0:mean:PT10M", "relative_humidity:2.0:mean:PT1M"])
         == coverage_collection.parameters.keys()
     )
 
     # Check that correct values exist in the coverage collection
     assert 230.7 in coverage_collection.ranges["wind_from_direction:2.0:mean:PT10M"].values
-    assert 9.19 in coverage_collection.ranges["wind_speed:10:mean:PT10M"].values
+    assert 9.19 in coverage_collection.ranges["wind_speed:10.0:mean:PT10M"].values
     assert 88.0 in coverage_collection.ranges["relative_humidity:2.0:mean:PT1M"].values
 
     coverage_collection_json = json.loads(coverage_collection.model_dump_json(exclude_none=True))

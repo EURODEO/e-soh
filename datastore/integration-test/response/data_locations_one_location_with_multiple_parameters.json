@@ -43,15 +43,15 @@
         ]
     },
     "parameters": {
-        "air_temperature:0:minimum:PT12H": {
+        "air_temperature:0.0:minimum:PT12H": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 0m, aggregated over PT12H with method 'minimum'"
+                "en": "air_temperature at 0.0m, aggregated over PT12H with method 'minimum'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:0:minimum:PT12H"
+                    "en": "air_temperature:0.0:minimum:PT12H"
                 }
             },
             "unit": {
@@ -66,15 +66,15 @@
             "rodeo:standard_name": "air_temperature",
             "rodeo:level": 0.0
         },
-        "air_temperature:0:minimum:PT14H": {
+        "air_temperature:0.0:minimum:PT14H": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 0m, aggregated over PT14H with method 'minimum'"
+                "en": "air_temperature at 0.0m, aggregated over PT14H with method 'minimum'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:0:minimum:PT14H"
+                    "en": "air_temperature:0.0:minimum:PT14H"
                 }
             },
             "unit": {
@@ -89,15 +89,15 @@
             "rodeo:standard_name": "air_temperature",
             "rodeo:level": 0.0
         },
-        "air_temperature:0:minimum:PT6H": {
+        "air_temperature:0.0:minimum:PT6H": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 0m, aggregated over PT6H with method 'minimum'"
+                "en": "air_temperature at 0.0m, aggregated over PT6H with method 'minimum'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:0:minimum:PT6H"
+                    "en": "air_temperature:0.0:minimum:PT6H"
                 }
             },
             "unit": {
@@ -321,7 +321,7 @@
         }
     },
     "ranges": {
-        "air_temperature:0:minimum:PT12H": {
+        "air_temperature:0.0:minimum:PT12H": {
             "type": "NdArray",
             "dataType": "float",
             "axisNames": [
@@ -338,7 +338,7 @@
                 7.8
             ]
         },
-        "air_temperature:0:minimum:PT14H": {
+        "air_temperature:0.0:minimum:PT14H": {
             "type": "NdArray",
             "dataType": "float",
             "axisNames": [
@@ -355,7 +355,7 @@
                 6.4
             ]
         },
-        "air_temperature:0:minimum:PT6H": {
+        "air_temperature:0.0:minimum:PT6H": {
             "type": "NdArray",
             "dataType": "float",
             "axisNames": [
