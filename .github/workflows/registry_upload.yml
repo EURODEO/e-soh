@@ -15,7 +15,6 @@ env:
   CPU: "arm64"
 
 jobs:
-
   on-failure:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
@@ -37,6 +36,8 @@ jobs:
             IMAGE_NAME: api
           - context: ./ingest/
             IMAGE_NAME: ingest
+          - context: ./datastore/migrate/
+            IMAGE_NAME: migrate
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
