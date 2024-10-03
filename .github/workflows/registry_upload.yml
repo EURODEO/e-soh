@@ -9,7 +9,7 @@ on:
       - completed
   push:
     tags:
-      - '*'
+      - "*"
 
 # Defines two custom environment variables for the workflow. These are used for the Container registry domain, and a name for the Docker image that this workflow builds.
 env:
@@ -18,7 +18,6 @@ env:
   CPU: "arm64"
 
 jobs:
-
   on-failure:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
@@ -66,13 +65,13 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ github.repository }}/${{ matrix.IMAGE_NAME }}
-          # Set tag to latest if there is no release tag from git
-          # Tag the build with the current release
+          # Flavor auto will autmaticlly add the latest tag to the most recent image
+          flavor: |
+            latest=auto
+          #
           tags: |
-            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
-            type=ref,event=tag,enable={{is_default_branch}}
-            type=semver,pattern={{version}}
-
+            type=ref,event=tag,enable={{!is_default_branch}}
+            type=semver,pattern={{version}},enable={{is_default_branch}}
 
       - name: Install just
         run: ./ci/scripts/install-just.sh
