@@ -39,6 +39,8 @@ jobs:
             IMAGE_NAME: api
           - context: ./ingest/
             IMAGE_NAME: ingest
+          - context: ./datastore/migrate/
+            IMAGE_NAME: migrate
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

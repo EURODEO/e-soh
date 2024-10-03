@@ -135,9 +135,9 @@ std::list<std::string> norbufr_bufresohmsg(std::string fname) {
 std::list<std::string> norbufr_bufresohmsgmem(char *api_buf, int api_size) {
 
   std::list<std::string> ret;
-  int position = 0;
+  uint64_t position = 0;
 
-  while (position < api_size) {
+  while (position < static_cast<uint64_t>(api_size)) {
 
     ESOHBufr *bufr = new ESOHBufr;
     // TODO:
@@ -146,7 +146,9 @@ std::list<std::string> norbufr_bufresohmsgmem(char *api_buf, int api_size) {
     bufr->setMsgTemplate(bufr_input_schema);
     bufr->setShadowWigos(default_shadow_wigos_py);
 
-    int n = bufr->fromBuffer(api_buf, position, api_size);
+    uint64_t n = bufr->fromBuffer(api_buf, position, api_size);
+    if (n == ULONG_MAX)
+      position = ULONG_MAX;
     if (n > position) {
       position = n;
       bufr->setTableB(

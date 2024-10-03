@@ -26,7 +26,7 @@ from grpc_getter import get_extents_request
 from grpc_getter import get_ts_ag_request
 
 import datastore_pb2 as dstore
-from utilities import get_unique_values_for_metadata, is_float, numeric_sort_key, iso_8601_duration_to_seconds_sort_key
+from utilities import get_unique_values_for_metadata, seconds_to_iso_8601_duration, convert_cm_to_m
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -108,20 +108,23 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
 
     for group in ts_response.groups:
         ts = group.combo
+        level = convert_cm_to_m(ts.level)
+        period = seconds_to_iso_8601_duration(ts.period)
+
         custom_fields = {
             "rodeo:standard_name": ts.standard_name,
-            "rodeo:level": float(ts.level) if is_float(ts.level) else 0.0,
+            "rodeo:level": level,
         }
 
         parameter = Parameter(
-            description=f"{ts.standard_name} at {ts.level}m, aggregated over {ts.period} with method '{ts.function}'",
+            description=f"{ts.standard_name} at {level}m, aggregated over {period} with method '{ts.function}'",
             observedProperty=ObservedProperty(
                 id=f"https://vocab.nerc.ac.uk/standard_name/{ts.standard_name}",
                 label=ts.parameter_name,
             ),
             measurementType=MeasurementType(
                 method=ts.function,
-                period=ts.period,
+                period=period,
             ),
             unit=Unit(label=ts.unit),
             **custom_fields,
@@ -139,10 +142,10 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
     interval_end = extent_response.temporal_extent.end.ToDatetime(tzinfo=timezone.utc)
 
     # TODO: Check if these make /collections significantly slower. If yes, do we need DB indices on these? And parallel
-    levels = sorted(await get_unique_values_for_metadata("level"), key=numeric_sort_key)
+    levels = [convert_cm_to_m(level) for level in await get_unique_values_for_metadata("level")]
     standard_names = await get_unique_values_for_metadata("standard_name")
     methods = await get_unique_values_for_metadata("function")
-    periods = sorted(await get_unique_values_for_metadata("period"), key=iso_8601_duration_to_seconds_sort_key)
+    periods = [seconds_to_iso_8601_duration(period) for period in await get_unique_values_for_metadata("period")]
 
     collection = Collection(
         id="observations",

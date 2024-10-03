@@ -63,8 +63,8 @@ func getSpatialExtent(db *sql.DB) (*datastore.BoundingBox, error) {
 
 // GetExtents ... (see documentation in StorageBackend interface)
 func (sbe *PostgreSQL) GetExtents(_ *datastore.GetExtentsRequest) (
-	*datastore.GetExtentsResponse, codes.Code, string) {
-
+	*datastore.GetExtentsResponse, codes.Code, string,
+) {
 	var err error
 
 	temporalExtent, err := getTemporalExtent(sbe.Db)

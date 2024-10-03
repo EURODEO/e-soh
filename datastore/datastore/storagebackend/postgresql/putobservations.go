@@ -22,7 +22,7 @@ func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, []interface{}, 
 	colVals := []interface{}{}
 	colName2Val := map[string]interface{}{}
 
-	// --- BEGIN non-string metadata ---------------------------
+	// --- BEGIN non-reflectable metadata ---------------------------
 
 	getLinkVals := func(key string) ([]string, error) {
 		linkVals := []string{}
@@ -58,12 +58,28 @@ func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, []interface{}, 
 		}
 	}
 
-	// --- END non-string metadata ---------------------------
-
-	// --- BEGIN string metadata (handleable with reflection) ---------------------------
+	// --- END non-reflectable metadata ---------------------------
 
 	rv := reflect.ValueOf(tsMdata)
-	for _, field := range tsStructFields {
+
+	// --- BEGIN reflectable metadata of type int64 ---------------------------
+	for _, field := range tsInt64StructFields {
+		methodName := fmt.Sprintf("Get%s", field.Name)
+		method := rv.MethodByName(methodName)
+		if method.IsValid() {
+			val, ok := method.Call([]reflect.Value{})[0].Interface().(int64)
+			if !ok {
+				return nil, nil, fmt.Errorf(
+					"method.Call() failed for method %s; failed to return int64", methodName)
+			}
+			colVals = append(colVals, val)
+			colName2Val[common.ToSnakeCase(field.Name)] = val
+		}
+	}
+	// --- END reflectable metadata of type int64 ---------------------------
+
+	// --- BEGIN reflectable metadata of type string ---------------------------
+	for _, field := range tsStringStructFields {
 		methodName := fmt.Sprintf("Get%s", field.Name)
 		method := rv.MethodByName(methodName)
 		if method.IsValid() {
@@ -76,8 +92,7 @@ func getTSColVals(tsMdata *datastore.TSMetadata) ([]interface{}, []interface{}, 
 			colName2Val[common.ToSnakeCase(field.Name)] = val
 		}
 	}
-
-	// --- END string metadata ---------------------------
+	// --- END reflectable metadata of type string ---------------------------
 
 	// derive colValsUnique from colName2Val
 	colValsUnique, err := getTSColValsUnique(colName2Val)

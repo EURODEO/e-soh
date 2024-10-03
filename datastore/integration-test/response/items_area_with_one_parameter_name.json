@@ -21,7 +21,7 @@
         "platform": "0-20000-0-06275",
         "standard_name": "air_temperature",
         "unit": "degrees Celsius",
-        "level": "2.0",
+        "level": 2.0,
         "period": "PT12H",
         "instrument": "Tn12",
         "parameter_name": "air_temperature:2.0:minimum:PT12H",

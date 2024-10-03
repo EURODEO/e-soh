@@ -87,14 +87,14 @@ def test_get_locations_with_query_params():
         response = client.get(
             "/collections/observations/locations?bbox=5.1,52.0,6.0,52.1"
             "&datetime=2022-12-31T00:00:00Z/2022-12-31T01:00:00Z"
-            "&parameter-name=wind_speed:10:mean:PT10M, air_temperature:0.1:minimum:PT10M"
+            "&parameter-name=wind_speed:10.0:mean:PT10M, air_temperature:0.1:minimum:PT10M"
         )
 
         # Check that getObsRequest gets called with correct arguments given in query
         mock_get_obs_request.assert_called_once()
         m_args = mock_get_obs_request.call_args[0][0]
 
-        assert {"wind_speed:10:mean:PT10M", "air_temperature:0.1:minimum:PT10M"} == set(
+        assert {"wind_speed:10.0:mean:PT10M", "air_temperature:0.1:minimum:PT10M"} == set(
             m_args.filter["parameter_name"].values
         )
         assert m_args.temporal_latest
@@ -140,14 +140,14 @@ def test_get_locations_id_with_single_parameter_query_without_format():
 
         response = client.get(
             "/collections/observations/locations/0-20000-0-06280?"
-            + "parameter-name=wind_speed:10:mean:PT10M&datetime=2022-12-31T00:00:00Z/2022-12-31T01:00:00Z"
+            + "parameter-name=wind_speed:10.0:mean:PT10M&datetime=2022-12-31T00:00:00Z/2022-12-31T01:00:00Z"
         )
 
         # Check that getObsRequest gets called with correct arguments given in query
         mock_get_obs_request.assert_called_once()
         m_args = mock_get_obs_request.call_args[0][0]
 
-        assert {"wind_speed:10:mean:PT10M"} == set(m_args.filter["parameter_name"].values)
+        assert {"wind_speed:10.0:mean:PT10M"} == set(m_args.filter["parameter_name"].values)
         assert {"0-20000-0-06280"} == set(m_args.filter["platform"].values)
         assert "2022-12-31 00:00:00" == m_args.temporal_interval.start.ToDatetime().strftime("%Y-%m-%d %H:%M:%S")
         assert "2022-12-31 01:00:01" == m_args.temporal_interval.end.ToDatetime().strftime("%Y-%m-%d %H:%M:%S")
@@ -399,12 +399,14 @@ def test_get_data_with_invalid_levels_repeating_interval():
         assert response.json() == {"detail": "Invalid levels repeating-interval: R10/20/100/10"}
 
 
-def test_get_data_with_period_range_without_existing_data():
-    with patch("utilities.get_unique_values_for_metadata") as mock_get_unique_values_for_metadata:
+def test_get_data_with_lowercase_period_range_without_existing_data():
+    with patch("routers.edr.get_obs_request") as mock_get_obs_request:
 
-        mock_get_unique_values_for_metadata.return_value = ["PT1M", "PT10M", "PT1H", "PT12H", "PT24H"]
+        test_data = load_json("test/test_data/test_empty_proto.json")
 
-        response = client.get("/collections/observations/position?coords=POINT(5.179705 52.0988218)&periods=PT3H/PT6H")
+        mock_get_obs_request.return_value = create_mock_obs_response(test_data)
+
+        response = client.get("/collections/observations/position?coords=POINT(5.179705 52.0988218)&periods=p1m/P1Y")
 
         assert response.status_code == 404
         assert response.json() == {"detail": "Requested data not found."}
