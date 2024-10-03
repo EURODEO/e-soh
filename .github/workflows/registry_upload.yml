@@ -65,10 +65,12 @@ jobs:
           # Flavor auto will autmaticlly add the latest tag to the most recent image
           flavor: |
             latest=auto
-          #
+          # type=ref will create custom tags, from whatever branch/tag that is created
+          # type=pep440 will only run on main branch, when there is a semantic tag added to a commit.
+          # pep440 is same as semver but also accept tags without the v in front.
           tags: |
             type=ref,event=tag,enable={{!is_default_branch}}
-            type=semver,pattern={{version}},enable={{is_default_branch}}
+            type=pep440,pattern={{version}},enable={{is_default_branch}}
 
       - name: Install just
         run: ./ci/scripts/install-just.sh
