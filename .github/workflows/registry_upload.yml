@@ -2,11 +2,9 @@ name: Create and publish a Docker image
 
 # Configures this workflow to run on main when testing CI is completed.
 on:
-  workflow_run:
-    workflows: ["CI"]
-    branches: [main]
-    types:
-      - completed
+  push:
+    tags:
+      - "*"
 
 # Defines two custom environment variables for the workflow. These are used for the Container registry domain, and a name for the Docker image that this workflow builds.
 env:
@@ -64,11 +62,15 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ github.repository }}/${{ matrix.IMAGE_NAME }}
-          # Set tag to latest if there is no release tag from git
-          # Tag the build with the current release
+          # Flavor auto will autmaticlly add the latest tag to the most recent image
+          flavor: |
+            latest=auto
+          # type=ref will create custom tags, from whatever branch/tag that is created
+          # type=pep440 will only run on main branch, when there is a semantic tag added to a commit.
+          # pep440 is same as semver but also accept tags without the v in front.
           tags: |
-            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
-            type=ref,event=tag,enable={{is_default_branch}}
+            type=ref,event=tag,enable={{!is_default_branch}}
+            type=pep440,pattern={{version}},enable={{is_default_branch}}
 
       - name: Install just
         run: ./ci/scripts/install-just.sh
