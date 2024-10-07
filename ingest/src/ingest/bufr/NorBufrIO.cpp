@@ -209,7 +209,15 @@ void NorBufrIO::filterStr(std::string &s,
                           const std::list<std::pair<char, char>> &repl_chars) {
 
   for (auto rch : repl_chars) {
-    std::replace(s.begin(), s.end(), rch.first, rch.second);
+    if (rch.second) {
+      std::replace(s.begin(), s.end(), rch.first, rch.second);
+    } else {
+#if __cplusplus >= 202002L
+      std::erase(s, rch.first);
+#else
+      s.erase(std::remove(s.begin(), s.end(), rch.first), s.end());
+#endif
+    }
   }
 
   return;
