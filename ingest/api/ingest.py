@@ -69,9 +69,7 @@ class IngestToPipeline:
         This method accepts a list of json strings ready to be ingest to datastore
          and published to the mqtt topic.
         """
-        obs_requests = dstore.PutObsRequest(
-            observations=[build_grpc_messages(msg) for msg in messages]
-        )
+        obs_requests = dstore.PutObsRequest(observations=[build_grpc_messages(msg) for msg in messages])
         try:
             await putObsRequest(obs_requests)
             logger.debug("Succesfully ingested to datastore")
@@ -90,9 +88,7 @@ class IngestToPipeline:
                 )
 
                 # modify the period back to iso format and level back to meter
-                period_iso = self.seconds_to_iso_8601_duration(
-                    msg["properties"]["period"]
-                )
+                period_iso = self.seconds_to_iso_8601_duration(msg["properties"]["period"])
                 level_string = self.convert_to_meter(msg["properties"]["level"])
                 msg["properties"]["level"] = level_string
                 msg["properties"]["period"] = period_iso
