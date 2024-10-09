@@ -27,7 +27,6 @@ class IngestToPipeline:
         mqtt_conf: dict,
         uuid_prefix: str,
     ):
-
         self.uuid_prefix = uuid_prefix
         self.client = None
         if mqtt_conf["host"]:
@@ -53,7 +52,6 @@ class IngestToPipeline:
         return iso_duration
 
     def convert_to_meter(self, level: int) -> str:
-
         level = str(float(level) / 100)
         return level
 
@@ -80,7 +78,6 @@ class IngestToPipeline:
             raise HTTPException(status_code=500, detail="API could not reach datastore")
 
         if self.client is not None:
-
             for msg in messages:
                 topic = (
                     msg["properties"]["naming_authority"]
@@ -96,10 +93,11 @@ class IngestToPipeline:
                 msg["properties"]["level"] = level_string
                 msg["properties"]["period"] = period_iso
                 try:
-                    send_message(topic, json.dump(msg), self.client)
-                    logger.info("Succesfully published to mqtt")
+                    send_message(topic, json.dumps(msg), self.client)
+                    logger.debug("Succesfully published to mqtt")
                 except Exception as e:
-                    logger.error("Failed to publish to mqtt, " + "\n" + str(e))
+                    logger.error("Failed to publish to mqtt, " + str(e))
                     raise HTTPException(
-                        status_code=500, detail="Data ingested to datastore. But unable to publish to mqtt"
+                        status_code=500,
+                        detail="Data ingested to datastore. But unable to publish to mqtt",
                     )
