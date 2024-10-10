@@ -1,5 +1,4 @@
 import logging
-import hashlib
 
 from datetime import datetime
 from dateutil import parser
@@ -34,7 +33,7 @@ def build_grpc_messages(msg: str) -> None:
     period = str(ts_metadata.period)
     function = ts_metadata.function
     standard_name = ts_metadata.standard_name
-    parameter_name = hashlib.md5(":".join([standard_name, level, function, period]).encode()).hexdigest()
+    parameter_name = ":".join([standard_name, level, function, period])
     setattr(ts_metadata, "parameter_name", parameter_name)
 
     observation_data = dstore.ObsMetadata()
@@ -58,7 +57,8 @@ def build_grpc_messages(msg: str) -> None:
     if "geometry" in msg:
         if msg["geometry"]["type"] == "Point":
             point = dstore.Point(
-                lat=float(msg["geometry"]["coordinates"]["lat"]), lon=float(msg["geometry"]["coordinates"]["lon"])
+                lat=float(msg["geometry"]["coordinates"]["lat"]),
+                lon=float(msg["geometry"]["coordinates"]["lon"]),
             )
             observation_data.geo_point.CopyFrom(point)
 
