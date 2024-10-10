@@ -61,7 +61,9 @@ def datetime_to_iso_string(value: datetime) -> str:
 def get_landing_page(request):
     return LandingPageModel(
         title="Observations Europe EUMETNET",
-        description="EDR data service for European environmental observations from EUMETNET",
+        description=(
+            "EDR data service for European environmental observations from EUMETNET," " co-funded by the European Union"
+        ),
         keywords=[
             "weather",
             "temperature",
