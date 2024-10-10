@@ -142,6 +142,7 @@ jobs:
   publish-test-results:
     needs: test-datastore
     runs-on: ubuntu-latest
+    if: github.event.ref_type != 'tag'
     permissions:
       contents: write
       issues: write
