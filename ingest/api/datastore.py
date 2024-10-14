@@ -42,7 +42,7 @@ def build_grpc_messages(msg: str) -> None:
             standard_name,
             convert_to_meter(level),
             function,
-            seconds_to_iso_8601_duration(period),
+            seconds_to_iso_8601_duration(int(period)),
         ]
     )
     setattr(ts_metadata, "parameter_name", parameter_name)
