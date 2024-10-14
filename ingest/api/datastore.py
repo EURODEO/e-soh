@@ -3,6 +3,10 @@ import logging
 from datetime import datetime
 from dateutil import parser
 
+from api.utilities import convert_to_meter
+from api.utilities import seconds_to_iso_8601_duration
+
+
 import datastore_pb2 as dstore
 
 from google.protobuf.timestamp_pb2 import Timestamp
@@ -33,7 +37,14 @@ def build_grpc_messages(msg: str) -> None:
     period = str(ts_metadata.period)
     function = ts_metadata.function
     standard_name = ts_metadata.standard_name
-    parameter_name = ":".join([standard_name, level, function, period])
+    parameter_name = ":".join(
+        [
+            standard_name,
+            convert_to_meter(level),
+            function,
+            seconds_to_iso_8601_duration(int(period)),
+        ]
+    )
     setattr(ts_metadata, "parameter_name", parameter_name)
 
     observation_data = dstore.ObsMetadata()
