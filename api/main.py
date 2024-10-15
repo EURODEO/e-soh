@@ -13,6 +13,7 @@ from fastapi import Request
 from routers import edr
 from routers import feature
 from utilities import create_url_from_request
+from openapi.openapi_metadata import openapi_metadata
 
 from export_metrics import add_metrics
 
@@ -30,7 +31,7 @@ setup_logging()
 
 logger = logging.getLogger(__name__)
 
-app = FastAPI(swagger_ui_parameters={"tryItOutEnabled": True})
+app = FastAPI(swagger_ui_parameters={"tryItOutEnabled": True}, **openapi_metadata)
 app.add_middleware(BrotliMiddleware)
 add_metrics(app)
 
