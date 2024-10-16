@@ -29,6 +29,32 @@ regex_level_centimeters = re.compile(r"[0-9]+(\.[0-9]+)?(?=cm)")
 regex_time_period = re.compile(r"(\d+) (Hours|Min)", re.IGNORECASE)
 
 
+def convert_standard_names(standard_name):
+    standard_name_mapping = {
+        "cloud_cover": "cloud_area_fraction",
+        "total_downwelling_shortwave_flux_in_air": "surface_downwelling_shortwave_flux_in_air",
+        "precipitation_rate": "rainfall_rate",
+        "air_pressure_at_sea_level": "air_pressure_at_mean_sea_level",
+    }
+    return standard_name_mapping.get(standard_name, standard_name)
+
+
+# NOTE: Only units are converted currently, not values.
+def convert_unit_names(unit):
+    unit_mapping = {
+        "degrees Celsius": "degC",
+        "ft": "m",
+        "min": "s",
+        "degree": "degrees",
+        "%": "percent",
+        "mm": "kg/m2",
+        "m s-1": "m/s",
+        "octa": "oktas",
+        "W m-2": "W/m2",
+    }
+    return unit_mapping.get(unit, unit)
+
+
 def iso_8601_duration_to_seconds(period: str) -> int:
     try:
         duration = isodate.parse_duration(period)
@@ -61,12 +87,17 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                 # print(station_id, param_id)
                 param_file = station_slice[param_id]
                 standard_name, level, function, period, period_as_seconds = generate_parameter_name(
-                    (param_file.standard_name if "standard_name" in param_file.attrs else "placeholder"),
+                    (param_file.standard_name if "standard_name" in param_file.attrs else None),
                     param_file.long_name,
                     station_id,
                     station_name,
                     param_id,
                 )
+
+                # Drop parameters that are not CF compliant
+                if not standard_name or standard_name in ["precipitation_duration", "rainfall_duration"]:
+                    continue
+
                 platform = f"0-20000-0-{station_id}"
 
                 ts_mdata = dstore.TSMetadata(
@@ -75,7 +106,7 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                     platform_name=station_name,
                     title=param_file.long_name,
                     standard_name=standard_name,
-                    unit=param_file.units if "units" in param_file.attrs else None,
+                    unit=convert_unit_names(param_file.units) if "units" in param_file.attrs else None,
                     level=level,
                     period=period_as_seconds,
                     function=function,
@@ -87,13 +118,17 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                     creator_name="KNMI",
                     creator_email=file["iso_dataset"].attrs["email_dataset"],
                     creator_url=file["iso_dataset"].attrs["url_metadata"],
-                    creator_type="Institution",
+                    creator_type="institution",
                     institution=file.attrs["institution"],
                     timeseries_id=md5(
                         "".join(
                             [
-                                station_id,
-                                platform + standard_name + str(float(level / 100)) + period + function + "nl.knmi",
+                                "nl.knmi",
+                                platform,
+                                standard_name,
+                                str(float(level / 100)),
+                                function,
+                                str(period),
                             ]
                         ).encode()
                     ).hexdigest(),
@@ -187,6 +222,7 @@ def generate_parameter_name(standard_name, long_name, station_id, station_name, 
         period = "PT1H"
 
     period_as_seconds = iso_8601_duration_to_seconds(period)
+    standard_name = convert_standard_names(standard_name)
     return standard_name, level, function, period, period_as_seconds
 
 

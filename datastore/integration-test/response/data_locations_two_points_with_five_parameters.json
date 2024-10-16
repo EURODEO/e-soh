@@ -60,7 +60,7 @@
             },
             "unit": {
                 "label": {
-                    "en": "degrees Celsius"
+                    "en": "degC"
                 }
             },
             "measurementType": {
@@ -83,7 +83,7 @@
             },
             "unit": {
                 "label": {
-                    "en": "degrees Celsius"
+                    "en": "degC"
                 }
             },
             "measurementType": {
@@ -106,7 +106,7 @@
             },
             "unit": {
                 "label": {
-                    "en": "degrees Celsius"
+                    "en": "degC"
                 }
             },
             "measurementType": {
@@ -129,7 +129,7 @@
             },
             "unit": {
                 "label": {
-                    "en": "degrees Celsius"
+                    "en": "degC"
                 }
             },
             "measurementType": {
@@ -152,7 +152,7 @@
             },
             "unit": {
                 "label": {
-                    "en": "degree"
+                    "en": "degrees"
                 }
             },
             "measurementType": {

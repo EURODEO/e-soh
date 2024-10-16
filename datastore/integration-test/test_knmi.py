@@ -46,7 +46,7 @@ def test_find_series_single_station_all_parameters(grpc_stub):
     request = dstore.GetObsRequest(filter=dict(platform=dstore.Strings(values=["0-20000-0-06260"])))
     response = grpc_stub.GetObservations(request)
 
-    assert len(response.observations) == 42  # Station 06260 doesn't have all parameters
+    assert len(response.observations) == 36  # Station 06260 doesn't have all parameters
 
 
 def test_get_values_single_station_single_parameter(grpc_stub):

@@ -63,7 +63,7 @@
             },
             "unit": {
                 "label": {
-                    "en": "degrees Celsius"
+                    "en": "degC"
                 }
             },
             "measurementType": {
@@ -86,7 +86,7 @@
             },
             "unit": {
                 "label": {
-                    "en": "%"
+                    "en": "percent"
                 }
             },
             "measurementType": {
@@ -109,7 +109,7 @@
             },
             "unit": {
                 "label": {
-                    "en": "degree"
+                    "en": "degrees"
                 }
             },
             "measurementType": {

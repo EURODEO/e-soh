@@ -65,7 +65,7 @@
                     },
                     "unit": {
                         "label": {
-                            "en": "%"
+                            "en": "percent"
                         }
                     },
                     "measurementType": {
@@ -88,7 +88,7 @@
                     },
                     "unit": {
                         "label": {
-                            "en": "m s-1"
+                            "en": "m/s"
                         }
                     },
                     "measurementType": {
@@ -213,7 +213,7 @@
                     },
                     "unit": {
                         "label": {
-                            "en": "%"
+                            "en": "percent"
                         }
                     },
                     "measurementType": {
@@ -236,7 +236,7 @@
                     },
                     "unit": {
                         "label": {
-                            "en": "m s-1"
+                            "en": "m/s"
                         }
                     },
                     "measurementType": {
@@ -312,7 +312,7 @@
             },
             "unit": {
                 "label": {
-                    "en": "%"
+                    "en": "percent"
                 }
             },
             "measurementType": {
@@ -335,7 +335,7 @@
             },
             "unit": {
                 "label": {
-                    "en": "m s-1"
+                    "en": "m/s"
                 }
             },
             "measurementType": {

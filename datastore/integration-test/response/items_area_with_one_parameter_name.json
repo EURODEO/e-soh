@@ -12,7 +12,7 @@
         "keywords": "temperature, pressure, relative humidity, visibility, wind speed, wind direction, wind gust",
         "keywords_vocabulary": "http://data.knmi.nl",
         "naming_authority": "nl.knmi",
-        "creator_type": "Institution",
+        "creator_type": "institution",
         "creator_name": "KNMI",
         "creator_email": "datacentrum@knmi.nl",
         "creator_url": "http://data.knmi.nl",
@@ -20,15 +20,15 @@
         "source": "Royal Netherlands Meteorological Institute (KNMI)",
         "platform": "0-20000-0-06275",
         "standard_name": "air_temperature",
-        "unit": "degrees Celsius",
+        "unit": "degC",
         "level": 2.0,
         "period": "PT12H",
         "instrument": "Tn12",
         "parameter_name": "air_temperature:2.0:minimum:PT12H",
-        "timeseries_id": "f0d06231a6508f281dbdaea0b5000220",
+        "timeseries_id": "b640a010a008a464b451d6fd3e0749bf",
         "platform_vocabulary": "https://oscar.wmo.int/surface/rest/api/search/station?wigosId=0-20000-0-06275",
         "platform_name": "DEELEN",
         "method": "minimum"
     },
-    "id": "f0d06231a6508f281dbdaea0b5000220"
+    "id": "b640a010a008a464b451d6fd3e0749bf"
 }

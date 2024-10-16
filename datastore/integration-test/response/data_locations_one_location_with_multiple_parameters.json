@@ -56,7 +56,7 @@
             },
             "unit": {
                 "label": {
-                    "en": "degrees Celsius"
+                    "en": "degC"
                 }
             },
             "measurementType": {
@@ -79,7 +79,7 @@
             },
             "unit": {
                 "label": {
-                    "en": "degrees Celsius"
+                    "en": "degC"
                 }
             },
             "measurementType": {
@@ -102,7 +102,7 @@
             },
             "unit": {
                 "label": {
-                    "en": "degrees Celsius"
+                    "en": "degC"
                 }
             },
             "measurementType": {
@@ -125,7 +125,7 @@
             },
             "unit": {
                 "label": {
-                    "en": "degrees Celsius"
+                    "en": "degC"
                 }
             },
             "measurementType": {
@@ -148,7 +148,7 @@
             },
             "unit": {
                 "label": {
-                    "en": "degrees Celsius"
+                    "en": "degC"
                 }
             },
             "measurementType": {
@@ -171,7 +171,7 @@
             },
             "unit": {
                 "label": {
-                    "en": "degrees Celsius"
+                    "en": "degC"
                 }
             },
             "measurementType": {
@@ -194,7 +194,7 @@
             },
             "unit": {
                 "label": {
-                    "en": "degrees Celsius"
+                    "en": "degC"
                 }
             },
             "measurementType": {
@@ -217,7 +217,7 @@
             },
             "unit": {
                 "label": {
-                    "en": "degrees Celsius"
+                    "en": "degC"
                 }
             },
             "measurementType": {
@@ -240,7 +240,7 @@
             },
             "unit": {
                 "label": {
-                    "en": "degrees Celsius"
+                    "en": "degC"
                 }
             },
             "measurementType": {
@@ -263,7 +263,7 @@
             },
             "unit": {
                 "label": {
-                    "en": "mm"
+                    "en": "kg/m2"
                 }
             },
             "measurementType": {
@@ -286,7 +286,7 @@
             },
             "unit": {
                 "label": {
-                    "en": "mm"
+                    "en": "kg/m2"
                 }
             },
             "measurementType": {
@@ -309,7 +309,7 @@
             },
             "unit": {
                 "label": {
-                    "en": "mm"
+                    "en": "kg/m2"
                 }
             },
             "measurementType": {
