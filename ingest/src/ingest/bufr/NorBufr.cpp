@@ -139,7 +139,7 @@ ssize_t NorBufr::extractDescriptors(int ss, ssize_t subsb) {
       LogEntry("Starting extract Descriptors, subset: " + std::to_string(ss),
                LogLevel::DEBUG, __func__, bufr_id));
 
-  if (!subsetNum())
+  if (!subsetNum() || !(sec3_desc.size()))
     return 0;
 
   ssize_t sb = subsb; // startbit
@@ -751,17 +751,23 @@ bool NorBufr::setSections(int slen) {
 
   // Section3 load
   if (Section3::fromBuffer(buffer + slen, len - slen)) {
-    slen += Section3::length();
-    subsets.resize(subsetNum());
-    desc.resize(subsetNum());
+    if (Section3::length()) {
+      slen += Section3::length();
+      subsets.resize(subsetNum());
+      desc.resize(subsetNum());
 
-    // Section 4 load
-    if (Section4::fromBuffer(buffer + slen, len - slen)) {
-      lb.addLogEntry(
-          LogEntry("BUFR loaded", LogLevel::DEBUG, __func__, bufr_id));
+      // Section 4 load
+      if (Section4::fromBuffer(buffer + slen, len - slen)) {
+        lb.addLogEntry(
+            LogEntry("BUFR loaded", LogLevel::DEBUG, __func__, bufr_id));
+      } else {
+        lb.addLogEntry(
+            LogEntry("Corrupt Section4", LogLevel::ERROR, __func__, bufr_id));
+        return false;
+      }
     } else {
-      lb.addLogEntry(
-          LogEntry("Corrupt Section4", LogLevel::ERROR, __func__, bufr_id));
+      lb.addLogEntry(LogEntry("Section3 size error, skip", LogLevel::ERROR,
+                              __func__, bufr_id));
       return false;
     }
   } else {
