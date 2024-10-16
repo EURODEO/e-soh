@@ -30,6 +30,8 @@ from utilities import get_unique_values_for_metadata
 from utilities import seconds_to_iso_8601_duration
 from utilities import convert_cm_to_m
 
+from openapi.openapi_metadata import openapi_metadata
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
@@ -58,10 +60,8 @@ def datetime_to_iso_string(value: datetime) -> str:
 
 def get_landing_page(request):
     return LandingPageModel(
-        title="Observations Europe EUMETNET",
-        description=(
-            "EDR data service for European environmental observations from EUMETNET," " co-funded by the European Union"
-        ),
+        title=openapi_metadata["title"],
+        description=openapi_metadata["description"],
         keywords=[
             "weather",
             "temperature",
