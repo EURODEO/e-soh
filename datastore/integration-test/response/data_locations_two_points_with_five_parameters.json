@@ -50,12 +50,12 @@
         "air_temperature:0.1:minimum:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 0.1m, aggregated over PT10M with method 'minimum'"
+                "en": "Air temperature at 0.1m, aggregated over PT10M with method 'minimum'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:0.1:minimum:PT10M"
+                    "en": "Air temperature"
                 }
             },
             "unit": {
@@ -73,12 +73,12 @@
         "air_temperature:1.5:maximum:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 1.5m, aggregated over PT10M with method 'maximum'"
+                "en": "Air temperature at 1.5m, aggregated over PT10M with method 'maximum'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:1.5:maximum:PT10M"
+                    "en": "Air temperature"
                 }
             },
             "unit": {
@@ -96,12 +96,12 @@
         "air_temperature:1.5:minimum:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 1.5m, aggregated over PT10M with method 'minimum'"
+                "en": "Air temperature at 1.5m, aggregated over PT10M with method 'minimum'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:1.5:minimum:PT10M"
+                    "en": "Air temperature"
                 }
             },
             "unit": {
@@ -119,12 +119,12 @@
         "air_temperature:2.0:mean:PT1M": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 2.0m, aggregated over PT1M with method 'mean'"
+                "en": "Air temperature at 2.0m, aggregated over PT1M with method 'mean'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:2.0:mean:PT1M"
+                    "en": "Air temperature"
                 }
             },
             "unit": {
@@ -142,12 +142,12 @@
         "wind_from_direction:2.0:mean:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "wind_from_direction at 2.0m, aggregated over PT10M with method 'mean'"
+                "en": "Wind from direction at 2.0m, aggregated over PT10M with method 'mean'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/wind_from_direction",
                 "label": {
-                    "en": "wind_from_direction:2.0:mean:PT10M"
+                    "en": "Wind from direction"
                 }
             },
             "unit": {

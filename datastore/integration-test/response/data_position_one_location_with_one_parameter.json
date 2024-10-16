@@ -54,12 +54,12 @@
         "air_temperature:1.5:maximum:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 1.5m, aggregated over PT10M with method 'maximum'"
+                "en": "Air temperature at 1.5m, aggregated over PT10M with method 'maximum'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:1.5:maximum:PT10M"
+                    "en": "Air temperature"
                 }
             },
             "unit": {

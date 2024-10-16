@@ -120,12 +120,12 @@
         "air_pressure_at_sea_level:1.0:mean:PT1M": {
             "type": "Parameter",
             "description": {
-                "en": "air_pressure_at_sea_level at 1.0m, aggregated over PT1M with method 'mean'"
+                "en": "Air pressure at sea level at 1.0m, aggregated over PT1M with method 'mean'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_pressure_at_sea_level",
                 "label": {
-                    "en": "air_pressure_at_sea_level:1.0:mean:PT1M"
+                    "en": "Air pressure at sea level"
                 }
             },
             "unit": {
@@ -143,12 +143,12 @@
         "air_temperature:0.0:minimum:PT12H": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 0.0m, aggregated over PT12H with method 'minimum'"
+                "en": "Air temperature at 0.0m, aggregated over PT12H with method 'minimum'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:0.0:minimum:PT12H"
+                    "en": "Air temperature"
                 }
             },
             "unit": {
@@ -166,12 +166,12 @@
         "air_temperature:0.0:minimum:PT14H": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 0.0m, aggregated over PT14H with method 'minimum'"
+                "en": "Air temperature at 0.0m, aggregated over PT14H with method 'minimum'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:0.0:minimum:PT14H"
+                    "en": "Air temperature"
                 }
             },
             "unit": {
@@ -189,12 +189,12 @@
         "air_temperature:0.0:minimum:PT6H": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 0.0m, aggregated over PT6H with method 'minimum'"
+                "en": "Air temperature at 0.0m, aggregated over PT6H with method 'minimum'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:0.0:minimum:PT6H"
+                    "en": "Air temperature"
                 }
             },
             "unit": {
@@ -212,12 +212,12 @@
         "air_temperature:0.1:minimum:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 0.1m, aggregated over PT10M with method 'minimum'"
+                "en": "Air temperature at 0.1m, aggregated over PT10M with method 'minimum'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:0.1:minimum:PT10M"
+                    "en": "Air temperature"
                 }
             },
             "unit": {
@@ -235,12 +235,12 @@
         "air_temperature:1.5:maximum:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 1.5m, aggregated over PT10M with method 'maximum'"
+                "en": "Air temperature at 1.5m, aggregated over PT10M with method 'maximum'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:1.5:maximum:PT10M"
+                    "en": "Air temperature"
                 }
             },
             "unit": {
@@ -258,12 +258,12 @@
         "air_temperature:1.5:minimum:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 1.5m, aggregated over PT10M with method 'minimum'"
+                "en": "Air temperature at 1.5m, aggregated over PT10M with method 'minimum'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:1.5:minimum:PT10M"
+                    "en": "Air temperature"
                 }
             },
             "unit": {
@@ -281,12 +281,12 @@
         "air_temperature:2.0:maximum:PT12H": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 2.0m, aggregated over PT12H with method 'maximum'"
+                "en": "Air temperature at 2.0m, aggregated over PT12H with method 'maximum'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:2.0:maximum:PT12H"
+                    "en": "Air temperature"
                 }
             },
             "unit": {
@@ -304,12 +304,12 @@
         "air_temperature:2.0:maximum:PT24H": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 2.0m, aggregated over PT24H with method 'maximum'"
+                "en": "Air temperature at 2.0m, aggregated over PT24H with method 'maximum'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:2.0:maximum:PT24H"
+                    "en": "Air temperature"
                 }
             },
             "unit": {
@@ -327,12 +327,12 @@
         "air_temperature:2.0:maximum:PT6H": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 2.0m, aggregated over PT6H with method 'maximum'"
+                "en": "Air temperature at 2.0m, aggregated over PT6H with method 'maximum'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:2.0:maximum:PT6H"
+                    "en": "Air temperature"
                 }
             },
             "unit": {
@@ -350,12 +350,12 @@
         "air_temperature:2.0:mean:PT1M": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 2.0m, aggregated over PT1M with method 'mean'"
+                "en": "Air temperature at 2.0m, aggregated over PT1M with method 'mean'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:2.0:mean:PT1M"
+                    "en": "Air temperature"
                 }
             },
             "unit": {
@@ -373,12 +373,12 @@
         "air_temperature:2.0:minimum:PT12H": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 2.0m, aggregated over PT12H with method 'minimum'"
+                "en": "Air temperature at 2.0m, aggregated over PT12H with method 'minimum'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:2.0:minimum:PT12H"
+                    "en": "Air temperature"
                 }
             },
             "unit": {
@@ -396,12 +396,12 @@
         "air_temperature:2.0:minimum:PT14H": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 2.0m, aggregated over PT14H with method 'minimum'"
+                "en": "Air temperature at 2.0m, aggregated over PT14H with method 'minimum'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:2.0:minimum:PT14H"
+                    "en": "Air temperature"
                 }
             },
             "unit": {
@@ -419,12 +419,12 @@
         "air_temperature:2.0:minimum:PT6H": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 2.0m, aggregated over PT6H with method 'minimum'"
+                "en": "Air temperature at 2.0m, aggregated over PT6H with method 'minimum'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:2.0:minimum:PT6H"
+                    "en": "Air temperature"
                 }
             },
             "unit": {
@@ -442,12 +442,12 @@
         "cloud_base_altitude:0.0:point:PT0S": {
             "type": "Parameter",
             "description": {
-                "en": "cloud_base_altitude at 0.0m, aggregated over PT0S with method 'point'"
+                "en": "Cloud base altitude at 0.0m, aggregated over PT0S with method 'point'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/cloud_base_altitude",
                 "label": {
-                    "en": "cloud_base_altitude:0.0:point:PT0S"
+                    "en": "Cloud base altitude"
                 }
             },
             "unit": {
@@ -465,12 +465,12 @@
         "cloud_base_altitude:1.0:point:PT0S": {
             "type": "Parameter",
             "description": {
-                "en": "cloud_base_altitude at 1.0m, aggregated over PT0S with method 'point'"
+                "en": "Cloud base altitude at 1.0m, aggregated over PT0S with method 'point'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/cloud_base_altitude",
                 "label": {
-                    "en": "cloud_base_altitude:1.0:point:PT0S"
+                    "en": "Cloud base altitude"
                 }
             },
             "unit": {
@@ -488,12 +488,12 @@
         "cloud_base_altitude:2.0:point:PT0S": {
             "type": "Parameter",
             "description": {
-                "en": "cloud_base_altitude at 2.0m, aggregated over PT0S with method 'point'"
+                "en": "Cloud base altitude at 2.0m, aggregated over PT0S with method 'point'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/cloud_base_altitude",
                 "label": {
-                    "en": "cloud_base_altitude:2.0:point:PT0S"
+                    "en": "Cloud base altitude"
                 }
             },
             "unit": {
@@ -511,12 +511,12 @@
         "cloud_cover:0.0:point:PT0S": {
             "type": "Parameter",
             "description": {
-                "en": "cloud_cover at 0.0m, aggregated over PT0S with method 'point'"
+                "en": "Cloud cover at 0.0m, aggregated over PT0S with method 'point'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/cloud_cover",
                 "label": {
-                    "en": "cloud_cover:0.0:point:PT0S"
+                    "en": "Cloud cover"
                 }
             },
             "unit": {
@@ -534,12 +534,12 @@
         "cloud_cover:1.0:point:PT0S": {
             "type": "Parameter",
             "description": {
-                "en": "cloud_cover at 1.0m, aggregated over PT0S with method 'point'"
+                "en": "Cloud cover at 1.0m, aggregated over PT0S with method 'point'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/cloud_cover",
                 "label": {
-                    "en": "cloud_cover:1.0:point:PT0S"
+                    "en": "Cloud cover"
                 }
             },
             "unit": {
@@ -557,12 +557,12 @@
         "cloud_cover:2.0:point:PT0S": {
             "type": "Parameter",
             "description": {
-                "en": "cloud_cover at 2.0m, aggregated over PT0S with method 'point'"
+                "en": "Cloud cover at 2.0m, aggregated over PT0S with method 'point'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/cloud_cover",
                 "label": {
-                    "en": "cloud_cover:2.0:point:PT0S"
+                    "en": "Cloud cover"
                 }
             },
             "unit": {
@@ -580,12 +580,12 @@
         "dew_point_temperature:1.5:mean:PT1M": {
             "type": "Parameter",
             "description": {
-                "en": "dew_point_temperature at 1.5m, aggregated over PT1M with method 'mean'"
+                "en": "Dew point temperature at 1.5m, aggregated over PT1M with method 'mean'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/dew_point_temperature",
                 "label": {
-                    "en": "dew_point_temperature:1.5:mean:PT1M"
+                    "en": "Dew point temperature"
                 }
             },
             "unit": {
@@ -603,12 +603,12 @@
         "duration_of_sunshine:2.0:point:PT0S": {
             "type": "Parameter",
             "description": {
-                "en": "duration_of_sunshine at 2.0m, aggregated over PT0S with method 'point'"
+                "en": "Duration of sunshine at 2.0m, aggregated over PT0S with method 'point'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/duration_of_sunshine",
                 "label": {
-                    "en": "duration_of_sunshine:2.0:point:PT0S"
+                    "en": "Duration of sunshine"
                 }
             },
             "unit": {
@@ -626,12 +626,12 @@
         "lwe_precipitation_rate:1.8:mean:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "lwe_precipitation_rate at 1.8m, aggregated over PT10M with method 'mean'"
+                "en": "Lwe precipitation rate at 1.8m, aggregated over PT10M with method 'mean'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/lwe_precipitation_rate",
                 "label": {
-                    "en": "lwe_precipitation_rate:1.8:mean:PT10M"
+                    "en": "Lwe precipitation rate"
                 }
             },
             "unit": {
@@ -649,12 +649,12 @@
         "lwe_precipitation_rate:2.5:mean:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "lwe_precipitation_rate at 2.5m, aggregated over PT10M with method 'mean'"
+                "en": "Lwe precipitation rate at 2.5m, aggregated over PT10M with method 'mean'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/lwe_precipitation_rate",
                 "label": {
-                    "en": "lwe_precipitation_rate:2.5:mean:PT10M"
+                    "en": "Lwe precipitation rate"
                 }
             },
             "unit": {
@@ -672,12 +672,12 @@
         "placeholder:1.8:point:PT0S": {
             "type": "Parameter",
             "description": {
-                "en": "placeholder at 1.8m, aggregated over PT0S with method 'point'"
+                "en": "Placeholder at 1.8m, aggregated over PT0S with method 'point'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/placeholder",
                 "label": {
-                    "en": "placeholder:1.8:point:PT0S"
+                    "en": "Placeholder"
                 }
             },
             "unit": {
@@ -695,12 +695,12 @@
         "placeholder:1.8:point:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "placeholder at 1.8m, aggregated over PT10M with method 'point'"
+                "en": "Placeholder at 1.8m, aggregated over PT10M with method 'point'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/placeholder",
                 "label": {
-                    "en": "placeholder:1.8:point:PT10M"
+                    "en": "Placeholder"
                 }
             },
             "unit": {
@@ -718,12 +718,12 @@
         "placeholder:1.8:point:PT1H": {
             "type": "Parameter",
             "description": {
-                "en": "placeholder at 1.8m, aggregated over PT1H with method 'point'"
+                "en": "Placeholder at 1.8m, aggregated over PT1H with method 'point'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/placeholder",
                 "label": {
-                    "en": "placeholder:1.8:point:PT1H"
+                    "en": "Placeholder"
                 }
             },
             "unit": {
@@ -741,12 +741,12 @@
         "placeholder:2.5:point:PT0S": {
             "type": "Parameter",
             "description": {
-                "en": "placeholder at 2.5m, aggregated over PT0S with method 'point'"
+                "en": "Placeholder at 2.5m, aggregated over PT0S with method 'point'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/placeholder",
                 "label": {
-                    "en": "placeholder:2.5:point:PT0S"
+                    "en": "Placeholder"
                 }
             },
             "unit": {
@@ -764,12 +764,12 @@
         "placeholder:2.5:point:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "placeholder at 2.5m, aggregated over PT10M with method 'point'"
+                "en": "Placeholder at 2.5m, aggregated over PT10M with method 'point'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/placeholder",
                 "label": {
-                    "en": "placeholder:2.5:point:PT10M"
+                    "en": "Placeholder"
                 }
             },
             "unit": {
@@ -787,12 +787,12 @@
         "placeholder:2.5:point:PT1H": {
             "type": "Parameter",
             "description": {
-                "en": "placeholder at 2.5m, aggregated over PT1H with method 'point'"
+                "en": "Placeholder at 2.5m, aggregated over PT1H with method 'point'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/placeholder",
                 "label": {
-                    "en": "placeholder:2.5:point:PT1H"
+                    "en": "Placeholder"
                 }
             },
             "unit": {
@@ -810,12 +810,12 @@
         "precipitation_duration:1.8:point:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "precipitation_duration at 1.8m, aggregated over PT10M with method 'point'"
+                "en": "Precipitation duration at 1.8m, aggregated over PT10M with method 'point'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/precipitation_duration",
                 "label": {
-                    "en": "precipitation_duration:1.8:point:PT10M"
+                    "en": "Precipitation duration"
                 }
             },
             "unit": {
@@ -833,12 +833,12 @@
         "precipitation_duration:2.0:point:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "precipitation_duration at 2.0m, aggregated over PT10M with method 'point'"
+                "en": "Precipitation duration at 2.0m, aggregated over PT10M with method 'point'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/precipitation_duration",
                 "label": {
-                    "en": "precipitation_duration:2.0:point:PT10M"
+                    "en": "Precipitation duration"
                 }
             },
             "unit": {
@@ -856,12 +856,12 @@
         "precipitation_duration:2.5:point:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "precipitation_duration at 2.5m, aggregated over PT10M with method 'point'"
+                "en": "Precipitation duration at 2.5m, aggregated over PT10M with method 'point'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/precipitation_duration",
                 "label": {
-                    "en": "precipitation_duration:2.5:point:PT10M"
+                    "en": "Precipitation duration"
                 }
             },
             "unit": {
@@ -879,12 +879,12 @@
         "precipitation_rate:2.0:mean:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "precipitation_rate at 2.0m, aggregated over PT10M with method 'mean'"
+                "en": "Precipitation rate at 2.0m, aggregated over PT10M with method 'mean'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/precipitation_rate",
                 "label": {
-                    "en": "precipitation_rate:2.0:mean:PT10M"
+                    "en": "Precipitation rate"
                 }
             },
             "unit": {
@@ -902,12 +902,12 @@
         "rainfall_amount:2.0:point:PT0S": {
             "type": "Parameter",
             "description": {
-                "en": "rainfall_amount at 2.0m, aggregated over PT0S with method 'point'"
+                "en": "Rainfall amount at 2.0m, aggregated over PT0S with method 'point'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/rainfall_amount",
                 "label": {
-                    "en": "rainfall_amount:2.0:point:PT0S"
+                    "en": "Rainfall amount"
                 }
             },
             "unit": {
@@ -925,12 +925,12 @@
         "rainfall_amount:2.0:point:PT12H": {
             "type": "Parameter",
             "description": {
-                "en": "rainfall_amount at 2.0m, aggregated over PT12H with method 'point'"
+                "en": "Rainfall amount at 2.0m, aggregated over PT12H with method 'point'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/rainfall_amount",
                 "label": {
-                    "en": "rainfall_amount:2.0:point:PT12H"
+                    "en": "Rainfall amount"
                 }
             },
             "unit": {
@@ -948,12 +948,12 @@
         "rainfall_amount:2.0:point:PT24H": {
             "type": "Parameter",
             "description": {
-                "en": "rainfall_amount at 2.0m, aggregated over PT24H with method 'point'"
+                "en": "Rainfall amount at 2.0m, aggregated over PT24H with method 'point'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/rainfall_amount",
                 "label": {
-                    "en": "rainfall_amount:2.0:point:PT24H"
+                    "en": "Rainfall amount"
                 }
             },
             "unit": {
@@ -971,12 +971,12 @@
         "rainfall_amount:2.0:point:PT6H": {
             "type": "Parameter",
             "description": {
-                "en": "rainfall_amount at 2.0m, aggregated over PT6H with method 'point'"
+                "en": "Rainfall amount at 2.0m, aggregated over PT6H with method 'point'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/rainfall_amount",
                 "label": {
-                    "en": "rainfall_amount:2.0:point:PT6H"
+                    "en": "Rainfall amount"
                 }
             },
             "unit": {
@@ -994,12 +994,12 @@
         "rainfall_duration:2.0:point:PT0S": {
             "type": "Parameter",
             "description": {
-                "en": "rainfall_duration at 2.0m, aggregated over PT0S with method 'point'"
+                "en": "Rainfall duration at 2.0m, aggregated over PT0S with method 'point'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/rainfall_duration",
                 "label": {
-                    "en": "rainfall_duration:2.0:point:PT0S"
+                    "en": "Rainfall duration"
                 }
             },
             "unit": {
@@ -1017,12 +1017,12 @@
         "relative_humidity:2.0:mean:PT1M": {
             "type": "Parameter",
             "description": {
-                "en": "relative_humidity at 2.0m, aggregated over PT1M with method 'mean'"
+                "en": "Relative humidity at 2.0m, aggregated over PT1M with method 'mean'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/relative_humidity",
                 "label": {
-                    "en": "relative_humidity:2.0:mean:PT1M"
+                    "en": "Relative humidity"
                 }
             },
             "unit": {
@@ -1040,12 +1040,12 @@
         "total_downwelling_shortwave_flux_in_air:2.0:mean:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "total_downwelling_shortwave_flux_in_air at 2.0m, aggregated over PT10M with method 'mean'"
+                "en": "Total downwelling shortwave flux in air at 2.0m, aggregated over PT10M with method 'mean'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/total_downwelling_shortwave_flux_in_air",
                 "label": {
-                    "en": "total_downwelling_shortwave_flux_in_air:2.0:mean:PT10M"
+                    "en": "Total downwelling shortwave flux in air"
                 }
             },
             "unit": {
@@ -1063,12 +1063,12 @@
         "visibility_in_air:1.8:mean:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "visibility_in_air at 1.8m, aggregated over PT10M with method 'mean'"
+                "en": "Visibility in air at 1.8m, aggregated over PT10M with method 'mean'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/visibility_in_air",
                 "label": {
-                    "en": "visibility_in_air:1.8:mean:PT10M"
+                    "en": "Visibility in air"
                 }
             },
             "unit": {
@@ -1086,12 +1086,12 @@
         "visibility_in_air:2.5:mean:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "visibility_in_air at 2.5m, aggregated over PT10M with method 'mean'"
+                "en": "Visibility in air at 2.5m, aggregated over PT10M with method 'mean'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/visibility_in_air",
                 "label": {
-                    "en": "visibility_in_air:2.5:mean:PT10M"
+                    "en": "Visibility in air"
                 }
             },
             "unit": {
@@ -1109,12 +1109,12 @@
         "wind_from_direction:2.0:mean:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "wind_from_direction at 2.0m, aggregated over PT10M with method 'mean'"
+                "en": "Wind from direction at 2.0m, aggregated over PT10M with method 'mean'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/wind_from_direction",
                 "label": {
-                    "en": "wind_from_direction:2.0:mean:PT10M"
+                    "en": "Wind from direction"
                 }
             },
             "unit": {
@@ -1132,12 +1132,12 @@
         "wind_speed:10.0:mean:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "wind_speed at 10.0m, aggregated over PT10M with method 'mean'"
+                "en": "Wind speed at 10.0m, aggregated over PT10M with method 'mean'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed",
                 "label": {
-                    "en": "wind_speed:10.0:mean:PT10M"
+                    "en": "Wind speed"
                 }
             },
             "unit": {
@@ -1155,12 +1155,12 @@
         "wind_speed_of_gust:10.0:maximum:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "wind_speed_of_gust at 10.0m, aggregated over PT10M with method 'maximum'"
+                "en": "Wind speed of gust at 10.0m, aggregated over PT10M with method 'maximum'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed_of_gust",
                 "label": {
-                    "en": "wind_speed_of_gust:10.0:maximum:PT10M"
+                    "en": "Wind speed of gust"
                 }
             },
             "unit": {
