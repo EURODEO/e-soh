@@ -45,7 +45,7 @@ def make_parameter(ts_mdata):
         },
         observedProperty=ObservedProperty(
             id=f"https://vocab.nerc.ac.uk/standard_name/{ts_mdata.standard_name}",
-            label={"en": ts_mdata.parameter_name},
+            label={"en": ts_mdata.standard_name},
         ),
         measurementType=MeasurementType(
             method=ts_mdata.function,
@@ -67,7 +67,10 @@ def convert_to_covjson(observations):
         referencing = [
             ReferenceSystemConnectionObject(
                 coordinates=["y", "x"],
-                system=ReferenceSystem(type="GeographicCRS", id="http://www.opengis.net/def/crs/EPSG/0/4326"),
+                system=ReferenceSystem(
+                    type="GeographicCRS",
+                    id="http://www.opengis.net/def/crs/EPSG/0/4326",
+                ),
             ),
             ReferenceSystemConnectionObject(
                 coordinates=["t"],
@@ -96,7 +99,9 @@ def convert_to_covjson(observations):
             parameters[parameter_id] = make_parameter(data.ts_mdata)
 
             ranges[parameter_id] = NdArray(
-                values=values_no_nan, axisNames=["t", "y", "x"], shape=[len(values_no_nan), 1, 1]
+                values=values_no_nan,
+                axisNames=["t", "y", "x"],
+                shape=[len(values_no_nan), 1, 1],
             )
 
         custom_fields = {"rodeo:wigosId": data.ts_mdata.platform}
