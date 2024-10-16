@@ -26,11 +26,9 @@ from grpc_getter import get_extents_request
 from grpc_getter import get_ts_ag_request
 
 import datastore_pb2 as dstore
-from utilities import (
-    get_unique_values_for_metadata,
-    seconds_to_iso_8601_duration,
-    convert_cm_to_m,
-)
+from utilities import get_unique_values_for_metadata
+from utilities import seconds_to_iso_8601_duration
+from utilities import convert_cm_to_m
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
