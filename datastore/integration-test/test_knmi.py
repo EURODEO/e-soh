@@ -46,7 +46,10 @@ def test_find_series_single_station_all_parameters(grpc_stub):
     request = dstore.GetObsRequest(filter=dict(platform=dstore.Strings(values=["0-20000-0-06260"])))
     response = grpc_stub.GetObservations(request)
 
-    assert len(response.observations) == 36  # Station 06260 doesn't have all parameters
+    # HACK: data-loader which straight to datastore doesn't drop the duplicates
+    assert (
+        len(set([obs.ts_mdata.parameter_name for obs in response.observations])) == 34
+    )  # Station 06260 doesn't have all parameters
 
 
 def test_get_values_single_station_single_parameter(grpc_stub):

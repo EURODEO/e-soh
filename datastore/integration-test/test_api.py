@@ -427,7 +427,7 @@ def test_items_get_area():
 
 def test_items_get_id():
     collection_id = "observations"
-    timeseries_id = "b640a010a008a464b451d6fd3e0749bf"
+    timeseries_id = "20bf5cc13b08b4c1d737966b64d0aea5"
     actual_response = requests.get(url=BASE_URL + f"/collections/{collection_id}/items/{timeseries_id}")
 
     assert actual_response.status_code == 200

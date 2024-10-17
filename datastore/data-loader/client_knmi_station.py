@@ -29,7 +29,7 @@ regex_level_centimeters = re.compile(r"[0-9]+(\.[0-9]+)?(?=cm)")
 regex_time_period = re.compile(r"(\d+) (Hours|Min)", re.IGNORECASE)
 
 
-def convert_standard_names(standard_name):
+def convert_standard_names_to_cf(standard_name):
     standard_name_mapping = {
         "cloud_cover": "cloud_area_fraction",
         "total_downwelling_shortwave_flux_in_air": "surface_downwelling_shortwave_flux_in_air",
@@ -84,7 +84,6 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
             station_slice = file.sel(station=station_id)
 
             for param_id in knmi_parameter_names:
-                # print(station_id, param_id)
                 param_file = station_slice[param_id]
                 standard_name, level, function, period, period_as_seconds = generate_parameter_name(
                     (param_file.standard_name if "standard_name" in param_file.attrs else None),
@@ -105,6 +104,7 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                     instrument=param_id,
                     platform_name=station_name,
                     title=param_file.long_name,
+                    license="CC BY 4.0",
                     standard_name=standard_name,
                     unit=convert_unit_names(param_file.units) if "units" in param_file.attrs else None,
                     level=level,
@@ -113,6 +113,7 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                     parameter_name=":".join([standard_name, str(float(level / 100)), function, period]),
                     naming_authority="nl.knmi",
                     keywords=file["iso_dataset"].attrs["keyword"],
+                    summary=file["iso_dataset"].attrs["abstract"],
                     keywords_vocabulary=file.attrs["references"],
                     source=file.attrs["source"],
                     creator_name="KNMI",
@@ -126,9 +127,9 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                                 "nl.knmi",
                                 platform,
                                 standard_name,
-                                str(float(level / 100)),
+                                str(level),
                                 function,
-                                str(period),
+                                str(period_as_seconds),
                             ]
                         ).encode()
                     ).hexdigest(),
@@ -222,7 +223,7 @@ def generate_parameter_name(standard_name, long_name, station_id, station_name, 
         period = "PT1H"
 
     period_as_seconds = iso_8601_duration_to_seconds(period)
-    standard_name = convert_standard_names(standard_name)
+    standard_name = convert_standard_names_to_cf(standard_name)
     return standard_name, level, function, period, period_as_seconds
 
 
