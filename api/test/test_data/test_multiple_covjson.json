@@ -53,7 +53,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/relative_humidity",
                 "label": {
-                    "en": "relative_humidity:2.0:mean:PT1M"
+                    "en": "relative_humidity"
                 }
             },
             "unit": {
@@ -76,7 +76,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/wind_from_direction",
                 "label": {
-                    "en": "wind_from_direction:2.0:mean:PT10M"
+                    "en": "wind_from_direction"
                 }
             },
             "unit": {
@@ -99,7 +99,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed",
                 "label": {
-                    "en": "wind_speed:10.0:mean:PT10M"
+                    "en": "wind_speed"
                 }
             },
             "unit": {

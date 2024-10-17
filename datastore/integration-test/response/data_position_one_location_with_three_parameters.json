@@ -51,7 +51,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:2.0:mean:PT1M"
+                    "en": "air_temperature"
                 }
             },
             "unit": {
@@ -74,7 +74,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/dew_point_temperature",
                 "label": {
-                    "en": "dew_point_temperature:1.5:mean:PT1M"
+                    "en": "dew_point_temperature"
                 }
             },
             "unit": {
@@ -97,7 +97,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/relative_humidity",
                 "label": {
-                    "en": "relative_humidity:2.0:mean:PT1M"
+                    "en": "relative_humidity"
                 }
             },
             "unit": {
