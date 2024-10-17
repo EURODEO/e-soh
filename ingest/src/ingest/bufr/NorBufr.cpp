@@ -508,17 +508,17 @@ DescriptorMeta *NorBufr::addMeta(DescriptorMeta *dm) {
 
 double NorBufr::getValue(const Descriptor &d, double) const {
   const DescriptorMeta *dm = d.getMeta();
-  double dvalue = 0.0;
+  double dvalue = std::numeric_limits<double>::quiet_NaN();
 
   if (dm) {
     const std::vector<bool> &bitref = (isCompressed() ? ucbits : bits);
-    uint64_t value = NorBufrIO::getBitValue(
+    uint64_t raw_value = NorBufrIO::getBitValue(
         d.startBit(), dm->datawidth(), !(d.f() == 0 && d.x() == 31), bitref);
 
-    dvalue = static_cast<double>(value);
-    if (value == std::numeric_limits<uint64_t>::max())
+    if (raw_value == std::numeric_limits<uint64_t>::max())
       return (dvalue);
 
+    dvalue = static_cast<double>(raw_value);
     if (dm->reference())
       dvalue += dm->reference();
     if (dm->scale()) {
@@ -547,18 +547,17 @@ uint64_t NorBufr::getBitValue(const Descriptor &d, uint64_t) const {
 
 int NorBufr::getValue(const Descriptor &d, int) const {
   const DescriptorMeta *dm = d.getMeta();
-  int value = 0;
+  int value = std::numeric_limits<int>::max();
 
   if (dm) {
     const std::vector<bool> &bitref = (isCompressed() ? ucbits : bits);
-    value = NorBufrIO::getBitValue(d.startBit(), dm->datawidth(),
-                                   !(d.f() == 0 && d.x() == 31), bitref);
-
-    if (value == std::numeric_limits<int>::max())
+    uint64_t raw_value = NorBufrIO::getBitValue(
+        d.startBit(), dm->datawidth(), !(d.f() == 0 && d.x() == 31), bitref);
+    if (raw_value == std::numeric_limits<uint64_t>::max())
       return (value);
 
     if (dm->reference())
-      value += dm->reference();
+      value = dm->reference() + raw_value;
     if (dm->scale()) {
       value = value / pow(10.0, dm->scale());
     }
@@ -590,10 +589,10 @@ std::string NorBufr::getValue(const Descriptor &d, std::string,
       return ret;
     }
 
-    uint64_t value = NorBufrIO::getBitValue(
+    uint64_t raw_value = NorBufrIO::getBitValue(
         d.startBit(), dm->datawidth(), !(d.f() == 0 && d.x() == 31), bitref);
 
-    if (value == std::numeric_limits<uint64_t>::max())
+    if (raw_value == std::numeric_limits<uint64_t>::max())
       return ("MISSING");
 
     if (!dm->reference() &&
@@ -601,9 +600,9 @@ std::string NorBufr::getValue(const Descriptor &d, std::string,
          dm->unit().find("FLAG TABLE") != std::string::npos)) {
       std::stringstream ss(tabB->at(d).unit());
 
-      ret = tabC->codeStr(d, value);
+      ret = tabC->codeStr(d, raw_value);
     } else {
-      double dvalue = value;
+      double dvalue = raw_value;
       if (dm->reference())
         dvalue += dm->reference();
       if (dm->scale()) {
