@@ -136,6 +136,20 @@ services:
       store:
         condition: service_healthy
 
+  ingest_loader:
+    profiles: ["test"]
+    build:
+      context: datastore/data-loader
+      args:
+        THROUGH_INGEST: "true"
+    environment:
+      - INGEST_URL=http://ingest:8001/json
+    depends_on:
+      store:
+        condition: service_healthy
+      ingest:
+        condition: service_started
+
   integration:
     profiles: ["test"]
     build:

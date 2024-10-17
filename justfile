@@ -9,7 +9,10 @@ all: lint build unit services load integration performance client
 # Build and run the default docker services
 up: build services
 # Build and run the unit, load and integration tests
-test: build unit load integration
+test: build unit ingest_load integration
+
+# Build and run the ingest loader and integration tests
+ingest_test: build ingest_load integration
 
 # ---------------------------------------------------------------------------- #
 #                                  utility                                     #
@@ -123,6 +126,8 @@ services:
 load:
     docker compose --env-file ./ci/config/env.list run --rm loader
 
+ingest_load:
+    docker compose --env-file ./ci/config/env.list run --rm ingest_loader
 
 # Stop all E-SOH containers
 down:
