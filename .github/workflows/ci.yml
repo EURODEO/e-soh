@@ -61,7 +61,7 @@ jobs:
         run: just services
 
       - name: Load the data into the database
-        run: just load
+        run: just ingest_load
 
       - name: Run the integration test
         run: just integration
