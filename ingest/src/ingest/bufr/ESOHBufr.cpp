@@ -11,6 +11,7 @@
 
 #include <algorithm>
 #include <bitset>
+#include <cmath>
 #include <iomanip>
 #include <list>
 #include <sstream>
@@ -425,45 +426,50 @@ std::list<std::string> ESOHBufr::msg() const {
           }
           }
           if (period_update) {
+            bool valid_period = true;
             if (data_category != 2 ||
                 (int_data_subcategory < 4 || int_data_subcategory > 7)) {
               int time_period = 0;
               time_period = getValue(v, time_period);
-
-              if (data_category == 2 && int_data_subcategory == 1) {
-                time_period = -time_period;
-                if (period_beg == "PT") {
-                  if (period_end == "S") {
-                    time_disp += time_period;
-                  } else {
-                    if (period_end == "M") {
-                      time_disp += time_period * 60;
+              if (time_period == std::numeric_limits<int>::max())
+                valid_period = false;
+              if (valid_period) {
+                if (data_category == 2 && int_data_subcategory == 1) {
+                  time_period = -time_period;
+                  if (period_beg == "PT") {
+                    if (period_end == "S") {
+                      time_disp += time_period;
                     } else {
-                      if (period_end == "H") {
-                        time_disp += time_period * 60 * 60;
+                      if (period_end == "M") {
+                        time_disp += time_period * 60;
                       } else {
-                        lb.addLogEntry(LogEntry(
-                            "Profile datetime is the start of measure!",
-                            LogLevel::WARN, __func__, bufr_id));
+                        if (period_end == "H") {
+                          time_disp += time_period * 60 * 60;
+                        } else {
+                          lb.addLogEntry(LogEntry(
+                              "Profile datetime is the start of measure!",
+                              LogLevel::WARN, __func__, bufr_id));
+                        }
                       }
                     }
                   }
+                } else {
+                  if (time_period > 0) {
+                    time_period = -time_period;
+                    lb.addLogEntry(LogEntry("Positive BUFR time period: " +
+                                                std::to_string(time_period) +
+                                                ", at: " + v.toString(),
+                                            LogLevel::WARN, __func__, bufr_id));
+                  }
                 }
-              } else {
-                if (time_period > 0) {
-                  time_period = -time_period;
-                  lb.addLogEntry(LogEntry("Positive BUFR time period: " +
-                                              std::to_string(time_period) +
-                                              ", at: " + v.toString(),
-                                          LogLevel::WARN, __func__, bufr_id));
-                }
+                dateupdate = true;
+                std::stringstream ss;
+                ss << period_beg << -time_period << period_end;
+                period_str = ss.str();
               }
-              dateupdate = true;
-              std::stringstream ss;
-              ss << period_beg << -time_period << period_end;
-              period_str = ss.str();
             }
-            dateupdate = true;
+            if (valid_period)
+              dateupdate = true;
           }
           if (dateupdate) {
             if (v.y() == 86 || (v.y() >= 21 && v.y() <= 26) ||
@@ -527,7 +533,7 @@ std::list<std::string> ESOHBufr::msg() const {
           // 33: // Height of sensor above water
           if (v.y() == 31 || v.y() == 32 || v.y() == 33) {
             sensor_level = getValue(v, sensor_level);
-            if (getDataCategory() <= 1) {
+            if (getDataCategory() <= 1 && !std::isnan(sensor_level)) {
               sensor_level_active = 2;
             }
           }
@@ -660,20 +666,25 @@ std::list<std::string> ESOHBufr::msg() const {
               ++ci;
               double precip = 0.0;
               int period = 0;
+              bool valid_period = true;
               time_t start_datetime = 0;
               if (*ci == DescriptorId(4024, true)) {
                 period = getValue(*ci, period);
-                start_datetime = mktime(&meas_datetime);
-                start_datetime += period * 60 * 60;
-                period_beg = "PT";
-                period_end = "H";
-                std::stringstream ss;
-                ss << period_beg << -period << period_end;
-                period_str = ss.str();
+                if (period == std::numeric_limits<int>::max())
+                  valid_period = false;
+                if (valid_period) {
+                  start_datetime = mktime(&meas_datetime);
+                  start_datetime += period * 60 * 60;
+                  period_beg = "PT";
+                  period_end = "H";
+                  std::stringstream ss;
+                  ss << period_beg << -period << period_end;
+                  period_str = ss.str();
+                }
               }
 
               ++ci;
-              if (*ci == DescriptorId(13011, true)) {
+              if (valid_period && *ci == DescriptorId(13011, true)) {
                 precip = getValue(*ci, precip);
                 if (precip !=
                     static_cast<double>(std::numeric_limits<uint64_t>::max())) {
