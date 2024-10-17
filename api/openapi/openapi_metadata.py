@@ -1,7 +1,8 @@
 openapi_metadata = {
     "title": "Observations Europe EUMETNET",
     "description": (
-        "EDR data service for European environmental observations from EUMETNET," " co-funded by the European Union."
+        "OGC EDR API data service for European environmental observations from EUMETNET,"
+        " co-funded by the European Union."
     ),
     "contact": {
         "name": "EUMETNET",
