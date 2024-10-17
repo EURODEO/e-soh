@@ -51,7 +51,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:2.0:maximum:PT6H"
+                    "en": "air_temperature"
                 }
             },
             "unit": {
@@ -74,7 +74,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:2.0:minimum:PT6H"
+                    "en": "air_temperature"
                 }
             },
             "unit": {

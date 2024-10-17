@@ -57,7 +57,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed",
                 "label": {
-                    "en": "wind_speed:10.0:mean:PT10M"
+                    "en": "wind_speed"
                 }
             },
             "unit": {

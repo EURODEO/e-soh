@@ -55,7 +55,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:0.1:minimum:PT10M"
+                    "en": "air_temperature"
                 }
             },
             "unit": {
@@ -78,7 +78,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:1.5:maximum:PT10M"
+                    "en": "air_temperature"
                 }
             },
             "unit": {
@@ -101,7 +101,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:1.5:minimum:PT10M"
+                    "en": "air_temperature"
                 }
             },
             "unit": {
@@ -124,7 +124,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:2.0:mean:PT1M"
+                    "en": "air_temperature"
                 }
             },
             "unit": {
@@ -147,7 +147,7 @@
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/wind_from_direction",
                 "label": {
-                    "en": "wind_from_direction:2.0:mean:PT10M"
+                    "en": "wind_from_direction"
                 }
             },
             "unit": {
