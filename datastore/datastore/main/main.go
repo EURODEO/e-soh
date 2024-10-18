@@ -9,6 +9,7 @@ import (
 	"datastore/storagebackend/postgresql"
 	"fmt"
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/collectors"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"log"
 	"net"
@@ -22,7 +23,7 @@ import (
 
 	// Monitoring
 	"datastore/metrics"
-	grpc_prometheus "github.com/grpc-ecosystem/go-grpc-middleware/providers/prometheus"
+	grpcprometheus "github.com/grpc-ecosystem/go-grpc-middleware/providers/prometheus"
 
 	_ "expvar"
 	"net/http"
@@ -59,9 +60,9 @@ func main() {
 		return resp, err
 	}
 
-	grpcMetrics := grpc_prometheus.NewServerMetrics(
-		grpc_prometheus.WithServerHandlingTimeHistogram(
-			grpc_prometheus.WithHistogramBuckets([]float64{0.001, 0.01, 0.1, 0.3, 0.6, 1, 3, 6, 9, 20, 30, 60, 90, 120}),
+	grpcMetrics := grpcprometheus.NewServerMetrics(
+		grpcprometheus.WithServerHandlingTimeHistogram(
+			grpcprometheus.WithHistogramBuckets([]float64{0.001, 0.01, 0.1, 0.3, 0.6, 1, 3, 6, 9, 20, 30, 60, 90, 120}),
 		),
 	)
 	reg := prometheus.NewRegistry()
@@ -70,6 +71,8 @@ func main() {
 		promservermetrics.ActiveConnections,
 		promservermetrics.UptimeCounter,
 		promservermetrics.ResponseSizeSummary,
+		collectors.NewGoCollector(),
+		collectors.NewProcessCollector(collectors.ProcessCollectorOpts{}),
 	)
 
 	go promservermetrics.TrackUptime()
