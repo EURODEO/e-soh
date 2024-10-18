@@ -52,12 +52,12 @@
         "wind_speed:10.0:mean:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "wind_speed at 10.0m, aggregated over PT10M with method 'mean'"
+                "en": "Wind speed at 10.0m, aggregated over PT10M with method 'mean'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed",
                 "label": {
-                    "en": "wind_speed:10.0:mean:PT10M"
+                    "en": "Wind speed"
                 }
             },
             "unit": {

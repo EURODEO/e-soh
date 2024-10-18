@@ -7,3 +7,4 @@ grpcio-tools~=1.56
 netCDF4~=1.6
 xarray~=2023.7
 isodate~=0.6.1
+requests~=2.32

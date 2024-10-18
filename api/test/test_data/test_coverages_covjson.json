@@ -49,12 +49,12 @@
                 "air_temperature:2.0:mean:PT1M": {
                     "type": "Parameter",
                     "description": {
-                        "en": "air_temperature at 2.0m, aggregated over PT1M with method 'mean'"
+                        "en": "Air temperature at 2.0m, aggregated over PT1M with method 'mean'"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                         "label": {
-                            "en": "air_temperature:2.0:mean:PT1M"
+                            "en": "Air temperature"
                         }
                     },
                     "unit": {
@@ -139,12 +139,12 @@
                 "air_temperature:2.0:mean:PT1M": {
                     "type": "Parameter",
                     "description": {
-                        "en": "air_temperature at 2.0m, aggregated over PT1M with method 'mean'"
+                        "en": "Air temperature at 2.0m, aggregated over PT1M with method 'mean'"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                         "label": {
-                            "en": "air_temperature:2.0:mean:PT1M"
+                            "en": "Air temperature"
                         }
                     },
                     "unit": {
@@ -186,12 +186,12 @@
         "air_temperature:2.0:mean:PT1M": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 2.0m, aggregated over PT1M with method 'mean'"
+                "en": "Air temperature at 2.0m, aggregated over PT1M with method 'mean'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:2.0:mean:PT1M"
+                    "en": "Air temperature"
                 }
             },
             "unit": {

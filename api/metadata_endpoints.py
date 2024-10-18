@@ -110,6 +110,7 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
         ts = group.combo
         level = convert_cm_to_m(ts.level)
         period = seconds_to_iso_8601_duration(ts.period)
+        label = " ".join(ts.standard_name.capitalize().split("_"))
 
         custom_fields = {
             "rodeo:standard_name": ts.standard_name,
@@ -117,10 +118,10 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
         }
 
         parameter = Parameter(
-            description=f"{ts.standard_name} at {level}m, aggregated over {period} with method '{ts.function}'",
+            description=f"{label} at {level}m, aggregated over {period} with method '{ts.function}'",
             observedProperty=ObservedProperty(
                 id=f"https://vocab.nerc.ac.uk/standard_name/{ts.standard_name}",
-                label=ts.parameter_name,
+                label=label,
             ),
             measurementType=MeasurementType(
                 method=ts.function,

@@ -46,17 +46,17 @@
         "air_temperature:2.0:maximum:PT6H": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 2.0m, aggregated over PT6H with method 'maximum'"
+                "en": "Air temperature at 2.0m, aggregated over PT6H with method 'maximum'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:2.0:maximum:PT6H"
+                    "en": "Air temperature"
                 }
             },
             "unit": {
                 "label": {
-                    "en": "degrees Celsius"
+                    "en": "degC"
                 }
             },
             "measurementType": {
@@ -69,17 +69,17 @@
         "air_temperature:2.0:minimum:PT6H": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 2.0m, aggregated over PT6H with method 'minimum'"
+                "en": "Air temperature at 2.0m, aggregated over PT6H with method 'minimum'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:2.0:minimum:PT6H"
+                    "en": "Air temperature"
                 }
             },
             "unit": {
                 "label": {
-                    "en": "degrees Celsius"
+                    "en": "degC"
                 }
             },
             "measurementType": {

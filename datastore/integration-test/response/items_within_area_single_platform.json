@@ -11,29 +11,31 @@
                 ]
             },
             "properties": {
-                "title": "Wind Speed at 10m 10 Min Average",
+                "title": "Wind Direction 10 Min Average",
+                "summary": "Most recent 10 minute in situ observations of the Dutch meteorological observation network",
                 "keywords": "temperature, pressure, relative humidity, visibility, wind speed, wind direction, wind gust",
                 "keywords_vocabulary": "http://data.knmi.nl",
+                "license": "CC BY 4.0",
                 "naming_authority": "nl.knmi",
-                "creator_type": "Institution",
+                "creator_type": "institution",
                 "creator_name": "KNMI",
                 "creator_email": "datacentrum@knmi.nl",
                 "creator_url": "http://data.knmi.nl",
                 "institution": "Royal Netherlands Meteorological Institute (KNMI)",
                 "source": "Royal Netherlands Meteorological Institute (KNMI)",
                 "platform": "0-20000-0-06225",
-                "standard_name": "wind_speed",
-                "unit": "m s-1",
-                "level": 10.0,
+                "standard_name": "wind_from_direction",
+                "unit": "degrees",
+                "level": 2.0,
                 "period": "PT10M",
-                "instrument": "ff",
-                "parameter_name": "wind_speed:10.0:mean:PT10M",
-                "timeseries_id": "6987eca5b92eb041ce27ae26d4bff163",
+                "instrument": "dd",
+                "parameter_name": "wind_from_direction:2.0:mean:PT10M",
+                "timeseries_id": "18cd5ffa1c8fbe2c7e4829bde1e66dcf",
                 "platform_vocabulary": "https://oscar.wmo.int/surface/rest/api/search/station?wigosId=0-20000-0-06225",
                 "platform_name": "IJMUIDEN WP",
                 "method": "mean"
             },
-            "id": "6987eca5b92eb041ce27ae26d4bff163"
+            "id": "18cd5ffa1c8fbe2c7e4829bde1e66dcf"
         },
         {
             "type": "Feature",
@@ -46,10 +48,12 @@
             },
             "properties": {
                 "title": "Wind Gust at 10m 10 Min Maximum",
+                "summary": "Most recent 10 minute in situ observations of the Dutch meteorological observation network",
                 "keywords": "temperature, pressure, relative humidity, visibility, wind speed, wind direction, wind gust",
                 "keywords_vocabulary": "http://data.knmi.nl",
+                "license": "CC BY 4.0",
                 "naming_authority": "nl.knmi",
-                "creator_type": "Institution",
+                "creator_type": "institution",
                 "creator_name": "KNMI",
                 "creator_email": "datacentrum@knmi.nl",
                 "creator_url": "http://data.knmi.nl",
@@ -57,17 +61,17 @@
                 "source": "Royal Netherlands Meteorological Institute (KNMI)",
                 "platform": "0-20000-0-06225",
                 "standard_name": "wind_speed_of_gust",
-                "unit": "m s-1",
+                "unit": "m/s",
                 "level": 10.0,
                 "period": "PT10M",
                 "instrument": "gff",
                 "parameter_name": "wind_speed_of_gust:10.0:maximum:PT10M",
-                "timeseries_id": "86b9d3435ec8e5947a78f8d4a3566c47",
+                "timeseries_id": "1d8f48bf77c47d0ffd36f857b945bb00",
                 "platform_vocabulary": "https://oscar.wmo.int/surface/rest/api/search/station?wigosId=0-20000-0-06225",
                 "platform_name": "IJMUIDEN WP",
                 "method": "maximum"
             },
-            "id": "86b9d3435ec8e5947a78f8d4a3566c47"
+            "id": "1d8f48bf77c47d0ffd36f857b945bb00"
         },
         {
             "type": "Feature",
@@ -79,29 +83,31 @@
                 ]
             },
             "properties": {
-                "title": "Wind Direction 10 Min Average",
+                "title": "Wind Speed at 10m 10 Min Average",
+                "summary": "Most recent 10 minute in situ observations of the Dutch meteorological observation network",
                 "keywords": "temperature, pressure, relative humidity, visibility, wind speed, wind direction, wind gust",
                 "keywords_vocabulary": "http://data.knmi.nl",
+                "license": "CC BY 4.0",
                 "naming_authority": "nl.knmi",
-                "creator_type": "Institution",
+                "creator_type": "institution",
                 "creator_name": "KNMI",
                 "creator_email": "datacentrum@knmi.nl",
                 "creator_url": "http://data.knmi.nl",
                 "institution": "Royal Netherlands Meteorological Institute (KNMI)",
                 "source": "Royal Netherlands Meteorological Institute (KNMI)",
                 "platform": "0-20000-0-06225",
-                "standard_name": "wind_from_direction",
-                "unit": "degree",
-                "level": 2.0,
+                "standard_name": "wind_speed",
+                "unit": "m/s",
+                "level": 10.0,
                 "period": "PT10M",
-                "instrument": "dd",
-                "parameter_name": "wind_from_direction:2.0:mean:PT10M",
-                "timeseries_id": "c056de2030d4019d8b6a3efd20d245f0",
+                "instrument": "ff",
+                "parameter_name": "wind_speed:10.0:mean:PT10M",
+                "timeseries_id": "96cca44cbbd697fce89cc8fd8f75cf94",
                 "platform_vocabulary": "https://oscar.wmo.int/surface/rest/api/search/station?wigosId=0-20000-0-06225",
                 "platform_name": "IJMUIDEN WP",
                 "method": "mean"
             },
-            "id": "c056de2030d4019d8b6a3efd20d245f0"
+            "id": "96cca44cbbd697fce89cc8fd8f75cf94"
         }
     ]
 }

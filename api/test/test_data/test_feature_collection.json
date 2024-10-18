@@ -44,12 +44,12 @@
         "air_pressure_at_sea_level:1.0:mean:PT1M": {
             "type": "Parameter",
             "description": {
-                "en": "air_pressure_at_sea_level at 1.0m, aggregated over PT1M with method 'mean'"
+                "en": "Air pressure at sea level at 1.0m, aggregated over PT1M with method 'mean'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_pressure_at_sea_level",
                 "label": {
-                    "en": "air_pressure_at_sea_level:1.0:mean:PT1M"
+                    "en": "Air pressure at sea level"
                 }
             },
             "unit": {
@@ -67,12 +67,12 @@
         "air_temperature:0.1:minimum:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 0.1m, aggregated over PT10M with method 'minimum'"
+                "en": "Air temperature at 0.1m, aggregated over PT10M with method 'minimum'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:0.1:minimum:PT10M"
+                    "en": "Air temperature"
                 }
             },
             "unit": {

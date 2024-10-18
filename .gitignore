@@ -212,3 +212,4 @@ cf_standard_names_v84.txt
 # API
 api/test/output/
 datastore/load-test/output/
+ingest/test/output/
