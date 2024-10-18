@@ -8,6 +8,8 @@ set positional-arguments
 all: lint build unit services load integration performance client
 # Build and run the default docker services
 up: build services
+# Build and run the default docker services and start up monitoring
+local: up monitoring
 # Build and run the unit, load and integration tests
 test: build unit load integration
 
@@ -93,6 +95,11 @@ unit:
     docker compose run --rm api-unit
 
 
+# Start the monitoring
+monitoring:
+    docker compose up prometheus prometheus-postgres-exporter grafana -d
+
+
 # Run the performance tests
 performance:
     docker compose --env-file ./ci/config/env.list run --rm performance
@@ -108,7 +115,7 @@ client:
 # ---------------------------------------------------------------------------- #
 # Build the docker images
 build: copy-proto
-    docker compose --env-file ./ci/config/env.list --profile test build
+    docker compose --env-file ./ci/config/env.list --profile monitoring --profile test build
 
 
 # # ---------------------------------------------------------------------------- #
@@ -126,9 +133,9 @@ load:
 
 # Stop all E-SOH containers
 down:
-    docker compose --profile test down
+    docker compose --profile monitoring --profile test down
 
 
 # Stop all E-SOH containers and remove their volumes
 destroy:
-    docker compose --profile test down --volumes
+    docker compose --profile monitoring --profile test down --volumes

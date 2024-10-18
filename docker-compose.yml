@@ -165,6 +165,7 @@ services:
         condition: service_healthy
 
   prometheus:
+    profiles: ["monitoring"]
     image: prom/prometheus
     ports:
       - "9090:9090"
@@ -173,6 +174,7 @@ services:
       - prometheus-data:/prometheus
 
   prometheus-postgres-exporter:
+    profiles: ["monitoring"]
     image: quay.io/prometheuscommunity/postgres-exporter
     environment:
       - DATA_SOURCE_URI=db:5432/data
@@ -188,6 +190,7 @@ services:
     command: ["--collector.stat_statements", "--collector.stat_user_tables", "--collector.stat_activity_autovacuum"]
 
   grafana:
+    profiles: ["monitoring"]
     image: grafana/grafana-oss:11.2.0
     ports:
       - "3000:3000"
