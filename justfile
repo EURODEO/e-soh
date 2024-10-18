@@ -5,14 +5,14 @@ default:
 set positional-arguments
 
 # Run all docker services. After running the database needs cleanup, run just destroy
-all: lint build unit services load integration performance client
+all: lint build unit ingest_unit services load integration performance client
 # Build and run the default docker services
 up: build services
 # Build and run the unit, load and integration tests
 test: build unit ingest_load integration
 
 # Build and run the ingest loader and integration tests
-ingest_test: build ingest_load integration
+ingest_test: build ingest_unit ingest_load integration
 
 # ---------------------------------------------------------------------------- #
 #                                  utility                                     #
@@ -95,6 +95,8 @@ integration:
 unit:
     docker compose run --rm api-unit
 
+ingest_unit:
+    docker compose run --rm ingest-unit
 
 # Run the performance tests
 performance:

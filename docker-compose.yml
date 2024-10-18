@@ -113,6 +113,14 @@ services:
       store:
         condition: service_healthy
 
+  ingest-unit:
+    profiles: ["test"]
+    build:
+      context: ingest
+      dockerfile: unit.Dockerfile
+    volumes:
+      - ./ingest/test/output:/app/output
+
   client:
     profiles: ["test"]
     build:
