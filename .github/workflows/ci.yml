@@ -131,6 +131,10 @@ jobs:
             ingest/test/output/pytest-coverage.txt
             ingest/test/output/pytest.xml
 
+      - name: Cleanup
+        if: always()
+        run: just destroy
+
   publish-test-results:
     needs:
       - test-datastore
@@ -146,12 +150,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: test-results-artifact
+          path: ./artifacts/test-results
 
       - name: Comment coverage
         uses: MishaKav/pytest-coverage-comment@main
         with:
-          pytest-coverage-path: api/test/output/pytest-coverage.txt
-          coverage-path-prefix: api/test/output/
+          pytest-coverage-path: ./artifacts/test-results/pytest-coverage.txt
+          coverage-path-prefix: ./artifacts/test-results/
           title: API Unit Test Coverage Report
           hide-badge: true
           hide-report: false
@@ -159,19 +164,20 @@ jobs:
           hide-comment: false
           report-only-changed-files: false
           remove-link-from-badge: false
-          junitxml-path: api/test/output/pytest.xml
+          junitxml-path: ./artifacts/test-results/pytest.xml
           junitxml-title: API Unit Test Coverage Summary
 
       - name: Download test-ingest results so that they can be published
         uses: actions/download-artifact@v4
         with:
           name: ingest-test-results-artifact
+          path: ./artifacts/ingest-results
 
       - name: Comment ingest coverage
         uses: MishaKav/pytest-coverage-comment@main
         with:
-          pytest-coverage-path: ingest/test/output/pytest-coverage.txt
-          coverage-path-prefix: ingest/test/output/
+          pytest-coverage-path: ./artifacts/ingest-results/pytest-coverage.txt
+          coverage-path-prefix: ./artifacts/ingest-results/
           title: Ingest Unit Test Coverage Report
           hide-badge: true
           hide-report: false
@@ -179,5 +185,5 @@ jobs:
           hide-comment: false
           report-only-changed-files: false
           remove-link-from-badge: false
-          junitxml-path: ingest/test/output/pytest.xml
+          junitxml-path: ./artifacts/ingest-results/pytest.xml
           junitxml-title: Ingest Unit Test Coverage Summary
