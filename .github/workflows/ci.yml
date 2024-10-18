@@ -163,7 +163,7 @@ jobs:
         with:
           title: Unit Test Coverage Reports
           multiple-files: |
-            API Unit Tests, ./artifacts/test-results/pytest-coverage.txt, ./artifacts/test-results/pytest.xml
+            API Unit Tests, ./artifacts/test-results/api/test/output/pytest-coverage.txt, ./artifacts/test-results/api/test/output/pytest.xml
             Ingest Unit Tests, ./artifacts/ingest-results/pytest-coverage.txt, ./artifacts/ingest-results/pytest.xml
           hide-badge: true
           hide-report: false
