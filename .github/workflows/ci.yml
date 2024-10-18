@@ -161,13 +161,8 @@ jobs:
       - name: Comment coverage
         uses: MishaKav/pytest-coverage-comment@main
         with:
-          title: Unit Test Coverage Reports
+          title: Unit Test Coverage Report
+          pytest-coverage-path: ./artifacts/test-results/api/test/output/pytest-coverage.txt
           multiple-files: |
             API Unit Tests, ./artifacts/test-results/api/test/output/pytest-coverage.txt, ./artifacts/test-results/api/test/output/pytest.xml
             Ingest Unit Tests, ./artifacts/ingest-results/pytest-coverage.txt, ./artifacts/ingest-results/pytest.xml
-          hide-badge: true
-          hide-report: false
-          create-new-comment: false
-          hide-comment: false
-          report-only-changed-files: false
-          remove-link-from-badge: false
