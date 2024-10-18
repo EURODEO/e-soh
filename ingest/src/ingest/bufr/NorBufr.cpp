@@ -555,9 +555,9 @@ int NorBufr::getValue(const Descriptor &d, int) const {
         d.startBit(), dm->datawidth(), !(d.f() == 0 && d.x() == 31), bitref);
     if (raw_value == std::numeric_limits<uint64_t>::max())
       return (value);
-
+    value = static_cast<int>(raw_value);
     if (dm->reference())
-      value = dm->reference() + raw_value;
+      value += dm->reference();
     if (dm->scale()) {
       value = value / pow(10.0, dm->scale());
     }
