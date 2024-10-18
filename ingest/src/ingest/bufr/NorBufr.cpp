@@ -80,15 +80,20 @@ uint64_t NorBufr::uncompressDescriptor(std::list<DescriptorId>::iterator &it,
 
       std::vector<bool> bl = NorBufrIO::getBitVec(sb, NBINC * 8, bits);
       ucbits.insert(ucbits.end(), bl.begin(), bl.end());
-      current_desc.setMeta(const_cast<DescriptorMeta *>(&(tabB->at(*it))));
-      current_desc.setStartBit(subsetsb);
-      /* TODO: switch back !!!!
-      if( NBINC && dm.datawidth() != static_cast<uint64_t>(NBINC*8) )
-      {
-          std::cerr << "Datawidth Check: assoc field ? dw=" << dm.datawidth() <<
-      " NBINC:" << NBINC << "\n";
+      int bitdiff = dm.datawidth() - NBINC * 8;
+      if (bitdiff) {
+        DescriptorMeta *dmn = new DescriptorMeta;
+        *dmn = dm;
+        dmn->setDatawidth(bl.size());
+        auto dm_ptr = addMeta(dmn);
+        // Meta already exists
+        if (dm_ptr != dmn)
+          delete dmn;
+        current_desc.setMeta(dm_ptr);
+      } else {
+        current_desc.setMeta(const_cast<DescriptorMeta *>(&(tabB->at(*it))));
+        current_desc.setStartBit(subsetsb);
       }
-      */
 
       subsetsb += NBINC * 8;
       sb += NBINC * 8;
