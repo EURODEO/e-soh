@@ -110,6 +110,7 @@ std::list<std::string> ESOHBufr::msg() const {
     std::string period_beg;
     std::string period_end;
     bool period_update = false;
+    bool start_end_period = false;
     std::string platform;
     bool platform_check = false;
 
@@ -457,6 +458,13 @@ std::list<std::string> ESOHBufr::msg() const {
             period_beg = "PT";
             period_end = "M";
             period_update = true;
+            auto pi = ci;
+            pi--;
+            // CI: current descriptor, period end(in minutes)
+            // PI: previous descriptor, period start(in minutes)
+            if (*pi == *ci) {
+              start_end_period = true;
+            }
             break;
           }
           case 16:   // Short time period or displacement
@@ -494,8 +502,10 @@ std::list<std::string> ESOHBufr::msg() const {
                     LogLevel::WARN, __func__, bufr_id));
               }
               if (valid_period) {
-                if (data_category == 2 && int_data_subcategory == 1) {
-                  time_period = -time_period;
+                if ((data_category == 2 && int_data_subcategory == 1) ||
+                    start_end_period) {
+                  if (!start_end_period)
+                    time_period = -time_period;
                   if (period_beg == "PT") {
                     if (period_end == "S") {
                       time_disp += time_period;
@@ -512,6 +522,19 @@ std::list<std::string> ESOHBufr::msg() const {
                         }
                       }
                     }
+                  }
+                  if (start_end_period) {
+                    auto pi = ci;
+                    pi--;
+                    if (*pi == *ci) {
+                      int time_period_start = 0;
+                      time_period_start = getValue(*pi, time_period_start);
+                      if (time_period_start !=
+                          std::numeric_limits<int>::max()) {
+                        time_period = -(time_period - time_period_start);
+                      }
+                    }
+                    start_end_period = false;
                   }
                 } else {
                   if (time_period > 0) {
