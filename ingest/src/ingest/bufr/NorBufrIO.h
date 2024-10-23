@@ -42,6 +42,8 @@ std::vector<bool> getBitVec(const uint64_t startbit, const int datawidth,
 
 std::string strTrim(std::string s);
 void strPrintable(std::string &s);
+ssize_t strisotime(char *date_str, size_t date_max, const time_t *date,
+                   bool usec = false);
 ssize_t strisotime(char *date_str, size_t date_max, const struct timeval *date,
                    bool usec = false);
 

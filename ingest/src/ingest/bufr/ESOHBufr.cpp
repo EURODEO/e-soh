@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <bitset>
 #include <cmath>
+#include <cstdlib>
 #include <iomanip>
 #include <list>
 #include <sstream>
@@ -51,6 +52,7 @@ ESOHBufr::ESOHBufr() {
         }";
   setMsgTemplate(message_template);
   shadow_wigos.from_string(default_shadow_wigos);
+  initTimeInterval();
 }
 
 void ESOHBufr::setOscar(Oscar *o) { oscar = o; }
@@ -154,6 +156,20 @@ std::list<std::string> ESOHBufr::msg() const {
                     std::to_string(subsetnum) + " Wigos: " +
                     wigos_id.to_string() + std::string(" ") + v.toString(),
                 LogLevel::WARN, __func__, bufr_id));
+            goto subset_end;
+          }
+          // Check datetime early or late
+          if (!timeInInterval(meas_datetime)) {
+            time_t mdt = mktime(&meas_datetime);
+            const int cdt_len = 50;
+            char cdt[50];
+            NorBufrIO::strisotime(cdt, cdt_len, &mdt, false);
+
+            lb.addLogEntry(LogEntry(
+                "Skip subset " + std::to_string(subsetnum) +
+                    ", datetime too late or too early: " + std::string(cdt),
+                LogLevel::WARN, __func__, bufr_id));
+
             goto subset_end;
           }
           // Check station_id at OSCAR
@@ -1113,4 +1129,54 @@ WSI ESOHBufr::genShadowWigosId(
     tmp_id.setWigosLocalId(localv);
   }
   return tmp_id;
+}
+
+void ESOHBufr::initTimeInterval() {
+  if (const char *env_dynamictime = std::getenv("DYNAMICTIME")) {
+    std::string str_dynamictime(env_dynamictime);
+    std::transform(str_dynamictime.begin(), str_dynamictime.end(),
+                   str_dynamictime.begin(), ::tolower);
+    std::istringstream is(str_dynamictime);
+    is >> std::boolalpha >> dynamictime;
+    lb.addLogEntry(LogEntry("Set Dynamic time:" + dynamictime, LogLevel::DEBUG,
+                            __func__, bufr_id));
+  }
+  if (const char *env_lotime = std::getenv("LOTIME")) {
+    lotime = getTimeStamp(env_lotime);
+    lb.addLogEntry(LogEntry("Set Lotime:" + std::to_string(lotime),
+                            LogLevel::DEBUG, __func__, bufr_id));
+  }
+  if (const char *env_hitime = std::getenv("HITIME")) {
+    hitime = getTimeStamp(env_hitime);
+    lb.addLogEntry(LogEntry("Set Hitime:" + std::to_string(hitime),
+                            LogLevel::DEBUG, __func__, bufr_id));
+  }
+}
+
+bool ESOHBufr::timeInInterval(time_t t) const {
+  time_t current_time = time(NULL);
+  if (dynamictime) {
+    return (t > current_time - lotime && t < current_time - hitime);
+  } else {
+    return (t > lotime && t < hitime);
+  }
+}
+
+bool ESOHBufr::timeInInterval(struct tm tm) const {
+  time_t t = mktime(&tm);
+  return timeInInterval(t);
+}
+
+int64_t getTimeStamp(const char *env_time) {
+  uint64_t ret;
+  if (env_time[strlen(env_time) - 1] == 'Z') {
+    struct tm tm;
+    memset(&tm, 0, sizeof(tm));
+    strptime(env_time, "%Y-%m-%dT%H:%M:%SZ", &tm);
+    ret = mktime(&tm);
+  } else {
+    std::istringstream is(env_time);
+    is >> ret;
+  }
+  return ret;
 }

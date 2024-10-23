@@ -175,6 +175,12 @@ void NorBufrIO::strPrintable(std::string &s) {
 }
 
 ssize_t NorBufrIO::strisotime(char *date_str, size_t date_max,
+                              const time_t *date, bool usec) {
+  const struct timeval tv = {.tv_sec = *date, .tv_usec = 0};
+  return (strisotime(date_str, date_max, &tv, usec));
+}
+
+ssize_t NorBufrIO::strisotime(char *date_str, size_t date_max,
                               const struct timeval *date, bool usec) {
   const char *uformat = "%FT%H:%M:%S.000000%z";
   const char *format = "%FT%H:%M:%S%z";
