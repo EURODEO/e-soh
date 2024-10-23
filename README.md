@@ -44,10 +44,16 @@ ci/scripts/install-just.sh
 
 The Justfile is a simple text file that contains a list of tasks. Each task is a shell command. For example:
 
-To run build and run the services locally:
+To run build and run the services locally without the monitoring:
 
 ```bash
 just up test
+```
+
+To run build and run the services locally with the monitoring:
+
+```bash
+just local test
 ```
 
 To run everything including client and do a cleanup of the database afterward:
