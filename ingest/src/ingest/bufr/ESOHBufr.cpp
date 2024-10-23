@@ -547,6 +547,10 @@ std::list<std::string> ESOHBufr::msg() const {
                 }
                 dateupdate = true;
                 std::stringstream ss;
+                if (!time_period) {
+                  period_beg = "PT";
+                  period_end = "S";
+                }
                 ss << period_beg << -time_period << period_end;
                 period_str = ss.str();
               }
@@ -638,8 +642,19 @@ std::list<std::string> ESOHBufr::msg() const {
           if (v.y() == 4 ||
               v.y() == 51) // PRESSURE, PRESSURE REDUCED TO MEAN SEA LEVEL
           {
-            ret.push_back(addMessage(ci, subset_message, sensor_level_active,
-                                     sensor_level, "point"));
+            auto ins_msg = addMessage(ci, subset_message, sensor_level_active,
+                                      sensor_level, "point");
+            if (std::find(ret.begin(), ret.end(), ins_msg) != ret.end()) {
+              lb.addLogEntry(LogEntry(
+                  "Non uniq value: " + v.toString() +
+                      ", skip value, subset: " + std::to_string(subsetnum),
+                  LogLevel::WARN, __func__, bufr_id));
+
+            } else {
+              ret.push_back(ins_msg);
+            }
+            // ret.push_back(addMessage(ci, subset_message, sensor_level_active,
+            //                        sensor_level, "point"));
           }
           if (v.y() == 9) // Geopotential height, TODO: unit conversion?
           {
@@ -903,7 +918,7 @@ bool ESOHBufr::addContent(const Descriptor &v, std::string cf_name,
   // id
   std::string id;
   std::ifstream is("/proc/sys/kernel/random/uuid");
-  is >> id;
+  // is >> id;
 
   message["id"].SetString(id.c_str(), id.length(), message_allocator);
   if (fn.size()) {
