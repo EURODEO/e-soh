@@ -5,7 +5,7 @@ default:
 set positional-arguments
 
 # Run all docker services. After running the database needs cleanup, run just destroy
-all: lint build unit services load integration performance client
+all: lint build unit services monitoring load integration performance client
 # Build and run the default docker services
 up: build services
 # Build and run the default docker services and start up monitoring
@@ -43,11 +43,18 @@ _check-python-version:
     set -euxo pipefail
 
     # Get Python version
-    python_version=$(python --version 2>&1 | cut -d' ' -f2)
+    if command -v python &>/dev/null; then
+        python_version=$(python --version 2>&1 | cut -d ' ' -f2)
+    elif command -v python3 &>/dev/null; then
+        python_version=$(python3 --version 2>&1 | cut -d ' ' -f2)
+    else
+        echo "Python not found. Failing..."
+        exit 1
+    fi
 
     # Extract major and minor version numbers
-    major_version=$(echo "$python_version" | cut -d'.' -f1)
-    minor_version=$(echo "$python_version" | cut -d'.' -f2)
+    major_version=$(echo "$python_version" | cut -d '.' -f1)
+    minor_version=$(echo "$python_version" | cut -d '.' -f2)
 
     # Check if Python version is greater than or equal to 3.11
     if [[ "$major_version" -lt 3 || ( "$major_version" -eq 3 && "$minor_version" -lt 11 ) ]]; then
