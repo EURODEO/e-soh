@@ -787,7 +787,8 @@ std::list<std::string> ESOHBufr::msg() const {
                   period_beg = "PT";
                   period_end = "H";
                   std::stringstream ss;
-                  ss << period_beg << -period << period_end;
+                  ss << period_beg << ((period > 0) ? period : -period)
+                     << period_end;
                   period_str = ss.str();
                 }
               }
