@@ -80,15 +80,20 @@ uint64_t NorBufr::uncompressDescriptor(std::list<DescriptorId>::iterator &it,
 
       std::vector<bool> bl = NorBufrIO::getBitVec(sb, NBINC * 8, bits);
       ucbits.insert(ucbits.end(), bl.begin(), bl.end());
-      current_desc.setMeta(const_cast<DescriptorMeta *>(&(tabB->at(*it))));
-      current_desc.setStartBit(subsetsb);
-      /* TODO: switch back !!!!
-      if( NBINC && dm.datawidth() != static_cast<uint64_t>(NBINC*8) )
-      {
-          std::cerr << "Datawidth Check: assoc field ? dw=" << dm.datawidth() <<
-      " NBINC:" << NBINC << "\n";
+      int bitdiff = dm.datawidth() - NBINC * 8;
+      if (bitdiff) {
+        DescriptorMeta *dmn = new DescriptorMeta;
+        *dmn = dm;
+        dmn->setDatawidth(bl.size());
+        auto dm_ptr = addMeta(dmn);
+        // Meta already exists
+        if (dm_ptr != dmn)
+          delete dmn;
+        current_desc.setMeta(dm_ptr);
+      } else {
+        current_desc.setMeta(const_cast<DescriptorMeta *>(&(tabB->at(*it))));
+        current_desc.setStartBit(subsetsb);
       }
-      */
 
       subsetsb += NBINC * 8;
       sb += NBINC * 8;
@@ -139,7 +144,7 @@ ssize_t NorBufr::extractDescriptors(int ss, ssize_t subsb) {
       LogEntry("Starting extract Descriptors, subset: " + std::to_string(ss),
                LogLevel::DEBUG, __func__, bufr_id));
 
-  if (!subsetNum())
+  if (!subsetNum() || !(sec3_desc.size()))
     return 0;
 
   ssize_t sb = subsb; // startbit
@@ -508,17 +513,17 @@ DescriptorMeta *NorBufr::addMeta(DescriptorMeta *dm) {
 
 double NorBufr::getValue(const Descriptor &d, double) const {
   const DescriptorMeta *dm = d.getMeta();
-  double dvalue = 0.0;
+  double dvalue = std::numeric_limits<double>::quiet_NaN();
 
   if (dm) {
     const std::vector<bool> &bitref = (isCompressed() ? ucbits : bits);
-    uint64_t value = NorBufrIO::getBitValue(
+    uint64_t raw_value = NorBufrIO::getBitValue(
         d.startBit(), dm->datawidth(), !(d.f() == 0 && d.x() == 31), bitref);
 
-    dvalue = static_cast<double>(value);
-    if (value == std::numeric_limits<uint64_t>::max())
+    if (raw_value == std::numeric_limits<uint64_t>::max())
       return (dvalue);
 
+    dvalue = static_cast<double>(raw_value);
     if (dm->reference())
       dvalue += dm->reference();
     if (dm->scale()) {
@@ -547,16 +552,15 @@ uint64_t NorBufr::getBitValue(const Descriptor &d, uint64_t) const {
 
 int NorBufr::getValue(const Descriptor &d, int) const {
   const DescriptorMeta *dm = d.getMeta();
-  int value = 0;
+  int value = std::numeric_limits<int>::max();
 
   if (dm) {
     const std::vector<bool> &bitref = (isCompressed() ? ucbits : bits);
-    value = NorBufrIO::getBitValue(d.startBit(), dm->datawidth(),
-                                   !(d.f() == 0 && d.x() == 31), bitref);
-
-    if (value == std::numeric_limits<int>::max())
+    uint64_t raw_value = NorBufrIO::getBitValue(
+        d.startBit(), dm->datawidth(), !(d.f() == 0 && d.x() == 31), bitref);
+    if (raw_value == std::numeric_limits<uint64_t>::max())
       return (value);
-
+    value = static_cast<int>(raw_value);
     if (dm->reference())
       value += dm->reference();
     if (dm->scale()) {
@@ -590,10 +594,10 @@ std::string NorBufr::getValue(const Descriptor &d, std::string,
       return ret;
     }
 
-    uint64_t value = NorBufrIO::getBitValue(
+    uint64_t raw_value = NorBufrIO::getBitValue(
         d.startBit(), dm->datawidth(), !(d.f() == 0 && d.x() == 31), bitref);
 
-    if (value == std::numeric_limits<uint64_t>::max())
+    if (raw_value == std::numeric_limits<uint64_t>::max())
       return ("MISSING");
 
     if (!dm->reference() &&
@@ -601,9 +605,9 @@ std::string NorBufr::getValue(const Descriptor &d, std::string,
          dm->unit().find("FLAG TABLE") != std::string::npos)) {
       std::stringstream ss(tabB->at(d).unit());
 
-      ret = tabC->codeStr(d, value);
+      ret = tabC->codeStr(d, raw_value);
     } else {
-      double dvalue = value;
+      double dvalue = raw_value;
       if (dm->reference())
         dvalue += dm->reference();
       if (dm->scale()) {
@@ -751,17 +755,23 @@ bool NorBufr::setSections(int slen) {
 
   // Section3 load
   if (Section3::fromBuffer(buffer + slen, len - slen)) {
-    slen += Section3::length();
-    subsets.resize(subsetNum());
-    desc.resize(subsetNum());
+    if (Section3::length()) {
+      slen += Section3::length();
+      subsets.resize(subsetNum());
+      desc.resize(subsetNum());
 
-    // Section 4 load
-    if (Section4::fromBuffer(buffer + slen, len - slen)) {
-      lb.addLogEntry(
-          LogEntry("BUFR loaded", LogLevel::DEBUG, __func__, bufr_id));
+      // Section 4 load
+      if (Section4::fromBuffer(buffer + slen, len - slen)) {
+        lb.addLogEntry(
+            LogEntry("BUFR loaded", LogLevel::DEBUG, __func__, bufr_id));
+      } else {
+        lb.addLogEntry(
+            LogEntry("Corrupt Section4", LogLevel::ERROR, __func__, bufr_id));
+        return false;
+      }
     } else {
-      lb.addLogEntry(
-          LogEntry("Corrupt Section4", LogLevel::ERROR, __func__, bufr_id));
+      lb.addLogEntry(LogEntry("Section3 size error, skip", LogLevel::ERROR,
+                              __func__, bufr_id));
       return false;
     }
   } else {
