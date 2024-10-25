@@ -18,7 +18,7 @@
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
-    "id": 3,
+    "id": 1,
     "links": [],
     "panels": [
         {
@@ -265,6 +265,7 @@
                 "type": "prometheus",
                 "uid": "PBFA97CFB590B2093"
             },
+            "description": "",
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -330,7 +331,7 @@
                     "refId": "A"
                 }
             ],
-            "title": "Requests per second",
+            "title": "Requests per interval",
             "type": "stat"
         },
         {
@@ -1837,7 +1838,7 @@
                     "refId": "H"
                 }
             ],
-            "title": "Memory in Off-Heap",
+            "title": "Memory in off-heap",
             "type": "timeseries"
         },
         {
@@ -1987,7 +1988,7 @@
                     "refId": "E"
                 }
             ],
-            "title": "Memory in Heap",
+            "title": "Memory in heap",
             "type": "timeseries"
         },
         {
@@ -2098,7 +2099,7 @@
                     "refId": "B"
                 }
             ],
-            "title": "Memory in Stack",
+            "title": "Memory in stack",
             "type": "timeseries"
         },
         {
@@ -2196,7 +2197,7 @@
                     "refId": "A"
                 }
             ],
-            "title": "Total Used Memory",
+            "title": "Total used memory",
             "type": "timeseries"
         },
         {
@@ -2294,7 +2295,7 @@
                     "refId": "A"
                 }
             ],
-            "title": "Number of Live Objects",
+            "title": "Number of live objects",
             "type": "timeseries"
         },
         {
@@ -2392,7 +2393,7 @@
                     "refId": "A"
                 }
             ],
-            "title": "Rate of Objects Allocated",
+            "title": "Rate of objects allocated",
             "type": "timeseries"
         },
         {
@@ -2490,7 +2491,7 @@
                     "refId": "A"
                 }
             ],
-            "title": "Rate of a Pointer Dereferences",
+            "title": "Rate of a pointer dereferences",
             "type": "timeseries"
         },
         {
@@ -2686,7 +2687,7 @@
                     "refId": "A"
                 }
             ],
-            "title": "Rates of Allocation",
+            "title": "Rates of allocation",
             "type": "timeseries"
         },
         {
@@ -2795,7 +2796,7 @@
         "list": [
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "store",
                     "value": "store"
                 },
@@ -2906,6 +2907,6 @@
     "timezone": "browser",
     "title": "gRPC Server",
     "uid": "cdydeqdbz124gf",
-    "version": 10,
+    "version": 3,
     "weekStart": ""
 }

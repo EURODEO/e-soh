@@ -18,7 +18,7 @@
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
-    "id": 3,
+    "id": 2,
     "links": [],
     "panels": [
         {
@@ -478,7 +478,7 @@
                     "disableTextWrap": false,
                     "editorMode": "code",
                     "exemplar": false,
-                    "expr": "sum(rate(pg_stat_statements_seconds_total{instance=~\"$INSTANCE\", datname=~\"$DATNAME\"}[1m])) / sum(rate(pg_stat_statements_calls_total{instance=~\"$INSTANCE\", datname=~\"$DATNAME\"}[1m]))",
+                    "expr": "sum(rate(pg_stat_statements_seconds_total{instance=~\"$INSTANCE\", datname=~\"$DATNAME\"}[$INTERVAL])) / sum(rate(pg_stat_statements_calls_total{instance=~\"$INSTANCE\", datname=~\"$DATNAME\"}[$INTERVAL]))",
                     "format": "time_series",
                     "fullMetaSearch": false,
                     "includeNullMetadata": true,
@@ -587,14 +587,14 @@
                         "uid": "PBFA97CFB590B2093"
                     },
                     "editorMode": "code",
-                    "expr": "sum(rate(pg_stat_statements_calls_total{instance=~\"$INSTANCE\"}[1m]))",
+                    "expr": "sum(rate(pg_stat_statements_calls_total{instance=~\"$INSTANCE\"}[$INTERVAL]))",
                     "instant": false,
-                    "legendFormat": "Queries per second",
+                    "legendFormat": "Number of queries",
                     "range": true,
                     "refId": "A"
                 }
             ],
-            "title": "Number of queries per second",
+            "title": "Number of queries",
             "type": "timeseries"
         },
         {
@@ -841,7 +841,7 @@
                     "table": "pg_stat_statements"
                 }
             ],
-            "title": "Top 10 slowest queries in micro seconds",
+            "title": "Top 10 slowest queries",
             "type": "table"
         },
         {
@@ -937,7 +937,7 @@
                         "uid": "PBFA97CFB590B2093"
                     },
                     "editorMode": "code",
-                    "expr": "rate(pg_stat_database_tup_fetched[5m]) > 1000",
+                    "expr": "rate(pg_stat_database_tup_fetched[$INTERVAL]) > 1000",
                     "instant": false,
                     "legendFormat": "{{datname}} SELECT (index scan)",
                     "range": true,
@@ -949,7 +949,7 @@
                         "uid": "PBFA97CFB590B2093"
                     },
                     "editorMode": "code",
-                    "expr": "rate(pg_stat_database_tup_returned[5m]) > 1000",
+                    "expr": "rate(pg_stat_database_tup_returned[$INTERVAL]) > 1000",
                     "hide": false,
                     "instant": false,
                     "legendFormat": "{{datname}} SELECT (table scan)",
@@ -1052,7 +1052,7 @@
                         "uid": "PBFA97CFB590B2093"
                     },
                     "editorMode": "code",
-                    "expr": "rate(pg_stat_database_tup_inserted[5m]) > 1",
+                    "expr": "rate(pg_stat_database_tup_inserted[$INTERVAL]) > 1",
                     "instant": false,
                     "legendFormat": "{{datname}} INSERT",
                     "range": true,
@@ -1194,7 +1194,7 @@
                         "uid": "PBFA97CFB590B2093"
                     },
                     "editorMode": "code",
-                    "expr": "rate(pg_stat_database_deadlocks[1m])",
+                    "expr": "rate(pg_stat_database_deadlocks[$INTERVAL])",
                     "instant": false,
                     "interval": "1m",
                     "legendFormat": "{{datname}}",
@@ -1292,7 +1292,7 @@
                         "uid": "PBFA97CFB590B2093"
                     },
                     "editorMode": "code",
-                    "expr": "sum(rate(pg_stat_database_conflicts_confl_deadlock[1m]))",
+                    "expr": "sum(rate(pg_stat_database_conflicts_confl_deadlock[$INTERVAL]))",
                     "instant": false,
                     "legendFormat": "Deadlock",
                     "range": true,
@@ -1672,6 +1672,81 @@
                 "skipUrlSync": false,
                 "sort": 1,
                 "type": "query"
+            },
+            {
+                "auto": false,
+                "auto_count": 30,
+                "auto_min": "10s",
+                "current": {
+                    "selected": false,
+                    "text": "1m",
+                    "value": "1m"
+                },
+                "hide": 0,
+                "label": "Interval",
+                "name": "INTERVAL",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "1m",
+                        "value": "1m"
+                    },
+                    {
+                        "selected": false,
+                        "text": "5m",
+                        "value": "5m"
+                    },
+                    {
+                        "selected": false,
+                        "text": "10m",
+                        "value": "10m"
+                    },
+                    {
+                        "selected": false,
+                        "text": "30m",
+                        "value": "30m"
+                    },
+                    {
+                        "selected": false,
+                        "text": "1h",
+                        "value": "1h"
+                    },
+                    {
+                        "selected": false,
+                        "text": "6h",
+                        "value": "6h"
+                    },
+                    {
+                        "selected": false,
+                        "text": "12h",
+                        "value": "12h"
+                    },
+                    {
+                        "selected": false,
+                        "text": "1d",
+                        "value": "1d"
+                    },
+                    {
+                        "selected": false,
+                        "text": "7d",
+                        "value": "7d"
+                    },
+                    {
+                        "selected": false,
+                        "text": "14d",
+                        "value": "14d"
+                    },
+                    {
+                        "selected": false,
+                        "text": "30d",
+                        "value": "30d"
+                    }
+                ],
+                "query": "1m,5m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
+                "queryValue": "",
+                "refresh": 2,
+                "skipUrlSync": false,
+                "type": "interval"
             }
         ]
     },
@@ -1683,6 +1758,6 @@
     "timezone": "browser",
     "title": "Database Performance",
     "uid": "adxl34wpc3if4a",
-    "version": 2,
+    "version": 5,
     "weekStart": ""
 }
