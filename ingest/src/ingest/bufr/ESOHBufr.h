@@ -111,7 +111,7 @@ private:
   WSI shadow_wigos;
   bool dynamictime = true;
   int64_t lotime = 86400;
-  int64_t hitime = -2;
+  int64_t hitime = -600;
 };
 
 int64_t getTimeStamp(const char *env_time);
