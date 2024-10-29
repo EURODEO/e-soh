@@ -2796,31 +2796,27 @@
         "list": [
             {
                 "current": {
-                    "selected": false,
+                    "selected": true,
                     "text": "store",
                     "value": "store"
                 },
-                "datasource": {
-                    "type": "prometheus",
-                    "uid": "PBFA97CFB590B2093"
-                },
-                "definition": "label_values(job)",
+                "description": "Name of the database",
                 "hide": 0,
                 "includeAll": false,
                 "label": "Job",
                 "multi": false,
                 "name": "JOB",
-                "options": [],
-                "query": {
-                    "qryType": 1,
-                    "query": "label_values(job)",
-                    "refId": "PrometheusVariableQueryEditor-VariableQuery"
-                },
-                "refresh": 1,
-                "regex": "",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "store",
+                        "value": "store"
+                    }
+                ],
+                "query": "store",
+                "queryValue": "",
                 "skipUrlSync": false,
-                "sort": 1,
-                "type": "query"
+                "type": "custom"
             },
             {
                 "auto": false,
@@ -2907,6 +2903,6 @@
     "timezone": "browser",
     "title": "gRPC Server",
     "uid": "cdydeqdbz124gf",
-    "version": 3,
+    "version": 6,
     "weekStart": ""
 }
