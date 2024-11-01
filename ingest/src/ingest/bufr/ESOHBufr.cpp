@@ -297,15 +297,7 @@ std::list<std::string> ESOHBufr::msg() const {
             lb.addLogEntry(
                 LogEntry("Found state Id:" + std::to_string(bufr_state_id),
                          LogLevel::DEBUG, __func__, bufr_id));
-            int wigos_state_id = 0;
-            for (auto cc : country_codes) {
-              if (cc.bufr_code == bufr_state_id) {
-                wigos_state_id = cc.iso_code;
-                lb.addLogEntry(LogEntry("State Id in OSCAR OK", LogLevel::DEBUG,
-                                        __func__, bufr_id));
-                break;
-              }
-            }
+            int wigos_state_id = bufrToIsocc(bufr_state_id);
             if (!wigos_state_id)
               lb.addLogEntry(
                   LogEntry("State Id Unknown: " + std::to_string(bufr_state_id),
