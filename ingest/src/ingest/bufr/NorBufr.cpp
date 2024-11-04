@@ -75,11 +75,14 @@ uint64_t NorBufr::uncompressDescriptor(std::list<DescriptorId>::iterator &it,
     Descriptor &current_desc = desc[s].back();
 
     if (tabB->at(*it).unit().find("CCITTIA5") != std::string::npos) {
-      std::string bs;
-      bs = NorBufrIO::getBitStr(sb, NBINC * 8, bits);
+      std::vector<bool> bl;
+      if (NBINC) {
+        std::string bs;
+        bs = NorBufrIO::getBitStr(sb, NBINC * 8, bits);
 
-      std::vector<bool> bl = NorBufrIO::getBitVec(sb, NBINC * 8, bits);
-      ucbits.insert(ucbits.end(), bl.begin(), bl.end());
+        bl = NorBufrIO::getBitVec(sb, NBINC * 8, bits);
+        ucbits.insert(ucbits.end(), bl.begin(), bl.end());
+      }
       int bitdiff = dm.datawidth() - NBINC * 8;
       if (bitdiff) {
         DescriptorMeta *dmn = new DescriptorMeta;
