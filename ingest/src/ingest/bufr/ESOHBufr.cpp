@@ -1145,9 +1145,20 @@ WSI ESOHBufr::genShadowWigosId(
   std::string localv;
   for (std::list<Descriptor>::const_iterator di = s.begin(); di != ci; ++di) {
     if (di->f() == 0 && di->x() == 1) {
-      localv = getValue(*di, localv, false);
-      if (localv != "MISSING") {
-        ss << NorBufrIO::strTrim(localv) << "_";
+      if (*di == DescriptorId("001101")) {
+        int bufr_state_id = 0;
+        bufr_state_id = getValue(*di, bufr_state_id);
+        if (bufr_state_id != std::numeric_limits<int>::max()) {
+          int iso_cc = bufrToIsocc(bufr_state_id);
+          if (iso_cc) {
+            ss << iso_cc << "_";
+          }
+        }
+      } else {
+        localv = getValue(*di, localv, false);
+        if (localv != "MISSING") {
+          ss << NorBufrIO::strTrim(localv) << "_";
+        }
       }
     }
   }
