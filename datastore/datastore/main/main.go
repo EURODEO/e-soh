@@ -68,7 +68,7 @@ func main() {
 	reg := prometheus.NewRegistry()
 	reg.MustRegister(
 		grpcMetrics,
-		promservermetrics.ActiveConnections,
+		promservermetrics.InFlightRequests,
 		promservermetrics.UptimeCounter,
 		promservermetrics.ResponseSizeSummary,
 		collectors.NewGoCollector(),
@@ -81,7 +81,7 @@ func main() {
 	server := grpc.NewServer(
 		grpc.ChainUnaryInterceptor(
 			reqTimeLogger,
-			promservermetrics.ConnectionUnaryInterceptor,
+			promservermetrics.InFlightRequestInterceptor,
 			promservermetrics.ResponseSizeUnaryInterceptor,
 			grpcMetrics.UnaryServerInterceptor(),
 		),

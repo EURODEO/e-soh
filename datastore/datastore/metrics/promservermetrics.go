@@ -14,9 +14,9 @@ var (
 		Help: "Total uptime of the gRPC server in seconds",
 	})
 
-	ActiveConnections = prometheus.NewGauge(prometheus.GaugeOpts{
-		Name: "grpc_active_connections",
-		Help: "Current number of active gRPC connections",
+	InFlightRequests = prometheus.NewGauge(prometheus.GaugeOpts{
+		Name: "grpc_in_flight_requests",
+		Help: "Current number of in-flight gRPC requests",
 	})
 
 	ResponseSizeSummary = prometheus.NewSummaryVec(
@@ -41,9 +41,9 @@ func TrackUptime() {
 	}
 }
 
-func ConnectionUnaryInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
-	ActiveConnections.Inc()       // Increment when a new unary request (connection) is opened
-	defer ActiveConnections.Dec() // Decrement when the unary request (connection) is completed
+func InFlightRequestInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+	InFlightRequests.Inc()       // Increment at the start of the request
+	defer InFlightRequests.Dec() // Decrement at the end of the request
 	return handler(ctx, req)
 }
 

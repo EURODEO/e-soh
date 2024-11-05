@@ -1146,14 +1146,14 @@
                         "uid": "PBFA97CFB590B2093"
                     },
                     "editorMode": "code",
-                    "expr": "grpc_active_connections",
+                    "expr": "grpc_in_flight_requests",
                     "instant": false,
-                    "legendFormat": "Active gRPC connections",
+                    "legendFormat": "In flight requests",
                     "range": true,
                     "refId": "A"
                 }
             ],
-            "title": "Active gRPC connections",
+            "title": "In flight requests",
             "type": "timeseries"
         },
         {
