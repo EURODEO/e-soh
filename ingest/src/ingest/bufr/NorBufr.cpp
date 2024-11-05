@@ -967,30 +967,10 @@ std::ostream &operator<<(std::ostream &os, NorBufr &bufr) {
     os << "\n=============== S U B S E T " << subsetnum
        << " ===============\n\n";
     for (auto v : s) {
-      bool skip_value = false;
       os << v;
-      if (v == DescriptorId(1128, true)) {
-        // Workaroung USA wigos local identifier
-        std::string value_str = bufr.getValue(v, std::string());
-        skip_value = true;
-        std::string missing_wigos =
-            "011010100001101010000110101000011010100001101010000110101000011010"
-            "10000110101000011010100001101010000110101000011010100001101010";
-        for (int i = 0; i < 16; i++) {
-          std::bitset<8> bs(value_str[i]);
-          if (bs.to_string<char, std::string::traits_type,
-                           std::string::allocator_type>() !=
-              missing_wigos.substr(i * 8, 8)) {
-            skip_value = false;
-            break;
-          }
-        }
-      }
       DescriptorMeta *meta = v.getMeta();
       if (meta) {
-        if (!skip_value) {
-          os << "\t" << bufr.getValue(v, std::string());
-        }
+        os << "\t" << bufr.getValue(v, std::string());
 
         if (meta->unit().find("CODE TABLE") != std::string::npos ||
             meta->unit().find("FLAG TABLE") != std::string::npos) {
