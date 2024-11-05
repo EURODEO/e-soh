@@ -41,7 +41,7 @@ def make_parameter(ts_mdata):
 
     return Parameter(
         description={
-            "en": f"{label} at {level}m, " f"aggregated over {period} with method '{ts_mdata.function}'",
+            "en": f"{label} at {level}m, aggregated over {period} with method '{ts_mdata.function}'",
         },
         observedProperty=ObservedProperty(
             id=f"https://vocab.nerc.ac.uk/standard_name/{ts_mdata.standard_name}",
