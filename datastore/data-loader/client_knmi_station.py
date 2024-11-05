@@ -125,7 +125,7 @@ def insert_data(observation_request_messages: List):
         print(f"Finished observations bulk insert {perf_counter() - obs_insert_start}.")
 
 
-if __name__ == "__main__":
+def main():
     total_time_start = perf_counter()
 
     print("Starting with creating the time series and observations requests.")
@@ -139,3 +139,7 @@ if __name__ == "__main__":
     )
 
     print(f"Finished, total time elapsed: {perf_counter() - total_time_start}")
+
+
+if __name__ == "__main__":
+    main()

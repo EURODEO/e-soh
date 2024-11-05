@@ -126,6 +126,8 @@ def send_request_to_ingest(msg, url):
 
 
 def insert_data(observation_request_messages: List, url):
+    print(f"Sending {len(observation_request_messages)} bulk observations requests to ingest.")
+    obs_insert_start = perf_counter()
     with Pool(cpu_count()) as pool:
         results = pool.starmap(send_request_to_ingest, [(msg, url) for msg in observation_request_messages])
 
@@ -133,16 +135,10 @@ def insert_data(observation_request_messages: List, url):
             if status_code != 200:
                 print(status_code, response)
                 return
-
-
-def main(observation_request_messages: List, url):
-    print(f"Sending {len(observation_request_messages)} bulk observations requests to ingest.")
-    obs_insert_start = perf_counter()
-    insert_data(observation_request_messages, url)
     print(f"Finished observations bulk insert {perf_counter() - obs_insert_start}.")
 
 
-if __name__ == "__main__":
+def main():
     total_time_start = perf_counter()
     print("Starting with creating the time series and observations requests.")
     create_requests_start = perf_counter()
@@ -150,9 +146,13 @@ if __name__ == "__main__":
     observation_request_messages = netcdf_file_to_requests(file_path=file_path)
     print("Finished creating the time series and observation requests " f"{perf_counter() - create_requests_start}.")
 
-    main(
+    insert_data(
         observation_request_messages=observation_request_messages,
         url=os.getenv("INGEST_URL", "http://localhost:8009/json"),
     )
 
     print(f"Finished, total time elapsed: {perf_counter() - total_time_start}")
+
+
+if __name__ == "__main__":
+    main()
