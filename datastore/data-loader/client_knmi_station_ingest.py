@@ -9,6 +9,7 @@ from pathlib import Path
 from time import perf_counter
 from typing import List
 from typing import Tuple
+from functools import partial
 
 import pandas as pd
 import xarray as xr
@@ -128,8 +129,11 @@ def send_request_to_ingest(msg, url):
 def insert_data(observation_request_messages: List, url):
     print(f"Sending {len(observation_request_messages)} bulk observations requests to ingest.")
     obs_insert_start = perf_counter()
+
+    partial_send_request = partial(send_request_to_ingest, url=url)
+
     with Pool(cpu_count()) as pool:
-        results = pool.starmap(send_request_to_ingest, [(msg, url) for msg in observation_request_messages])
+        results = pool.map(partial_send_request, observation_request_messages)
 
         for status_code, response in results:
             if status_code != 200:
