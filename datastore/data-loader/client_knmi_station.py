@@ -3,10 +3,8 @@
 import concurrent
 import math
 import os
-import re
 import uuid
-import isodate
-from datetime import timedelta
+
 from hashlib import md5
 from multiprocessing import cpu_count
 from pathlib import Path
@@ -14,7 +12,6 @@ from time import perf_counter
 from typing import List
 from typing import Tuple
 
-from isodate import ISO8601Error
 import datastore_pb2 as dstore
 import datastore_pb2_grpc as dstore_grpc
 import grpc
@@ -22,51 +19,7 @@ import pandas as pd
 import xarray as xr
 from google.protobuf.timestamp_pb2 import Timestamp
 from parameters import knmi_parameter_names
-
-
-regex_level = re.compile(r"first|second|third|[0-9]+(\.[0-9]+)?(?=m)|(?<=Level )[0-9]+", re.IGNORECASE)
-regex_level_centimeters = re.compile(r"[0-9]+(\.[0-9]+)?(?=cm)")
-regex_time_period = re.compile(r"(\d+) (Hours|Min)", re.IGNORECASE)
-
-
-def convert_standard_names_to_cf(standard_name):
-    standard_name_mapping = {
-        "cloud_cover": "cloud_area_fraction",
-        "total_downwelling_shortwave_flux_in_air": "surface_downwelling_shortwave_flux_in_air",
-        "precipitation_rate": "rainfall_rate",
-        "air_pressure_at_sea_level": "air_pressure_at_mean_sea_level",
-    }
-    return standard_name_mapping.get(standard_name, standard_name)
-
-
-# NOTE: Only units are converted currently, not values.
-def convert_unit_names(unit):
-    unit_mapping = {
-        "degrees Celsius": "degC",
-        "ft": "m",
-        "min": "s",
-        "degree": "degrees",
-        "%": "percent",
-        "mm": "kg/m2",
-        "m s-1": "m/s",
-        "octa": "oktas",
-        "W m-2": "W/m2",
-    }
-    return unit_mapping.get(unit, unit)
-
-
-def iso_8601_duration_to_seconds(period: str) -> int:
-    try:
-        duration = isodate.parse_duration(period)
-    except ISO8601Error:
-        raise ValueError(f"Invalid ISO 8601 duration: {period}")
-
-    if isinstance(duration, timedelta):
-        total_seconds = duration.total_seconds()
-    else:
-        raise ValueError("Duration not convertable to seconds.")
-
-    return int(total_seconds)
+from utilities import convert_unit_names, iso_8601_duration_to_seconds, generate_parameter_name
 
 
 def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
@@ -85,7 +38,7 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
 
             for param_id in knmi_parameter_names:
                 param_file = station_slice[param_id]
-                standard_name, level, function, period, period_as_seconds = generate_parameter_name(
+                standard_name, level, function, period = generate_parameter_name(
                     (param_file.standard_name if "standard_name" in param_file.attrs else None),
                     param_file.long_name,
                     station_id,
@@ -98,6 +51,8 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                     continue
 
                 platform = f"0-20000-0-{station_id}"
+                period_as_seconds = iso_8601_duration_to_seconds(period)
+                level_as_centimeters = int(float(level) * 100)
 
                 ts_mdata = dstore.TSMetadata(
                     platform=platform,
@@ -107,10 +62,10 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                     license="CC BY 4.0",
                     standard_name=standard_name,
                     unit=convert_unit_names(param_file.units) if "units" in param_file.attrs else None,
-                    level=level,
+                    level=level_as_centimeters,
                     period=period_as_seconds,
                     function=function,
-                    parameter_name=":".join([standard_name, str(float(level / 100)), function, period]),
+                    parameter_name=":".join([standard_name, str(float(level)), function, period]),
                     naming_authority="nl.knmi",
                     keywords=file["iso_dataset"].attrs["keyword"],
                     summary=file["iso_dataset"].attrs["abstract"],
@@ -127,7 +82,7 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                                 "nl.knmi",
                                 platform,
                                 standard_name,
-                                str(level),
+                                str(level_as_centimeters),
                                 function,
                                 str(period_as_seconds),
                             ]
@@ -154,77 +109,6 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
                 observation_request_messages.append(dstore.PutObsRequest(observations=observations))
 
     return observation_request_messages
-
-
-def generate_parameter_name(standard_name, long_name, station_id, station_name, param_id):
-    # TODO: HACK To let the loader have a unique parameter ID and make the parameters distinguishable.
-    level = 200
-    long_name = long_name.lower()
-    station_name = station_name.lower()
-    if level_raw := re.search(regex_level, long_name):
-        try:
-            level = int(float(level_raw[0]) * 100)
-        except ValueError:
-            level = level_raw[0]
-    if level_raw := re.search(regex_level_centimeters, long_name):
-        level = int(level_raw[0])
-    elif "grass" in long_name:
-        level = 0
-    elif param_id in ["pg", "pr", "pwc", "vv", "W10", "W10-10", "ww", "ww-10", "za", "zm"]:
-        # https://english.knmidata.nl/open-data/actuele10mindataknmistations
-        # Comments code: 2, 3, 11
-        # Note: The sensor is not installed at equal heights at all types of measurement sites:
-        # At 'AWS' sites the device is installed at 1.80m. At 'AWS/Aerodrome' and 'Mistpost'
-        # (note that this includes site Voorschoten (06215) which is 'AWS/Mistpost')
-        # the device is installed at 2.50m elevation. Exceptions are Berkhout AWS (06249),
-        # De Bilt AWS (06260) and Twenthe AWS (06290) where the sensor is installed at 2.50m.
-        # Since WaWa is automatic detection I asssumed that the others stations are AWS, thus 1.80m
-        if (
-            station_id in ["06215", "06249", "06260", "06290"]
-            or "aerodrome" in station_name
-            or "mistpost" in station_name
-        ):
-            level = 250
-        else:
-            level = 180
-
-    # We want "level" to be numeric, so get rid of "first", "second" and "third".
-    # Note that this level has no meaning, it is just a hack for this test dataset
-    if level == "first":
-        level = 0
-    if level == "second":
-        level = 100
-    if level == "third":
-        level = 200
-
-    if "minimum" in long_name:
-        function = "minimum"
-    elif "maximum" in long_name:
-        function = "maximum"
-    elif "average" in long_name:
-        function = "mean"
-    else:
-        function = "point"
-
-    period = "PT0S"
-    if period_raw := re.findall(regex_time_period, long_name):
-        if len(period_raw) == 1:
-            period_raw = period_raw[0]
-        else:
-            raise Exception(f"{period_raw}, {long_name}")
-        time, scale = period_raw
-        if scale == "hours":
-            period = f"PT{time}H"
-        elif scale == "min":
-            period = f"PT{time}M"
-    elif param_id == "ww-10":
-        period = "PT10M"
-    elif param_id == "ww":
-        period = "PT1H"
-
-    period_as_seconds = iso_8601_duration_to_seconds(period)
-    standard_name = convert_standard_names_to_cf(standard_name)
-    return standard_name, level, function, period, period_as_seconds
 
 
 def insert_data(observation_request_messages: List):

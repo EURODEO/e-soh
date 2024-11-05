@@ -2,7 +2,6 @@
 # tested with Python 3.11
 import math
 import os
-import re
 import requests
 import json
 from multiprocessing import cpu_count, Pool
@@ -15,37 +14,7 @@ import pandas as pd
 import xarray as xr
 from google.protobuf.timestamp_pb2 import Timestamp
 from parameters import knmi_parameter_names
-
-
-regex_level = re.compile(r"first|second|third|[0-9]+(\.[0-9]+)?(?=m)|(?<=Level )[0-9]+", re.IGNORECASE)
-regex_level_centimeters = re.compile(r"[0-9]+(\.[0-9]+)?(?=cm)")
-regex_time_period = re.compile(r"(\d+) (Hours|Min)", re.IGNORECASE)
-
-
-def convert_standard_names_to_cf(standard_name):
-    standard_name_mapping = {
-        "cloud_cover": "cloud_area_fraction",
-        "total_downwelling_shortwave_flux_in_air": "surface_downwelling_shortwave_flux_in_air",
-        "precipitation_rate": "rainfall_rate",
-        "air_pressure_at_sea_level": "air_pressure_at_mean_sea_level",
-    }
-    return standard_name_mapping.get(standard_name, standard_name)
-
-
-# NOTE: Only units are converted currently, not values.
-def convert_unit_names(unit):
-    unit_mapping = {
-        "degrees Celsius": "degC",
-        "ft": "m",
-        "min": "s",
-        "degree": "degrees",
-        "%": "percent",
-        "mm": "kg/m2",
-        "m s-1": "m/s",
-        "octa": "oktas",
-        "W m-2": "W/m2",
-    }
-    return unit_mapping.get(unit, unit)
+from utilities import generate_parameter_name, convert_unit_names
 
 
 def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
@@ -145,73 +114,6 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
     return observation_request_messages
 
 
-def generate_parameter_name(standard_name, long_name, station_id, station_name, param_id):
-    # TODO: HACK To let the loader have a unique parameter ID and make the parameters distinguishable.
-    level = "2.0"
-    long_name = long_name.lower()
-    station_name = station_name.lower()
-    if level_raw := re.search(regex_level, long_name):
-        level = level_raw[0]
-    if level_raw := re.search(regex_level_centimeters, long_name):
-        level = str(float(level_raw[0]) / 100.0)
-    elif "grass" in long_name:
-        level = "0"
-    elif param_id in ["pg", "pr", "pwc", "vv", "W10", "W10-10", "ww", "ww-10", "za", "zm"]:
-        # https://english.knmidata.nl/open-data/actuele10mindataknmistations
-        # Comments code: 2, 3, 11
-        # Note: The sensor is not installed at equal heights at all types of measurement sites:
-        # At 'AWS' sites the device is installed at 1.80m. At 'AWS/Aerodrome' and 'Mistpost'
-        # (note that this includes site Voorschoten (06215) which is 'AWS/Mistpost')
-        # the device is installed at 2.50m elevation. Exceptions are Berkhout AWS (06249),
-        # De Bilt AWS (06260) and Twenthe AWS (06290) where the sensor is installed at 2.50m.
-        # Since WaWa is automatic detection I asssumed that the others stations are AWS, thus 1.80m
-        if (
-            station_id in ["06215", "06249", "06260", "06290"]
-            or "aerodrome" in station_name
-            or "mistpost" in station_name
-        ):
-            level = "2.50"
-        else:
-            level = "1.80"
-
-    # We want "level" to be numeric, so get rid of "first", "second" and "third".
-    # Note that this level has no meaning, it is just a hack for this test dataset
-    if level == "first":
-        level = "0"
-    if level == "second":
-        level = "1"
-    if level == "third":
-        level = "2.0"
-
-    if "minimum" in long_name:
-        function = "minimum"
-    elif "maximum" in long_name:
-        function = "maximum"
-    elif "average" in long_name:
-        function = "mean"
-    else:
-        function = "point"
-
-    period = "PT0S"
-    if period_raw := re.findall(regex_time_period, long_name):
-        if len(period_raw) == 1:
-            period_raw = period_raw[0]
-        else:
-            raise Exception(f"{period_raw}, {long_name}")
-        time, scale = period_raw
-        if scale == "hours":
-            period = f"PT{time}H"
-        elif scale == "min":
-            period = f"PT{time}M"
-    elif param_id == "ww-10":
-        period = "PT10M"
-    elif param_id == "ww":
-        period = "PT01H"
-
-    standard_name = convert_standard_names_to_cf(standard_name)
-    return standard_name, level, function, period
-
-
 def send_request_to_ingest(msg, url):
     try:
         response = requests.post(url, data=json.dumps(msg))
@@ -219,6 +121,8 @@ def send_request_to_ingest(msg, url):
         return response.status_code, response.json()
     except requests.RequestException as e:
         return response.status_code, e
+    except Exception as e:
+        return 500, e
 
 
 def insert_data(observation_request_messages: List, url):

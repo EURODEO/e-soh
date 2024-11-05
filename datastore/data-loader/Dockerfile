@@ -30,6 +30,7 @@ RUN python -m grpc_tools.protoc  \
     --grpc_python_out="${DOCKER_PATH}"
 
 COPY "./parameters.py" "${DOCKER_PATH}/parameters.py"
+COPY "./utilities.py" "${DOCKER_PATH}/utilities.py"
 
 # Copy both loaders and conditionally use the wanted one
 COPY "./client_knmi_station_ingest.py" "${DOCKER_PATH}/client_knmi_station_ingest.py"
