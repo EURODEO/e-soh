@@ -5,9 +5,11 @@ default:
 set positional-arguments
 
 # Run all docker services. After running the database needs cleanup, run just destroy
-all: lint build unit services load integration performance client
+all: lint build unit services monitoring load integration performance client
 # Build and run the default docker services
 up: build services
+# Build and run the default docker services and start up monitoring
+local: up monitoring
 # Build and run the unit, load and integration tests
 test: build unit load integration
 
@@ -41,11 +43,18 @@ _check-python-version:
     set -euxo pipefail
 
     # Get Python version
-    python_version=$(python --version 2>&1 | cut -d' ' -f2)
+    if command -v python &>/dev/null; then
+        python_version=$(python --version 2>&1 | cut -d ' ' -f2)
+    elif command -v python3 &>/dev/null; then
+        python_version=$(python3 --version 2>&1 | cut -d ' ' -f2)
+    else
+        echo "Python not found. Failing..."
+        exit 1
+    fi
 
     # Extract major and minor version numbers
-    major_version=$(echo "$python_version" | cut -d'.' -f1)
-    minor_version=$(echo "$python_version" | cut -d'.' -f2)
+    major_version=$(echo "$python_version" | cut -d '.' -f1)
+    minor_version=$(echo "$python_version" | cut -d '.' -f2)
 
     # Check if Python version is greater than or equal to 3.11
     if [[ "$major_version" -lt 3 || ( "$major_version" -eq 3 && "$minor_version" -lt 11 ) ]]; then
@@ -93,6 +102,11 @@ unit:
     docker compose run --rm api-unit
 
 
+# Start the monitoring
+monitoring:
+    docker compose up prometheus prometheus-postgres-exporter grafana -d
+
+
 # Run the performance tests
 performance:
     docker compose --env-file ./ci/config/env.list run --rm performance
@@ -108,7 +122,7 @@ client:
 # ---------------------------------------------------------------------------- #
 # Build the docker images
 build: copy-proto
-    docker compose --env-file ./ci/config/env.list --profile test build
+    docker compose --env-file ./ci/config/env.list --profile monitoring --profile test build
 
 
 # # ---------------------------------------------------------------------------- #
@@ -126,9 +140,9 @@ load:
 
 # Stop all E-SOH containers
 down:
-    docker compose --profile test down
+    docker compose --profile monitoring --profile test down
 
 
 # Stop all E-SOH containers and remove their volumes
 destroy:
-    docker compose --profile test down --volumes
+    docker compose --profile monitoring --profile test down --volumes

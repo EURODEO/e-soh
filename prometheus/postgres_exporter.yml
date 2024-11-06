@@ -1,0 +1,8 @@
+auth_modules:
+  datastore-database-config:
+    type: userpass
+    userpass:
+      username: postgres
+      password: mysecretpassword
+    options:
+      sslmode: disable
