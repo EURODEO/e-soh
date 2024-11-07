@@ -5,14 +5,14 @@ default:
 set positional-arguments
 
 # Run all docker services. After running the database needs cleanup, run just destroy
-all: lint build unit ingest_unit services load integration performance client
+all: lint build unit ingest-unit services load integration performance client
 # Build and run the default docker services
 up: build services
 # Build and run the unit, load and integration tests
-test: build unit ingest_load integration
+test: build unit ingest-load integration
 
 # Build and run the ingest loader and integration tests
-ingest_test: build ingest_unit ingest_load integration
+ingest-test: build ingest-unit ingest-load integration
 
 # ---------------------------------------------------------------------------- #
 #                                  utility                                     #
@@ -95,7 +95,7 @@ integration:
 unit:
     docker compose run --rm api-unit
 
-ingest_unit:
+ingest-unit:
     docker compose run --rm ingest-unit
 
 # Run the performance tests
@@ -128,8 +128,8 @@ services:
 load:
     docker compose --env-file ./ci/config/env.list run --rm loader
 
-ingest_load:
-    docker compose --env-file ./ci/config/env.list run --rm ingest_loader
+ingest-load:
+    docker compose --env-file ./ci/config/env.list run --rm ingest-loader
 
 # Stop all E-SOH containers
 down:

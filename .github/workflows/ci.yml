@@ -61,7 +61,7 @@ jobs:
         run: just services
 
       - name: Load the data into the database
-        run: just ingest_load
+        run: just ingest-load
 
       - name: Run the integration test
         run: just integration
@@ -121,7 +121,7 @@ jobs:
         run: just copy-proto
 
       - name: Run the unit test
-        run: just ingest_unit
+        run: just ingest-unit
 
       - name: Archive test artifacts
         uses: actions/upload-artifact@v4
