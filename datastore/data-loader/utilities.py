@@ -78,15 +78,6 @@ def generate_parameter_name(standard_name, long_name, station_id, station_name, 
         else:
             level = "1.8"
 
-    # We want "level" to be numeric, so get rid of "first", "second" and "third".
-    # Note that this level has no meaning, it is just a hack for this test dataset
-    if level == "first":
-        level = "0"
-    if level == "second":
-        level = "1.0"
-    if level == "third":
-        level = "2.0"
-
     if "minimum" in long_name:
         function = "minimum"
     elif "maximum" in long_name:

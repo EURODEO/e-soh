@@ -406,40 +406,6 @@
                     "rodeo:standard_name": "air_temperature",
                     "rodeo:level": 2.0
                 },
-                "cloud_area_fraction:0.0:point:PT0S": {
-                    "type": "Parameter",
-                    "description": "Cloud area fraction at 0.0m, aggregated over PT0S with method 'point'",
-                    "unit": {
-                        "label": "oktas"
-                    },
-                    "observedProperty": {
-                        "id": "https://vocab.nerc.ac.uk/standard_name/cloud_area_fraction",
-                        "label": "Cloud area fraction"
-                    },
-                    "measurementType": {
-                        "method": "point",
-                        "period": "PT0S"
-                    },
-                    "rodeo:standard_name": "cloud_area_fraction",
-                    "rodeo:level": 0.0
-                },
-                "cloud_area_fraction:1.0:point:PT0S": {
-                    "type": "Parameter",
-                    "description": "Cloud area fraction at 1.0m, aggregated over PT0S with method 'point'",
-                    "unit": {
-                        "label": "oktas"
-                    },
-                    "observedProperty": {
-                        "id": "https://vocab.nerc.ac.uk/standard_name/cloud_area_fraction",
-                        "label": "Cloud area fraction"
-                    },
-                    "measurementType": {
-                        "method": "point",
-                        "period": "PT0S"
-                    },
-                    "rodeo:standard_name": "cloud_area_fraction",
-                    "rodeo:level": 1.0
-                },
                 "cloud_area_fraction:2.0:point:PT0S": {
                     "type": "Parameter",
                     "description": "Cloud area fraction at 2.0m, aggregated over PT0S with method 'point'",
@@ -456,40 +422,6 @@
                     },
                     "rodeo:standard_name": "cloud_area_fraction",
                     "rodeo:level": 2.0
-                },
-                "cloud_base_altitude:0.0:point:PT0S": {
-                    "type": "Parameter",
-                    "description": "Cloud base altitude at 0.0m, aggregated over PT0S with method 'point'",
-                    "unit": {
-                        "label": "m"
-                    },
-                    "observedProperty": {
-                        "id": "https://vocab.nerc.ac.uk/standard_name/cloud_base_altitude",
-                        "label": "Cloud base altitude"
-                    },
-                    "measurementType": {
-                        "method": "point",
-                        "period": "PT0S"
-                    },
-                    "rodeo:standard_name": "cloud_base_altitude",
-                    "rodeo:level": 0.0
-                },
-                "cloud_base_altitude:1.0:point:PT0S": {
-                    "type": "Parameter",
-                    "description": "Cloud base altitude at 1.0m, aggregated over PT0S with method 'point'",
-                    "unit": {
-                        "label": "m"
-                    },
-                    "observedProperty": {
-                        "id": "https://vocab.nerc.ac.uk/standard_name/cloud_base_altitude",
-                        "label": "Cloud base altitude"
-                    },
-                    "measurementType": {
-                        "method": "point",
-                        "period": "PT0S"
-                    },
-                    "rodeo:standard_name": "cloud_base_altitude",
-                    "rodeo:level": 1.0
                 },
                 "cloud_base_altitude:2.0:point:PT0S": {
                     "type": "Parameter",

@@ -47,7 +47,7 @@ def test_find_series_single_station_all_parameters(grpc_stub):
     response = grpc_stub.GetObservations(request)
 
     assert (
-        len([obs.ts_mdata.parameter_name for obs in response.observations]) == 34
+        len([obs.ts_mdata.parameter_name for obs in response.observations]) == 30
     )  # Station 06260 doesn't have all parameters
 
 

@@ -34,15 +34,16 @@ def netcdf_file_to_requests(file_path: Path | str) -> Tuple[List, List]:
 
             for param_id in knmi_parameter_names:
                 param_file = station_slice[param_id]
-                standard_name, level, function, period = generate_parameter_name(
-                    (param_file.standard_name if "standard_name" in param_file.attrs else None),
-                    param_file.long_name,
-                    station_id,
-                    station_name,
-                    param_id,
-                )
 
-                if not standard_name or standard_name in ["precipitation_duration", "rainfall_duration"]:
+                if "standard_name" in param_file.attrs:
+                    standard_name, level, function, period = generate_parameter_name(
+                        param_file.standard_name,
+                        param_file.long_name,
+                        station_id,
+                        station_name,
+                        param_id,
+                    )
+                else:
                     continue
 
                 platform = f"0-20000-0-{station_id}"
