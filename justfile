@@ -130,6 +130,10 @@ build: copy-proto
 # # ---------------------------------------------------------------------------- #
 # Start the default docker compose containers
 services:
+    # HACK: The loading of pg_stat_statements plugin leads to a restart of the DB container.
+    #   This makes the health test immediately fail. The trick below is a workaround for this.
+    docker compose --env-file ./ci/config/env.list up -d --wait --wait-timeout 120 || true
+    sleep 5
     docker compose --env-file ./ci/config/env.list up -d --wait --wait-timeout 120
 
 
