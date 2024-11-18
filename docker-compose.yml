@@ -27,7 +27,7 @@ services:
         ]
       interval: 5s
       timeout: 1s
-      retries: 30
+      retries: 3
       start_period: 30s # Failures in 30 seconds do not mark container as unhealthy
 
   migrate:
