@@ -36,6 +36,10 @@ levels = {
         "summary": "Open start range",
         "value": "../10.0",
     },
+    "Combination": {
+        "summary": "Combination",
+        "value": "1.0, 1.5/1.8, R5/2.0/2.0",
+    },
 }
 
 periods = {
@@ -53,6 +57,10 @@ periods = {
     "Wildcard": {
         "summary": "Open end range",
         "value": "PT0S/..",
+    },
+    "Combination": {
+        "summary": "Combination",
+        "value": "PT0S, PT1M/PT10M",
     },
 }
 
