@@ -55,17 +55,17 @@
                 "relative_humidity:2.0:mean:PT1M": {
                     "type": "Parameter",
                     "description": {
-                        "en": "relative_humidity at 2.0m, aggregated over PT1M with method 'mean'"
+                        "en": "Relative humidity at 2.0m, aggregated over PT1M with method 'mean'"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/relative_humidity",
                         "label": {
-                            "en": "relative_humidity:2.0:mean:PT1M"
+                            "en": "Relative humidity"
                         }
                     },
                     "unit": {
                         "label": {
-                            "en": "%"
+                            "en": "percent"
                         }
                     },
                     "measurementType": {
@@ -78,17 +78,17 @@
                 "wind_speed:10.0:mean:PT10M": {
                     "type": "Parameter",
                     "description": {
-                        "en": "wind_speed at 10.0m, aggregated over PT10M with method 'mean'"
+                        "en": "Wind speed at 10.0m, aggregated over PT10M with method 'mean'"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed",
                         "label": {
-                            "en": "wind_speed:10.0:mean:PT10M"
+                            "en": "Wind speed"
                         }
                     },
                     "unit": {
                         "label": {
-                            "en": "m s-1"
+                            "en": "m/s"
                         }
                     },
                     "measurementType": {
@@ -203,17 +203,17 @@
                 "relative_humidity:2.0:mean:PT1M": {
                     "type": "Parameter",
                     "description": {
-                        "en": "relative_humidity at 2.0m, aggregated over PT1M with method 'mean'"
+                        "en": "Relative humidity at 2.0m, aggregated over PT1M with method 'mean'"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/relative_humidity",
                         "label": {
-                            "en": "relative_humidity:2.0:mean:PT1M"
+                            "en": "Relative humidity"
                         }
                     },
                     "unit": {
                         "label": {
-                            "en": "%"
+                            "en": "percent"
                         }
                     },
                     "measurementType": {
@@ -226,17 +226,17 @@
                 "wind_speed:10.0:mean:PT10M": {
                     "type": "Parameter",
                     "description": {
-                        "en": "wind_speed at 10.0m, aggregated over PT10M with method 'mean'"
+                        "en": "Wind speed at 10.0m, aggregated over PT10M with method 'mean'"
                     },
                     "observedProperty": {
                         "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed",
                         "label": {
-                            "en": "wind_speed:10.0:mean:PT10M"
+                            "en": "Wind speed"
                         }
                     },
                     "unit": {
                         "label": {
-                            "en": "m s-1"
+                            "en": "m/s"
                         }
                     },
                     "measurementType": {
@@ -302,17 +302,17 @@
         "relative_humidity:2.0:mean:PT1M": {
             "type": "Parameter",
             "description": {
-                "en": "relative_humidity at 2.0m, aggregated over PT1M with method 'mean'"
+                "en": "Relative humidity at 2.0m, aggregated over PT1M with method 'mean'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/relative_humidity",
                 "label": {
-                    "en": "relative_humidity:2.0:mean:PT1M"
+                    "en": "Relative humidity"
                 }
             },
             "unit": {
                 "label": {
-                    "en": "%"
+                    "en": "percent"
                 }
             },
             "measurementType": {
@@ -325,17 +325,17 @@
         "wind_speed:10.0:mean:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "wind_speed at 10.0m, aggregated over PT10M with method 'mean'"
+                "en": "Wind speed at 10.0m, aggregated over PT10M with method 'mean'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/wind_speed",
                 "label": {
-                    "en": "wind_speed:10.0:mean:PT10M"
+                    "en": "Wind speed"
                 }
             },
             "unit": {
                 "label": {
-                    "en": "m s-1"
+                    "en": "m/s"
                 }
             },
             "measurementType": {

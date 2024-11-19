@@ -2,6 +2,7 @@ FROM python:3.11-slim-bookworm
 
 SHELL ["/bin/bash", "-eux", "-o", "pipefail", "-c"]
 
+ARG THROUGH_INGEST=false
 ENV DOCKER_PATH="/clients/python"
 
 COPY "test-data/KNMI/20221231.nc" "${DOCKER_PATH}/test-data/KNMI/20221231.nc"
@@ -29,7 +30,17 @@ RUN python -m grpc_tools.protoc  \
     --grpc_python_out="${DOCKER_PATH}"
 
 COPY "./parameters.py" "${DOCKER_PATH}/parameters.py"
+COPY "./utilities.py" "${DOCKER_PATH}/utilities.py"
+
+# Copy both loaders and conditionally use the wanted one
+COPY "./client_knmi_station_ingest.py" "${DOCKER_PATH}/client_knmi_station_ingest.py"
 COPY "./client_knmi_station.py" "${DOCKER_PATH}/client_knmi_station.py"
+
+RUN if [ "${THROUGH_INGEST}" = "true" ]; then \
+      mv "${DOCKER_PATH}/client_knmi_station_ingest.py" "${DOCKER_PATH}/client_knmi_station.py"; \
+    else \
+      rm "${DOCKER_PATH}/client_knmi_station_ingest.py"; \
+    fi
 
 WORKDIR "${DOCKER_PATH}"
 CMD ["python", "-u", "./client_knmi_station.py"]

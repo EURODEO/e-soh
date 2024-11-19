@@ -32,6 +32,7 @@ Data = namedtuple("Data", ["dom", "values", "ts_mdata"])
 def make_parameter(ts_mdata):
     level = convert_cm_to_m(ts_mdata.level)
     period = seconds_to_iso_8601_duration(ts_mdata.period)
+    label = " ".join(ts_mdata.standard_name.capitalize().split("_"))
 
     custom_fields = {
         "rodeo:standard_name": ts_mdata.standard_name,
@@ -40,12 +41,11 @@ def make_parameter(ts_mdata):
 
     return Parameter(
         description={
-            "en": f"{ts_mdata.standard_name} at {level}m, "
-            f"aggregated over {period} with method '{ts_mdata.function}'",
+            "en": f"{label} at {level}m, aggregated over {period} with method '{ts_mdata.function}'",
         },
         observedProperty=ObservedProperty(
             id=f"https://vocab.nerc.ac.uk/standard_name/{ts_mdata.standard_name}",
-            label={"en": ts_mdata.parameter_name},
+            label={"en": label},
         ),
         measurementType=MeasurementType(
             method=ts_mdata.function,

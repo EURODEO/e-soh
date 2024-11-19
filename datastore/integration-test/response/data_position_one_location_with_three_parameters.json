@@ -46,17 +46,17 @@
         "air_temperature:2.0:mean:PT1M": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 2.0m, aggregated over PT1M with method 'mean'"
+                "en": "Air temperature at 2.0m, aggregated over PT1M with method 'mean'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:2.0:mean:PT1M"
+                    "en": "Air temperature"
                 }
             },
             "unit": {
                 "label": {
-                    "en": "degrees Celsius"
+                    "en": "degC"
                 }
             },
             "measurementType": {
@@ -69,17 +69,17 @@
         "dew_point_temperature:1.5:mean:PT1M": {
             "type": "Parameter",
             "description": {
-                "en": "dew_point_temperature at 1.5m, aggregated over PT1M with method 'mean'"
+                "en": "Dew point temperature at 1.5m, aggregated over PT1M with method 'mean'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/dew_point_temperature",
                 "label": {
-                    "en": "dew_point_temperature:1.5:mean:PT1M"
+                    "en": "Dew point temperature"
                 }
             },
             "unit": {
                 "label": {
-                    "en": "degrees Celsius"
+                    "en": "degC"
                 }
             },
             "measurementType": {
@@ -92,17 +92,17 @@
         "relative_humidity:2.0:mean:PT1M": {
             "type": "Parameter",
             "description": {
-                "en": "relative_humidity at 2.0m, aggregated over PT1M with method 'mean'"
+                "en": "Relative humidity at 2.0m, aggregated over PT1M with method 'mean'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/relative_humidity",
                 "label": {
-                    "en": "relative_humidity:2.0:mean:PT1M"
+                    "en": "Relative humidity"
                 }
             },
             "unit": {
                 "label": {
-                    "en": "%"
+                    "en": "percent"
                 }
             },
             "measurementType": {

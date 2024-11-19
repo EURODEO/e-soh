@@ -115,6 +115,14 @@ services:
       store:
         condition: service_healthy
 
+  ingest-unit:
+    profiles: ["test"]
+    build:
+      context: ingest
+      dockerfile: unit.Dockerfile
+    volumes:
+      - ./ingest/test/output:/app/output
+
   client:
     profiles: ["test"]
     build:
@@ -137,6 +145,20 @@ services:
     depends_on:
       store:
         condition: service_healthy
+
+  ingest-loader:
+    profiles: ["test"]
+    build:
+      context: datastore/data-loader
+      args:
+        THROUGH_INGEST: "true"
+    environment:
+      - INGEST_URL=http://ingest:8001/json
+    depends_on:
+      store:
+        condition: service_healthy
+      ingest:
+        condition: service_started
 
   integration:
     profiles: ["test"]

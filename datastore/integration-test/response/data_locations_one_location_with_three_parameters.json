@@ -53,17 +53,17 @@
         "air_temperature:1.5:maximum:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "air_temperature at 1.5m, aggregated over PT10M with method 'maximum'"
+                "en": "Air temperature at 1.5m, aggregated over PT10M with method 'maximum'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/air_temperature",
                 "label": {
-                    "en": "air_temperature:1.5:maximum:PT10M"
+                    "en": "Air temperature"
                 }
             },
             "unit": {
                 "label": {
-                    "en": "degrees Celsius"
+                    "en": "degC"
                 }
             },
             "measurementType": {
@@ -76,17 +76,17 @@
         "relative_humidity:2.0:mean:PT1M": {
             "type": "Parameter",
             "description": {
-                "en": "relative_humidity at 2.0m, aggregated over PT1M with method 'mean'"
+                "en": "Relative humidity at 2.0m, aggregated over PT1M with method 'mean'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/relative_humidity",
                 "label": {
-                    "en": "relative_humidity:2.0:mean:PT1M"
+                    "en": "Relative humidity"
                 }
             },
             "unit": {
                 "label": {
-                    "en": "%"
+                    "en": "percent"
                 }
             },
             "measurementType": {
@@ -99,17 +99,17 @@
         "wind_from_direction:2.0:mean:PT10M": {
             "type": "Parameter",
             "description": {
-                "en": "wind_from_direction at 2.0m, aggregated over PT10M with method 'mean'"
+                "en": "Wind from direction at 2.0m, aggregated over PT10M with method 'mean'"
             },
             "observedProperty": {
                 "id": "https://vocab.nerc.ac.uk/standard_name/wind_from_direction",
                 "label": {
-                    "en": "wind_from_direction:2.0:mean:PT10M"
+                    "en": "Wind from direction"
                 }
             },
             "unit": {
                 "label": {
-                    "en": "degree"
+                    "en": "degrees"
                 }
             },
             "measurementType": {
