@@ -410,3 +410,33 @@ def test_get_data_with_lowercase_period_range_without_existing_data():
 
         assert response.status_code == 404
         assert response.json() == {"detail": "Requested data not found."}
+
+
+def test_get_data_with_combination_levels_filtering():
+    with patch("routers.edr.get_obs_request") as mock_get_obs_request:
+
+        # Load with random test data for making a mock_obs_request
+        test_data = load_json("test/test_data/test_coverages_proto.json")
+        mock_get_obs_request.return_value = create_mock_obs_response(test_data)
+
+        response = client.get("/collections/observations/locations/0-20000-0-06260?levels=R6/0.0/0.1, 1.5/1.8, 10")
+
+        m_args = mock_get_obs_request.call_args[0][0]
+
+        assert response.status_code == 200
+        assert m_args.filter["level"].values == ["0", "10", "20", "30", "40", "50", "150/180", "1000"]
+
+
+def test_get_data_with_combination_periods_filtering():
+    with patch("routers.edr.get_obs_request") as mock_get_obs_request:
+
+        # Load with random test data for making a mock_obs_request
+        test_data = load_json("test/test_data/test_coverages_proto.json")
+        mock_get_obs_request.return_value = create_mock_obs_response(test_data)
+
+        response = client.get("/collections/observations/locations/0-20000-0-06260?periods=PT0S, PT1M/PT10M")
+
+        m_args = mock_get_obs_request.call_args[0][0]
+
+        assert response.status_code == 200
+        assert m_args.filter["period"].values == ["0", "60/600"]
