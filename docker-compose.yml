@@ -9,8 +9,10 @@ services:
     volumes:
       #      - ts-data:/home/postgres/pgdata/data # for timescale image
       - ts-data:/var/lib/postgresql # for postgres image
-      - ./datastore/database/healthcheck_postgis_uptime.sh:/healthcheck_postgis_uptime.sh # for the healthcheck
+      - ./datastore/database/extra.conf:/etc/conf_settings/extra.conf:ro  # Extra Postgres configuration
+      - ./datastore/database/healthcheck_postgis_uptime.sh:/healthcheck_postgis_uptime.sh:ro # for the healthcheck
     environment:
+      - EXTRA_CONF_DIR=/etc/conf_settings
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=mysecretpassword
       - POSTGRES_DB=data
@@ -45,6 +47,7 @@ services:
     ports:
       - "50050:50050"
       - "6060:6060" # for flame graphing
+      - "8081:8081"
     environment:
       - PGHOST=db
       - PGPORT=5432
@@ -177,10 +180,52 @@ services:
       - DSHOST=store
       - DSPORT=50050
     volumes:
-      - ./datastore/load-test/output:/load-test/output
+      - ./datastore/load-test/output:/load-test/output:rw
     depends_on:
       store:
         condition: service_healthy
 
+  prometheus:
+    profiles: ["monitoring"]
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+
+  prometheus-postgres-exporter:
+    profiles: ["monitoring"]
+    image: quay.io/prometheuscommunity/postgres-exporter
+    environment:
+      - DATA_SOURCE_URI=db:5432/data
+      - DATA_SOURCE_USER=postgres
+      - DATA_SOURCE_PASS=mysecretpassword
+    ports:
+      - "9187:9187"
+    volumes:
+      - ./prometheus/postgres_exporter.yml:/postgres_exporter.yml:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["--collector.stat_statements", "--collector.stat_user_tables", "--collector.stat_activity_autovacuum"]
+
+  grafana:
+    profiles: ["monitoring"]
+    image: grafana/grafana-oss:11.2.0
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=mysecretpassword
+    volumes:
+      - grafana-storage:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:rw
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:rw
+    depends_on:
+      - prometheus
+
 volumes:
   ts-data:
+  prometheus-data:
+  grafana-storage:

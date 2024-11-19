@@ -5,9 +5,12 @@ default:
 set positional-arguments
 
 # Run all docker services. After running the database needs cleanup, run just destroy
-all: lint build unit ingest-unit services load integration performance client
+all: lint build unit ingest-unit services monitoring load integration performance client
+
 # Build and run the default docker services
 up: build services
+# Build and run the default docker services and start up monitoring
+local: up monitoring
 # Build and run the unit, load and integration tests
 test: build unit ingest-load integration
 
@@ -44,11 +47,18 @@ _check-python-version:
     set -euxo pipefail
 
     # Get Python version
-    python_version=$(python --version 2>&1 | cut -d' ' -f2)
+    if command -v python &>/dev/null; then
+        python_version=$(python --version 2>&1 | cut -d ' ' -f2)
+    elif command -v python3 &>/dev/null; then
+        python_version=$(python3 --version 2>&1 | cut -d ' ' -f2)
+    else
+        echo "Python not found. Failing..."
+        exit 1
+    fi
 
     # Extract major and minor version numbers
-    major_version=$(echo "$python_version" | cut -d'.' -f1)
-    minor_version=$(echo "$python_version" | cut -d'.' -f2)
+    major_version=$(echo "$python_version" | cut -d '.' -f1)
+    minor_version=$(echo "$python_version" | cut -d '.' -f2)
 
     # Check if Python version is greater than or equal to 3.11
     if [[ "$major_version" -lt 3 || ( "$major_version" -eq 3 && "$minor_version" -lt 11 ) ]]; then
@@ -98,6 +108,11 @@ unit:
 ingest-unit:
     docker compose run --rm ingest-unit
 
+# Start the monitoring
+monitoring:
+    docker compose up prometheus prometheus-postgres-exporter grafana -d
+
+
 # Run the performance tests
 performance:
     docker compose --env-file ./ci/config/env.list run --rm performance
@@ -113,7 +128,7 @@ client:
 # ---------------------------------------------------------------------------- #
 # Build the docker images
 build: copy-proto
-    docker compose --env-file ./ci/config/env.list --profile test build
+    docker compose --env-file ./ci/config/env.list --profile monitoring --profile test build
 
 
 # # ---------------------------------------------------------------------------- #
@@ -121,6 +136,10 @@ build: copy-proto
 # # ---------------------------------------------------------------------------- #
 # Start the default docker compose containers
 services:
+    # HACK: The loading of pg_stat_statements plugin leads to a restart of the DB container.
+    #   This makes the health test immediately fail. The trick below is a workaround for this.
+    docker compose --env-file ./ci/config/env.list up -d --wait --wait-timeout 120 || true
+    sleep 5
     docker compose --env-file ./ci/config/env.list up -d --wait --wait-timeout 120
 
 
@@ -133,9 +152,9 @@ ingest-load:
 
 # Stop all E-SOH containers
 down:
-    docker compose --profile test down
+    docker compose --profile monitoring --profile test down
 
 
 # Stop all E-SOH containers and remove their volumes
 destroy:
-    docker compose --profile test down --volumes
+    docker compose --profile monitoring --profile test down --volumes

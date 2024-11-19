@@ -8,14 +8,22 @@ import (
 	"datastore/storagebackend"
 	"datastore/storagebackend/postgresql"
 	"fmt"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/collectors"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"log"
 	"net"
 	"time"
 
+	// gRPC
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
 	"google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/peer"
+
+	// Monitoring
+	"datastore/metrics"
+	grpcprometheus "github.com/grpc-ecosystem/go-grpc-middleware/providers/prometheus"
 
 	_ "expvar"
 	"net/http"
@@ -52,8 +60,34 @@ func main() {
 		return resp, err
 	}
 
-	// create gRPC server
-	server := grpc.NewServer(grpc.UnaryInterceptor(reqTimeLogger))
+	grpcMetrics := grpcprometheus.NewServerMetrics(
+		grpcprometheus.WithServerHandlingTimeHistogram(
+			grpcprometheus.WithHistogramBuckets([]float64{0.001, 0.01, 0.1, 0.3, 0.6, 1, 3, 6, 9, 20, 30, 60, 90, 120}),
+		),
+	)
+	reg := prometheus.NewRegistry()
+	reg.MustRegister(
+		grpcMetrics,
+		promservermetrics.InFlightRequests,
+		promservermetrics.UptimeCounter,
+		promservermetrics.ResponseSizeSummary,
+		collectors.NewGoCollector(),
+		collectors.NewProcessCollector(collectors.ProcessCollectorOpts{}),
+	)
+
+	go promservermetrics.TrackUptime()
+
+	// create gRPC server with middleware
+	server := grpc.NewServer(
+		grpc.ChainUnaryInterceptor(
+			reqTimeLogger,
+			promservermetrics.InFlightRequestInterceptor,
+			promservermetrics.ResponseSizeUnaryInterceptor,
+			grpcMetrics.UnaryServerInterceptor(),
+		),
+	)
+
+	grpcMetrics.InitializeMetrics(server)
 	grpc_health_v1.RegisterHealthServer(server, health.NewServer())
 
 	// create storage backend
@@ -79,6 +113,22 @@ func main() {
 	log.Printf("serving profiling info\n")
 	go func() {
 		http.ListenAndServe("0.0.0.0:6060", nil)
+	}()
+
+	// serve go metrics for monitoring
+	go func() {
+		httpSrv := &http.Server{Addr: "0.0.0.0:8081"}
+		m := http.NewServeMux()
+		// Create HTTP handler for Prometheus metrics.
+		m.Handle("/metrics", promhttp.HandlerFor(
+			reg,
+			promhttp.HandlerOpts{
+				EnableOpenMetrics: true,
+			},
+		))
+		httpSrv.Handler = m
+		log.Println("Starting HTTP server for Prometheus metrics on :8081")
+		log.Fatal(httpSrv.ListenAndServe())
 	}()
 
 	// serve incoming requests
