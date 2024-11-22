@@ -5,6 +5,7 @@ import isodate
 from datetime import datetime
 from datetime import timedelta
 from typing import Tuple
+from itertools import chain
 
 from isodate import ISO8601Error
 import datastore_pb2 as dstore
@@ -155,7 +156,7 @@ async def add_request_parameters(
         request.filter["standard_name"].values.extend(split_and_strip(standard_names))
 
     if levels:
-        request.filter["level"].values.extend(get_z_levels_or_range(levels))
+        request.filter["level"].values.extend(get_levels_values(levels))
 
     if methods:
         request.filter["function"].values.extend(split_and_strip(methods))
@@ -179,25 +180,40 @@ def get_periods_or_range(periods: str) -> list[str]:
         raise HTTPException(status_code=400, detail=f"{err}")
 
 
-def get_z_levels_or_range(z: str) -> list[str]:
+def get_levels_values(levels: str) -> list[str]:
     """
-    Function for getting the levels as a list or a range
+    Function for getting the levels filters as a list of levels, ranges,
+    range intervals or combination of the previous
     """
     # it can be z=value1,value2,value3: z=2,10,80
     # or z=minimum value/maximum value: z=10/100
     # or z=Rn/min height/height interval: z=R20/100/50
-    try:
-        split_on_slash = z.split("/")
-        if len(split_on_slash) == 2:
-            z_min = convert_m_to_cm(split_on_slash[0]) if split_on_slash[0] != ".." else -sys.maxsize - 1
-            z_max = convert_m_to_cm(split_on_slash[1]) if split_on_slash[1] != ".." else sys.maxsize
-            return [f"{z_min}/{z_max}"]
-        elif len(split_on_slash) > 2:
-            return get_z_values_from_interval(split_on_slash)
-        else:
-            return [convert_m_to_cm(level) for level in z.split(",")]
-    except ValueError:
-        raise HTTPException(status_code=400, detail=f"Invalid levels value: {z}")
+    # or a combination of the above: z=10,30/100,200,300,R20/100/50
+
+    def get_level_or_range(z: str) -> list[str]:
+        try:
+            split_on_slash = z.split("/")
+            if len(split_on_slash) == 2:
+                return get_z_values_from_range(split_on_slash)
+            elif len(split_on_slash) > 2:
+                return get_z_values_from_interval(split_on_slash)
+            else:
+                return [convert_m_to_cm(z)]
+        except ValueError:
+            raise HTTPException(status_code=400, detail=f"Invalid levels value: {z}")
+
+    return list(chain(*[get_level_or_range(z) for z in split_and_strip(levels)]))
+
+
+def get_z_values_from_range(range: list[str]) -> list[str]:
+    """
+    Function for getting the z values from a range.
+    """
+    start, end = range[0], range[1]
+    z_min = convert_m_to_cm(start) if start != ".." else start
+    z_max = convert_m_to_cm(end) if end != ".." else end
+
+    return [f"{z_min}/{z_max}"]
 
 
 def get_z_values_from_interval(interval: list[str]) -> list[str]:
