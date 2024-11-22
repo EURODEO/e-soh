@@ -156,7 +156,7 @@ async def add_request_parameters(
         request.filter["standard_name"].values.extend(split_and_strip(standard_names))
 
     if levels:
-        request.filter["level"].values.extend(get_z_levels_or_range(levels))
+        request.filter["level"].values.extend(get_levels_values(levels))
 
     if methods:
         request.filter["function"].values.extend(split_and_strip(methods))
@@ -180,35 +180,29 @@ def get_periods_or_range(periods: str) -> list[str]:
         raise HTTPException(status_code=400, detail=f"{err}")
 
 
-def get_z_levels_or_range(z: str) -> list[str]:
+def get_levels_values(levels: str) -> list[str]:
     """
-    Function for getting the levels filters as a list of levels, ranges
-    or range intervals
+    Function for getting the levels filters as a list of levels, ranges,
+    range intervals or combination of the previous
     """
     # it can be z=value1,value2,value3: z=2,10,80
     # or z=minimum value/maximum value: z=10/100
     # or z=Rn/min height/height interval: z=R20/100/50
     # or a combination of the above: z=10,30/100,200,300,R20/100/50
 
-    values = [level_or_range.split("/") for level_or_range in split_and_strip(z)]
+    def get_level_or_range(z: str) -> list[str]:
+        try:
+            split_on_slash = z.split("/")
+            if len(split_on_slash) == 2:
+                return get_z_values_from_range(split_on_slash)
+            elif len(split_on_slash) > 2:
+                return get_z_values_from_interval(split_on_slash)
+            else:
+                return [convert_m_to_cm(z)]
+        except ValueError:
+            raise HTTPException(status_code=400, detail=f"Invalid levels value: {z}")
 
-    try:
-        nested_filters = [
-            (
-                get_z_values_from_interval(level_or_range)
-                if len(level_or_range) > 2
-                else (
-                    get_z_values_from_range(level_or_range)
-                    if len(level_or_range) == 2
-                    else [convert_m_to_cm(level_or_range[0])]
-                )
-            )
-            for level_or_range in values
-        ]
-        # Return the flattened list of level filters
-        return list(chain(*nested_filters))
-    except ValueError:
-        raise HTTPException(status_code=400, detail=f"Invalid levels value: {z}")
+    return list(chain(*[get_level_or_range(z) for z in split_and_strip(levels)]))
 
 
 def get_z_values_from_range(range: list[str]) -> list[str]:
