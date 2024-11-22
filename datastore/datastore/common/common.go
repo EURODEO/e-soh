@@ -75,7 +75,7 @@ func initValidTimeRange() {
 	loTimeName := "LOTIME"
 	hiTimeName := "HITIME"
 	defaultLoTimeSecs := int64(86400)
-	defaultHiTimeSecs := int64(-2) // add leeway to reduce risk of missing the newest observations
+	defaultHiTimeSecs := int64(-600) // the reference time of visual observations is the next hour
 
 	if dynamicTime {
 		loTimeSecs = getSecs(loTimeName, defaultLoTimeSecs, false)

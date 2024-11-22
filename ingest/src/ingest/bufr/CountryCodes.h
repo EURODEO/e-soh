@@ -308,4 +308,15 @@ static const std::list<cc_conv> country_codes = {
 
 };
 
+inline int bufrToIsocc(const int bufr_state_id) {
+  int ret = 0;
+  for (auto cc : country_codes) {
+    if (cc.bufr_code == bufr_state_id) {
+      ret = cc.iso_code;
+      break;
+    }
+  }
+  return ret;
+}
+
 #endif

@@ -102,10 +102,18 @@ private:
                         std::string period_str = "") const;
   WSI genShadowWigosId(std::list<Descriptor> &,
                        std::list<Descriptor>::const_iterator &cir) const;
+  void initTimeInterval();
+  bool timeInInterval(time_t t) const;
+  bool timeInInterval(struct tm) const;
 
   Oscar *oscar;
   std::string msg_template;
   WSI shadow_wigos;
+  bool dynamictime = true;
+  int64_t lotime = 86400;
+  int64_t hitime = -600;
 };
+
+int64_t getTimeStamp(const char *env_time);
 
 #endif

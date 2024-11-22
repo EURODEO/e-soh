@@ -19,7 +19,7 @@
 class LogBuffer {
 
 public:
-  LogBuffer(LogLevel l = LogLevel::TRACE, int max_size = 1000);
+  LogBuffer(LogLevel l = LogLevel::TRACE, int max_size = 5000);
   ~LogBuffer();
   bool addLogEntry(std::string);
   bool addLogEntry(LogEntry);
