@@ -1,6 +1,7 @@
 # Run with:
 # For developing:    uvicorn main:app --reload
 import logging
+import os
 
 import metadata_endpoints
 from brotli_asgi import BrotliMiddleware
@@ -30,7 +31,10 @@ setup_logging()
 
 logger = logging.getLogger(__name__)
 
-app = FastAPI(swagger_ui_parameters={"tryItOutEnabled": True})
+app = FastAPI(
+    swagger_ui_parameters={"tryItOutEnabled": True},
+    root_path=os.getenv("FASTAPI_ROOT_PATH", ""),
+)
 app.add_middleware(BrotliMiddleware)
 add_metrics(app)
 
