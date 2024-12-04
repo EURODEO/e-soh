@@ -26,7 +26,11 @@ from grpc_getter import get_extents_request
 from grpc_getter import get_ts_ag_request
 
 import datastore_pb2 as dstore
-from utilities import get_unique_values_for_metadata, seconds_to_iso_8601_duration, convert_cm_to_m
+from utilities import (
+    get_unique_values_for_metadata,
+    seconds_to_iso_8601_duration,
+    convert_cm_to_m,
+)
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -56,14 +60,33 @@ def datetime_to_iso_string(value: datetime) -> str:
 
 def get_landing_page(request):
     return LandingPageModel(
-        title="E-SOH EDR API",
-        description="The E-SOH EDR API",
-        keywords=["weather", "temperature", "wind", "humidity", "pressure", "clouds", "radiation"],
+        title="EDR Observations API Europe EUMETNET",
+        description="OGC EDR API data service for European environmental observations from EUMETNET,"
+        " co-funded by the European Union.",
+        keywords=[
+            "weather",
+            "temperature",
+            "wind",
+            "humidity",
+            "pressure",
+            "clouds",
+            "radiation",
+        ],
         provider=Provider(name="RODEO", url="https://rodeo-project.eu/"),
         contact=Contact(email="rodeoproject@fmi.fi"),
         links=[
-            Link(href=f"{request.url}", rel="self", title="Landing Page in JSON", type="application/json"),
-            Link(href=f"{request.url}docs", rel="service-doc", title="API description in HTML", type="text/html"),
+            Link(
+                href=f"{request.url}",
+                rel="self",
+                title="Landing Page in JSON",
+                type="application/json",
+            ),
+            Link(
+                href=f"{request.url}docs",
+                rel="service-doc",
+                title="API description in HTML",
+                type="text/html",
+            ),
             Link(
                 href=f"{request.url}openapi.json",
                 rel="service-desc",
@@ -76,7 +99,11 @@ def get_landing_page(request):
                 title="Conformance Declaration in JSON",
                 type="application/json",
             ),
-            Link(href=f"{request.url}collections", rel="data", title="Collections metadata in JSON"),
+            Link(
+                href=f"{request.url}collections",
+                rel="data",
+                title="Collections metadata in JSON",
+            ),
         ],
     )
 
@@ -155,7 +182,14 @@ async def get_collection_metadata(base_url: str, is_self) -> Collection:
         ],
         extent=Extent(
             spatial=Spatial(
-                bbox=[[spatial_extent.left, spatial_extent.bottom, spatial_extent.right, spatial_extent.top]],
+                bbox=[
+                    [
+                        spatial_extent.left,
+                        spatial_extent.bottom,
+                        spatial_extent.right,
+                        spatial_extent.top,
+                    ]
+                ],
                 crs="EPSG:4326",
             ),
             temporal=Temporal(
