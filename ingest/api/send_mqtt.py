@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 if "MQTT_TOPIC_PREPEND" in os.environ:
     mqtt_topic_prepend = os.getenv("MQTT_TOPIC_PREPEND", "")
-    mqtt_topic_prepend = mqtt_topic_prepend if not mqtt_topic_prepend.endswith("/") else mqtt_topic_prepend + "/"
+    mqtt_topic_prepend = mqtt_topic_prepend if mqtt_topic_prepend.endswith("/") else mqtt_topic_prepend + "/"
 
 
 def connect_mqtt(mqtt_conf: dict):
