@@ -26,9 +26,7 @@ class Geometry(BaseModel):
 
 
 class Content(BaseModel):
-    encoding: Literal["utf-8", "base64", "gzip"] = Field(
-        ..., description="Encoding of content"
-    )
+    encoding: Literal["utf-8", "base64", "gzip"] = Field(..., description="Encoding of content")
     size: int | None = Field(
         None,
         description=(
@@ -39,9 +37,7 @@ class Content(BaseModel):
         ),
     )
     value: str = Field(..., description="The inline content of the file.")
-    standard_name: str = Field(
-        ..., description="CF standard for the data included in this message."
-    )
+    standard_name: str = Field(..., description="CF standard for the data included in this message.")
     unit: str = Field(..., description="Unit for the data")
 
     class Config:
@@ -103,14 +99,12 @@ class Properties(BaseModel):
             "URIs are also acceptable. Example: 'edu.ucar.unidata'."
         ),
     )
-    creator_type: Optional[Literal["person", "group", "institution", "position"]] = (
-        Field(
-            None,
-            description=(
-                "Specifies type of creator with one of the following: 'person', 'group', 'institution', or 'position'. "
-                "If this attribute is not specified, the creator is assumed to be a person."
-            ),
-        )
+    creator_type: Optional[Literal["person", "group", "institution", "position"]] = Field(
+        None,
+        description=(
+            "Specifies type of creator with one of the following: 'person', 'group', 'institution', or 'position'. "
+            "If this attribute is not specified, the creator is assumed to be a person."
+        ),
     )
     creator_name: Optional[str] = Field(
         None,
@@ -164,9 +158,7 @@ class Properties(BaseModel):
             "Indicate controlled vocabulary used in platform_vocabulary."
         ),
     )
-    platform_name: Optional[str] = Field(
-        None, description=("Human readable name for the platform.")
-    )
+    platform_name: Optional[str] = Field(None, description=("Human readable name for the platform."))
     platform_vocabulary: Optional[str] = Field(
         None,
         description="Controlled vocabulary for the names used in the 'platform' attribute.",
