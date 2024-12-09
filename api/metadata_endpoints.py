@@ -30,6 +30,9 @@ from utilities import get_unique_values_for_metadata
 from utilities import seconds_to_iso_8601_duration
 from utilities import convert_cm_to_m
 
+from openapi.openapi_metadata import openapi_metadata
+
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
@@ -58,9 +61,8 @@ def datetime_to_iso_string(value: datetime) -> str:
 
 def get_landing_page(request):
     return LandingPageModel(
-        title="EDR Observations API Europe EUMETNET",
-        description="OGC EDR API data service for European environmental observations from EUMETNET,"
-        " co-funded by the European Union.",
+        title=openapi_metadata["title"],
+        description=openapi_metadata["description"],
         keywords=[
             "weather",
             "temperature",
@@ -70,8 +72,11 @@ def get_landing_page(request):
             "clouds",
             "radiation",
         ],
-        provider=Provider(name="RODEO", url="https://rodeo-project.eu/"),
-        contact=Contact(email="eucos@metoffice.gov.uk"),
+        provider=Provider(
+            name=openapi_metadata["contact"]["name"],
+            url=openapi_metadata["contact"]["url"],
+        ),
+        contact=Contact(email=openapi_metadata["contact"]["email"]),
         links=[
             Link(
                 href=f"{request.url}",
