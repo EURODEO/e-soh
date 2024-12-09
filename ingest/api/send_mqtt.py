@@ -1,3 +1,4 @@
+import os
 import logging
 import json
 from paho.mqtt import client as mqtt_client
@@ -5,9 +6,12 @@ from fastapi import HTTPException
 
 logger = logging.getLogger(__name__)
 
+if "MQTT_TOPIC_PREPEND" in os.environ:
+    mqtt_topic_prepend = os.getenv("MQTT_TOPIC_PREPEND", "")
+    mqtt_topic_prepend = mqtt_topic_prepend if not mqtt_topic_prepend.endswith("/") else mqtt_topic_prepend + "/"
+
 
 def connect_mqtt(mqtt_conf: dict):
-
     def on_connect(client, userdata, flags, rc, properties=None):
         if rc == 0:
             logger.info("Connected to MQTT Broker!")
@@ -34,7 +38,7 @@ def connect_mqtt(mqtt_conf: dict):
 
 def send_message(topic: str, message: str, client: object):
     if len(topic) != 0:
-        mqtt_topic = topic
+        mqtt_topic = mqtt_topic_prepend + topic
     try:
         if isinstance(message, dict):
             client.publish(mqtt_topic, json.dumps(message))
