@@ -7,6 +7,7 @@ openapi_metadata = {
     "contact": {
         "name": "EUMETNET",
         "url": "https://www.eumetnet.eu/about-us/",
+        "email": "eucos@metoffice.gov.uk",
     },
     "license_info": {
         "name": "CC-BY-4.0",

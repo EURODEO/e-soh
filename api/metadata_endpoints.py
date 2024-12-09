@@ -73,7 +73,7 @@ def get_landing_page(request):
             "radiation",
         ],
         provider=Provider(name="RODEO", url="https://rodeo-project.eu/"),
-        contact=Contact(email="rodeoproject@fmi.fi"),
+        contact=Contact(email="eucos@metoffice.gov.uk"),
         links=[
             Link(
                 href=f"{request.url}",
