@@ -11,7 +11,7 @@ from covjson_pydantic.domain import Axes
 from covjson_pydantic.domain import Domain
 from covjson_pydantic.domain import DomainType
 from covjson_pydantic.domain import ValuesAxis
-from covjson_pydantic.ndarray import NdArray
+from covjson_pydantic.ndarray import NdArrayFloat
 from covjson_pydantic.observed_property import ObservedProperty
 from covjson_pydantic.parameter import Parameter
 from covjson_pydantic.reference_system import ReferenceSystem
@@ -95,7 +95,7 @@ def convert_to_covjson(observations):
             parameter_id = data.ts_mdata.parameter_name
             parameters[parameter_id] = make_parameter(data.ts_mdata)
 
-            ranges[parameter_id] = NdArray(
+            ranges[parameter_id] = NdArrayFloat(
                 values=values_no_nan, axisNames=["t", "y", "x"], shape=[len(values_no_nan), 1, 1]
             )
 
