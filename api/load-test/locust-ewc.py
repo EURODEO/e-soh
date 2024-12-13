@@ -45,7 +45,7 @@ class ESohUser(HttpUser):
         dt_string = date_time.strftime("%Y-%m-%dT%H:%M:%SZ")
         station_id = random.choice(self.station_ids)
         parameter = random.choice(self.stations[station_id])
-        response = self.client.get(
+        self.client.get(
             f"/collections/observations/locations/{station_id}?parameter-name={parameter}&datetime={dt_string}/..",
             name=f"location {hours:02d} hours",
             headers=headers,
@@ -55,7 +55,7 @@ class ESohUser(HttpUser):
     def get_data_single_position_single_parameter(self):
         (lon, lat) = random.choice(self.station_locations)
         parameter = random.choice(self.stations_by_location[(lon, lat)])
-        response = self.client.get(
+        self.client.get(
             f"/collections/observations/position?coords=POINT({lon} {lat})&parameter-name={parameter}",
             name="position",
             headers=headers,
@@ -74,7 +74,7 @@ class ESohUser(HttpUser):
         top = cy + sz
         polygon = f"POLYGON(({left} {bottom},{right} {bottom},{right} {top},{left} {top},{left} {bottom}))"
         url = f"/collections/observations/area?coords={polygon}&standard_names={standard_name}&datetime={dt_string}/.."
-        response = self.client.get(url, name=f"area {sz*2.0}deg x {sz*2.0}deg x 1h", headers=headers)
+        self.client.get(url, name=f"area {sz*2.0}deg x {sz*2.0}deg x 1h", headers=headers)
         # if sz == 2.0:
         #     j = response.json()
         #     # print(sz*2.0)

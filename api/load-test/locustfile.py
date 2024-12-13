@@ -38,7 +38,8 @@ class WebsiteUser(HttpUser):
     @task
     def get_data_bbox_three_parameters(self):
         self.client.get(
-            "/collections/observations/area?parameter-name=wind_speed:10.0:mean:PT10M,wind_speed:10.0:mean:PT10M,relative_humidity:2.0:mean:PT1M&"
+            "/collections/observations/area?parameter-name="
+            "wind_speed:10.0:mean:PT10M,wind_speed:10.0:mean:PT10M,relative_humidity:2.0:mean:PT1M&"
             "coords=POLYGON((5.0 52.0,6.0 52.0,6.0 52.1,5.0 52.1,5.0 52.0))",
             name="bbox",
             headers=headers,
