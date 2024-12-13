@@ -3,8 +3,12 @@ import random
 from locust import HttpUser
 from locust import task
 
-parameters = ["wind_speed:10.0:mean:PT10M", "wind_speed:10.0:mean:PT10M", "relative_humidity:2.0:mean:PT1M",
-              "air_temperature:2.0:mean:PT1M"]
+parameters = [
+    "wind_speed:10.0:mean:PT10M",
+    "wind_speed:10.0:mean:PT10M",
+    "relative_humidity:2.0:mean:PT1M",
+    "air_temperature:2.0:mean:PT1M",
+]
 # fmt: off
 stations = [
     "0-20000-0-06203", "0-20000-0-06204", "0-20000-0-06205", "0-20000-0-06207", "0-20000-0-06208", "0-20000-0-06211",
