@@ -50,6 +50,9 @@ ssize_t strisotime(char *date_str, size_t date_max, const struct timeval *date,
 void filterStr(std::string &s,
                const std::list<std::pair<char, char>> &repl_chars);
 
+std::istream &getElement(std::istream &is, char *dest, const int size,
+                         const char endch);
+
 } // namespace NorBufrIO
 
 #endif

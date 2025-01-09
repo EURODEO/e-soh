@@ -220,3 +220,31 @@ void NorBufrIO::filterStr(std::string &s,
 
   return;
 }
+
+std::istream &NorBufrIO::getElement(std::istream &is, char *dest,
+                                    const int size, const char endch) {
+  *dest = '\0';
+  char ch;
+  is.get(ch);
+  if (is.good() && ch != endch) {
+    if (ch != '"') {
+      *dest = ch;
+      is.getline(dest + 1, size, endch);
+    } else {
+      is.getline(dest, size, '"');
+      is.get(ch); // read endch
+      // to handle:
+      // 20,Observed phenomena,020096,"Ice age (""A""
+      // parameter)",dB,2,-4096,13,dB,2,4,,,Operational
+      while (is.good() && ch != endch) {
+        size_t len = std::strlen(dest);
+        dest[len] = '"';
+        dest[len + 1] = ch;
+        dest[len + 2] = '\0';
+        is.getline(dest + len + 2, size - len - 2, '"');
+        is.get(ch); // read endch
+      }
+    }
+  }
+  return is;
+}

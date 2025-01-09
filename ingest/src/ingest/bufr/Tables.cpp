@@ -16,6 +16,7 @@
 #include <sstream>
 #include <string>
 
+#include "NorBufrIO.h"
 #include "Tables.h"
 
 TableA::TableA() {
@@ -84,7 +85,11 @@ TableB::TableB(std::string f) {
   if (std::filesystem::path(f).filename() == "element.table") {
     readECCodes(f);
   } else {
-    readWMO(f);
+    if (std::filesystem::path(f).filename() == "BUFRCREX_TableB_en.txt") {
+      readWMO(f);
+    } else {
+      readOPERA(f);
+    }
   }
 }
 
@@ -151,56 +156,28 @@ bool TableB::readWMO(std::string filename) {
     return false;
   }
   const int linesize = 4096;
+  // field separator
+  char fs = ',';
 
-  char *line_raw = new char[linesize];
   char *line = new char[linesize];
   char *tmp = new char[linesize];
   std::string tmpstr;
 
   is.getline(tmp, linesize); // header
 
-  while (is.getline(line_raw, linesize)) {
-    // TODO: to function
-    // Convert: ,, => ,"",
-    int line_shift = 0;
-    for (int i = 0; i < is.gcount(); i++) {
-      line[i + line_shift] = line_raw[i];
-      if (line_raw[i] == ',' && i < is.gcount() - 1 && line_raw[i + 1] == ',') {
-        line[i + line_shift + 1] = '"';
-        line[i + line_shift + 2] = '"';
-        line_shift += 2;
-        if (i + line_shift > linesize) {
-          std::cerr << "TableB line size exceded!!!\n";
-          delete[] line_raw;
-          delete[] line;
-          delete[] tmp;
-          return false;
-        }
-      }
-    }
-
+  while (is.getline(line, linesize)) {
     std::stringstream ss(line);
 
-    ss.getline(tmp, linesize, ','); // No
-    ss >> std::quoted(tmpstr);
-    ss.getline(tmp, linesize, ','); // ClassNo
-    ss >> std::quoted(tmpstr);
-    ss.getline(tmp, linesize, ','); // ClassName_en
-    ss >> std::quoted(tmpstr);
-    ss.getline(tmp, linesize, ','); // FXY
+    NorBufrIO::getElement(ss, tmp, linesize, fs); // ClassNo
+    NorBufrIO::getElement(ss, tmp, linesize, fs); // ClassName_en
+    NorBufrIO::getElement(ss, tmp, linesize, fs); // FXY
+    DescriptorId d(tmp);
 
-    DescriptorId d(tmpstr);
+    NorBufrIO::getElement(ss, tmp, linesize, fs); // ElementName_en
+    std::string namestr(tmp);
 
-    std::string namestr;
-    ss >> std::quoted(namestr);
-    ss.getline(tmp, linesize, ','); // ElementName_en
-
-    ss >> std::quoted(tmpstr);
-    ss.getline(tmp, linesize, ','); // Note_en
-    std::string unitstr;
-    ss >> std::quoted(unitstr);
-    ss.getline(tmp, linesize, ','); // BUFR_Unit
-
+    NorBufrIO::getElement(ss, tmp, linesize, fs); // BUFR_Unit
+    std::string unitstr(tmp);
     if (unitstr.substr(0, 10) == "Code table")
       unitstr = "CODE TABLE";
     if (unitstr.substr(0, 10) == "Flag table")
@@ -208,24 +185,18 @@ bool TableB::readWMO(std::string filename) {
     if (unitstr.substr(0, 9) == "CCITT IA5")
       unitstr = "CCITTIA5";
 
+    NorBufrIO::getElement(ss, tmp, linesize, fs); // BUFR_Scale
     int scale;
-    std::string scalestr;
-    ss >> std::quoted(scalestr);
-    ss.getline(tmp, linesize, ','); // BUFR_Scale
-
+    std::string scalestr(tmp);
     scale = scalestr.size() ? std::stoi(scalestr) : 0;
 
+    NorBufrIO::getElement(ss, tmp, linesize, fs); // BUFR_ReferenceValue
     int reference;
-    std::string referencestr;
-    ss >> std::quoted(referencestr);
-    ss.getline(tmp, linesize, ','); // BUFR_ReferenceValue
-
+    std::string referencestr(tmp);
     reference = referencestr.size() ? std::stoi(referencestr) : 0;
 
-    std::string dwstr;
-    ss >> std::quoted(dwstr);
-    ss.getline(tmp, linesize, ','); // BUFR_DataWidth_Bits
-
+    NorBufrIO::getElement(ss, tmp, linesize, fs); // BUFR_DataWidth_Bits
+    std::string dwstr(tmp);
     uint64_t datawidth = dwstr.size() ? std::stoi(dwstr) : 0;
 
     DescriptorMeta dp(namestr, unitstr, scale, reference, datawidth);
@@ -233,10 +204,92 @@ bool TableB::readWMO(std::string filename) {
   }
 
   delete[] line;
-  delete[] line_raw;
   delete[] tmp;
 
   return 0;
+}
+
+bool TableB::readOPERA(std::string filename) {
+
+  clear();
+  std::ifstream is(filename.c_str());
+  if (!is.good()) {
+    std::cerr << "ERROR: Read WMO TableB problem: " << filename << std::endl;
+    return false;
+  }
+  const int linesize = 4096;
+  // field separator
+  char fs = ';';
+
+  char *line = new char[linesize];
+  char *tmp = new char[linesize];
+  std::string tmpstr;
+  int f, x, y;
+
+  while (is.getline(line, linesize)) {
+    // Replace characters:
+    unsigned char *uline = reinterpret_cast<unsigned char *>(line);
+    for (size_t i = 0; i < strlen(line); ++i) {
+      // En dash => Hyphen-minus
+      if (uline[i] == 0x96) {
+        std::cerr << "Changed !!!" << i << " ";
+        uline[i] = 0x2d;
+      }
+    }
+
+    if (isdigit(line[0])) {
+      std::stringstream ss(line);
+      ss >> f;
+      ss.get(); // read fs
+      ss >> x;
+      ss.get(); // read fs
+      if (isdigit(line[ss.tellg()])) {
+        ss >> y;
+        ss.get();
+        DescriptorId d(f, x, y);
+        NorBufrIO::getElement(ss, tmp, linesize, fs); // ElementName_en
+        std::string namestr(tmp);
+
+        NorBufrIO::getElement(ss, tmp, linesize, fs); // BUFR_Unit
+        std::string unitstr(tmp);
+        if (unitstr.substr(0, 10) == "Code table")
+          unitstr = "CODE TABLE";
+        if (unitstr.substr(0, 10) == "Flag table")
+          unitstr = "FLAG TABLE";
+        if (unitstr.substr(0, 9) == "CCITT IA5")
+          unitstr = "CCITTIA5";
+
+        NorBufrIO::getElement(ss, tmp, linesize, fs); // BUFR_Scale
+        int scale;
+        std::string scalestr(tmp);
+        scale = scalestr.size() ? std::stoi(scalestr) : 0;
+
+        NorBufrIO::getElement(ss, tmp, linesize, fs); // BUFR_ReferenceValue
+        int reference;
+        std::string referencestr(tmp);
+        reference = referencestr.size() ? std::stoi(referencestr) : 0;
+
+        NorBufrIO::getElement(ss, tmp, linesize, fs); // BUFR_DataWidth_Bits
+        std::string dwstr(tmp);
+        uint64_t datawidth = dwstr.size() ? std::stoi(dwstr) : 0;
+
+        DescriptorMeta dp(namestr, unitstr, scale, reference, datawidth);
+        tableB[d] = dp;
+      }
+    }
+  }
+
+  delete[] line;
+  delete[] tmp;
+
+  return 0;
+}
+
+TableB &TableB::operator+=(const TableB &rhs) {
+  for (auto m : rhs.tableB) {
+    this->tableB[m.first] = m.second;
+  }
+  return *this;
 }
 
 TableC::TableC() {}
@@ -303,52 +356,28 @@ bool TableC::readWMO(std::string filename) {
   }
   const int linesize = 4096;
 
-  char *line_raw = new char[linesize];
   char *line = new char[linesize];
   char *tmp = new char[linesize];
   std::string tmpstr;
+  // field separator
+  char fs = ',';
 
   is.getline(tmp, linesize); // header
 
-  while (is.getline(line_raw, linesize)) {
-    // TODO: to function!!
-    // Convert: ,, => ,"",
-    int line_shift = 0;
-    for (int i = 0; i < is.gcount(); i++) {
-      line[i + line_shift] = line_raw[i];
-      if (line_raw[i] == ',' && i < is.gcount() - 1 && line_raw[i + 1] == ',') {
-        line[i + line_shift + 1] = '"';
-        line[i + line_shift + 2] = '"';
-        line_shift += 2;
-        if (i + line_shift > linesize) {
-          std::cerr << "TableC line size exceded!!!\n";
-          delete[] line_raw;
-          delete[] line;
-          delete[] tmp;
-          return false;
-        }
-      }
-    }
+  while (is.getline(line, linesize)) {
 
     std::stringstream ss(line);
-    ss.getline(tmp, linesize, ','); // No
-
-    ss >> std::quoted(tmpstr); // FXY
-    ss.getline(tmp, linesize, ',');
+    NorBufrIO::getElement(ss, tmp, linesize, fs); // FXY
 
     DescriptorId d(tmpstr);
 
     std::string namestr;
-    ss >> std::quoted(namestr); // ElementName_en
-    ss.getline(tmp, linesize, ',');
+    NorBufrIO::getElement(ss, tmp, linesize, fs); // ElementName_en
+    NorBufrIO::getElement(ss, tmp, linesize, fs); // CodeFigure
+    std::string codefigure(tmp);
 
-    std::string codefigure;
-    ss >> std::quoted(codefigure); // CodeFigure
-    ss.getline(tmp, linesize, ',');
-
-    std::string entrystr;
-    ss >> std::quoted(entrystr); // EntryName_en
-    ss.getline(tmp, linesize, ',');
+    NorBufrIO::getElement(ss, tmp, linesize, fs); // EntryName_en
+    std::string entrystr(tmp);
 
     int code = 0;
     if (!codefigure.substr(0, 3).compare("All")) {
@@ -372,12 +401,13 @@ bool TableC::readWMO(std::string filename) {
     }
   }
 
-  delete[] line_raw;
   delete[] line;
   delete[] tmp;
 
   return 0;
 }
+
+bool TableC::readOPERA(std::string) { return 0; }
 
 TableD::TableD() {}
 
@@ -385,8 +415,19 @@ TableD::TableD(std::string f) {
   if (std::filesystem::path(f).filename() == "sequence.def") {
     readECCodes(f);
   } else {
-    readWMO(f);
+    if (std::filesystem::path(f).filename() == "BUFR_TableD_en.txt") {
+      readWMO(f);
+    } else {
+      readOPERA(f);
+    }
   }
+}
+
+TableC &TableC::operator+=(const TableC &rhs) {
+  for (auto m : rhs.tableC) {
+    this->tableC[m.first] = m.second;
+  }
+  return *this;
 }
 
 ssize_t TableD::size() const { return tableD.size(); }
@@ -447,65 +488,109 @@ bool TableD::readWMO(std::string filename) {
   }
   const int linesize = 4096;
 
-  char *line_raw = new char[linesize];
   char *line = new char[linesize];
   char *tmp = new char[linesize];
+  // field separator
+  char fs = ',';
 
   std::string tmpstr;
 
   is.getline(tmp, linesize); // header
 
-  while (is.getline(line_raw, linesize)) {
-
-    // TODO: to function
-    // Convert: ,, => ,"",
-    int line_shift = 0;
-    for (int i = 0; i < is.gcount(); i++) {
-      line[i + line_shift] = line_raw[i];
-      if (line_raw[i] == ',' && i < is.gcount() - 1 && line_raw[i + 1] == ',') {
-        line[i + line_shift + 1] = '"';
-        line[i + line_shift + 2] = '"';
-        line_shift += 2;
-        if (i + line_shift > linesize) {
-          std::cerr << "TableB line size exceded!!!\n";
-          delete[] line_raw;
-          delete[] line;
-          delete[] tmp;
-          return false;
-        }
-      }
-    }
+  while (is.getline(line, linesize)) {
 
     std::stringstream ss(line);
 
-    ss.getline(tmp, linesize, ','); // No
-    ss >> std::quoted(tmpstr);
-    ss.getline(tmp, linesize, ','); // Category
-    ss >> std::quoted(tmpstr);
-    ss.getline(tmp, linesize, ','); // CategoryOfSequences_en
+    NorBufrIO::getElement(ss, tmp, linesize, fs); // Category
+    NorBufrIO::getElement(ss, tmp, linesize, fs); // CategoryOfSequences_en
 
-    std::string fxy1str;
-    ss >> std::quoted(fxy1str);
-    ss.getline(tmp, linesize, ','); // FXY1
-
+    NorBufrIO::getElement(ss, tmp, linesize, fs); // FXY1
+    std::string fxy1str(tmp);
     DescriptorId D(fxy1str);
 
-    ss >> std::quoted(tmpstr);
-    ss.getline(tmp, linesize, ','); // Title_en
-
-    ss >> std::quoted(tmpstr);
-    ss.getline(tmp, linesize, ','); // SubTitle_en
-
-    std::string fxy2str;
-    ss >> std::quoted(fxy2str);
-    ss.getline(tmp, linesize, ','); // FXY2
+    NorBufrIO::getElement(ss, tmp, linesize, fs); // Title_en
+    NorBufrIO::getElement(ss, tmp, linesize, fs); // SubTitle_en
+    NorBufrIO::getElement(ss, tmp, linesize, fs); // FXY2
+    std::string fxy2str(tmp);
 
     DescriptorId d(fxy2str);
-
     tableD[D].push_back(d);
   }
 
-  delete[] line_raw;
+  delete[] line;
+  delete[] tmp;
+
+  return 0;
+}
+
+bool TableD::readOPERA(std::string filename) {
+  std::cerr << "Read OPERA D table: " << filename << "\n";
+
+  clear();
+  std::ifstream is(filename.c_str());
+  if (!is.good()) {
+    std::cerr << "ERROR: Read WMO TableB problem: " << filename << std::endl;
+    return false;
+  }
+  const int linesize = 4096;
+  // field separator
+  char fs = ';';
+
+  char *line = new char[linesize];
+  char *tmp = new char[linesize];
+  std::string tmpstr;
+  int F, X, Y;
+  int f, x, y;
+
+  while (is.getline(line, linesize)) {
+
+    if (line[0] == '3' || (line[0] == ' ' && line[1] == '3')) {
+    next_descriptor:
+      F = X = Y = 0;
+      std::stringstream ss(line);
+      ss >> F;
+      ss.get(); // read fs
+      ss >> X;
+      ss.get(); // read fs
+      if (ss.str().find(fs, ss.tellg()) < ss.str().size()) {
+        ss >> Y;
+        ss.get();
+        DescriptorId D(F, X, Y);
+        f = x = y = 0;
+        ss >> f;
+        ss.get();
+        ss >> x;
+        ss.get();
+        ss >> y;
+        bool elements = true;
+        while (elements) {
+          DescriptorId d(f, x, y);
+
+          tableD[D].push_back(d);
+          is.getline(line, linesize);
+          if (is.eof())
+            break;
+          if (line[0] == '3') {
+            goto next_descriptor;
+          }
+          f = x = y = 0;
+          std::stringstream lss(line);
+          lss.getline(tmp, linesize, fs);
+          lss.getline(tmp, linesize, fs);
+          lss.getline(tmp, linesize, fs);
+          lss >> f;
+          lss.getline(tmp, linesize, fs);
+          lss >> x;
+          lss.getline(tmp, linesize, fs);
+          lss >> y;
+          if (f == 0 && x == 0 && y == 0) {
+            elements = false;
+          }
+        }
+      }
+    }
+  }
+
   delete[] line;
   delete[] tmp;
 
@@ -551,4 +636,11 @@ const std::list<DescriptorId> &TableD::at(DescriptorId d,
   }
 
   return tableD.find(d)->second;
+}
+
+TableD &TableD::operator+=(const TableD &rhs) {
+  for (auto m : rhs.tableD) {
+    this->tableD[m.first] = m.second;
+  }
+  return *this;
 }

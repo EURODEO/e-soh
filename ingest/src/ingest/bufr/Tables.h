@@ -32,13 +32,14 @@ class TableB {
 public:
   TableB();
   TableB(std::string f);
-
   const DescriptorMeta &at(DescriptorId d, bool ignore_throw = false) const;
+  TableB &operator+=(const TableB &rhs);
 
 private:
   void clear();
   bool readWMO(std::string f);
   bool readECCodes(std::string filename);
+  bool readOPERA(std::string filename);
   std::map<DescriptorId, DescriptorMeta> tableB;
   DescriptorMeta dm0;
 };
@@ -48,11 +49,13 @@ public:
   TableC();
   TableC(std::string f);
   std::string codeStr(DescriptorId di, int c);
+  TableC &operator+=(const TableC &rhs);
 
 private:
   void clear();
   bool readWMO(std::string f);
   bool readECCodes(std::string filename);
+  bool readOPERA(std::string filename);
   std::map<DescriptorId, std::map<int, std::string>> tableC;
 };
 
@@ -67,12 +70,20 @@ public:
   at(DescriptorId d,
      bool ignore_throw = false) const; // TODO: exception: out_of_range
   ssize_t size() const;
+  TableD &operator+=(const TableD &rhs);
 
 private:
   void clear();
   bool readWMO(std::string f);
   bool readECCodes(std::string filename);
+  bool readOPERA(std::string filename);
   std::map<DescriptorId, std::list<DescriptorId>> tableD;
 };
+
+template <class T> T operator+(const T &rhs, const T &lhs) {
+  T ret = rhs;
+  ret += lhs;
+  return ret;
+}
 
 #endif
