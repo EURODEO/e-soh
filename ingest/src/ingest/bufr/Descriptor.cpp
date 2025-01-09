@@ -19,7 +19,7 @@ DescriptorId::DescriptorId(uint8_t _F, uint8_t _X, uint8_t _Y)
     : F(_F & 0x3), X(_X & 0x3f), Y(_Y) {
 #ifdef DESCDEBUG
   if (_F != F || _X != X) {
-    std::cerr << "Warinig, truncated descriptor: F[" << static_cast<int>(_F)
+    std::cerr << "Warning, truncated descriptor: F[" << static_cast<int>(_F)
               << "=>" << static_cast<int>(F) << "] X[" << static_cast<int>(_X)
               << "=>" << static_cast<int>(X) << "]\n";
   }
@@ -36,7 +36,7 @@ DescriptorId::DescriptorId(int _FX, int _Y)
   t <<= 6;
   t |= X;
   if (Y != _Y || t != static_cast<unsigned char>(_FX)) {
-    std::cerr << "?Warinig, truncated descriptor: FX[" << _FX
+    std::cerr << "?Warning, truncated descriptor: FX[" << _FX
               << " F=" << static_cast<int>(F) << " X=" << static_cast<int>(X)
               << "] Y[" << _Y << " Y=" << static_cast<int>(Y) << "]\n";
   }
@@ -47,7 +47,7 @@ DescriptorId::DescriptorId(int _F, int _X, int _Y)
     : F(_F & 0x3), X(_X & 0x3f), Y(_Y & 0xff) {
 #ifdef DESCDEBUG
   if (_F != F || _X != X || _Y != Y) {
-    std::cerr << "Warinig, truncated descriptor: F[" << _F << "=>"
+    std::cerr << "Warning, truncated descriptor: F[" << _F << "=>"
               << static_cast<int>(F) << "] X[" << _X << "=>"
               << static_cast<int>(X) << "] Y[" << _Y << "=>"
               << static_cast<int>(Y) << "]\n";
@@ -71,7 +71,7 @@ DescriptorId::DescriptorId(int _FXY, bool visible) {
     t <<= 8;
     t |= Y;
     if (t != _FXY) {
-      std::cerr << "Warinig, truncated descriptor: FXY[" << _FXY
+      std::cerr << "Warning, truncated descriptor: FXY[" << _FXY
                 << " F=" << std::setfill('0') << static_cast<int>(F)
                 << " X=" << std::setw(2) << static_cast<int>(X)
                 << " Y=" << std::setw(3) << static_cast<int>(Y) << "]\n";
@@ -102,7 +102,7 @@ bool DescriptorId::fromString(std::string s) {
 
 #ifdef DESCDEBUG
   if (std::stoi(fs) != F || std::stoi(xs) != X || std::stoi(ys) != Y) {
-    std::cerr << "Warinig, truncated descriptor: " << s << " => "
+    std::cerr << "Warning, truncated descriptor: " << s << " => "
               << std::setfill('0') << static_cast<int>(F) << std::setw(2)
               << static_cast<int>(X) << std::setw(3) << static_cast<int>(Y)
               << "\n";
@@ -141,6 +141,10 @@ std::ostream &operator<<(std::ostream &os, const DescriptorId &d) {
 
 bool operator==(const DescriptorId &lhs, const DescriptorId &rhs) {
   return ((lhs.F == rhs.F) && (lhs.X == rhs.X) && (lhs.Y == rhs.Y));
+}
+
+bool operator!=(const DescriptorId &lhs, const DescriptorId &rhs) {
+  return !(lhs == rhs);
 }
 
 bool operator<(const DescriptorId &lhs, const DescriptorId &rhs) {

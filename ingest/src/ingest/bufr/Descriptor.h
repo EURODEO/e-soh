@@ -79,6 +79,8 @@ protected:
   uint8_t Y;
 };
 
+bool operator!=(const DescriptorId &lhs, const DescriptorId &rhs);
+
 std::ostream &operator<<(std::ostream &os, const DescriptorId &d);
 
 class Descriptor : public DescriptorId {
