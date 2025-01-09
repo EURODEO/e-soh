@@ -100,31 +100,45 @@ bool Section1::fromBuffer(uint8_t *buf, int size, uint8_t edition) {
 
   if (!SectionBase::fromBuffer(buf, size))
     return false;
-  if (size < 6)
-    return false;
-
-  master_table = buffer[3];
-  centre = NorBufrIO::getBytes(buffer + 4, 2);
 
   if (edition >= 4) {
     if (size < 23)
       return false;
-    subcentre = NorBufrIO::getBytes(buffer + 6, 2);
   } else {
     if (size < 18)
       return false;
+  }
+
+  master_table = buffer[3];
+
+  switch (edition) {
+  case 2:
+    centre = NorBufrIO::getBytes(buffer + 4, 2);
+    subcentre = 0;
     eshift = -2;
+    break;
+  case 3:
+    subcentre = NorBufrIO::getBytes(buffer + 4, 1);
+    centre = NorBufrIO::getBytes(buffer + 5, 1);
+    eshift = -2;
+    break;
+  case 4:
+    centre = NorBufrIO::getBytes(buffer + 4, 2);
+    subcentre = NorBufrIO::getBytes(buffer + 6, 2);
+    break;
+    // default:
   }
 
   upd_seq_num = buffer[8 + eshift];
   optional_section = buffer[9 + eshift];
   data_category = buffer[10 + eshift];
-  int_data_subcategory = buffer[11 + eshift];
 
   if (edition >= 4)
-    local_data_subcategory = buffer[12];
+    int_data_subcategory = buffer[11 + eshift];
   else
     eshift--;
+
+  local_data_subcategory = buffer[12 + eshift];
 
   version_master = buffer[13 + eshift];
   version_local = buffer[14 + eshift];
