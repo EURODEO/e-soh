@@ -67,7 +67,7 @@ private:
   DescriptorMeta *addMeta(DescriptorMeta *dm);
   uint64_t uncompressDescriptor(std::list<DescriptorId>::iterator &it,
                                 ssize_t &sb, ssize_t &subsetsb,
-                                uint16_t *repeatnum = 0);
+                                uint32_t *repeatnum = 0);
 
 protected:
   ssize_t len;

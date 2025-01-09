@@ -56,7 +56,7 @@ void NorBufr::setTableDir(std::string s) {
 
 uint64_t NorBufr::uncompressDescriptor(std::list<DescriptorId>::iterator &it,
                                        ssize_t &sb, ssize_t &subsetsb,
-                                       uint16_t *repeatnum) {
+                                       uint32_t *repeatnum) {
 
   lb.addLogEntry(LogEntry("Starting Descriptor uncompressing", LogLevel::DEBUG,
                           __func__, bufr_id));
@@ -157,7 +157,8 @@ ssize_t NorBufr::extractDescriptors(int ss, ssize_t subsb) {
   ssize_t mod_str_datawidth = 0;
   ssize_t local_datawidth = 0;
   int mod_scale = 0;
-  int mod_refvalue = 0;
+  int mod_refvalue_mul = 0;
+  std::map<DescriptorId, int> mod_refvalue;
 
   std::stack<uint8_t> assoc_field;
 
@@ -247,8 +248,9 @@ ssize_t NorBufr::extractDescriptors(int ss, ssize_t subsb) {
               return sb;
             }
 
-            if ((!mod_scale && !mod_refvalue && !mod_datawidth &&
-                 assoc_field.empty()) ||
+            if ((!mod_scale && !mod_refvalue_mul &&
+                 (mod_refvalue.find(*it) == mod_refvalue.end()) &&
+                 !mod_datawidth && assoc_field.empty()) ||
                 (it->x() == 31 && it->y() == 21)) {
               // TODO: Too ugly !!
               current_desc.setMeta(
@@ -264,8 +266,15 @@ ssize_t NorBufr::extractDescriptors(int ss, ssize_t subsb) {
                 dm->setDatawidth(dm->datawidth() + mod_datawidth);
               if (mod_scale)
                 dm->setScale(dm->scale() + mod_scale);
-              if (mod_refvalue)
-                dm->setReference(mod_refvalue);
+
+              int mref = dm->reference();
+              if (mod_refvalue.find(*it) != mod_refvalue.end()) {
+                mref = mod_refvalue[*it];
+              }
+              if (mod_refvalue_mul)
+                mref *= mod_refvalue_mul;
+              dm->setReference(mref);
+
               auto dm_ptr = addMeta(dm);
               // Meta already exists
               if (dm_ptr != dm)
@@ -282,7 +291,7 @@ ssize_t NorBufr::extractDescriptors(int ss, ssize_t subsb) {
       desc[ss].push_back(Descriptor(*it, sb));
       uint64_t index = 0;
       int descnum = it->x();
-      uint16_t repeatnum = 0;
+      uint32_t repeatnum = 0;
       if (it->y() != 0)
         repeatnum = it->y();
       else {
@@ -337,7 +346,7 @@ ssize_t NorBufr::extractDescriptors(int ss, ssize_t subsb) {
       }
       if (repeatnum) {
         auto insert_here = ++rep_it;
-        for (int i = 1; i < repeatnum; ++i)
+        for (uint32_t i = 1; i < repeatnum; ++i)
           DL.insert(insert_here, repeat_descriptors.begin(),
                     repeat_descriptors.end());
       }
@@ -365,11 +374,41 @@ ssize_t NorBufr::extractDescriptors(int ss, ssize_t subsb) {
           mod_scale = 0;
         break;
       case 3: {
-        if (it->y() != 255) {
-          mod_refvalue = NorBufrIO::getBitValue(sb, it->y(), false, bits);
-          sb += it->y();
+        if (it->y() != 255 && it->y()) {
+          int64_t nref = 0;
+          uint64_t nextbit = it->y();
+          uint64_t bitref = NorBufrIO::getBitValue(sb, it->y(), false, bits);
+          if (bitref != ULONG_MAX) {
+            uint64_t sign = NorBufrIO::getBitValue(sb, 1, false, bits);
+            if (sign) {
+              bitref = NorBufrIO::getBitValue(sb + 1, it->y() - 1, false, bits);
+              nref = -bitref;
+            } else
+              nref = bitref;
+            ++it;
+            while (*it != DescriptorId("203255") && it != DL.end()) {
+              desc[ss].push_back(Descriptor(*it, sb));
+              Descriptor &current_desc = desc[ss].back();
+
+              DescriptorMeta *dm = new DescriptorMeta;
+              *dm = tabB->at(*it);
+              dm->setDatawidth(0);
+              std::string orig_name = dm->name();
+              dm->setName("New Reference Value [" + orig_name +
+                          "]:" + std::to_string(nref));
+              dm->setUnit("Reference");
+              auto dm_ptr = addMeta(dm);
+              // Meta already exists
+              if (dm_ptr != dm)
+                delete dm;
+              current_desc.setMeta(dm_ptr);
+              mod_refvalue[*it] = nref;
+              ++it;
+            }
+          }
+          sb += nextbit;
         } else {
-          mod_refvalue = 0;
+          mod_refvalue.clear();
         }
         break;
       }
@@ -393,11 +432,11 @@ ssize_t NorBufr::extractDescriptors(int ss, ssize_t subsb) {
       case 7: {
         if (it->y() == 0) {
           mod_scale = 0;
-          mod_refvalue = 0;
+          mod_refvalue_mul = 0;
           mod_datawidth = 0;
         } else {
           mod_scale = it->y();
-          mod_refvalue = pow(10, it->y());
+          mod_refvalue_mul = pow(10, it->y());
           mod_datawidth = (int)((10 * it->y() + 2) / 3);
         }
         break;
@@ -602,6 +641,9 @@ std::string NorBufr::getValue(const Descriptor &d, std::string,
 
     if (raw_value == std::numeric_limits<uint64_t>::max())
       return ("MISSING");
+
+    if (d.f() == 0 && d.x() == 31)
+      return std::to_string(raw_value);
 
     if (!dm->reference() &&
         (dm->unit().find("CODE TABLE") != std::string::npos ||
@@ -901,7 +943,9 @@ std::ostream &NorBufr::printDetail(std::ostream &os) {
       DescriptorMeta *meta = v.getMeta();
       if (meta) {
         os << " [sb: " << v.startBit() << "] ";
-        os << getValue(v, std::string());
+        // New Reference value in the name string
+        if (meta->unit() != "Reference")
+          os << getValue(v, std::string());
 
         if (meta->unit().find("CODE TABLE") != std::string::npos ||
             meta->unit().find("FLAG TABLE") != std::string::npos) {
@@ -970,7 +1014,9 @@ std::ostream &operator<<(std::ostream &os, NorBufr &bufr) {
       os << v;
       DescriptorMeta *meta = v.getMeta();
       if (meta) {
-        os << "\t" << bufr.getValue(v, std::string());
+        // New Reference value in the name string
+        if (meta->unit() != "Reference")
+          os << "\t" << bufr.getValue(v, std::string());
 
         if (meta->unit().find("CODE TABLE") != std::string::npos ||
             meta->unit().find("FLAG TABLE") != std::string::npos) {
