@@ -232,7 +232,6 @@ bool TableB::readOPERA(std::string filename) {
     for (size_t i = 0; i < strlen(line); ++i) {
       // En dash => Hyphen-minus
       if (uline[i] == 0x96) {
-        std::cerr << "Changed !!!" << i << " ";
         uline[i] = 0x2d;
       }
     }
@@ -416,7 +415,61 @@ bool TableC::readWMO(std::string filename) {
   return 0;
 }
 
-bool TableC::readOPERA(std::string) { return 0; }
+bool TableC::readOPERA(std::string filename) {
+  std::cerr << "Read Code table: " << filename << "\n";
+  std::ifstream is(filename.c_str());
+  if (!is.good()) {
+    std::cerr << "ERROR: Read WMO tableC problem: " << filename << std::endl;
+    return false;
+  }
+  const int linesize = 4096;
+
+  char *line = new char[linesize];
+  char *tmp = new char[linesize];
+  std::string tmpstr;
+  // field separator
+  char fs = ' ';
+
+  // is.getline(tmp, linesize); // header
+
+  while (is.getline(line, linesize)) {
+
+    std::stringstream ss(line);
+    int di;
+    ss >> di;
+    DescriptorId d(di, true);
+    int elements_num = 0;
+    ss >> elements_num;
+    int zero;
+    ss >> zero;
+    NorBufrIO::getElement(ss, tmp, linesize, '\n');
+    std::string namestr(tmp);
+
+    int code = 0;
+    int element_desc_lines;
+    for (int i = 1; i < elements_num; ++i) {
+      is >> code;
+      is >> element_desc_lines;
+      std::string entrystr;
+      for (int j = 0; j < element_desc_lines; j++) {
+        is.getline(tmp, linesize);
+        std::string tmpstr(tmp);
+        tmpstr.erase(
+            tmpstr.begin(),
+            std::find_if(tmpstr.begin(), tmpstr.end(),
+                         std::bind1st(std::not_equal_to<char>(), ' ')));
+        entrystr += " " + tmpstr;
+      }
+      tableC[d][code] = entrystr;
+    }
+
+    NorBufrIO::getElement(ss, tmp, linesize, fs); // ElementName_en
+    NorBufrIO::getElement(ss, tmp, linesize, fs); // CodeFigure
+    std::string codefigure(tmp);
+  }
+
+  return true;
+}
 
 TableD::TableD() {}
 
