@@ -650,7 +650,7 @@ std::string NorBufr::getValue(const Descriptor &d, std::string,
          dm->unit().find("FLAG TABLE") != std::string::npos)) {
       std::stringstream ss(tabB->at(d).unit());
 
-      ret = tabC->codeStr(d, raw_value);
+      ret = (tabC) ? tabC->codeStr(d, raw_value) : "?";
     } else {
       double dvalue = raw_value;
       if (dm->reference())
