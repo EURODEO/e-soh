@@ -299,7 +299,15 @@ TableC::TableC(std::string f) {
   if (std::filesystem::path(f).filename() == "codetables") {
     readECCodes(f);
   } else {
-    readWMO(f);
+    if (std::filesystem::path(f).filename() == "BUFRCREX_CodeFlag_en.txt") {
+      readWMO(f);
+    } else {
+      if (std::filesystem::path(f).filename() == "btc085.019") {
+        readOPERA(f);
+      } else {
+        std::cerr << "Unknown Code/Flag table\n";
+      }
+    }
   }
 }
 
@@ -369,13 +377,12 @@ bool TableC::readWMO(std::string filename) {
     std::stringstream ss(line);
     NorBufrIO::getElement(ss, tmp, linesize, fs); // FXY
 
-    DescriptorId d(tmpstr);
+    DescriptorId d(tmp);
 
     std::string namestr;
     NorBufrIO::getElement(ss, tmp, linesize, fs); // ElementName_en
     NorBufrIO::getElement(ss, tmp, linesize, fs); // CodeFigure
     std::string codefigure(tmp);
-
     NorBufrIO::getElement(ss, tmp, linesize, fs); // EntryName_en
     std::string entrystr(tmp);
 
@@ -396,14 +403,16 @@ bool TableC::readWMO(std::string filename) {
           tableC[d][code] = entrystr;
         }
       } else {
-        tableC[d][code] = entrystr;
+        if (codefigure.size()) {
+          code = std::stoi(codefigure);
+          tableC[d][code] = entrystr;
+        }
       }
     }
   }
 
   delete[] line;
   delete[] tmp;
-
   return 0;
 }
 
