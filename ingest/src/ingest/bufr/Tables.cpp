@@ -251,9 +251,13 @@ bool TableB::readOPERA(std::string filename) {
 
         NorBufrIO::getElement(ss, tmp, linesize, fs); // BUFR_Unit
         std::string unitstr(tmp);
-        if (unitstr.substr(0, 10) == "Code table")
+        if (unitstr.substr(0, 10) == "Code table" ||
+            unitstr.substr(0, 10) == "Code Table" ||
+            unitstr.substr(0, 10) == "Code-Table")
           unitstr = "CODE TABLE";
-        if (unitstr.substr(0, 10) == "Flag table")
+        if (unitstr.substr(0, 10) == "Flag table" ||
+            unitstr.substr(0, 10) == "Flag Table" ||
+            unitstr.substr(0, 10) == "Flag-Table")
           unitstr = "FLAG TABLE";
         if (unitstr.substr(0, 9) == "CCITT IA5")
           unitstr = "CCITTIA5";
