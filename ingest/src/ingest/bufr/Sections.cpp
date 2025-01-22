@@ -150,7 +150,7 @@ bool Section1::fromBuffer(uint8_t *buf, int size, uint8_t edition) {
     year = buffer[15 + eshift];
     eshift--;
   }
-  if (year < 100)
+  if (year < 80)
     year += 100;
   if (year > 1900)
     year -= 1900;
