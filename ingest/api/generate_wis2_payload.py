@@ -1,4 +1,6 @@
 import os
+import json
+
 
 from api.model import Geometry
 from api.model import Link
@@ -31,13 +33,27 @@ def generate_wis2_payload(message: dict, request_url: str) -> Wis2MessageSchema:
         properties=Properties(
             producer=message["properties"]["naming_authority"],
             data_id=message["properties"]["data_id"],
-            metadata_id="TOBESET",  # Need to figure out how we generate this? Is it staic or dynamic?
+            metadata_id=os.getenv(
+                "WIS2_METADATA_RECORD_ID", None
+            ),  # Need to figure out how we generate this? Is it staic or dynamic?
             datetime=message["properties"]["datetime"],
             pubtime=message["properties"]["pubtime"],
-            content=Content(value="test", unit="test", encoding="utf-8", standard_name="test"),
-            # content=Content() # Will leave content empty at the moment.
-            # I think the content should be somewhat the same format as you get from the API.
-            # Maybe it should be a small geojson feature object with complete data?
+            content=Content(
+                value=json.dumps(
+                    {
+                        "type": "Feature",
+                        "geometry": message["geometry"],
+                        "properties": {
+                            "observation": message["properties"]["content"]["value"],
+                            "CF_standard_name": message["properties"]["content"]["standard_name"],
+                            "unit": message["properties"]["content"]["unit"],
+                        },
+                    },
+                    separators=(",", ":"),
+                ),
+                unit=message["properties"]["content"]["unit"],
+                encoding="utf-8",
+            ),
         ),
         links=(
             [

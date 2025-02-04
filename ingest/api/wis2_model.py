@@ -21,11 +21,15 @@ class Content(BaseModel):
         ),
     )
     value: str = Field(..., description="The inline content of the file.")
-    standard_name: str = Field(..., description="CF standard for the data included in this message.")
     unit: str = Field(..., description="Unit for the data")
 
     class Config:
         str_strip_whitespace = True
+
+
+class Integrity(BaseModel):
+    method: Literal["sha256", "sha384", "sha512", "sha3-256", "sha3-384", "sha3-512"]
+    value: str = Field(..., desciption="The hash value for the value field in the message content.")
 
 
 class Properties(BaseModel):
@@ -59,7 +63,7 @@ class Properties(BaseModel):
         description="Identifies the end date/time date of the data being recorded, in RFC3339 format.",
     )
     content: Optional[Content] = Field(..., description="Actual data content")
-    integrity: Optional[str] = Field(
+    integrity: Optional[Integrity] = Field(
         None,
         description="Specifies a checksum to be applied to the data to ensure that the download is accurate.",
     )
