@@ -34,6 +34,7 @@ class IngestToPipeline:
     ):
         self.uuid_prefix = uuid_prefix
         self.client = None
+        self.WIS2_client = None
         try:
             if mqtt_conf["host"]:
                 self.client = connect_mqtt(mqtt_conf)
@@ -91,7 +92,7 @@ class IngestToPipeline:
                         detail="Data ingested to datastore. But unable to publish to mqtt",
                     )
                 try:
-                    if publishWIS2:
+                    if publishWIS2 and self.WIS2_client:
                         send_message(
                             generate_wis2_topic(),
                             generate_wis2_payload(msg, baseURL).model_dump(exclude_unset=True, exclude_none=True),
