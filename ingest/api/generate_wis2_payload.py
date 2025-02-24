@@ -18,6 +18,8 @@ def get_api_timeseries_query(location_id: str, baseURL: str) -> str:
 def generate_wis2_topic() -> str:
     """This function will generate the WIS2 complient toipc name"""
     wis2_topic = os.getenv("WIS2_TOPIC")
+    if not wis2_topic:
+        raise ValueError("WIS2_TOPIC env variable not set. Aborting publish to wis2")
     return wis2_topic
 
 

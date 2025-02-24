@@ -41,7 +41,15 @@ class IngestToPipeline:
             if mqtt_WIS2_conf:
                 self.WIS2_client = connect_mqtt(mqtt_WIS2_conf)
         except Exception as e:
-            logger.error("Failed to establish connection to mqtt, " + "\n" + str(e))
+            logger.error(
+                "Failed to establish connection to mqtt, "
+                + "\n"
+                + str(e)
+                + "\n"
+                + json.dumps(mqtt_conf)
+                + "\n"
+                + json.dumps(mqtt_WIS2_conf)
+            )
             raise e
 
     async def ingest(self, message: Union[str, object], publishWIS2: bool, baseURL: str):
