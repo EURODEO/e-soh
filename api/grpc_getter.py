@@ -14,7 +14,12 @@ import grpc
 def get_grpc_stub():
     channel = grpc.aio.insecure_channel(
         f"{os.getenv('DSHOST', 'localhost')}:{os.getenv('DSPORT', '50050')}",
-        options=[("grpc.max_receive_message_length    ", int(os.getenv("GRPC_MAX_MESSAGE_SIZE", 4096)))],
+        options=[
+            (
+                "grpc.max_receive_message_length",
+                int(os.getenv("GRPC_MAX_MESSAGE_SIZE", 4096)),
+            )
+        ],
     )
     return dstore_grpc.DatastoreStub(channel)
 
