@@ -17,7 +17,7 @@ def get_grpc_stub():
         options=[
             (
                 "grpc.max_receive_message_length",
-                int(os.getenv("GRPC_MAX_MESSAGE_SIZE", 4096)),
+                int(os.getenv("GRPC_MAX_MESSAGE_SIZE", 4194304)),
             )
         ],
     )
