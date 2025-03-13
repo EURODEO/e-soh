@@ -478,6 +478,14 @@
         ],
         "symbol": "m/s"
     },
+    "wind_gust_from_direction": {
+        "unit": "degrees",
+        "symbol": "degrees",
+        "alias": [
+            "deg",
+            "degree"
+        ]
+    },
     "air_pressure": {
         "unit": "hPa",
         "symbol": "hPa",

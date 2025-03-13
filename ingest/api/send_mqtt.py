@@ -7,7 +7,6 @@ logger = logging.getLogger(__name__)
 
 
 def connect_mqtt(mqtt_conf: dict):
-
     def on_connect(client, userdata, flags, rc, properties=None):
         if rc == 0:
             logger.info("Connected to MQTT Broker!")

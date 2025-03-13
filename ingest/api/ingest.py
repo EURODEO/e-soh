@@ -1,6 +1,8 @@
 import logging
 from typing import Union
 
+from api.generate_wis2_payload import generate_wis2_payload
+from api.generate_wis2_payload import generate_wis2_topic
 import grpc
 import json
 
@@ -28,26 +30,38 @@ class IngestToPipeline:
         self,
         mqtt_conf: dict,
         uuid_prefix: str,
+        mqtt_WIS2_conf: dict | None = None,
     ):
         self.uuid_prefix = uuid_prefix
         self.client = None
-        if mqtt_conf["host"]:
-            try:
+        self.WIS2_client = None
+        try:
+            if mqtt_conf["host"]:
                 self.client = connect_mqtt(mqtt_conf)
-            except Exception as e:
-                logger.error("Failed to establish connection to mqtt, " + "\n" + str(e))
-                raise e
+            if mqtt_WIS2_conf:
+                self.WIS2_client = connect_mqtt(mqtt_WIS2_conf)
+        except Exception as e:
+            logger.error(
+                "Failed to establish connection to mqtt, "
+                + "\n"
+                + str(e)
+                + "\n"
+                + json.dumps(mqtt_conf)
+                + "\n"
+                + json.dumps(mqtt_WIS2_conf)
+            )
+            raise e
 
-    async def ingest(self, message: Union[str, object]):
+    async def ingest(self, message: Union[str, object], publishWIS2: bool, baseURL: str):
         """
         This method will interpret call all methods for deciding input type, build the mqtt messages, and
         publish them.
 
         """
         messages = build_messages(message, self.uuid_prefix)
-        await self.publish_messages(messages)
+        await self.publish_messages(messages, publishWIS2, baseURL)
 
-    async def publish_messages(self, messages: list):
+    async def publish_messages(self, messages: list, publishWIS2: bool, baseURL: str):
         """
         This method accepts a list of json strings ready to be ingest to datastore
          and published to the mqtt topic.
@@ -60,7 +74,7 @@ class IngestToPipeline:
             logger.error("Failed to reach datastore, " + "\n" + str(e))
             raise HTTPException(status_code=500, detail="API could not reach datastore")
 
-        if self.client is not None:
+        if self.client or self.WIS2_client:
             for msg in messages:
                 topic = (
                     msg["properties"]["naming_authority"]
@@ -76,11 +90,27 @@ class IngestToPipeline:
                 msg["properties"]["level"] = level_string
                 msg["properties"]["period"] = period_iso
                 try:
-                    send_message(topic, json.dumps(msg), self.client)
-                    logger.debug("Succesfully published to mqtt")
+                    if self.client:
+                        send_message(topic, json.dumps(msg), self.client)
+                        logger.debug("Succesfully published to mqtt")
                 except Exception as e:
                     logger.error("Failed to publish to mqtt, " + str(e))
                     raise HTTPException(
                         status_code=500,
                         detail="Data ingested to datastore. But unable to publish to mqtt",
+                    )
+                try:
+                    if publishWIS2 and self.WIS2_client:
+                        send_message(
+                            generate_wis2_topic(),
+                            generate_wis2_payload(msg, baseURL).model_dump(exclude_unset=True, exclude_none=True),
+                            self.WIS2_client,
+                        )
+                        logger.debug("Succesfully published to mqtt")
+                except Exception as e:
+                    logger.error("Failed to publish to WIS2 mqtt, " + str(e))
+                    print(e)
+                    raise HTTPException(
+                        status_code=500,
+                        detail="Data ingested to datastore. But unable to publish to WIS2 mqtt",
                     )
