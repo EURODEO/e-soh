@@ -40,7 +40,8 @@ class Geometry(BaseModel):
 
 class Integrity(BaseModel):
     method: Literal["sha256", "sha384", "sha512", "sha3-256", "sha3-384", "sha3-512"] = Field(
-        ..., description="A specific set of methods for calculating the checksum algorithms"
+        ...,
+        description="A specific set of methods for calculating the checksum algorithms",
     )
     value: str = Field(..., description="Checksum value.")
 
@@ -290,7 +291,8 @@ class Properties(BaseModel):
     )
     content: Content = Field(..., description="Actual data content")
     integrity: Optional[Integrity] = Field(
-        None, description="Specifies a checksum to be applied to the data to ensure that the download is accurate."
+        None,
+        description="Specifies a checksum to be applied to the data to ensure that the download is accurate.",
     )
 
     @field_validator("period", mode="before")
@@ -320,7 +322,6 @@ class Properties(BaseModel):
 
     @model_validator(mode="after")
     def validate_wigos_id(self):
-
         blocks = self.platform.split("-")
         assert len(blocks) == 4, f"Not enough blocks in input 'platform', '{self.platform}'"
         for i in blocks[:-1]:
