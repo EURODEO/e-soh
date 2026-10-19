@@ -51,7 +51,9 @@ def connect_mqtt(mqtt_conf: dict):
 
 def send_message(topic: str, message: str, client: object):
     if len(topic) != 0:
-        mqtt_topic = mqtt_topic_prepend + topic
+        mqtt_topic = topic
+        if not topic.startswith("origin"):
+            mqtt_topic = mqtt_topic_prepend + topic
     try:
         if isinstance(message, dict):
             client.publish(mqtt_topic, json.dumps(message))

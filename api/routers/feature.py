@@ -28,6 +28,7 @@ router = APIRouter(prefix="/collections/observations")
 env = Environment(loader=FileSystemLoader(os.getenv("JINJA2_TEMPLATES", "templates")), autoescape=select_autoescape())
 WIS2_TOPIC = os.getenv("WIS2_TOPIC")
 WIS2_DATA_ID = os.getenv("WIS2_DATA_ID")
+WIS2_MQTT_PUBLIC_URL = os.getenv("WIS2_MQTT_PUBLIC_URL", "")
 
 
 @router.get(
@@ -165,7 +166,9 @@ async def get_time_series_by_id(
 async def get_dataset_metadata(request: Request):
     base_url = str(request.base_url)
     mqtt_url_woport = base_url.split(":")
-    url_mqtt_wis2 = "wss:" + mqtt_url_woport[1] + ":443/wis2mqtt"
+    url_mqtt_wis2 = "wss:" + mqtt_url_woport[1]
+    if len(WIS2_MQTT_PUBLIC_URL):
+        url_mqtt_wis2 = WIS2_MQTT_PUBLIC_URL
 
     # need to get spatial extent.
     spatial_request = dstore.GetExtentsRequest()
