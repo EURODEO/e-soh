@@ -13,11 +13,7 @@ from bufr_tools.create_mqtt_message_from_bufr import (
 
 logger = logging.getLogger(__name__)
 
-msg_alias = {
-    "function": "method",
-    "period": "duration",
-    "period_int": ""
-}
+msg_alias = {"function": "method", "period": "duration", "period_int": ""}
 
 
 def message_properties_to_public(message: object):
