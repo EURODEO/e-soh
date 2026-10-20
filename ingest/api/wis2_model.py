@@ -8,7 +8,6 @@ from pydantic import Field
 from api.model import Link
 
 import datetime as pkg_datetime
-import hashlib
 from typing import Annotated
 
 from pydantic import UUID4
@@ -54,11 +53,6 @@ class Content(BaseModel):
 
     class Config:
         str_strip_whitespace = True
-
-
-class Integrity(BaseModel):
-    method: Literal["sha256", "sha384", "sha512", "sha3-256", "sha3-384", "sha3-512"]
-    value: str = Field(..., description="The hash value for the value field in the message content.")
 
 
 class Properties(BaseModel):
@@ -111,7 +105,6 @@ class Properties(BaseModel):
         description="Identifier for associated discovery metadata record to which the notification applies",
     )
     content: Optional[Content] = Field(None, description="Actual data content.")
-    integrity: Optional[Integrity] = Field(None, exclude_from_schema=True)
 
     @model_validator(mode="after")
     def set_datetime(self):
@@ -121,24 +114,11 @@ class Properties(BaseModel):
         )
         return self
 
-    @model_validator(mode="after")
-    def calc_integrity(self):
-        if self.content:  # If content is set, calculate the integrity check.
-            self.integrity = Integrity(
-                method="sha256",
-                value=hashlib.sha256(self.content.value.encode()).hexdigest(),
-            )
-        return self
-
 
 class PropertiesWIS2(Properties):
     pubtime: Annotated[pkg_datetime.datetime | pkg_datetime.date, PlainSerializer(serialize_timestamp)] = Field(
         ...,
         description="Identifies the date/time of the message being published, in RFC3339 format.",
-    )
-    integrity: Optional[Integrity] = Field(
-        None,
-        description="Specifies a checksum to be applied to the data to ensure that the download is accurate.",
     )
 
 
