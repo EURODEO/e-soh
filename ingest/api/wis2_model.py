@@ -98,11 +98,11 @@ class Properties(BaseModel):
         None,
         description="The number of meters above mean sea level.",
     )
-    function: Optional[str] = Field(
+    method: Optional[str] = Field(
         None,
         description="Function used on the data during the aggregation period.",
     )
-    period: Optional[str] = Field(
+    duration: Optional[str] = Field(
         None,
         description="Aggregation period for the measurement.",
     )

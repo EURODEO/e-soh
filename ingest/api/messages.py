@@ -13,6 +13,21 @@ from bufr_tools.create_mqtt_message_from_bufr import (
 
 logger = logging.getLogger(__name__)
 
+msg_alias = {
+    "function": "method",
+    "period": "duration",
+    "period_int": ""
+}
+
+
+def message_properties_to_public(message: object):
+    for key in msg_alias:
+        if key in message["properties"]:
+            if len(msg_alias[key]):
+                message["properties"][msg_alias[key]] = message["properties"][key]
+            del message["properties"][key]
+    return message
+
 
 def build_json_payload(bufr: object):
 

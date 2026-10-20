@@ -66,8 +66,8 @@ def generate_wis2_payload(message: dict, request_url: str) -> Wis2MessageSchema:
             wigos_station_identifier=message["properties"]["platform"],
             standard_name=standard_name,
             hamsl=message["properties"]["hamsl"],
-            function=message["properties"]["function"],
-            period=message["properties"]["period"],
+            method=message["properties"]["method"],
+            duration=message["properties"]["duration"],
             content=Content(
                 value=value,
                 unit=message["properties"]["content"]["unit"],

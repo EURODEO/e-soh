@@ -10,6 +10,7 @@ from fastapi import HTTPException
 
 from api.datastore import build_grpc_messages
 from api.messages import build_messages
+from api.messages import message_properties_to_public
 from api.send_mqtt import connect_mqtt, send_message
 from api.grpc_putter import putObsRequest
 
@@ -89,6 +90,7 @@ class IngestToPipeline:
                 level_string = convert_to_meter(msg["properties"]["level"])
                 msg["properties"]["level"] = level_string
                 msg["properties"]["period"] = period_iso
+                message_properties_to_public(msg)
                 try:
                     if self.client:
                         send_message(topic, json.dumps(msg), self.client)
