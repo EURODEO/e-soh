@@ -14,6 +14,8 @@ Environment variables that can be used to configure the container or the environ
 | CORS_HEADERS        | Indicates what headers should be supported with cross-origin requests (passed as a comma separated string)                    | ☐         |
 | JINJA2_TEMPLATES    | Path to a folder with jinja2 templates to override the default templates used by the API. See template section for details    | ☐         |
 | OPENAPI_METADATA_PATH | Path to an alternative OpenAPI metadata json file. It need to have the same fields as the openapi/openapi_metadata.py file. | ☐         |
+| WIS2_MQTT_PUBLIC_URL | URL to the WIS2 notification service. This URL is shown on the the WCMP2(collections/observations/dataset) page.             | ☐         |
+| WIS2_TOPIC          | WIS2 topic, for example: origin/a/wis2/eu-eumetnet-surface-observations/data/core/weather/surface-based-observations/synop    | ☐         |
 
 ## OpenAPI and EDR landing page metadata
 

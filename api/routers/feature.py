@@ -27,7 +27,6 @@ router = APIRouter(prefix="/collections/observations")
 
 env = Environment(loader=FileSystemLoader(os.getenv("JINJA2_TEMPLATES", "templates")), autoescape=select_autoescape())
 WIS2_TOPIC = os.getenv("WIS2_TOPIC")
-WIS2_DATA_ID = os.getenv("WIS2_DATA_ID")
 WIS2_MQTT_PUBLIC_URL = os.getenv("WIS2_MQTT_PUBLIC_URL", "")
 
 
